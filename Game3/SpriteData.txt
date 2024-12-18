@@ -1,0 +1,48 @@
+#SPRITE 4
+rtExplosion 12 0 0.6  Default.txt   Bitmap2Mask.bmp
+0	1	142 41 41 
+1	43 142 38 43 
+2	82 142 36 43 
+3	119 142 35 45
+4	155 142 34 46
+5	190 142 34 41
+6	225 142 33 38
+7	259 142 31 36
+8	291 142 29 32
+9	321 142 27 26
+10	349 142 24 24
+11	374 142 22 18	
+rtBomb 9 0 0.5   Default.txt   none
+0	161 85 11 12
+1	173 85 22 20
+2	196 85 26 24
+3	223 85 28 24
+4	252 85 30 24
+5	283 85 29 22
+6	313 85 22 20
+7	336 85 16 15
+8	353 85 4 6
+rtClash 6 0 0.3   Default.txt
+0 161 62 12 11
+1 174 62 20 20
+2 195 62 22 21
+3 219 62 18 19
+4 238 62 14 13
+5 253 62 11 10
+Shine 10 1 1.0f   Default.txt
+0 ../../data/effect/shine0.bmp
+1 ../../data/effect/shine1.bmp
+2 ../../data/effect/shine2.bmp
+3 ../../data/effect/shine3.bmp
+4 ../../data/effect/shine4.bmp
+5 ../../data/effect/shine5.bmp
+6 ../../data/effect/shine6.bmp
+7 ../../data/effect/shine7.bmp
+8 ../../data/effect/shine8.bmp
+9 ../../data/effect/shine9.bmp
+Defalut 1 2 1.0f  Default.txt
+0 ../../data/effect/Color.bmp
+0 ../../data/effect/Mask.bmp
+Defalut 1 3 1.0f  Default.txt 
+color ../../data/effect/Color.bmp 
+mask  ../../data/effect/Mask.bmp

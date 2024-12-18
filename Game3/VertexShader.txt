@@ -1,0 +1,30 @@
+#include "stdShader.h"
+
+// HLSL 상위레벨쉐이더언어
+// POSITION, SV_POSITION 시멘틱(의미구조)
+// 정점쉐이더( 버텍스버퍼에 들어 있는 각 정점을 처리한다.)
+
+VS_Out VS( float2 p : POS, float4 c : COLOR, 
+           float2 t : TEX) 
+{
+	VS_Out vsOut = (VS_Out)0;
+	vsOut.p = float4(p.x, p.y, 0.0f, 1.0f);
+	vsOut.c = c;
+	vsOut.t = t;
+	return vsOut;
+}
+PS_Out PS( VS_Out PS_In) 
+{
+	PS_Out psOut = (PS_Out)0;
+	float4 texColor = g_txDiffuseA.Sample(sample,PS_In.t);
+	// if(texColor.xyzw) Color.rgba
+	// 알파테스팅, 컬러키
+	/*if(texColor.r == 1.0f &&
+	   texColor.g == 1.0f &&
+	   texColor.b == 1.0f  )
+	   {
+		   discard;
+	   }*/
+	psOut.c = float4(PS_in.c.rgb, texColor.r);//PS_In.c;
+	return psOut;
+}
