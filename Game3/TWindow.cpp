@@ -38,16 +38,23 @@ bool   TWindow::SetWindow(
     this->m_WindowSize.y = iWindowY;
     g_WindowSize = m_WindowSize;
 
+    RECT rt = { 0,0,iWindowX, iWindowY };
+    AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, FALSE);
+
     HWND hWnd = CreateWindowW(
         L"KGCA", title.c_str(),
-        WS_POPUP,//WS_OVERLAPPED,
-       450, 200, iWindowX, iWindowY,
+        WS_OVERLAPPEDWINDOW,//WS_OVERLAPPED,
+        100, 100, rt.right - rt.left, rt.bottom - rt.top,
         nullptr, nullptr,
         m_hInstance, nullptr);
     if (!hWnd)
     {
         return false;
     }
+    RECT m_rtWindow;
+    RECT m_rtClient;
+    GetWindowRect(hWnd, &m_rtWindow);
+    GetClientRect(hWnd, &m_rtClient);
     ShowWindow(hWnd, SW_SHOW);
     m_hWnd = hWnd;
     g_hWnd = hWnd;
