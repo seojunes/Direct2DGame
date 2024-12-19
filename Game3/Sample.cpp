@@ -56,7 +56,7 @@ bool Sample::GameDataLoad(W_STR filename)
 }
 void   Sample::Init()
 {
-    m_pBitmap1Mask = I_Tex.Load(L"../../data/texture/bitmap2.bmp");
+    m_pBitmap1Mask = I_Tex.Load(L"../../data/texture/newMega.png");
     GameDataLoad(L"SpriteData.txt");
     TSoundManager& mgr = TSoundManager::GetInstance();
     m_pSound = mgr.Load(L"../../data/sound/Festival Theme.ogg");
@@ -91,19 +91,19 @@ void   Sample::Init()
     auto pObject3 = std::make_shared<TEffectObj>();
     tStart.x = 400.0f;
     tStart.y = 100.0f;
-    TVertex2 tEnd2 = { tStart.x + 42.0f, tStart.y + 60.0f };
+    TVertex2 tEnd2 = { tStart.x + 300.0f, tStart.y + 300.0f };
     AddEffect(tStart, tEnd2);
 }
 void   Sample::AddEffect(TVertex2 tStart, TVertex2 tEnd)
 {
     auto pObject3 = std::make_shared<TEffectObj>();
     TLoadResData resData;
-    resData.texPathName = L"../../data/texture/bitmap1Alpha.bmp";
+    resData.texPathName = L"../../data/texture/newMega.png";
     resData.texShaderName = L"../../data/shader/DefaultMask.txt";
     TEffectData data;
     data.m_bLoop = true;
-    data.m_fLifeTime = 1.0f;
-    data.m_fOffsetTime = 0.1f;
+    data.m_fLifeTime = 5.0f;
+    data.m_fOffsetTime = 0.0f;
     UINT iSprite = rand() % 3;
     data.m_iType = 1;// rand() % m_szSpriteList[0].size();
     if (data.m_iType == 0)
@@ -158,7 +158,7 @@ void   Sample::Frame()
 
     if (g_GameKey.dwMiddleClick == KEY_HOLD)
     {
-        TVertex2 tStart = { m_Input.m_ptMouse.x, m_Input.m_ptMouse.y };
+        TVertex2 tStart = { m_Input.m_ptMouse.x-50, m_Input.m_ptMouse.y-50 };
         TVertex2 tEnd = { tStart.x + 100.0f, tStart.y + 100.0f };
         AddEffect(tStart, tEnd);
 
