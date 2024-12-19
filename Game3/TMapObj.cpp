@@ -10,23 +10,24 @@ void TMapObj::Frame()
 		m_vVertexList[i].v.x += g_fSPF * cosf(g_fGT);
 	}*/
 
-	static float tStart = 0.0f;
-	static float tEnd = 476.0f;
-	tStart += g_fSPF * 10.0f;
-	tEnd   += g_fSPF * 10.0f;
-	UINT xSize = m_pTexture->m_TexDesc.Width;
-	UINT ySize = m_pTexture->m_TexDesc.Height;
-	m_vVertexList[0].t = { tStart / xSize , 0.0f };
-	m_vVertexList[1].t = { tEnd / xSize , 0.0f};
-	m_vVertexList[2].t = { tStart / xSize , 1.0f};
-	m_vVertexList[3].t = { tEnd / xSize , 1.0f };
-	/*m_vVertexList[0].t = { tStart / xSize, 0.0f };
-	m_vVertexList[1].t = { tEnd / xSize, 0.0f };
-	m_vVertexList[2].t = { tStart / xSize, 1.0f };
-	m_vVertexList[3].t = { tEnd / xSize, 1.0f }; */
-	TDevice::m_pd3dContext->UpdateSubresource(
-		m_pVertexBuffer.Get(), 0, nullptr,
-		&m_vVertexList.at(0), 0, 0);
+	// 맵 스크롤 하는 부분.
+	//static float tStart = 0.0f;
+	//static float tEnd = 476.0f;
+	//tStart += g_fSPF * 10.0f;
+	//tEnd   += g_fSPF * 10.0f;
+	//UINT xSize = m_pTexture->m_TexDesc.Width;
+	//UINT ySize = m_pTexture->m_TexDesc.Height;
+	//m_vVertexList[0].t = { tStart / xSize , 0.0f };
+	//m_vVertexList[1].t = { tEnd / xSize , 0.0f};
+	//m_vVertexList[2].t = { tStart / xSize , 1.0f};
+	//m_vVertexList[3].t = { tEnd / xSize , 1.0f };
+	///*m_vVertexList[0].t = { tStart / xSize, 0.0f };
+	//m_vVertexList[1].t = { tEnd / xSize, 0.0f };
+	//m_vVertexList[2].t = { tStart / xSize, 1.0f };
+	//m_vVertexList[3].t = { tEnd / xSize, 1.0f }; */
+	//TDevice::m_pd3dContext->UpdateSubresource(
+	//	m_pVertexBuffer.Get(), 0, nullptr,
+	//	&m_vVertexList.at(0), 0, 0);
 }
 void TMapObj::UpdateVertexData()
 {
@@ -60,14 +61,16 @@ void TMapObj::SetVertexData()
 	// 6  7  8
 	// iNumCell  = (3-1) * (3-1)
 
-	float fOffsetU = 1.0f / m_iNumCellCol;
-	float fOffsetV = 1.0f / m_iNumCellRow;
+	float fOffsetX = (float)g_WindowSize.x / (float)m_iNumCellCol;
+	float fOffsetY = (float)g_WindowSize.y / (float)m_iNumCellRow;
+	float fOffsetU = 1.0f / (float)m_iNumCellCol;
+	float fOffsetV = 1.0f / (float)m_iNumCellRow;
 	for (UINT iRow = 0; iRow < m_iNumRow; iRow++)
 	{
 		for (UINT iCol = 0; iCol < m_iNumCol; iCol++)
 		{
-			float x = iCol * g_WindowSize.x / (m_iNumCol - 1);
-			float y = iRow * g_WindowSize.y / (m_iNumRow - 1);
+			float x = iCol * fOffsetX;
+			float y = iRow * fOffsetY;
 			m_vScreenList[iRow * m_iNumCol + iCol].x = x;
 			m_vScreenList[iRow * m_iNumCol + iCol].y = y;
 			m_vVertexList[iRow * m_iNumCol + iCol].v = ScreenToNDC(x, y, g_WindowSize);
@@ -102,9 +105,9 @@ void TMapObj::SetIndexData()
 
 			UINT iCell = iRowCell * m_iNumCellCol + iColCell;
 			float x1 = m_vScreenList[m_vIndexList[iIndex + 0]].x;
-			float y1 = m_vScreenList[m_vIndexList[iIndex + 1]].y;
-			float x2 = m_vScreenList[m_vIndexList[iIndex + 1]].x;
-			float y2 = m_vScreenList[m_vIndexList[iIndex + 2]].y;
+			float y1 = m_vScreenList[m_vIndexList[iIndex + 0]].y;
+			float x2 = m_vScreenList[m_vIndexList[iIndex + 5]].x;
+			float y2 = m_vScreenList[m_vIndexList[iIndex + 5]].y;
 			m_Cells[iCell].rt.SetP(x1,y1, x2, y2);
 			m_Cells[iCell].iTexID = 0;
 			iIndex += 6;
@@ -114,9 +117,9 @@ void TMapObj::SetIndexData()
 	}
 
 	m_pTexs[0] = I_Tex.Load(L"../../data/texture/Map.png");
-	m_pTexs[1] = I_Tex.Load(L"../../data/texture/bitmap2.bmp");
-	m_pTexs[2] = I_Tex.Load(L"../../data/texture/Map.png");
-	m_pTexs[3] = I_Tex.Load(L"../../data/texture/kgcalogo.bmp");
+	m_pTexs[1] = I_Tex.Load(L"../../data/texture/kgcalogo.bmp");
+	m_pTexs[2] = I_Tex.Load(L"../../data/texture/kgca08.bmp");
+	m_pTexs[3] = I_Tex.Load(L"../../data/texture/kgcalogo.jpg");
 }
 
 void	TMapObj::PostRender()
