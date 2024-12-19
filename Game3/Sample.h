@@ -8,6 +8,7 @@ using RECT_ARRAY = std::vector<RECT>;
 extern int g_iJumpingCount;   // ¸É¹öº¯¼ö·Î ¹Ù²ã¼­ Ã³¸® 
 class Sample : public TGameCore
 {
+	TVertex2        m_vCamera = { 640.0f, 400.0f };
 	TTexture*		m_pBitmap1Mask = nullptr;
 	using tObject = std::shared_ptr<TObject>;
 	

@@ -63,7 +63,7 @@ void   Sample::Init()
     m_pSoundEffect = mgr.Load(L"../../data/sound/Jump.ogg");
     m_pSound->Play();
 
-    m_pMap = std::make_shared<TMapObj>();
+    m_pMap = std::make_shared<TMapObj>(1,1);
     if (m_pMap->Create())
     {
         TTexture* pTex = I_Tex.Load(L"../../data/texture/Map.png");
@@ -77,7 +77,7 @@ void   Sample::Init()
     }
 
     m_pHero = std::make_shared<THeroObj>();
-    TVertex2 tStart = { 400.0f, 625.0f };
+    TVertex2 tStart = { 640.0f, 625.0f };
     TVertex2 tEnd = { tStart.x + 42.0f, tStart.y + 60.0f };
     TLoadResData resData;
     //resData.texPathName = L"../../data/texture/bitmap1Alpha.bmp";
@@ -89,23 +89,25 @@ void   Sample::Init()
     }
 
     auto pObject3 = std::make_shared<TEffectObj>();
-    tStart.x = 400.0f;
-    tStart.y = 100.0f;
-    TVertex2 tEnd2 = { tStart.x + 300.0f, tStart.y + 300.0f };
+    tStart.x = 640.0f;
+    tStart.y = 400.0f;
+    TVertex2 tEnd2 = { tStart.x + 100.0f, tStart.y + 100.0f };
     AddEffect(tStart, tEnd2);
 }
 void   Sample::AddEffect(TVertex2 tStart, TVertex2 tEnd)
 {
     auto pObject3 = std::make_shared<TEffectObj>();
     TLoadResData resData;
+    /*resData.texPathName = L"../../data/texture/newMega.png";
+    resData.texShaderName = L"../../data/shader/DefaultMask.txt";*/
     resData.texPathName = L"../../data/texture/newMega.png";
-    resData.texShaderName = L"../../data/shader/DefaultMask.txt";
+    resData.texShaderName = L"../../data/shader/Default.txt"; 
     TEffectData data;
     data.m_bLoop = true;
-    data.m_fLifeTime = 5.0f;
-    data.m_fOffsetTime = 0.0f;
-    UINT iSprite = rand() % 3;
-    data.m_iType = 1;// rand() % m_szSpriteList[0].size();
+    data.m_fLifeTime = 2.0f;
+    //data.m_fOffsetTime = 0.5f;
+    UINT iSprite = 0;
+    data.m_iType = 0;// rand() % m_szSpriteList[0].size();
     if (data.m_iType == 0)
     {
         data.m_iNumAnimFrame = m_rtSpriteList[iSprite].size();
@@ -151,25 +153,29 @@ void   Sample::Frame()
     m_pMap->Frame();
     m_pHero->Frame();
 
+    m_vCamera.x = m_pHero->m_srtScreen.x;
+    m_vCamera.y = m_pHero->m_srtScreen.y-225;
+
     for (auto data : m_ObjList)
     {
         data->Frame();
     }    
 
-    if (g_GameKey.dwLeftClick == KEY_HOLD)
+    if (g_GameKey.dwMiddleClick == KEY_HOLD)
     {
         TVertex2 tStart = { m_Input.m_ptMouse.x-50, m_Input.m_ptMouse.y-50 };
         TVertex2 tEnd = { tStart.x + 100.0f, tStart.y + 100.0f };
         AddEffect(tStart, tEnd);
 
-        for (int iCell = 0; iCell < m_pMap->m_Cells.size(); iCell++)
+        /*for (int iCell = 0; iCell < m_pMap->m_Cells.size(); iCell++)
         {
             if (TCollision::CheckRectToPoint(
                 m_pMap->m_Cells[iCell].rt, m_Input.m_ptMouse))
             {
                 m_pMap->m_Cells[iCell].iTexID = 2;
             }
-        }
+        } 충돌부분*/
+
         /*UINT iType = rand() / 3;
         if(iType ==0 )
             AddEffectSingle(tStart, tEnd, std::shared_ptr<TE1>());
@@ -199,19 +205,23 @@ void   Sample::Frame()
 void   Sample::Render() 
 {       
     TSoundManager::GetInstance().Render();
+    m_pMap->Transform(m_vCamera);
     m_pMap->Render();
 
     TDevice::m_pd3dContext->PSSetSamplers(0, 1, TDxState::m_pPointSS.GetAddressOf());
     TDevice::m_pd3dContext->PSSetShaderResources(1, 1, &m_pBitmap1Mask->m_pTexSRV);
+    m_pHero->Transform(m_vCamera);
     m_pHero->Render();
  
     for (auto data : m_ObjList)
     {
         data->Render();
+        data->Transform(m_vCamera);
     }
     for (auto data : m_EffectList)
     {
         data->Render();
+        data->Transform(m_vCamera);
     }
     /*D2D1_RECT_F rt = { 0.0f, 350.0f, 800.0f, 600.0f };
     m_DxWrite.DirectDraw(rt, L"Sample::Render");*/

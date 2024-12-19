@@ -18,7 +18,8 @@ void TEffectObj::Frame()
 	TVertex2 e = ScreenToNDC(m_srtScreen.x2,m_srtScreen.y2,g_ptClientSize);
 	if (m_Data.m_iType == 0)
 	{
-		e = ScreenToNDC(m_srtScreen.x + m_rtList[m_iAnimFrame].right, m_srtScreen.y + m_rtList[m_iAnimFrame].bottom, g_ptClientSize);
+		//e = ScreenToNDC(m_srtScreen.x + m_rtList[m_iAnimFrame].right, m_srtScreen.y + m_rtList[m_iAnimFrame].bottom, g_ptClientSize);
+		e = ScreenToNDC(m_srtScreen.x2, m_srtScreen.y2, g_ptClientSize);
 	}
 	m_vVertexList[0].v = s;
 	m_vVertexList[1].v = { e.x, s.y };
@@ -27,7 +28,11 @@ void TEffectObj::Frame()
 
 	m_fCurrentTime += g_fSPF;
 	m_fLifeTime -= g_fSPF;
-	if (m_fLifeTime <= 0.0f) m_bDead = true;
+	if (m_bLoop == false)
+	{
+		if (m_fLifeTime <= 0.0f) m_bDead = true;
+	}
+	
 	if (m_fCurrentTime > m_fOffsetTime)
 	{
 		m_iAnimFrame++;
@@ -64,6 +69,7 @@ void TEffectObj::Frame()
 				m_rtList[m_iAnimFrame].right,
 				m_rtList[m_iAnimFrame].bottom);
 
+
 		if (m_pTexture)
 		{
 			float xSize = m_pTexture->m_TexDesc.Width;
@@ -96,11 +102,11 @@ void TEffectObj::Render()
 }
 void TEffectObj::SetVertexData()
 {
-	TObject::SetVertexData();
-	if (m_Data.m_iType == 0)
+	TObject2D::SetVertexData();
+	if (m_Data.m_iType == 0 && m_pTexture)
 	{
-		float xSize = 400;
-		float ySize = 300;
+		float xSize = m_pTexture->m_TexDesc.Width;
+		float ySize = m_pTexture->m_TexDesc.Height;
 		TRect rt;
 		rt.SetS(m_rtList[0].left,
 				m_rtList[0].top,
