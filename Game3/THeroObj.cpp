@@ -79,9 +79,15 @@ void THeroObj::SetVertexData()
 	float xSize = 669;
 	float ySize = 1964;
 	TRect rt;
-	rt.SetP(2.0f, 128.0f, 39.0f, 170.0f);
+	rt.SetS(2.0f, 128.0f, 39.0f, 170.0f);
 	m_vVertexList[0].t = { rt.x / xSize,rt.y / ySize };
-	m_vVertexList[1].t = { rt.x2 / xSize,rt.y / ySize };
-	m_vVertexList[2].t = { rt.x / xSize,rt.y2 / ySize };
-	m_vVertexList[3].t = { rt.x2 / xSize,rt.y2 / ySize };
+	m_vVertexList[1].t = { rt.w / xSize,rt.y / ySize };
+	m_vVertexList[2].t = { rt.x / xSize,rt.h / ySize };
+	m_vVertexList[3].t = { rt.w / xSize,rt.h / ySize };
+
+	/*rt.SetP(2.0f, 128.0f, 39.0f, 170.0f);
+	m_vVertexList[0].t = { rt.x / xSize, rt.y / ySize };
+	m_vVertexList[1].t = { rt.x2 / xSize, rt.y / ySize };
+	m_vVertexList[2].t = { rt.x / xSize, rt.y2 / ySize };
+	m_vVertexList[3].t = { rt.x2 / xSize, rt.y2 / ySize };*/
 }
