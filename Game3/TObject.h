@@ -19,7 +19,7 @@ public:
 	//TShader*			m_pPixelShader = nullptr;
 	TTexture*			m_pTexture = nullptr;
 	TInputLayout*		m_pInputLayout = nullptr;
-	std::vector<tPOINT>  m_vScreenList;
+	std::vector<tPoint>  m_vScreenList;
 	std::vector<PCT_VERTEX>    m_vVertexList;
 	std::vector<DWORD>		   m_vIndexList;
 	TRect						m_srtScreen;

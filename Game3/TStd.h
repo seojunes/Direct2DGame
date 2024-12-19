@@ -71,7 +71,7 @@ struct TGameKey
 
 enum { KEY_FREE = 0, KEY_PUSH, KEY_HOLD, KEY_UP };
 
-extern POINT g_WindowSize;
+extern POINT g_ptClientSize;
 extern HWND  g_hWnd;
 extern TGameKey g_GameKey;
 extern float   g_fSPF;

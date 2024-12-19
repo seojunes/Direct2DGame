@@ -61,8 +61,8 @@ void TMapObj::SetVertexData()
 	// 6  7  8
 	// iNumCell  = (3-1) * (3-1)
 
-	float fOffsetX = (float)g_WindowSize.x / (float)m_iNumCellCol;
-	float fOffsetY = (float)g_WindowSize.y / (float)m_iNumCellRow;
+	float fOffsetX = (float)g_ptClientSize.x / (float)m_iNumCellCol;
+	float fOffsetY = (float)g_ptClientSize.y / (float)m_iNumCellRow;
 	float fOffsetU = 1.0f / (float)m_iNumCellCol;
 	float fOffsetV = 1.0f / (float)m_iNumCellRow;
 	for (UINT iRow = 0; iRow < m_iNumRow; iRow++)
@@ -73,7 +73,7 @@ void TMapObj::SetVertexData()
 			float y = iRow * fOffsetY;
 			m_vScreenList[iRow * m_iNumCol + iCol].x = x;
 			m_vScreenList[iRow * m_iNumCol + iCol].y = y;
-			m_vVertexList[iRow * m_iNumCol + iCol].v = ScreenToNDC(x, y, g_WindowSize);
+			m_vVertexList[iRow * m_iNumCol + iCol].v = ScreenToNDC(x, y, g_ptClientSize);
 			m_vVertexList[iRow * m_iNumCol + iCol].c = { iCol / 2.0f, iRow / 2.0f, 1.0f,1.0f };
 			m_vVertexList[iRow * m_iNumCol + iCol].t.x = iCol;
 			m_vVertexList[iRow * m_iNumCol + iCol].t.y = iRow;

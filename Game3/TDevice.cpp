@@ -30,8 +30,8 @@ bool   TDevice::CreateDevice()
     // 더블버퍼링( 프런트 버퍼, 백버퍼 <-> 화면버퍼) 
     // 백버퍼
     scd.BufferCount = 1;
-    scd.BufferDesc.Width = g_WindowSize.x;
-    scd.BufferDesc.Height = g_WindowSize.y;
+    scd.BufferDesc.Width = g_ptClientSize.x;
+    scd.BufferDesc.Height = g_ptClientSize.y;
     scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     scd.OutputWindow = g_hWnd;
@@ -81,8 +81,8 @@ bool   TDevice::CreateDevice()
         return false;
     }
     // viewport
-    m_MainVP.Width = (FLOAT)g_WindowSize.x;
-    m_MainVP.Height = (FLOAT)g_WindowSize.y;
+    m_MainVP.Width = (FLOAT)g_ptClientSize.x;
+    m_MainVP.Height = (FLOAT)g_ptClientSize.y;
     m_MainVP.MinDepth = 0.0f;
     m_MainVP.MaxDepth = 1.0f;
     m_MainVP.TopLeftX = 0;

@@ -156,7 +156,7 @@ void   Sample::Frame()
         data->Frame();
     }    
 
-    if (g_GameKey.dwMiddleClick == KEY_HOLD)
+    if (g_GameKey.dwLeftClick == KEY_HOLD)
     {
         TVertex2 tStart = { m_Input.m_ptMouse.x-50, m_Input.m_ptMouse.y-50 };
         TVertex2 tEnd = { tStart.x + 100.0f, tStart.y + 100.0f };

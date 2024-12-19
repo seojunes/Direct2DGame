@@ -1,5 +1,5 @@
 #include "TWindow.h"
-POINT g_WindowSize;
+POINT g_ptClientSize;
 HWND  g_hWnd;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -34,9 +34,9 @@ bool   TWindow::SetWindow(
     std::wstring title,
     UINT iWindowX, UINT iWindowY)
 {
-    this->m_WindowSize.x = iWindowX;
-    this->m_WindowSize.y = iWindowY;
-    g_WindowSize = m_WindowSize;
+    this->m_ptClientSize.x = iWindowX;
+    this->m_ptClientSize.y = iWindowY;
+    g_ptClientSize = m_ptClientSize;
 
     RECT rt = { 0,0,iWindowX, iWindowY };
     AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, FALSE);
@@ -51,8 +51,7 @@ bool   TWindow::SetWindow(
     {
         return false;
     }
-    RECT m_rtWindow;
-    RECT m_rtClient;
+   
     GetWindowRect(hWnd, &m_rtWindow);
     GetClientRect(hWnd, &m_rtClient);
     ShowWindow(hWnd, SW_SHOW);
