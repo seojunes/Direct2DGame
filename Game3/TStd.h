@@ -78,6 +78,7 @@ extern TGameKey g_GameKey;
 extern float   g_fSPF;
 extern float   g_fGT;
 
+
 static void DX_CHECK(HRESULT hr, const TCHAR* function)
 {
     if (FAILED(hr))

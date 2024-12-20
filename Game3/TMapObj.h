@@ -16,6 +16,7 @@ class TMapObj : public TObject2D
 	UINT  m_iNumIndex;
 	TVector2 m_vCellDistance;
 public:
+	
 	std::vector<TCell>  m_Cells;
 	void	SetCellCounter(UINT iRow = 10, UINT iCol = 10);
 public:

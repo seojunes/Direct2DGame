@@ -58,7 +58,7 @@ bool Sample::GameDataLoad(W_STR filename)
 bool Sample::CreateMap()
 {
     TRect rt;
-    rt.SetS(0.0f, 0.0f, 1280.0f*4 , 800.0f);
+    rt.SetS(0.0f, 0.0f,5120.0f,800.f);
     m_pMap = std::make_shared<TMapObj>(rt, 4, 1);
     if (m_pMap->Create())
     {
@@ -76,7 +76,7 @@ bool Sample::CreateHero()
     m_pHero->SetMap(m_pMap.get());
     //TVector2 tStart = { vMapCenter.x, vMapCenter.y };
     TVector2 tStart = { 640.0f,m_pHero->m_fGroundY };
-    TVector2 tEnd = { tStart.x + 42.0f, tStart.y + 60.0f };
+    TVector2 tEnd = { tStart.x + 80.0f, tStart.y + 100.0f };
     TLoadResData resData;
     //resData.texPathName = L"../../data/texture/bitmap1Alpha.bmp";
     //resData.texShaderName = L"../../data/shader/Default.txt";
@@ -127,7 +127,6 @@ void   Sample::Init()
     m_pSound = mgr.Load(L"../../data/sound/Festival Theme.ogg");
     m_pSoundEffect = mgr.Load(L"../../data/sound/Jump.ogg");
     m_pSound->Play();
-    
     CreateMap();
     CreateHero();
     CreateNPC();
@@ -204,7 +203,7 @@ void   Sample::Frame()
     {
         m_vCamera.x = 4480.0f;
     }
-    //m_vCamera.y = m_pHero->m_srtScreen.y - 225;// 초기 카메라 세팅
+    // m_vCamera.y = m_pHero->m_srtScreen.y - 225;// 초기 카메라 세팅
       // 메가맨 위치와 카메라 위치 보정
 
     // 점프 사운드

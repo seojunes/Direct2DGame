@@ -56,7 +56,7 @@ void TMapObj::UpdateVertexData()
 	if (m_pTexture == nullptr) return;
 	
 }
-void TMapObj::SetCellCounter(UINT iRow, UINT iCol)
+void TMapObj::SetCellCounter(UINT iCol, UINT iRow)
 {
 	m_iNumRow = iRow + 1;
 	m_iNumCol = iCol + 1;
