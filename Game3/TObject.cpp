@@ -33,9 +33,9 @@ TObject& TObject::SetLayout(TInputLayout* pData)
 }
 bool   TObject::LoadTexrture(std::wstring texName)
 {
-	m_pTexture = I_Tex.Load(texName);	
-	if (m_pTexture==nullptr)
-	{		
+	m_pTexture = I_Tex.Load(texName);
+	if (m_pTexture == nullptr)
+	{
 		return false;
 	}
 
@@ -45,7 +45,7 @@ void	TObject::Init()
 {}
 void	TObject::Frame()
 {}
-void	TObject::Transform(TVertex2 vCamera)
+void	TObject::Transform(TVector2 vCamera)
 {
 }
 void	TObject::PreRender()
@@ -76,7 +76,7 @@ void	TObject::PreRender()
 		D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 void	TObject::Render()
-{	
+{
 	PreRender();
 	PostRender();
 }
@@ -89,7 +89,7 @@ void	TObject::PostRender()
 }
 void	TObject::Release()
 {
-	
+
 }
 bool	TObject::Create()
 {
@@ -127,11 +127,13 @@ bool	TObject::Create(TLoadResData data)
 	return Create();
 }
 bool	TObject::Create(TLoadResData data,
-						TVertex2 s,
-						TVertex2 t)
+	TVector2 s,
+	TVector2 t)
 {
 	m_LoadResData = data;
-	m_srtScreen.SetP( s, t );
+	m_srtScreen.SetP(s, t);
+	m_vPos.x = s.x;
+	m_vPos.y = s.y;
 	if (!LoadTexrture(m_LoadResData.texPathName))
 	{
 		return false;
@@ -141,7 +143,7 @@ bool	TObject::Create(TLoadResData data,
 void    TObject::SetVertexData()
 {
 }
-bool	TObject::CreateVertexBuffer() 
+bool	TObject::CreateVertexBuffer()
 {
 	// 화면좌표계(x,y)
 	// v1:0,0      ->      v2:800, 0
@@ -156,7 +158,7 @@ bool	TObject::CreateVertexBuffer()
 	// 화면좌표계  <-> 변환  <-> 직각좌표계
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
-	bd.ByteWidth = sizeof(PCT_VERTEX)* m_vVertexList.size();
+	bd.ByteWidth = sizeof(PCT_VERTEX) * m_vVertexList.size();
 	// 읽고쓰기권한 설정(CPU X,X, GPU 0,0)
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -165,7 +167,7 @@ bool	TObject::CreateVertexBuffer()
 	ZeroMemory(&sd, sizeof(sd));
 	sd.pSysMem = &m_vVertexList.at(0);
 	HRESULT hr = TDevice::m_pd3dDevice->CreateBuffer(
-		&bd, &sd,	m_pVertexBuffer.GetAddressOf());
+		&bd, &sd, m_pVertexBuffer.GetAddressOf());
 	if (FAILED(hr))
 	{
 		return false;
@@ -174,10 +176,9 @@ bool	TObject::CreateVertexBuffer()
 }
 void    TObject::SetIndexData()
 {
-	
 }
 bool	TObject::CreateIndexBuffer()
-{	
+{
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 	bd.ByteWidth = sizeof(DWORD) * m_vIndexList.size();
@@ -196,7 +197,7 @@ bool	TObject::CreateIndexBuffer()
 	}
 	return true;
 }
-bool	TObject::CreateVertexShader() 
+bool	TObject::CreateVertexShader()
 {
 	if (m_LoadResData.texShaderName.empty())
 	{
@@ -209,7 +210,7 @@ bool	TObject::CreateVertexShader()
 	}
 	return true;
 }
-bool	TObject::CreatePixelShader() 
+bool	TObject::CreatePixelShader()
 {
 	if (m_LoadResData.texShaderName.empty())
 	{
@@ -226,10 +227,10 @@ bool	TObject::CreatePixelShader()
 	}
 	return true;
 }
-bool	TObject::CreateInputLayout() 
+bool	TObject::CreateInputLayout()
 {
 	if (m_pShader == nullptr) return true;
-	 D3D11_INPUT_ELEMENT_DESC layout[] =
+	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
 		// 0~8
 		{ "POS",  0, DXGI_FORMAT_R32G32_FLOAT,		 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -237,12 +238,15 @@ bool	TObject::CreateInputLayout()
 		{ "TEX",  0, DXGI_FORMAT_R32G32_FLOAT,       0, 24,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	UINT  iNumCnt = sizeof(layout) / sizeof(layout[0]);
-	m_pInputLayout = I_InputLayout.Load(m_pShader->m_pCode.Get(),layout, 3, L"PCT");
+	m_pInputLayout = I_InputLayout.Load(m_pShader->m_pCode.Get(), layout, 3, L"PCT");
 	return true;
 }
 TObject::TObject()
 {
 	m_srtScreen.SetS(0.0f, 0.0f, (float)g_ptClientSize.x, (float)g_ptClientSize.y);
+	m_vPos.x = 0.0f;
+	m_vPos.y = 0.0f;
+	m_fSpeed = 100.0f;
 }
 TObject::~TObject()
 {

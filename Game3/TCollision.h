@@ -43,7 +43,7 @@ struct TRect
 		tCenter.x = (x2 + x) / 2.0f;
 		tCenter.y = (y2 + y) / 2.0f;
 	}
-	void    SetP(TVertex2 v1, TVertex2 v2)
+	void    SetP(TVector2 v1, TVector2 v2)
 	{
 		x = v1.x; y = v1.y;
 		this->x2 = v2.x; this->y2 = v2.y;
@@ -52,7 +52,7 @@ struct TRect
 		tCenter.x = (x2 + x) / 2.0f;
 		tCenter.y = (y2 + y) / 2.0f;
 	}
-	void    SetS(TVertex2 v1, TVertex2 v2)
+	void    SetS(TVector2 v1, TVector2 v2)
 	{
 		x = v1.x; y = v1.y;
 		this->w = v2.x; this->h = v2.y;
@@ -61,7 +61,7 @@ struct TRect
 		tCenter.x = (x2 + x) / 2.0f;
 		tCenter.y = (y2 + y) / 2.0f;
 	}
-	TRect() 
+	TRect()
 	{
 		x = y = x2 = y2 = w = h = 0.0f;
 	}

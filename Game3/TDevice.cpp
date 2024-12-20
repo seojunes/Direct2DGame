@@ -119,5 +119,5 @@ void   TDevice::PostRender()
     m_pSwapChain->Present(0, 0);
 }
 void   TDevice::Release()
-{    
+{
 }

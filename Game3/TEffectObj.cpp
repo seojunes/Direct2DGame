@@ -14,13 +14,13 @@ void TEffectObj::SetData(TEffectData data)
 
 void TEffectObj::Frame()
 {
-	TVertex2 s = ScreenToNDC(m_srtScreen.x, m_srtScreen.y, g_ptClientSize);
-	TVertex2 e = ScreenToNDC(m_srtScreen.x2,m_srtScreen.y2,g_ptClientSize);
-	if (m_Data.m_iType == 0)
-	{
-		//e = ScreenToNDC(m_srtScreen.x + m_rtList[m_iAnimFrame].right, m_srtScreen.y + m_rtList[m_iAnimFrame].bottom, g_ptClientSize);
-		e = ScreenToNDC(m_srtScreen.x2, m_srtScreen.y2, g_ptClientSize);
-	}
+	TVector2 s = ScreenToNDC(m_srtScreen.x, m_srtScreen.y, g_ptClientSize);
+	TVector2 e = ScreenToNDC(m_srtScreen.x2,m_srtScreen.y2,g_ptClientSize);
+	//if (m_Data.m_iType == 0)
+	//{
+	//	e = ScreenToNDC(m_srtScreen.x + m_rtList[m_iAnimFrame].right, m_srtScreen.y + m_rtList[m_iAnimFrame].bottom, g_ptClientSize);
+	//	//이러면 texture 사이즈로 고정.
+	//}
 	m_vVertexList[0].v = s;
 	m_vVertexList[1].v = { e.x, s.y };
 	m_vVertexList[2].v = { s.x, e.y };

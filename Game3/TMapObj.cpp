@@ -4,8 +4,20 @@
 TMapObj::TMapObj()
 {
 }
+
 TMapObj::TMapObj(UINT iCellX, UINT iCellY)
 {
+	SetCellCounter(iCellX, iCellY);
+	m_srtScreen.SetS(0.0f, 0.0f, (float)g_ptClientSize.x, (float)g_ptClientSize.y);
+	m_vCellDistance.x = (float)g_ptClientSize.x / (float)m_iNumCellCol;
+	m_vCellDistance.y = (float)g_ptClientSize.y / (float)m_iNumCellRow;
+}
+
+TMapObj::TMapObj(TRect rt, UINT iCellX, UINT iCellY)
+{
+	m_srtScreen = rt;
+	m_vCellDistance.x = (rt.x2 - rt.x) / iCellX;
+	m_vCellDistance.y = (rt.y2 - rt.y) / iCellY;
 	SetCellCounter(iCellX, iCellY);
 }
 void TMapObj::Frame()
@@ -35,6 +47,9 @@ void TMapObj::Frame()
 	//TDevice::m_pd3dContext->UpdateSubresource(
 	//	m_pVertexBuffer.Get(), 0, nullptr,
 	//	&m_vVertexList.at(0), 0, 0);
+	TDevice::m_pd3dContext->UpdateSubresource(
+		m_pVertexBuffer.Get(), 0, nullptr,
+		&m_vVertexList.at(0), 0, 0);
 }
 void TMapObj::UpdateVertexData()
 {
@@ -45,11 +60,15 @@ void TMapObj::SetCellCounter(UINT iRow, UINT iCol)
 {
 	m_iNumRow = iRow + 1;
 	m_iNumCol = iCol + 1;
+	m_iNumCellRow = iRow;
+	m_iNumCellCol = iCol;
 }
 void TMapObj::SetVertexData()
 {
-	m_iNumCellRow = m_iNumRow - 1;
-	m_iNumCellCol = m_iNumCol - 1;
+	// -1000 ~ + 1000  :   0
+	// 0    ~  2000    :   1000
+	/*m_iNumCellRow = m_iNumRow - 1;
+	m_iNumCellCol = m_iNumCol - 1;*/
 	m_iNumVertex = m_iNumRow * m_iNumCol;
 	m_iNumIndex = m_iNumCellRow * m_iNumCellCol * 2 * 3;
 	//TObject::SetVertexData();	
@@ -60,17 +79,14 @@ void TMapObj::SetVertexData()
 	// 3  4  5 
 	// 6  7  8
 	// iNumCell  = (3-1) * (3-1)
-
-	float fOffsetX = (float)g_ptClientSize.x / (float)m_iNumCellCol;
-	float fOffsetY = (float)g_ptClientSize.y / (float)m_iNumCellRow;
 	float fOffsetU = 1.0f / (float)m_iNumCellCol;
 	float fOffsetV = 1.0f / (float)m_iNumCellRow;
 	for (UINT iRow = 0; iRow < m_iNumRow; iRow++)
 	{
 		for (UINT iCol = 0; iCol < m_iNumCol; iCol++)
 		{
-			float x = iCol * fOffsetX;
-			float y = iRow * fOffsetY;
+			float x = iCol * m_vCellDistance.x;
+			float y = iRow * m_vCellDistance.y;
 			m_vScreenList[iRow * m_iNumCol + iCol].x = x;
 			m_vScreenList[iRow * m_iNumCol + iCol].y = y;
 			m_vVertexList[iRow * m_iNumCol + iCol].v = ScreenToNDC(x, y, g_ptClientSize);
