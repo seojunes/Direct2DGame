@@ -51,7 +51,7 @@ HRESULT   TDxWrite::Create(IDXGISurface* pBackBuffer)
 	if (SUCCEEDED(hr))
 	{
 		hr = m_pDxWrite->CreateTextFormat(
-			L"±Ã¼­", NULL,
+			L"HY°ß°íµñ", NULL,
 			DWRITE_FONT_WEIGHT_THIN,
 			DWRITE_FONT_STYLE_NORMAL,
 			DWRITE_FONT_STRETCH_NORMAL,
@@ -64,7 +64,7 @@ HRESULT   TDxWrite::Create(IDXGISurface* pBackBuffer)
 			return hr;
 		}
 		hr = m_pDxWrite->CreateTextFormat(
-			L"±Ã¼­", NULL,
+			L"HY°ß°íµñ", NULL,
 			DWRITE_FONT_WEIGHT_THIN,
 			DWRITE_FONT_STYLE_NORMAL,
 			DWRITE_FONT_STRETCH_NORMAL,
