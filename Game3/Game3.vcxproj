@@ -158,6 +158,7 @@
     <ClInclude Include="TInput.h" />
     <ClInclude Include="TInputLayout.h" />
     <ClInclude Include="TMapObj.h" />
+    <ClInclude Include="TMissile.h" />
     <ClInclude Include="TNpcObj.h" />
     <ClInclude Include="TObject.h" />
     <ClInclude Include="TObject2D.h" />
@@ -182,6 +183,7 @@
     <ClCompile Include="TInput.cpp" />
     <ClCompile Include="TInputLayout.cpp" />
     <ClCompile Include="TMapObj.cpp" />
+    <ClCompile Include="TMissile.cpp" />
     <ClCompile Include="TNpcObj.cpp" />
     <ClCompile Include="TObject.cpp" />
     <ClCompile Include="TObject2D.cpp" />
