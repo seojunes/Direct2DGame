@@ -28,10 +28,10 @@ void TEffectObj::Frame()
 
 	m_fCurrentTime += g_fSPF;
 	m_fLifeTime -= g_fSPF;
-	if (m_bLoop == false)
-	{
+	//if (m_bLoop == false)
+	//{
 		if (m_fLifeTime <= 0.0f) m_bDead = true;
-	}
+	//}
 	
 	if (m_fCurrentTime > m_fOffsetTime)
 	{

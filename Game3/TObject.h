@@ -16,6 +16,7 @@ public:
 	TVector2		m_vPos;
 	TVector2		m_vDir;
 	float			m_fSpeed;
+	bool			m_bDead = false;
 public:
 	ComPtr<ID3D11Buffer> m_pVertexBuffer = nullptr;
 	ComPtr<ID3D11Buffer> m_pIndexBuffer = nullptr;
@@ -27,6 +28,7 @@ public:
 	std::vector<PCT_VERTEX>		m_vVertexList;
 	std::vector<DWORD>			m_vIndexList;
 	TRect						m_srtScreen;
+	TSphere						m_Sphere;
 	TLoadResData				m_LoadResData;
 public:
 	TObject& SetShader(TShader* pShader = nullptr);

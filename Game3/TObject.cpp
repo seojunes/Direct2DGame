@@ -132,6 +132,8 @@ bool	TObject::Create(TLoadResData data,
 {
 	m_LoadResData = data;
 	m_srtScreen.SetP(s, t);
+	m_Sphere.vCenter = m_srtScreen.tCenter;
+	m_Sphere.fRadius = m_srtScreen.fRadius;
 	m_vPos.x = s.x;
 	m_vPos.y = s.y;
 	if (!LoadTexrture(m_LoadResData.texPathName))
