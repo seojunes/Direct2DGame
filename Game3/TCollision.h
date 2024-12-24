@@ -2,11 +2,6 @@
 #include "TVertex.h"
 
 struct PRect;
-struct tPoint
-{
-	float x;
-	float y;
-};
 struct SRect
 {
 	float   x, y;
@@ -24,24 +19,15 @@ struct TRect
 	float   x, y;
 	float   x2, y2;
 	float   w, h;
-	tPoint  tCenter;
+	float   fRadius;
+	TVector2  tCenter;
 	void    SetP(float x1, float y1, float x2, float y2)
 	{
-		x = x1; y = y1;
-		this->x2 = x2; this->y2 = y2;
-		w = x2 - x1;
-		h = y2 - y1;
-		tCenter.x = (x2 + x) / 2.0f;
-		tCenter.y = (y2 + y) / 2.0f;
+		SetP({ x1,y1 }, { x2,y2 });
 	}
 	void    SetS(float x1, float y1, float w, float h)
 	{
-		x = x1; y = y1;
-		this->w = w; this->h = h;
-		x2 = x1 + w;
-		y2 = y1 + h;
-		tCenter.x = (x2 + x) / 2.0f;
-		tCenter.y = (y2 + y) / 2.0f;
+		SetS({ x1,y1 }, { w,h });
 	}
 	void    SetP(TVector2 v1, TVector2 v2)
 	{
@@ -51,6 +37,9 @@ struct TRect
 		h = y2 - y;
 		tCenter.x = (x2 + x) / 2.0f;
 		tCenter.y = (y2 + y) / 2.0f;
+		TVector2 vMin = { x,y };
+		TVector2 vMax = { x2, y2 };
+		fRadius = (vMax - vMin).Length() * 0.5f;
 	}
 	void    SetS(TVector2 v1, TVector2 v2)
 	{
@@ -60,11 +49,20 @@ struct TRect
 		y2 = y + h;
 		tCenter.x = (x2 + x) / 2.0f;
 		tCenter.y = (y2 + y) / 2.0f;
+		TVector2 vMin = { x,y };
+		TVector2 vMax = { x2, y2 };
+		fRadius = (vMax - vMin).Length() * 0.5f;
 	}
 	TRect()
 	{
 		x = y = x2 = y2 = w = h = 0.0f;
 	}
+};
+
+struct TSphere
+{
+	TVector2 vCenter;
+	float    fRadius;
 };
 
 
@@ -74,5 +72,9 @@ public:
 	static bool CheckRectToPoint(TRect& rt, POINT pt);
 	static bool CheckRectToPoint(PRect& rt, POINT pt);
 	static bool CheckRectToPoint(SRect& rt, POINT pt);
+	static bool CheckRectToRect(TRect& rt1, TRect rt2);
+	static bool CheckSphereToPoint(TSphere& s, float x, float y);
+	static bool CheckSphereToPoint(TSphere& s, TVector2 p);
+	static bool CheckSphereToSphere(TSphere& rt1, TSphere rt2);
 };
 
