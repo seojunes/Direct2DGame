@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="THeroObj.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TMapObj.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TMissile.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TNpcObj.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TObject2D.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TDevice.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="TDxState.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="TDxWrite.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="TEffectObj.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TCollision.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="TGameCore.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="TInput.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="TTexture.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="TTime.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="TVector.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="TVertex.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="TWindow.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="TShader.cpp">
+      <Filter>shader</Filter>
+    </ClCompile>
+    <ClCompile Include="TInputLayout.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="TSound.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Sample.h" />
+    <ClInclude Include="THeroObj.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="TMapObj.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="TMissile.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="TNpcObj.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="TObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="TObject2D.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="TDevice.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="TDxState.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="TDxWrite.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="TEffectObj.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="TCollision.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="TGameCore.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="TInput.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="TTexture.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="TTime.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="TVector.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="TVertex.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="TWindow.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\data\shader\stdShader.h">
+      <Filter>shader</Filter>
+    </ClInclude>
+    <ClInclude Include="TShader.h">
+      <Filter>shader</Filter>
+    </ClInclude>
+    <ClInclude Include="TInputLayout.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="TSound.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="TStd.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\data\shader\BlendMask.txt">
+      <Filter>shader</Filter>
+    </Text>
+    <Text Include="..\..\data\shader\Default.txt">
+      <Filter>shader</Filter>
+    </Text>
+    <Text Include="..\..\data\shader\DefaultBlack.txt">
+      <Filter>shader</Filter>
+    </Text>
+    <Text Include="..\..\data\shader\DefaultMask.txt">
+      <Filter>shader</Filter>
+    </Text>
+    <Text Include="VertexShader.txt">
+      <Filter>shader</Filter>
+    </Text>
+    <Text Include="SpriteData.txt">
+      <Filter>Object</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="shader">
+      <UniqueIdentifier>{fe46a7a8-71cc-4085-9928-323638e5ede6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{068fedbe-aaeb-4e08-97c9-285a7ffc8e2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Device">
+      <UniqueIdentifier>{745a1473-7293-4655-aa49-98f0dae5bb3c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{201E7F35-44D0-4FA7-8DE1-230800FF138C}</ProjectGuid>
+    <ProjectGuid>{401CF65D-F971-40AA-80BD-C9947AD8EEB8}</ProjectGuid>
     <RootNamespace>WindowClass</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -79,7 +79,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../../output/Debug/</OutDir>
-    <IntDir>../../output/Debug/Game3</IntDir>
+    <IntDir>../../output/Debug/Game</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\data\shader\stdShader.h" />
+    <ClInclude Include="HPBar.h" />
     <ClInclude Include="Sample.h" />
     <ClInclude Include="TCollision.h" />
     <ClInclude Include="TDevice.h" />
@@ -158,6 +159,8 @@
     <ClInclude Include="TInput.h" />
     <ClInclude Include="TInputLayout.h" />
     <ClInclude Include="TMapObj.h" />
+    <ClInclude Include="TMatrix.h" />
+    <ClInclude Include="TMeshRender.h" />
     <ClInclude Include="TMissile.h" />
     <ClInclude Include="TNpcObj.h" />
     <ClInclude Include="TObject.h" />
@@ -172,6 +175,7 @@
     <ClInclude Include="TWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="HPBar.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="TCollision.cpp" />
     <ClCompile Include="TDevice.cpp" />
@@ -183,6 +187,8 @@
     <ClCompile Include="TInput.cpp" />
     <ClCompile Include="TInputLayout.cpp" />
     <ClCompile Include="TMapObj.cpp" />
+    <ClCompile Include="TMatrix.cpp" />
+    <ClCompile Include="TMeshRender.cpp" />
     <ClCompile Include="TMissile.cpp" />
     <ClCompile Include="TNpcObj.cpp" />
     <ClCompile Include="TObject.cpp" />

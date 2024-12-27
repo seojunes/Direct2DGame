@@ -1,0 +1,32 @@
+#SPRITE 3
+Megaman 12 0 1.0f 
+0 2 128    37  39
+1 40 128   30  40
+2 72 126   26  41
+3 101 127  33  39
+4 136 128  37  39
+5 178 128  37  39
+6 218 126  29  41
+7 251 127  24  41
+8 278 128  38  40
+9 317 128  42  40
+10 361 128 38  40
+11 401 127 30  41
+Jumping 6 0 1.0f
+0 2 816    41  47
+1 46 813   43  50
+2 91 810   32  53
+3 132 813  34  53
+4 170 816  33  47
+5 205 820  31  43
+Shine 10 1 1.0f   Default.txt
+0 ../../data/effect/shine0.bmp
+1 ../../data/effect/shine1.bmp
+2 ../../data/effect/shine2.bmp
+3 ../../data/effect/shine3.bmp
+4 ../../data/effect/shine4.bmp
+5 ../../data/effect/shine5.bmp
+6 ../../data/effect/shine6.bmp
+7 ../../data/effect/shine7.bmp
+8 ../../data/effect/shine8.bmp
+9 ../../data/effect/shine9.bmp

@@ -1,6 +1,7 @@
 #include "THeroObj.h"
 #include "TDevice.h"
 
+
 void THeroObj::SetData(vector<vector<RECT>> SpriteList)
 {
 	m_rtWalkFrames.resize(SpriteList[0].size());
@@ -84,7 +85,7 @@ void THeroObj::Frame()
 		{
 			m_CurrentState = HeroState::LeftRun; // RightRun 상태 설정
 		}
-		
+
 	}
 	//if (g_GameKey.dwWkey == KEY_HOLD) m_rtScreen.y -= fSpeed * g_fSPF;
 	/*if (g_GameKey.dwSkey == KEY_HOLD)
@@ -107,6 +108,10 @@ void THeroObj::Frame()
 
 	UpdatePosition();
 	SetVertexData(); // UV 반영을 위해 호출
+	if (m_HeroHPdata)
+	{
+		m_HeroHPdata->SetPos({ m_vPos.x, m_vPos.y + 50 }); // Hero 머리 위로 설정
+	}
 }
 void THeroObj::SetVertexData()
 {
@@ -131,7 +136,7 @@ void THeroObj::SetVertexData()
 
 	if (m_CurrentState == HeroState::RightRun)
 	{
-		m_vVertexList[0].t = { (rt.x - rt.tCenter.x) / xSize , (rt.y - rt.y2) /  ySize };
+		m_vVertexList[0].t = { rt.x / xSize,rt.y / ySize };
 		m_vVertexList[1].t = { (rt.x + rt.w) / xSize,rt.y / ySize };
 		m_vVertexList[2].t = { rt.x / xSize,(rt.y + rt.h) / ySize };
 		m_vVertexList[3].t = { (rt.x + rt.w) / xSize,(rt.y + rt.h) / ySize };
@@ -144,7 +149,7 @@ void THeroObj::SetVertexData()
 		m_vVertexList[3].t = { rt.x / xSize,(rt.y + rt.h) / ySize };
 	}
 
-	if (m_CurrentState == HeroState::Jump )
+	if (m_CurrentState == HeroState::Jump)
 	{
 		rt.SetS(m_rtJumpFrames[m_iJumpFrame].left,
 			m_rtJumpFrames[m_iJumpFrame].top,
@@ -159,7 +164,7 @@ void THeroObj::SetVertexData()
 		}
 		else
 		{
-			m_vVertexList[0].t = {(rt.x + rt.w) / xSize,rt.y / ySize };
+			m_vVertexList[0].t = { (rt.x + rt.w) / xSize,rt.y / ySize };
 			m_vVertexList[1].t = { rt.x / xSize,rt.y / ySize };
 			m_vVertexList[2].t = { (rt.x + rt.w) / xSize,(rt.y + rt.h) / ySize };
 			m_vVertexList[3].t = { rt.x / xSize,(rt.y + rt.h) / ySize };
@@ -170,6 +175,7 @@ void THeroObj::SetVertexData()
 	m_vVertexList[2].v = { m_srtScreen.x - rt.w / 2.0f, m_srtScreen.y };
 	m_vVertexList[3].v = { m_srtScreen.x + rt.w / 2.0f, m_srtScreen.y };
 
+	
 	//좌우걷기
 	//if (m_CurrentState == RightRun)
 	//{
@@ -201,4 +207,47 @@ void THeroObj::SetVertexData()
 	m_vVertexList[2].t = { rt.x / xSize, rt.y2 / ySize };
 	m_vVertexList[3].t = { rt.x2 / xSize, rt.y2 / ySize };*/
 
+}
+
+void THeroObj::InitHero(UINT maxHP, float hpBarWidth, float hpBarHeight)
+{
+	m_HeroHPdata = std::make_shared<HPBar>(maxHP, hpBarWidth, hpBarHeight);
+	m_HeroHPdata->SetPos({ m_vPos.x, m_vPos.y });
+}
+void THeroObj::TakeDamage(UINT damage)
+{
+	if (m_HeroHPdata) 	 m_HeroHPdata->TakeDamage(damage);
+}
+void THeroObj::Heal(UINT healAmount)
+{
+	if (m_HeroHPdata)   m_HeroHPdata->Heal(healAmount);
+}
+
+void THeroObj::Render() 
+{
+	if (isInvincible) {
+		blinkTimer += g_fGT;
+
+		// 깜빡임 효과 (0.2초 간격)
+		if (fmod(blinkTimer, 0.2f) < 0.1f) {
+			return; // 깜빡임 주기 동안 렌더링 생략
+		}
+	}
+
+	// 기본 TObject 렌더링 호출
+	TObject::Render();
+}
+
+void THeroObj::Update(float g_fGT)
+{
+	if (isInvincible) {
+		invincibleTime -= g_fGT; // 무적 시간 감소
+		if (invincibleTime <= 0.0f) {
+			isInvincible = false; // 무적 상태 해제
+			blinkTimer = 0.0f;    // 깜빡임 타이머 초기화
+		}
+	}
+
+	// TObject의 기본 업데이트 호출 (필요하면)
+	TObject::Frame();
 }
