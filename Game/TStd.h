@@ -8,6 +8,7 @@
 #include <list>
 #include <map>
 #include <algorithm>
+#include <functional>
 #include <memory>
 #include <atlconv.h>  // A2W
 #include <wrl.h> // windows runtime c++ template library
@@ -15,9 +16,9 @@
 #pragma comment(lib,"d3d11.lib") // 加己 眠啊辆加己 
 #pragma comment(lib,"d3dcompiler.lib") // 加己 眠啊辆加己 
 #ifndef _DEBUG
-    #pragma comment(lib, "DirectXTK_R.lib")
+#pragma comment(lib, "DirectXTK_R.lib")
 #else
-    #pragma comment(lib, "DirectXTK_d.lib")
+#pragma comment(lib, "DirectXTK_d.lib")
 #endif
 
 
@@ -57,17 +58,17 @@ static std::string to_wm(const std::wstring& _src)
 };
 struct TGameKey
 {
-	//DWORD frontMove;// w or VK_UP
-	//DWORD Attack;// Lbutton or VK_ENTER
-	DWORD dwWkey;
-	DWORD dwSkey;
-	DWORD dwAkey;
-	DWORD dwDkey;
-	DWORD dwLeftClick;
-	DWORD dwRightClick;
-	DWORD dwMiddleClick;
-	DWORD dwExit;
-	DWORD dwSpace;
+    //DWORD frontMove;// w or VK_UP
+    //DWORD Attack;// Lbutton or VK_ENTER
+    DWORD dwWkey;
+    DWORD dwSkey;
+    DWORD dwAkey;
+    DWORD dwDkey;
+    DWORD dwLeftClick;
+    DWORD dwRightClick;
+    DWORD dwMiddleClick;
+    DWORD dwExit;
+    DWORD dwSpace;
 };
 
 enum { KEY_FREE = 0, KEY_PUSH, KEY_HOLD, KEY_UP };
@@ -77,7 +78,6 @@ extern HWND  g_hWnd;
 extern TGameKey g_GameKey;
 extern float   g_fSPF;
 extern float   g_fGT;
-
 
 static void DX_CHECK(HRESULT hr, const TCHAR* function)
 {

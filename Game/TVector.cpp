@@ -1,4 +1,23 @@
 #include "TVector.h"
+#include "TMatrix.h"
+TVector2 TVector2::operator * (const TMatrix3& m)
+{
+	TVector2 ret = *this;
+	ret.x = x * m._11 + y * m._21 + 1.0f * m._31;
+	ret.y = x * m._12 + y * m._22 + 1.0f * m._32;
+	return ret;
+}
+void TVector2::operator +=(const TVector2& v)
+{
+	x = x + v.x;
+	y = y + v.y;
+}
+void TVector2::operator -=(const TVector2& v)
+{
+	x = x - v.x;
+	y = y - v.y;
+}
+
 TVector2 TVector2::operator +(const TVector2& v)
 {
 	TVector2 ret;

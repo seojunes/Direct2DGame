@@ -15,8 +15,8 @@ public:
 	// 윈도우창 생성
 	bool   SetWindow(
 		std::wstring title = L"Sample Project",
-		UINT iWindowX=1280,
-		UINT iWindowY=800);
+		UINT iWindowX = 1280,
+		UINT iWindowY = 800);
 	// 메세지 프로시쳐, 처리
 	bool   MessageProcess();
 };

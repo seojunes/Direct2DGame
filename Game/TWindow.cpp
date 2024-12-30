@@ -27,7 +27,7 @@ bool   TWindow::SetWindowClass(HINSTANCE hInstance)
     wcex.hbrBackground = (HBRUSH)CreateSolidBrush(RGB(128, 128, 128));
     // 운영체제에게 이런 윈도우를 사용할거야. (운영체제에세 신고한다.등록)
     WORD hr = RegisterClassExW(&wcex);
-	return true;
+    return true;
 }
 // 윈도우창 생성
 bool   TWindow::SetWindow(
@@ -51,18 +51,18 @@ bool   TWindow::SetWindow(
     {
         return false;
     }
-   
+
     GetWindowRect(hWnd, &m_rtWindow);
     GetClientRect(hWnd, &m_rtClient);
     ShowWindow(hWnd, SW_SHOW);
     m_hWnd = hWnd;
     g_hWnd = hWnd;
-	return true;
+    return true;
 }
 // 메세지 프로시쳐, 처리
 bool   TWindow::MessageProcess()
 {
-    MSG msg;   
+    MSG msg;
     if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
     {
         if (msg.message == WM_QUIT)

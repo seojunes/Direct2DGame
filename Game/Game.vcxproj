@@ -121,6 +121,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../../DxTk/Inc;../../Fmod/Inc;</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -154,6 +155,7 @@
     <ClInclude Include="TDxState.h" />
     <ClInclude Include="TDxWrite.h" />
     <ClInclude Include="TEffectObj.h" />
+    <ClInclude Include="TFiniteState.h" />
     <ClInclude Include="TGameCore.h" />
     <ClInclude Include="THeroObj.h" />
     <ClInclude Include="TInput.h" />
@@ -173,6 +175,7 @@
     <ClInclude Include="TVector.h" />
     <ClInclude Include="TVertex.h" />
     <ClInclude Include="TWindow.h" />
+    <ClInclude Include="TWorld.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HPBar.cpp" />
@@ -182,6 +185,7 @@
     <ClCompile Include="TDxState.cpp" />
     <ClCompile Include="TDxWrite.cpp" />
     <ClCompile Include="TEffectObj.cpp" />
+    <ClCompile Include="TFiniteState.cpp" />
     <ClCompile Include="TGameCore.cpp" />
     <ClCompile Include="THeroObj.cpp" />
     <ClCompile Include="TInput.cpp" />
@@ -200,6 +204,7 @@
     <ClCompile Include="TVector.cpp" />
     <ClCompile Include="TVertex.cpp" />
     <ClCompile Include="TWindow.cpp" />
+    <ClCompile Include="TWorld.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\data\shader\BlendMask.txt" />

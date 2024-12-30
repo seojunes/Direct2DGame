@@ -1,54 +1,55 @@
 #pragma once
 #include "TCollision.h"
-#include "TDxState.h"
-#include "TSound.h"
-#include "TTexture.h"
-#include "TInputLayout.h"
-struct TLoadResData
-{
-	std::wstring texPathName;
-	std::wstring texShaderName;
-
-};
+#include "TMeshRender.h"
+class TWorld;
 class TObject
 {
 public:
+	TMeshRender* m_pMeshRender = nullptr;
+	UINT			m_iCollisionID;
+	TWorld* m_pWorld = nullptr;
+	TCollisionType	m_iCollisionType = TCollisionType::T_Ignore;
+public:
+	TMatrix3   m_matScale;
+	TMatrix3   m_matRotate;
+	TMatrix3   m_matTrans;
+	TMatrix3   m_matWorld; // s * r * t
+	TVector2   m_vScale = { 1.0f, 1.0f };
+	float      m_fAngleRadian = 0.0f;
 	TVector2		m_vPos;
 	TVector2		m_vDir;
 	float			m_fSpeed;
 	bool			m_bDead = false;
-public:
-	ComPtr<ID3D11Buffer> m_pVertexBuffer = nullptr;
-	ComPtr<ID3D11Buffer> m_pIndexBuffer = nullptr;
+	TRect			m_rtScreen;
+	TSphere			m_Sphere;
+	TLoadResData	m_LoadResData;
 	TShader* m_pShader = nullptr;
-	//TShader*			m_pPixelShader = nullptr;
 	TTexture* m_pTexture = nullptr;
-	TInputLayout* m_pInputLayout = nullptr;
 	std::vector<TVector2>		m_vScreenList;
 	std::vector<PCT_VERTEX>		m_vVertexList;
-	std::vector<DWORD>			m_vIndexList;
-	TRect						m_srtScreen;
-	TSphere						m_Sphere;
-	TLoadResData				m_LoadResData;
 public:
-	TObject& SetShader(TShader* pShader = nullptr);
-	TObject& SetTexture(TTexture*);
-	TObject& SetLayout(TInputLayout* pInputLayout = nullptr);
-	//virtual bool SetLayout( TShader* pShader,
-	//						g_VertexLayout[0]);
-	virtual bool	Create();
-	virtual bool	Create(TLoadResData data);
-	virtual bool	Create(TLoadResData data,
+	virtual void SetScale(float sx, float sy);
+	virtual void SetRotation(float fRadian);
+	virtual void SetPosition(TVector2 p);
+	virtual void AddPosition(float x, float y);
+	virtual void AddPosition(TVector2 v);
+	virtual void AddScale(float x, float y);
+	virtual void AddScale(TVector2 v);
+	virtual void AddRotation(float angle);
+public:
+	virtual bool	Create(TWorld* pWorld);
+	virtual bool	Create(TWorld* pWorld, TLoadResData data);
+	virtual bool	Create(TWorld* pWorld, TLoadResData data,
 		TVector2 s,		// 화면좌표 시작
-		TVector2 t);   // 화면좌표 끝
-	virtual bool	CreateVertexBuffer(); // 생성
-	virtual bool	CreateIndexBuffer(); // 생성
-	virtual bool	CreateVertexShader(); // 생성
-	virtual bool	CreatePixelShader(); // 생성
-	virtual bool	CreateInputLayout(); // 생성
-	virtual void    SetVertexData();
-	virtual void    SetIndexData();
-	virtual bool    LoadTexrture(std::wstring texName);
+		TVector2 t);   // 화면좌표 끝		
+	virtual TObject& SetShader(TShader* pShader = nullptr);
+	virtual TObject& SetTexture(TTexture*);
+	virtual TObject& SetLayout(TInputLayout* pInputLayout = nullptr);
+	virtual bool LoadTexture(std::wstring texName);
+	virtual bool	CreateVertexShader();
+	virtual bool	CreatePixelShader();
+	virtual void    SetVertexData() {};
+	virtual void    SetIndexData() {};
 public:
 	virtual void	Init();
 	virtual void	Frame();
@@ -57,6 +58,8 @@ public:
 	virtual void	Render();
 	virtual void	PostRender();
 	virtual void	Release();
+public:
+	virtual void    HitOverlap(TObject* pObj, THitResult hRet);
 public:
 	TObject();
 	virtual ~TObject();

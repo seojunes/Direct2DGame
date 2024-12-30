@@ -46,7 +46,7 @@ bool		TShader::LoadPixelShader(std::wstring filename)
 	{
 		DX_CHECK(hr, _T(__FUNCTION__));
 		return false;
-	}	
+	}
 	return true;
 }
 bool		TShader::LoadVertexShader(std::wstring filename)
@@ -80,7 +80,7 @@ bool		TShader::LoadVertexShader(std::wstring filename)
 	{
 		DX_CHECK(hr, _T(__FUNCTION__));
 		return false;
-	}	
+	}
 	return true;
 }
 void TShader::Release()
@@ -92,7 +92,7 @@ void TShader::Release()
 void     TShaderManager::Init()
 {
 	g_pDefaultShader = Load(
-		L"../../data/shader/Default.txt");	
+		L"../../data/shader/Default.txt");
 }
 TShader* TShaderManager::Load(std::wstring filename)
 {
@@ -102,7 +102,7 @@ TShader* TShaderManager::Load(std::wstring filename)
 	{
 		return data;
 	}
-	
+
 	TShader* pData = new TShader(key);
 
 	if (pData->Load(filename))
@@ -145,6 +145,6 @@ TShaderManager::~TShaderManager()
 	{
 		sound.second->Release();
 		delete sound.second;
-	}	
+	}
 	maplist.clear();
 }

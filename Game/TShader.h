@@ -10,7 +10,7 @@ public:
 	virtual  bool  Load(std::wstring filename);
 	virtual  bool  LoadVertexShader(std::wstring filename);
 	virtual  bool  LoadPixelShader(std::wstring filename);
-	
+
 	virtual  void  Release();
 	TShader(std::wstring key) : m_csName(key)
 	{
@@ -29,7 +29,7 @@ class TPShader : public TShader
 class TShaderManager
 {
 public:
-	static TShader*				g_pDefaultShader;
+	static TShader* g_pDefaultShader;
 	// ΩÃ±€≈Ê ∆–≈œ
 	static TShaderManager& GetInstance()
 	{

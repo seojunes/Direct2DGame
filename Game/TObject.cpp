@@ -1,45 +1,61 @@
 #include "TObject.h"
 #include "TDevice.h"
+#include "TWorld.h"
+void    TObject::HitOverlap(TObject* pObj, THitResult hRet)
+{
 
-// 속성->C/C++->일반->추가 포함 디렉토리(./Inc)
-TObject& TObject::SetShader(TShader* pData)
+};
+void TObject::SetScale(float sx, float sy)
 {
-	if (pData == nullptr)
-	{
-		m_pShader = I_Shader.g_pDefaultShader;
-	}
-	else
-	{
-		m_pShader = pData;
-	}
-	return *this;
+	m_vScale.x = sx;
+	m_vScale.y = sy;
+	m_matScale.Scale(m_vScale);
+	m_rtScreen.Size(m_vScale * 2.0f);
+	m_Sphere.vCenter = m_rtScreen.vc;
+	m_Sphere.fRadius = m_rtScreen.fR;
 }
-TObject& TObject::SetTexture(TTexture* pData)
+void TObject::SetRotation(float fRadian)
 {
-	m_pTexture = pData;
-	return *this;
+	m_fAngleRadian = fRadian;
+	m_matRotate.Rotate(m_fAngleRadian);
 }
-TObject& TObject::SetLayout(TInputLayout* pData)
+void TObject::SetPosition(TVector2 p)
 {
-	if (pData == nullptr)
-	{
-		m_pInputLayout = I_InputLayout.g_pInputLayout;
-	}
-	else
-	{
-		m_pInputLayout = pData;
-	}
-	return *this;
+	m_vPos = p;
+	m_matTrans.Trans(m_vPos);
+	m_rtScreen.Move(m_vPos.x, m_vPos.y);
+	m_Sphere.vCenter = m_rtScreen.vc;
+	m_Sphere.fRadius = m_rtScreen.fR;
 }
-bool   TObject::LoadTexrture(std::wstring texName)
+void TObject::AddPosition(float x, float y)
 {
-	m_pTexture = I_Tex.Load(texName);
-	if (m_pTexture == nullptr)
-	{
-		return false;
-	}
-
-	return true;
+	m_vPos.x += x;
+	m_vPos.y += y;
+	m_rtScreen.Move(m_vPos.x, m_vPos.y);
+	m_Sphere.vCenter = m_rtScreen.vc;
+	m_Sphere.fRadius = m_rtScreen.fR;
+	m_matTrans.Trans(m_vPos);
+}
+void TObject::AddPosition(TVector2 v)
+{
+	AddPosition(v.x, v.y);
+}
+void TObject::AddScale(float x, float y)
+{
+	m_vScale.x += x;
+	m_vScale.y += y;
+	m_matScale.Scale(m_vScale);
+}
+void TObject::AddScale(TVector2 v)
+{
+	m_vScale.x += v.x;
+	m_vScale.y += v.y;
+	m_matScale.Scale(m_vScale);
+}
+void TObject::AddRotation(float angle)
+{
+	m_fAngleRadian += angle;
+	m_matRotate.Rotate(m_fAngleRadian);
 }
 void	TObject::Init()
 {}
@@ -47,157 +63,43 @@ void	TObject::Frame()
 {}
 void	TObject::Transform(TVector2 vCamera)
 {
+	m_matWorld = m_matScale * m_matRotate * m_matTrans;
+	for (int i = 0; i < m_vScreenList.size(); i++)
+	{
+		m_vScreenList[i] =
+			m_pMeshRender->m_vScreenList[i] *
+			m_matWorld;
+	}
 }
 void	TObject::PreRender()
 {
-	TDevice::m_pd3dContext->PSSetShaderResources(
-		0, 1, &m_pTexture->m_pTexSRV);
-	TDevice::m_pd3dContext->VSSetShader(
-		m_pShader->m_pVertexShader.Get(), nullptr, 0);
-	TDevice::m_pd3dContext->PSSetShader(
-		m_pShader->m_pPixelShader.Get(), nullptr, 0);
-	TDevice::m_pd3dContext->IASetInputLayout(
-		m_pInputLayout->Get());
-
-	// 정점버퍼에서 Offsets에서 시작하여
-	// Strides크기로 정점을 정점쉐이더로 전달해라.
-	UINT Strides = sizeof(PCT_VERTEX);
-	UINT Offsets = 0;
-	TDevice::m_pd3dContext->IASetVertexBuffers(
-		0,
-		1,
-		m_pVertexBuffer.GetAddressOf(),
-		&Strides,
-		&Offsets);
-	TDevice::m_pd3dContext->IASetIndexBuffer(
-		m_pIndexBuffer.Get(),
-		DXGI_FORMAT_R32_UINT, 0);
-	TDevice::m_pd3dContext->IASetPrimitiveTopology(
-		D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_pMeshRender->PreRender();
 }
 void	TObject::Render()
 {
 	PreRender();
+	if (m_pTexture)
+	{
+		TDevice::m_pd3dContext->PSSetShaderResources(
+			0, 1, &m_pTexture->m_pTexSRV);
+	}
+
+	if (m_pShader)
+	{
+		TDevice::m_pd3dContext->VSSetShader(
+			m_pShader->m_pVertexShader.Get(), nullptr, 0);
+		TDevice::m_pd3dContext->PSSetShader(
+			m_pShader->m_pPixelShader.Get(), nullptr, 0);
+	}
 	PostRender();
 }
 void	TObject::PostRender()
 {
-	if (m_pIndexBuffer == nullptr)
-		TDevice::m_pd3dContext->Draw(m_vVertexList.size(), 0);
-	else
-		TDevice::m_pd3dContext->DrawIndexed(m_vIndexList.size(), 0, 0);
+	m_pMeshRender->PostRender();
 }
 void	TObject::Release()
 {
 
-}
-bool	TObject::Create()
-{
-	SetVertexData();
-	if (!CreateVertexBuffer())
-	{
-		return false;
-	}
-	SetIndexData();
-	if (!CreateIndexBuffer())
-	{
-		return false;
-	}
-	if (!CreateVertexShader())
-	{
-		return false;
-	}
-	if (!CreatePixelShader())
-	{
-		return false;
-	}
-	if (!CreateInputLayout())
-	{
-		return false;
-	}
-	return true;
-}
-bool	TObject::Create(TLoadResData data)
-{
-	m_LoadResData = data;
-	if (!LoadTexrture(m_LoadResData.texPathName))
-	{
-		return false;
-	}
-	return Create();
-}
-bool	TObject::Create(TLoadResData data,
-	TVector2 s,
-	TVector2 t)
-{
-	m_LoadResData = data;
-	m_srtScreen.SetP(s, t);
-	m_Sphere.vCenter = m_srtScreen.tCenter;
-	m_Sphere.fRadius = m_srtScreen.fRadius;
-	m_vPos.x = s.x;
-	m_vPos.y = s.y;
-	if (!LoadTexrture(m_LoadResData.texPathName))
-	{
-		return false;
-	}
-	return Create();
-}
-void    TObject::SetVertexData()
-{
-}
-bool	TObject::CreateVertexBuffer()
-{
-	// 화면좌표계(x,y)
-	// v1:0,0      ->      v2:800, 0
-	//   |	     400,300
-	// v3:0,600            v3:800,600
-	// 
-	// 직각좌표계(x,y)	
-	// v1:-400,300    ->       v2:400, 400
-	//              0,0
-	// v3:0,-300               v3:400,-300
-
-	// 화면좌표계  <-> 변환  <-> 직각좌표계
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory(&bd, sizeof(bd));
-	bd.ByteWidth = sizeof(PCT_VERTEX) * m_vVertexList.size();
-	// 읽고쓰기권한 설정(CPU X,X, GPU 0,0)
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-
-	D3D11_SUBRESOURCE_DATA sd;
-	ZeroMemory(&sd, sizeof(sd));
-	sd.pSysMem = &m_vVertexList.at(0);
-	HRESULT hr = TDevice::m_pd3dDevice->CreateBuffer(
-		&bd, &sd, m_pVertexBuffer.GetAddressOf());
-	if (FAILED(hr))
-	{
-		return false;
-	}
-	return true;
-}
-void    TObject::SetIndexData()
-{
-}
-bool	TObject::CreateIndexBuffer()
-{
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory(&bd, sizeof(bd));
-	bd.ByteWidth = sizeof(DWORD) * m_vIndexList.size();
-	// 읽고쓰기권한 설정(CPU X,X, GPU 0,0)
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-
-	D3D11_SUBRESOURCE_DATA sd;
-	ZeroMemory(&sd, sizeof(sd));
-	sd.pSysMem = &m_vIndexList.at(0);
-	HRESULT hr = TDevice::m_pd3dDevice->CreateBuffer(
-		&bd, &sd, m_pIndexBuffer.GetAddressOf());
-	if (FAILED(hr))
-	{
-		return false;
-	}
-	return true;
 }
 bool	TObject::CreateVertexShader()
 {
@@ -229,23 +131,113 @@ bool	TObject::CreatePixelShader()
 	}
 	return true;
 }
-bool	TObject::CreateInputLayout()
+bool	TObject::Create(TWorld* pWorld)
 {
-	if (m_pShader == nullptr) return true;
-	D3D11_INPUT_ELEMENT_DESC layout[] =
+	m_pWorld = pWorld;
+	SetVertexData();
+	/*if (!CreateVertexBuffer())
 	{
-		// 0~8
-		{ "POS",  0, DXGI_FORMAT_R32G32_FLOAT,		 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "COLOR",0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 8,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEX",  0, DXGI_FORMAT_R32G32_FLOAT,       0, 24,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	};
-	UINT  iNumCnt = sizeof(layout) / sizeof(layout[0]);
-	m_pInputLayout = I_InputLayout.Load(m_pShader->m_pCode.Get(), layout, 3, L"PCT");
+		return false;
+	}
+	SetIndexData();
+	if (!CreateIndexBuffer())
+	{
+		return false;
+	}*/
+	if (!CreateVertexShader())
+	{
+		return false;
+	}
+	if (!CreatePixelShader())
+	{
+		return false;
+	}
+	/*if (!CreateInputLayout())
+	{
+		return false;
+	}*/
+
+	auto bindFun = std::bind(&TObject::HitOverlap,
+		this,
+		std::placeholders::_1,
+		std::placeholders::_2);
+	m_pWorld->AddCollisionExecute(
+		this,
+		bindFun);
 	return true;
 }
+bool	TObject::Create(TWorld* pWorld, TLoadResData data)
+{
+	m_LoadResData = data;
+	if (!LoadTexture(m_LoadResData.texPathName))
+	{
+		return false;
+	}
+	return Create(pWorld);
+}
+bool	TObject::Create(TWorld* pWorld, TLoadResData data,
+	TVector2 s,
+	TVector2 e)
+{
+	m_LoadResData = data;
+	m_rtScreen.SetP(s, e);
+	SetScale(m_rtScreen.vh.x, m_rtScreen.vh.y);
+	SetRotation(m_fAngleRadian);
+	SetPosition(m_rtScreen.vc);
+
+	m_vVertexList.resize(4);
+	m_vScreenList.resize(4);
+
+	if (!LoadTexture(m_LoadResData.texPathName))
+	{
+		return false;
+	}
+	return Create(pWorld);
+}
+
+TObject& TObject::SetShader(TShader* pData)
+{
+	if (pData == nullptr)
+	{
+		m_pMeshRender->m_pShader = I_Shader.g_pDefaultShader;
+	}
+	else
+	{
+		m_pMeshRender->m_pShader = pData;
+	}
+	return *this;
+}
+TObject& TObject::SetTexture(TTexture* pData)
+{
+	m_pMeshRender->m_pTexture = pData;
+	return *this;
+}
+TObject& TObject::SetLayout(TInputLayout* pData)
+{
+	if (pData == nullptr)
+	{
+		m_pMeshRender->m_pInputLayout = I_InputLayout.g_pInputLayout;
+	}
+	else
+	{
+		m_pMeshRender->m_pInputLayout = pData;
+	}
+	return *this;
+}
+bool   TObject::LoadTexture(std::wstring texName)
+{
+	m_pTexture = I_Tex.Load(texName);
+	if (m_pTexture == nullptr)
+	{
+		return false;
+	}
+	return true;
+}
+
+
 TObject::TObject()
 {
-	m_srtScreen.SetS(0.0f, 0.0f, (float)g_ptClientSize.x, (float)g_ptClientSize.y);
+	m_rtScreen.SetS(0.0f, 0.0f, (float)g_ptClientSize.x, (float)g_ptClientSize.y);
 	m_vPos.x = 0.0f;
 	m_vPos.y = 0.0f;
 	m_fSpeed = 100.0f;
