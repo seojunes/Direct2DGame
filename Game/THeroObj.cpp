@@ -1,6 +1,10 @@
 #include "THeroObj.h"
 #include "TDevice.h"
 
+void    THeroObj::HitOverlap(TObject* pObj, THitResult hRes)
+{
+
+} 
 
 void THeroObj::SetData(vector<vector<RECT>> SpriteList)
 {
@@ -13,6 +17,9 @@ void THeroObj::SetData(vector<vector<RECT>> SpriteList)
 
 void THeroObj::Frame()
 {
+
+	TVector2 vAdd;
+	
 	// 점프효과 구현
 	if (m_bIsJumping)
 	{
@@ -25,6 +32,28 @@ void THeroObj::Frame()
 			m_fVerticalSpeed = 0.0f;
 			m_iJumpingCount = 0;
 		}
+	}
+
+	if (g_GameKey.dwWkey == KEY_PUSH && m_iJumpingCount < m_MaxJunp)//&& !m_bIsJumping)
+	{
+		m_bIsJumping = true;
+		m_fVerticalSpeed = m_fJumpSpeed;
+		m_iJumpingCount++;
+		m_CurrentState = HeroState::Jump; // Jump 상태 설정.
+	}
+
+	if (g_GameKey.dwWkey == KEY_UP || !m_bIsJumping)
+	{
+		m_iJumpFrame = 0;
+		if (m_CurrentView == HeroView::RightView)
+		{
+			m_CurrentState = HeroState::RightRun; // RightRun 상태 설정
+		}
+		else
+		{
+			m_CurrentState = HeroState::LeftRun; // RightRun 상태 설정
+		}
+
 	}
 
 	// 애니메이션 업데이트
@@ -67,26 +96,7 @@ void THeroObj::Frame()
 
 
 
-	if (g_GameKey.dwWkey == KEY_PUSH && m_iJumpingCount < m_MaxJunp)//&& !m_bIsJumping)
-	{
-		m_bIsJumping = true;
-		m_fVerticalSpeed = m_fJumpSpeed;
-		m_iJumpingCount++;
-		m_CurrentState = HeroState::Jump; // Jump 상태 설정.
-	}
-	if (g_GameKey.dwWkey == KEY_UP || !m_bIsJumping)
-	{
-		m_iJumpFrame = 0;
-		if (m_CurrentView == HeroView::RightView)
-		{
-			m_CurrentState = HeroState::RightRun; // RightRun 상태 설정
-		}
-		else
-		{
-			m_CurrentState = HeroState::LeftRun; // RightRun 상태 설정
-		}
-
-	}
+	
 	//if (g_GameKey.dwWkey == KEY_HOLD) m_rtScreen.y -= fSpeed * g_fSPF;
 	/*if (g_GameKey.dwSkey == KEY_HOLD)
 	{
@@ -94,24 +104,18 @@ void THeroObj::Frame()
 	}*/
 	if (g_GameKey.dwAkey == KEY_HOLD)
 	{
-		m_vPos.x -= m_fSpeed * g_fSPF;
+		vAdd.x -= m_fSpeed * g_fSPF;
 		m_CurrentState = HeroState::LeftRun; // LeftRun 상태 설정
 		m_CurrentView = HeroView::LeftView;  // 바라보는 방향 설정
 	}
 	if (g_GameKey.dwDkey == KEY_HOLD)
 	{
-		m_vPos.x += m_fSpeed * g_fSPF;
+		vAdd.x += m_fSpeed * g_fSPF;
 		m_CurrentState = HeroState::RightRun; // RightRun 상태 설정
 		m_CurrentView = HeroView::RightView;  // 바라보는 방향 설정
 	}
-
-
-	UpdatePosition();
-	SetVertexData(); // UV 반영을 위해 호출
-	if (m_HeroHPdata)
-	{
-		m_HeroHPdata->SetPos({ m_vPos.x, m_vPos.y + 50 }); // Hero 머리 위로 설정
-	}
+	AddPosition(vAdd);
+	SetVertexData();
 }
 void THeroObj::SetVertexData()
 {
@@ -126,27 +130,24 @@ void THeroObj::SetVertexData()
 	rt.SetS(m_rtWalkFrames[m_iWalkFrame].left,
 		m_rtWalkFrames[m_iWalkFrame].top,
 		m_rtWalkFrames[m_iWalkFrame].right,
-		m_rtWalkFrames[m_iWalkFrame].bottom); // 현재 프레임의 텍스처 좌표
+		m_rtWalkFrames[m_iWalkFrame].bottom); // 현재 프레임의 텍스처 좌표,
 
 	float xSize = m_pTexture->m_TexDesc.Width;
 	float ySize = m_pTexture->m_TexDesc.Height;
-	// 기준 크기
-	float standardWidth = 80.0f;
-	float standardHeight = 100.0f;
-
+	
 	if (m_CurrentState == HeroState::RightRun)
 	{
-		m_vVertexList[0].t = { rt.x / xSize,rt.y / ySize };
-		m_vVertexList[1].t = { (rt.x + rt.w) / xSize,rt.y / ySize };
-		m_vVertexList[2].t = { rt.x / xSize,(rt.y + rt.h) / ySize };
-		m_vVertexList[3].t = { (rt.x + rt.w) / xSize,(rt.y + rt.h) / ySize };
+		m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
+		m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
 	}
 	else if (m_CurrentState == HeroState::LeftRun)
 	{
-		m_vVertexList[0].t = { (rt.x + rt.w) / xSize,rt.y / ySize };
-		m_vVertexList[1].t = { rt.x / xSize,rt.y / ySize };
-		m_vVertexList[2].t = { (rt.x + rt.w) / xSize,(rt.y + rt.h) / ySize };
-		m_vVertexList[3].t = { rt.x / xSize,(rt.y + rt.h) / ySize };
+		m_vVertexList[0].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[1].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
+		m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
 	}
 
 	if (m_CurrentState == HeroState::Jump)
@@ -157,23 +158,20 @@ void THeroObj::SetVertexData()
 			m_rtJumpFrames[m_iJumpFrame].bottom);
 		if (m_CurrentView == HeroView::RightView)
 		{
-			m_vVertexList[0].t = { rt.x / xSize,rt.y / ySize };
-			m_vVertexList[1].t = { (rt.x + rt.w) / xSize,rt.y / ySize };
-			m_vVertexList[2].t = { rt.x / xSize,(rt.y + rt.h) / ySize };
-			m_vVertexList[3].t = { (rt.x + rt.w) / xSize,(rt.y + rt.h) / ySize };
+			m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+			m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+			m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
+			m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
 		}
 		else
 		{
-			m_vVertexList[0].t = { (rt.x + rt.w) / xSize,rt.y / ySize };
-			m_vVertexList[1].t = { rt.x / xSize,rt.y / ySize };
-			m_vVertexList[2].t = { (rt.x + rt.w) / xSize,(rt.y + rt.h) / ySize };
-			m_vVertexList[3].t = { rt.x / xSize,(rt.y + rt.h) / ySize };
+			m_vVertexList[0].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+			m_vVertexList[1].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+			m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
+			m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
 		}
 	}
-	m_vVertexList[0].v = { m_srtScreen.x - rt.w / 2.0f, m_srtScreen.y - rt.h };
-	m_vVertexList[1].v = { m_srtScreen.x + rt.w / 2.0f, m_srtScreen.y - rt.h };
-	m_vVertexList[2].v = { m_srtScreen.x - rt.w / 2.0f, m_srtScreen.y };
-	m_vVertexList[3].v = { m_srtScreen.x + rt.w / 2.0f, m_srtScreen.y };
+	
 
 	
 	//좌우걷기
@@ -209,45 +207,34 @@ void THeroObj::SetVertexData()
 
 }
 
-void THeroObj::InitHero(UINT maxHP, float hpBarWidth, float hpBarHeight)
-{
-	m_HeroHPdata = std::make_shared<HPBar>(maxHP, hpBarWidth, hpBarHeight);
-	m_HeroHPdata->SetPos({ m_vPos.x, m_vPos.y });
-}
-void THeroObj::TakeDamage(UINT damage)
-{
-	if (m_HeroHPdata) 	 m_HeroHPdata->TakeDamage(damage);
-}
-void THeroObj::Heal(UINT healAmount)
-{
-	if (m_HeroHPdata)   m_HeroHPdata->Heal(healAmount);
-}
 
-void THeroObj::Render() 
-{
-	if (isInvincible) {
-		blinkTimer += g_fGT;
+//void THeroObj::Render() 
+//{
+//	if (isInvincible) {
+//		blinkTimer += g_fGT;
+//
+//		// 깜빡임 효과 (0.2초 간격)
+//		if (fmod(blinkTimer, 0.2f) < 0.1f) {
+//			return; // 깜빡임 주기 동안 렌더링 생략
+//		}
+//	}
+//
+//	// 기본 TObject 렌더링 호출
+//	TObject::Render();
+//}
+//
+//void THeroObj::Update(float g_fGT)
+//{
+//	if (isInvincible) {
+//		invincibleTime -= g_fGT; // 무적 시간 감소
+//		if (invincibleTime <= 0.0f) {
+//			isInvincible = false; // 무적 상태 해제
+//			blinkTimer = 0.0f;    // 깜빡임 타이머 초기화
+//		}
+//	}
+//
+//	// TObject의 기본 업데이트 호출 (필요하면)
+//	TObject::Frame();
+//}
 
-		// 깜빡임 효과 (0.2초 간격)
-		if (fmod(blinkTimer, 0.2f) < 0.1f) {
-			return; // 깜빡임 주기 동안 렌더링 생략
-		}
-	}
 
-	// 기본 TObject 렌더링 호출
-	TObject::Render();
-}
-
-void THeroObj::Update(float g_fGT)
-{
-	if (isInvincible) {
-		invincibleTime -= g_fGT; // 무적 시간 감소
-		if (invincibleTime <= 0.0f) {
-			isInvincible = false; // 무적 상태 해제
-			blinkTimer = 0.0f;    // 깜빡임 타이머 초기화
-		}
-	}
-
-	// TObject의 기본 업데이트 호출 (필요하면)
-	TObject::Frame();
-}

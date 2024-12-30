@@ -12,6 +12,7 @@ public:
 	void SetDirrection(HeroView view);
 	virtual void Frame() override;
 	virtual void SetVertexData();
+	void    HitOverlap(TObject* pObj, THitResult hRes) override;
 
 	TMissileObj()
 	{

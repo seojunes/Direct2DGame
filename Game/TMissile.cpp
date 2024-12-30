@@ -1,21 +1,26 @@
 #include "TMissile.h"
 #include "TDevice.h"
+void    TMissileObj::HitOverlap(TObject* pObj, THitResult hRes)
+{
+	//m_bDead = true;
+};
 void TMissileObj::Frame()
 {
-	/*if (m_vPos.x > m_pMap->m_srtScreen.x2 - m_srtScreen.w)
+	TVector2 vAdd = m_vPos;
+	/*if (m_vPos.x > m_pMap->m_rtScreen.x2 - m_rtScreen.w)
 	{
 		m_vDir.x *= -1.0f;
-		m_vPos.x = m_pMap->m_srtScreen.x2 - m_srtScreen.w;
+		m_vPos.x = m_pMap->m_rtScreen.x2 - m_rtScreen.w;
 	}
 	if (m_vPos.x < 0.0f)
 	{
 		m_vDir.x *= -1.0f;
 		m_vPos.x = 0.0f;
 	}
-	if (m_vPos.y > m_pMap->m_srtScreen.y2 - m_srtScreen.h)
+	if (m_vPos.y > m_pMap->m_rtScreen.y2 - m_rtScreen.h)
 	{
 		m_vDir.y *= -1.0f;
-		m_vPos.y = m_pMap->m_srtScreen.y2 - m_srtScreen.h;
+		m_vPos.y = m_pMap->m_rtScreen.y2 - m_rtScreen.h;
 	}
 	if (m_vPos.y < 0.0f)
 	{
@@ -23,13 +28,13 @@ void TMissileObj::Frame()
 		m_vPos.y = 0.0f;
 	}*/
 	// v = v + d*s : 직선의 벡터의 방정식
-	if (m_vPos.x > m_pHero->m_srtScreen.x2 +600 || m_vPos.x < m_pHero->m_srtScreen.x-600)
+	if (m_vPos.x > m_pHero->m_rtScreen.v2.x + 600 || m_vPos.x < m_pHero->m_rtScreen.v1.x - 600)
 	{
-		m_bDead = true;
+  		m_bDead = true;
 	}
-	m_vPos = m_vPos + m_vDir * (g_fSPF * m_fSpeed);
-	SetPos(m_vPos);
-	
+	m_vPos = vAdd + m_vDir * (g_fSPF * m_fSpeed);
+	SetPosition(m_vPos);
+
 }
 
 void TMissileObj::SetDirrection(HeroView view)
@@ -47,8 +52,19 @@ void TMissileObj::SetVertexData()
 	float ySize = m_pTexture->m_TexDesc.Height;
 	TRect rt;
 	rt.SetS(0.0f, 19.0f, 14.0f, 29.0f);
-	m_vVertexList[0].t = { rt.x / xSize,rt.y / ySize };
-	m_vVertexList[1].t = { rt.w / xSize,rt.y / ySize };
-	m_vVertexList[2].t = { rt.x / xSize,rt.h / ySize };
-	m_vVertexList[3].t = { rt.w / xSize,rt.h / ySize };
+	if (m_vDir.x == 1)
+	{
+ 		m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[2].t = { rt.v1.x / xSize,rt.vs.y / ySize };
+		m_vVertexList[3].t = { rt.v2.x / xSize,rt.vs.y / ySize };
+	}	
+	else if (m_vDir.x == -1)
+	{
+		m_vVertexList[0].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[1].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[2].t = { rt.v2.x / xSize,rt.vs.y / ySize };
+		m_vVertexList[3].t = { rt.v1.x / xSize,rt.vs.y / ySize };
+	}
+	
 }

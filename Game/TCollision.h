@@ -1,7 +1,23 @@
 #pragma once
-#include "TVertex.h"
+#include "TMatrix.h"
+
+class TObject;
+enum TCollisionType
+{
+	T_Block = 0,
+	T_Overlap, // 겹침
+	T_Ignore,  // 무시
+};
+
+struct THitResult
+{
+	TObject* pObject;
+	TVector2 vPos;
+	TVector2 vDir;
+};
 
 struct PRect;
+
 struct SRect
 {
 	float   x, y;
@@ -16,11 +32,31 @@ struct PRect
 };
 struct TRect
 {
-	float   x, y;
-	float   x2, y2;
-	float   w, h;
-	float   fRadius;
-	TVector2  tCenter;
+	TVector2 v1;// 좌상귀
+	TVector2 v2;// 우하귀
+	TVector2 vs;// 가로,세로크기
+	TVector2 vh;// 가로,세로 절반크기
+	TVector2 vc;// 중심
+	float    fR;// 거리(대각선)
+	void    Size(float w, float h)
+	{
+		SetS(v1, { w,h });
+	}
+	void    Size(TVector2 s)
+	{
+		SetS(v1, s);
+	}
+	void    Move(float x, float y)
+	{
+		vc.x = x;
+		vc.y = y;
+		v1 = vc - vh;
+		v2 = vc + vh;
+	}
+	void    Move(TVector2 p)
+	{
+		Move(p.x, p.y);
+	}
 	void    SetP(float x1, float y1, float x2, float y2)
 	{
 		SetP({ x1,y1 }, { x2,y2 });
@@ -29,33 +65,27 @@ struct TRect
 	{
 		SetS({ x1,y1 }, { w,h });
 	}
-	void    SetP(TVector2 v1, TVector2 v2)
+	void    SetP(TVector2 s, TVector2 e)
 	{
-		x = v1.x; y = v1.y;
-		this->x2 = v2.x; this->y2 = v2.y;
-		w = x2 - x;
-		h = y2 - y;
-		tCenter.x = (x2 + x) / 2.0f;
-		tCenter.y = (y2 + y) / 2.0f;
-		TVector2 vMin = { x,y };
-		TVector2 vMax = { x2, y2 };
-		fRadius = (vMax - vMin).Length() * 0.5f;
+		v1 = s;
+		v2 = e;
+		vs = v2 - v1;
+		vh = vs / 2.0f;
+		fR = (v2 - v1).Length() * 0.5f;
+		Move((v2 + v1) / 2.0f);
 	}
-	void    SetS(TVector2 v1, TVector2 v2)
+	void    SetS(TVector2 p, TVector2 s)
 	{
-		x = v1.x; y = v1.y;
-		this->w = v2.x; this->h = v2.y;
-		x2 = x + w;
-		y2 = y + h;
-		tCenter.x = (x2 + x) / 2.0f;
-		tCenter.y = (y2 + y) / 2.0f;
-		TVector2 vMin = { x,y };
-		TVector2 vMax = { x2, y2 };
-		fRadius = (vMax - vMin).Length() * 0.5f;
+		v1 = p;
+		vs = s;
+		v2 = v1 + vs;
+		vh = vs / 2.0f;
+		fR = (v2 - v1).Length() * 0.5f;
+		Move((v2 + v1) / 2.0f);
 	}
 	TRect()
 	{
-		x = y = x2 = y2 = w = h = 0.0f;
+		fR = 0.0f;
 	}
 };
 
@@ -64,7 +94,6 @@ struct TSphere
 	TVector2 vCenter;
 	float    fRadius;
 };
-
 
 class TCollision
 {
@@ -76,5 +105,6 @@ public:
 	static bool CheckSphereToPoint(TSphere& s, float x, float y);
 	static bool CheckSphereToPoint(TSphere& s, TVector2 p);
 	static bool CheckSphereToSphere(TSphere& rt1, TSphere rt2);
+	static bool CheckRectToPoint(TRect& rt, TVector2 pt);
 };
 
