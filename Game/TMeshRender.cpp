@@ -122,23 +122,6 @@ bool	TMeshRender::Create(TLoadResData data)
 	}
 	return Create();
 }
-bool	TMeshRender::Create(TLoadResData data,
-	TVector2 s,
-	TVector2 t)
-{
-	m_LoadResData = data;
-	/*m_srtScreen.SetP(s, t);
-	m_Sphere.vCenter = m_srtScreen.tCenter;
-	m_Sphere.fRadius = m_srtScreen.fRadius;
-
-	m_vPos.x = s.x;
-	m_vPos.y = s.y;
-	if (!LoadTexture(m_LoadResData.texPathName))
-	{
-		return false;
-	}*/
-	return Create();
-}
 void    TMeshRender::SetVertexData()
 {
 	m_vScreenList.resize(4);

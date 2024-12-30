@@ -26,9 +26,6 @@ public:
 	virtual bool SetLayout(TInputLayout* pInputLayout = nullptr);
 	virtual bool	Create();
 	virtual bool	Create(TLoadResData data);
-	virtual bool	Create(TLoadResData data,
-		TVector2 s,		// 화면좌표 시작
-		TVector2 t);   // 화면좌표 끝
 	virtual bool	CreateVertexBuffer(); // 생성
 	virtual bool	CreateIndexBuffer(); // 생성
 	virtual bool	CreateVertexShader(); // 생성
