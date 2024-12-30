@@ -1,5 +1,26 @@
 #include "Sample.h"
 #include <cmath>
+
+bool Sample::CreateSound()
+{
+	TSoundManager& mgr = TSoundManager::GetInstance();
+	m_pSound = mgr.Load(L"../../data/sound/Festival Theme.ogg");
+	m_pJumpSound = mgr.Load(L"../../data/sound/Jump.ogg");
+	m_pShotSound = mgr.Load(L"../../data/sound/Laser Fire.wav");
+	m_pCrashSound = mgr.Load(L"../../data/sound/Crash.wav");
+	m_pSound->Play();
+	return true;
+}
+
+TVector2 Sample::GetWorldMousePos()
+{
+	TVector2 vPos = { (float)m_Input.m_ptMouse.x,
+						  (float)m_Input.m_ptMouse.y };
+	vPos.x += m_vCamera.x - g_ptClientSize.x * 0.5f;
+	vPos.y += m_vCamera.y - g_ptClientSize.y * 0.5f;
+	return vPos;
+}
+
 bool Sample::GameDataLoad(W_STR filename)
 {
 	TCHAR pBuffer[256] = { 0 };
@@ -58,9 +79,9 @@ bool Sample::GameDataLoad(W_STR filename)
 bool Sample::CreateMap()
 {
 	TRect rt;
-	rt.SetS(0.0f, 0.0f, 5120.0f, 800.f);
+	rt.SetP(0.0f, 0.0f, 5120.0f, 800.f);
 	m_pMap = std::make_shared<TMapObj>(rt, 4, 1);
-	if (m_pMap->Create())
+	if (m_pMap->Create(m_pWorld.get()))
 	{
 		TTexture* pTex = I_Tex.Load(L"../../data/texture/Map.png");
 		m_pMap->SetTexture(pTex).
@@ -71,55 +92,47 @@ bool Sample::CreateMap()
 }
 bool Sample::CreateHero()
 {
-	TVector2 vMapCenter = m_pMap->m_srtScreen.tCenter;
 	m_pHero = std::make_shared<THeroObj>();
 	m_pHero->SetData(m_rtSpriteList);
-	m_pHero->InitHero(100, 50.0f, 20.0f);
-	//for (auto& frame : m_rtSpriteList[0])
-	//{
-	//    float width = frame.right - frame.left;
-	//    float height = frame.bottom - frame.top;
-
-	//    // 발 아래 중앙 피벗 계산
-	//    float pivotX = frame.left + width / 2;
-	//    float pivotY = frame.bottom;
-
-	//    // 좌표 조정
-	//    frame.left = pivotX - width / 2;
-	//    frame.top = pivotY - height;
-	//    frame.right = pivotX + width / 2;
-	//    frame.bottom = pivotY;
-	//}
+	//m_pHero->InitHero(100, 50.0f, 20.0f);
 	m_pHero->SetMap(m_pMap.get());
-	//TVector2 tStart = { vMapCenter.x, vMapCenter.y };
 	TVector2 tStart = { 640.0f,m_pHero->m_fGroundY };
 	TVector2 tEnd = { tStart.x + 50.0f, tStart.y + 75.0f };
 	TLoadResData resData;
-	//resData.texPathName = L"../../data/texture/bitmap1Alpha.bmp";
-	//resData.texShaderName = L"../../data/shader/Default.txt";
 	resData.texPathName = L"../../data/texture/newMega.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
-	if (m_pHero->Create(resData, tStart, tEnd))
+	m_pHero->m_pMeshRender = &TGameCore::m_MeshRender;
+	m_pHero->m_pWorld = m_pWorld.get();
+	if (m_pHero->Create(m_pWorld.get(), resData, tStart, tEnd))
 	{
+		m_pHero->m_iCollisionType = TCollisionType::T_Overlap;
 	}
 	return true;
+
 }
 bool Sample::CreateNPC()
 {
 	// npc
-	TRect rtWorldMap = m_pMap->m_srtScreen;
+	TRect rtWorldMap = m_pMap->m_rtScreen;
 	for (int iNpc = 0; iNpc < m_Npccount; iNpc++)
 	{
 		auto npcobj = std::make_shared<TNpcObj>();
+		npcobj->m_pMeshRender = &TGameCore::m_MeshRender;
 		npcobj->SetMap(m_pMap.get());
-		TVector2 tStart(100.0f + (rand() % (UINT)(rtWorldMap.w - 100.0f)),
-			100.0f + (rand() % (UINT)(rtWorldMap.h - 100.0f)));
-		TVector2 tEnd(tStart.x + 42.0f, tStart.y + 60.0f);
+		npcobj->StartFSM(&m_fsm);
+		TVector2 vStart(
+			rtWorldMap.v1.x + (rand() % (UINT)(rtWorldMap.vs.x - 100.0f)),
+			rtWorldMap.v1.y + (rand() % (UINT)(rtWorldMap.vs.y - 100.0f)));
+		TVector2 tEnd(vStart.x + 42.0f, vStart.y + 60.0f);
 		TLoadResData resData;
 		resData.texPathName = L"../../data/texture/bitmap1.bmp";
 		resData.texShaderName = L"../../data/shader/BlendMask.txt";
-		if (npcobj->Create(resData, tStart, tEnd))
+		if (npcobj->Create(m_pWorld.get(), resData, vStart, tEnd))
 		{
+			npcobj->m_fSpeed = 50.0f + (rand() % 200);
+			npcobj->m_iCollisionType = TCollisionType::T_Overlap;
+			//npcobj->SetScale(30.0f, 30.0f );
+			//npcobj->SetRotation(T_Pi);
 			m_NpcList.emplace_back(npcobj);
 		}
 	}
@@ -128,10 +141,7 @@ bool Sample::CreateNPC()
 bool Sample::CreateEffect()
 {
 	auto pObject3 = std::make_shared<TEffectObj>();
-	//pObject3->SetMap(m_pMap.get());
-	TVector2 tStart;
-	tStart.x = 640.0f;
-	tStart.y = 0.0f;
+	TVector2 tStart = { 640.0f,0.0f };
 	TVector2 tEnd2 = { tStart.x + 100.0f, tStart.y + 100.0f };
 	AddEffect(tStart, tEnd2);
 	return true;
@@ -139,18 +149,39 @@ bool Sample::CreateEffect()
 
 void Sample::TransPivot()
 {
-
 }
 void   Sample::Init()
 {
+	// STATE_STAND -> EVENT_PATROL (시간경과)    -> STATE_MOVE
+// STATE_STAND -> EVENT_FINDTARGET(검색범위) -> STATE_ATTACK
+// STATE_MOVE  -> EVENT_STOP		->STATE_STAND
+// STATE_MOVE  -> EVENT_LOSTTARGET  ->STATE_STAND
+// STATE_MOVE  -> EVENT_FINDTARGET  ->STATE_ATTACK
+// STATE_ATTACK -> EVENT_LOSTTARGET ->STATE_STAND 
+// STATE_ATTACK -> EVENT_STOP       ->STATE_STAND 
+	m_fsm.AddStateTransition(STATE_STAND, EVENT_PATROL, STATE_MOVE);
+	m_fsm.AddStateTransition(STATE_STAND, EVENT_FINDTARGET, STATE_ATTACK);
+	m_fsm.AddStateTransition(STATE_MOVE, EVENT_STOP, STATE_STAND);
+	m_fsm.AddStateTransition(STATE_MOVE, EVENT_LOSTTARGET, STATE_STAND);
+	m_fsm.AddStateTransition(STATE_MOVE, EVENT_FINDTARGET, STATE_ATTACK);
+	m_fsm.AddStateTransition(STATE_ATTACK, EVENT_STOP, STATE_STAND);
+	m_fsm.AddStateTransition(STATE_ATTACK, EVENT_LOSTTARGET, STATE_STAND);
+
+	//UINT iCurrent = T_ActionState::STATE_STAND;
+	//UINT iEvent = T_ActionEvent::EVENT_PATROL;
+	//// STATE_MOVE
+	//UINT iActionState = m_fsm.GetOutputState(iCurrent, iEvent);
+	//// STATE_ATTACK
+	//iActionState = m_fsm.GetOutputState(iActionState,
+	//    T_ActionEvent::EVENT_FINDTARGET);
+	//iActionState = m_fsm.GetOutputState(iActionState,
+	//    T_ActionEvent::EVENT_LOSTTARGET);
+
+	CreateSound();
 	m_pBitmap1Mask = I_Tex.Load(L"../../data/texture/bitmap2.bmp");
 	GameDataLoad(L"SpriteData.txt");
-	TSoundManager& mgr = TSoundManager::GetInstance();
-	m_pSound = mgr.Load(L"../../data/sound/Festival Theme.ogg");
-	m_pJumpSound = mgr.Load(L"../../data/sound/Jump.ogg");
-	m_pShotSound = mgr.Load(L"../../data/sound/Laser Fire.wav");
-	m_pCrashSound = mgr.Load(L"../../data/sound/Crash.wav");
-	m_pSound->Play();
+
+	m_pWorld = std::make_shared<TWorld>();
 	CreateMap();
 	CreateHero();
 	CreateNPC();
@@ -159,19 +190,24 @@ void   Sample::Init()
 void  Sample::AddMissile(TVector2 tStart, TVector2 tEnd)
 {
 	auto mObject = std::make_shared<TMissileObj>();
+	mObject->m_pMeshRender = &TGameCore::m_MeshRender;
+	mObject->m_vVertexList = mObject->m_pMeshRender->m_vVertexList;
 	mObject->SetHero(m_pHero.get());
 	TLoadResData resData;
 	resData.texPathName = L"../../data/texture/Bullet.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
-	if (mObject->Create(resData, tStart, tEnd))
+	mObject->SetDirrection(m_pHero->m_CurrentView);
+	if (mObject->Create(m_pWorld.get(),resData, tStart, tEnd))
 	{
 		m_MissileList.emplace_back(mObject);
 	}
-	mObject->SetDirrection(m_pHero->m_CurrentView);
+	
 }
 void   Sample::AddEffect(TVector2 tStart, TVector2 tEnd)
 {
 	auto pObject3 = std::make_shared<TEffectObj>();
+	pObject3->m_pMeshRender = &TGameCore::m_MeshRender;
+	pObject3->m_vVertexList = pObject3->m_pMeshRender->m_vVertexList;
 	TLoadResData resData;
 	/*resData.texPathName = L"../../data/texture/newMega.png";
 	resData.texShaderName = L"../../data/shader/DefaultMask.txt";*/
@@ -194,74 +230,57 @@ void   Sample::AddEffect(TVector2 tStart, TVector2 tEnd)
 		data.m_szList = m_szSpriteList[0];
 	}
 	pObject3->SetData(data);
-	if (pObject3->Create(resData, tStart, tEnd))
+	if (pObject3->Create(m_pWorld.get(),resData, tStart, tEnd))
 	{
 		m_EffectList.emplace_back(pObject3);
 	}
 }
-void   Sample::AddEffectSingle(TVector2 tStart, TVector2 tEnd)
-{
-	auto pObject3 = std::make_shared<TEffectObj>();
-	TLoadResData resData;
-	resData.texPathName = L"../../data/effect/5heng01_blue.dds";
-	resData.texShaderName = L"../../data/shader/DefaultBlack.txt";
-	TEffectData data;
-	data.m_bLoop = true;
-	data.m_fLifeTime = 1.0f;
-	data.m_fOffsetTime = 1.0f;
-	data.m_iType = 2;
-	data.m_iNumAnimFrame = 1;
-	pObject3->SetData(data);
-	if (pObject3->Create(resData, tStart, tEnd))
-	{
-		m_EffectList.emplace_back(pObject3);
-	}
-}
+
 void   Sample::Frame()
 {
+	// 점프 사운드
 	TSoundManager::GetInstance().Frame();
 	if (m_pHero->m_iJumpingCount < 3 && m_pHero->m_iJumpingCount >= 0 && g_GameKey.dwWkey == KEY_PUSH)
 	{
 		m_pJumpSound->PlayEffect();
 	}
-	
 
 	m_pMap->Frame();
 	m_pHero->Frame();
 
-	if (m_pHero->m_srtScreen.x >= 640.0f && m_pHero->m_srtScreen.x <= 4480.0f)
+	if (m_pHero->m_rtScreen.v1.x >= 640.0f && m_pHero->m_rtScreen.v1.x <= 4480.0f)
 	{
-		m_vCamera.x = m_pHero->m_srtScreen.x;
+		m_vCamera.x = m_pHero->m_vPos.x;
 	}
-	else if (m_pHero->m_srtScreen.x < 640.0f)
+	else if (m_pHero->m_rtScreen.v1.x < 640.0f)
 	{
 		m_vCamera.x = 640.0f;
 	}
-	else if (m_pHero->m_srtScreen.x > 4480.0f)
+	else if (m_pHero->m_rtScreen.v1.x > 4480.0f)
 	{
 		m_vCamera.x = 4480.0f;
 	}
+	//m_vCamera.y = m_pHero->m_vPos.y;
 
-	
-	// m_vCamera.y = m_pHero->m_srtScreen.y - 225;// 초기 카메라 세팅
+
+	// m_vCamera.y = m_pHero->m_rtScreen.y - 225;// 초기 카메라 세팅
 	  // 메가맨 위치와 카메라 위치 보정
 
-	// 점프 사운드
-
+	
+	TVector2 vMouse = GetWorldMousePos();
 	for (auto data : m_NpcList)
 	{
-		if (!data->m_bDead)   data->Frame();
+		if (!data->m_bDead)
+		{
+			data->FrameState(m_pHero.get());
+			data->Frame();
+		}
 	}
-	// collision
-	//for (UINT iNpc1 = 0; iNpc1 < m_NpcList.size(); iNpc1++)
-	//{
-	//	if (m_NpcList[iNpc1]->m_bDead) continue;
-	//	//if (TCollision::CheckRectToRect(
-	//	if (TCollision::CheckRectToRect(m_NpcList[iNpc1]->m_srtScreen, m_pHero->m_srtScreen))
-	//	{
-	//			m_NpcList[iNpc1]->m_bDead = true;
-	//	}
-	//}
+
+	
+	TSphere s;
+	s.vCenter = vMouse;
+	s.fRadius = 100.0f;
 
 	for (UINT iNpc1 = 0; iNpc1 < m_NpcList.size(); iNpc1++)
 	{
@@ -269,8 +288,8 @@ void   Sample::Frame()
 		{
 			if (m_MissileList[iMissile]->m_bDead || m_NpcList[iNpc1]->m_bDead) continue;
 			if (TCollision::CheckRectToRect(
-				m_NpcList[iNpc1]->m_srtScreen,
-				m_MissileList[iMissile]->m_srtScreen ))
+				m_NpcList[iNpc1]->m_rtScreen,
+				m_MissileList[iMissile]->m_rtScreen))
 			{
 				m_NpcList[iNpc1]->m_bDead = true;
 				m_MissileList[iMissile]->m_bDead = true;
@@ -283,9 +302,11 @@ void   Sample::Frame()
 
 	if (g_GameKey.dwMiddleClick == KEY_HOLD)
 	{
-		TVector2 tStart = { m_Input.m_ptMouse.x - 50.0f, m_Input.m_ptMouse.y - 50.0f };
-		TVector2 tEnd = { tStart.x + 100.0f, tStart.y + 100.0f };
-		AddEffect(tStart, tEnd);
+		TVector2 v1 = vMouse;
+		v1.x = vMouse.x - 50.0f;
+		v1.y = vMouse.y - 50.0f;
+		TVector2 tEnd = { v1.x + 100.0f, v1.y + 100.0f };
+		AddEffect(v1, tEnd);
 
 		/*for (int iCell = 0; iCell < m_pMap->m_Cells.size(); iCell++)
 		{
@@ -304,6 +325,13 @@ void   Sample::Frame()
 		if (iType == 2)
 			AddEffectSingle(tStart, tEnd, std::shared_ptr<TE3>());*/
 	}
+	for (UINT iNpc1 = 0; iNpc1 < m_NpcList.size(); iNpc1++)
+	{
+		if (m_NpcList[iNpc1]->m_bDead)
+		{
+			m_pWorld->DeleteCollisionExecute(m_NpcList[iNpc1].get());
+		};
+	}
 	for (auto iter = std::begin(m_EffectList);
 		iter != m_EffectList.end();)
 	{
@@ -321,7 +349,7 @@ void   Sample::Frame()
 	}
 	if (g_GameKey.dwSpace == KEY_PUSH)
 	{
-		TVector2 tStart = { m_pHero->m_srtScreen.tCenter.x, m_pHero->m_srtScreen.tCenter.y };
+		TVector2 tStart = { m_pHero->m_rtScreen.vc.x, m_pHero->m_rtScreen.vc.y };
 		TVector2 tEnd = { tStart.x + 40.0f, tStart.y + 30.0f };
 		AddMissile(tStart, tEnd);
 		m_pShotSound->PlayEffect();
@@ -338,11 +366,11 @@ void   Sample::Frame()
 		else
 		{
 			pObj->Release();
- 			iter = m_MissileList.erase(iter);
+			iter = m_MissileList.erase(iter);
 		}
 	}
 
-
+	m_pWorld->Frame();
 
 }
 void   Sample::Render()
@@ -356,25 +384,24 @@ void   Sample::Render()
 	m_pHero->Transform(m_vCamera);
 	m_pHero->Render();
 
-	
-
 	for (auto data : m_NpcList)
 	{
 		if (data->m_bDead) continue;
-		data->Render();
 		data->Transform(m_vCamera);
+		data->Render();
 	}
 	for (auto data : m_EffectList)
 	{
-		data->Render();
 		data->Transform(m_vCamera);
+		data->Render();
 	}
 	for (auto data : m_MissileList)
 	{
 		if (data->m_bDead) continue;
-		data->Render();
 		data->Transform(m_vCamera);
+		data->Render();
 	}
+	// 남은 NPC 출력
 	// 문자열로 변환
 	std::wstring npcCountText = std::to_wstring(m_Npccount);
 	// 텍스트 출력 영역 정의
@@ -386,11 +413,16 @@ void   Sample::Render()
 }
 void   Sample::Release()
 {
+	// 현재는 Object의 Release에서 아무런 작업을 하고있지 않지만, 추후 관리를 위해서 생성.
 	for (auto data : m_NpcList)
 	{
 		data->Release();
 	}
 	for (auto data : m_EffectList)
+	{
+		data->Release();
+	}
+	for (auto data : m_MissileList)
 	{
 		data->Release();
 	}
