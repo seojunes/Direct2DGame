@@ -9,6 +9,7 @@ public:
     static ComPtr<IDXGISwapChain>       m_pSwapChain;
     static ComPtr<ID3D11RenderTargetView> m_pRTV;
     static D3D11_VIEWPORT			    m_MainVP;
+    static bool        m_bWireFrame;
 public:
     bool   CreateDevice();
     void   Init();

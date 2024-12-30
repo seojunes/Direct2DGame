@@ -6,7 +6,7 @@ ComPtr<ID3D11DeviceContext>     TDevice::m_pd3dContext = nullptr; // 운영,관리
 ComPtr<IDXGISwapChain>          TDevice::m_pSwapChain = nullptr;
 ComPtr<ID3D11RenderTargetView>  TDevice::m_pRTV = nullptr;
 D3D11_VIEWPORT			TDevice::m_MainVP;
-
+bool        TDevice::m_bWireFrame = false;
 bool   TDevice::CreateDevice()
 {
     D3D_FEATURE_LEVEL pFeatureLevel;
@@ -108,8 +108,15 @@ void   TDevice::PreRender()
     float ClearColor[] = { 1.0f, 0.0f,0.0f, 1.0f };
     m_pd3dContext->ClearRenderTargetView(m_pRTV.Get(), ClearColor);
     m_pd3dContext->PSSetSamplers(0, 1, TDxState::m_pLinearSS.GetAddressOf());
-    m_pd3dContext->OMSetBlendState(
-        TDxState::m_pAlphaBlend.Get(), 0, -1);
+    m_pd3dContext->OMSetBlendState(TDxState::m_pAlphaBlend.Get(), 0, -1);
+    if (!m_bWireFrame)
+    {
+        m_pd3dContext->RSSetState(TDxState::m_pRSSolid.Get());
+    }
+    else
+    {
+        m_pd3dContext->RSSetState(TDxState::m_pRSWireFrame.Get());
+    }
 }
 void   TDevice::Render()
 {
