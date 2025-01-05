@@ -8,7 +8,7 @@ void	TSound::Play(bool bLoop)
 	}
 	if (bPlay == false)
 	{
-		FMOD_RESULT hr = m_pSystem->playSound(m_pSound, nullptr, 
+		FMOD_RESULT hr = m_pSystem->playSound(m_pSound, nullptr,
 			false,
 			&m_pChannel);
 		if (hr == FMOD_OK)
@@ -24,9 +24,9 @@ void	TSound::Play(bool bLoop)
 }
 void	TSound::PlayEffect(bool bLoop)
 {
-	FMOD_RESULT hr =m_pSystem->playSound(m_pSound, nullptr,
-			false,
-			&m_pChannel);
+	FMOD_RESULT hr = m_pSystem->playSound(m_pSound, nullptr,
+		false,
+		&m_pChannel);
 	if (hr == FMOD_OK)
 	{
 		if (hr == FMOD_OK)
@@ -88,22 +88,22 @@ bool		TSound::Load(FMOD::System* pSystem, std::wstring filename)
 	FMOD_RESULT hr = m_pSystem->createSound(
 		to_wm(filename).c_str(),
 		FMOD_DEFAULT, 0,
-		&m_pSound);	
+		&m_pSound);
 	if (hr == FMOD_OK)
 	{
 		return true;
-	}	
+	}
 	return false;
 }
 void		TSound::Init()
 {
-		
+
 }
 void		TSound::Frame()
 {
 	m_pSystem->update();
 	unsigned int ms = 0;
-	unsigned int size = 0;		 
+	unsigned int size = 0;
 	m_pSound->getLength(&size, FMOD_TIMEUNIT_MS);
 	m_pChannel->getPosition(&ms, FMOD_TIMEUNIT_MS);
 
@@ -111,7 +111,7 @@ void		TSound::Frame()
 	_stprintf_s(szBuffer,
 		_T("전체시간[%02d:%02d]:경과시간[%02d:%02d]"),
 		size / 1000 / 60,
-		size / 1000 % 60,		
+		size / 1000 % 60,
 		ms / 1000 / 60,
 		ms / 1000 % 60);
 	m_csBuffer = szBuffer;
@@ -134,7 +134,7 @@ void		TSound::Release()
 		m_pSound = nullptr;
 	}
 
-	
+
 }
 void TSoundManager::Frame()
 {
@@ -169,9 +169,9 @@ TSound* TSoundManager::Load(std::wstring filename)
 	{
 		return data;
 	}
-	
+
 	TSound* pSound = new TSound(key);
-	
+
 	if (pSound->Load(m_pSystem, filename))
 	{
 		maplist.insert(std::make_pair(key, pSound));

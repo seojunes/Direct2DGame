@@ -19,14 +19,14 @@ bool		TTexture::Load(std::wstring filename)
 			//tga format    directx tk -> directx tex 
 			DX_CHECK(hr, _T(__FUNCTION__));
 			return false;
-		}		
-	}	
+		}
+	}
 	m_pTexture->GetDesc(&m_TexDesc);
 	return true;
 }
 void TTexture::Release()
 {
-	if(m_pTexture) m_pTexture->Release();
+	if (m_pTexture) m_pTexture->Release();
 	if (m_pTexSRV) m_pTexSRV->Release();
 	m_pTexture = nullptr;
 	m_pTexSRV = nullptr;

@@ -8,8 +8,6 @@ public:
 	virtual void	Transform(TVector2 vCamera) override;
 	virtual void    TransformCamera(TVector2 vCamera);
 	virtual void    TransformNDC();
-	virtual void    SetVertexData();
-	virtual void    SetIndexData();
 public:
 	TObject2D();
 	TObject2D(TVector2 p);

@@ -1,5 +1,10 @@
 #pragma once
 #include "TMapObj.h"
+#include "TCollisionManager.h"
+#include "TProjectile.h"
+
+//#include ""
+//#include "TCollision.h"
 
 enum class HeroState     // 그냥 enum을 사용할시에는 전역으로 사용되어서 충돌 가능성이 있다. 그래서 enum class사용해주는것이 안정적이다.
 {
@@ -14,6 +19,14 @@ enum HeroView
 	LeftView,
 };
 
+enum CollisionDirection
+{
+	None = 0,
+	Top,
+	Bottom,
+	Left,
+	Right,
+};
 
 class THeroObj : public TObject2D
 {
@@ -21,6 +34,7 @@ class THeroObj : public TObject2D
 	float invincibleTime = 0.0f; // 무적 시간
 	float blinkTimer = 0.0f;     // 깜빡임 타이머
 	//std::shared_ptr<HPBar> m_HeroHPdata;
+	std::shared_ptr<TProjectile>		m_pProjectile;
 	TMapObj* m_pMap = nullptr;
 	const int m_MaxJunp = 3;
 public:
@@ -31,7 +45,7 @@ public:
 	float m_fCurrentTime = 0.0f;      // 현재 프레임 지속 시간
 	float m_fFrameTime = 0.1f;        // 한 프레임당 지속 시간
 	bool m_bLoop = true;              // 반복 여부
-
+	
 public:
 	//void InitHero(UINT maxHP, float hpBarWidth, float hpBarHeight);
 	//void TakeDamage(UINT damage);
@@ -39,6 +53,7 @@ public:
 public:
 	HeroState m_CurrentState = HeroState::RightRun; // 초기 상태는 RightRun
 	HeroView m_CurrentView = HeroView::RightView;  // 초기 상태는 RightView
+	CollisionDirection m_CollisionDirection = CollisionDirection::None;
 
 public:
 	int m_iJumpingCount = 0;
@@ -46,7 +61,7 @@ public:
 	float m_fJumpSpeed = 400.0f;
 	float m_fVerticalSpeed = 0.0f;
 	float m_fGravity = 980.0f;
-	float m_fGroundY = 595.0f;
+	float m_fGroundY = 1800.0f;
 public:
 	std::vector <SRect> spriteData;
 	void SetData(vector<vector<RECT>> SpriteList);
@@ -56,6 +71,9 @@ public:
 	virtual void Frame() override;
 	virtual void SetVertexData();
 	void HitOverlap(TObject* pObj, THitResult hRes) override;
+	
+	
+	//void HandleCollision(); // 충돌 처리 함수
 	
 public:
 	/*void Update(float g_fGT);

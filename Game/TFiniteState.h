@@ -1,28 +1,6 @@
 #pragma once
 #include "TStd.h"
-// STATE_STAND -> EVENT_PATROL (시간경과)    -> STATE_MOVE
-// STATE_STAND -> EVENT_FINDTARGET(검색범위) -> STATE_ATTACK
-// STATE_MOVE  -> EVENT_STOP		->STATE_STAND
-// STATE_MOVE  -> EVENT_LOSTTARGET  ->STATE_STAND
-// STATE_MOVE  -> EVENT_FINDTARGET  ->STATE_ATTACK
-// STATE_ATTACK -> EVENT_LOSTTARGET ->STATE_STAND 
 
-enum T_ActionState
-{
-	STATE_STAND = 0,
-	STATE_MOVE,
-	STATE_ATTACK,
-	STATE_COUNT,
-};
-// 상태전이
-enum T_ActionEvent
-{
-	EVENT_FINDTARGET = 0,
-	EVENT_LOSTTARGET,
-	EVENT_STOP,
-	EVENT_PATROL,
-	EVENT_COUNT,
-};
 // 유한상태
 class TFiniteState
 {
@@ -38,6 +16,7 @@ public:
 	TFiniteState(UINT iState);
 	virtual ~TFiniteState();
 };
+
 class TFiniteStateMachine
 {
 public:
@@ -52,4 +31,7 @@ public:
 	TFiniteStateMachine();
 	virtual ~TFiniteStateMachine();
 };
+
+
+
 

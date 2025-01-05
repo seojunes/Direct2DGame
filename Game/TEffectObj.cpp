@@ -11,28 +11,25 @@ void TEffectObj::SetData(TEffectData data)
 	m_bLoop = m_Data.m_bLoop;
 	m_bDead = false;
 }
-
 void TEffectObj::Frame()
 {
-	//TVector2 s = ScreenToNDC(m_rtScreen.x, m_rtScreen.y, g_ptClientSize);
-	//TVector2 e = ScreenToNDC(m_rtScreen.x2,m_rtScreen.y2,g_ptClientSize);
-	////if (m_Data.m_iType == 0)
-	////{
-	////	e = ScreenToNDC(m_rtScreen.x + m_rtList[m_iAnimFrame].right, m_rtScreen.y + m_rtList[m_iAnimFrame].bottom, g_ptClientSize);
-	////	//이러면 texture 사이즈로 고정.
-	////}
-	//m_vVertexList[0].v = s;
-	//m_vVertexList[1].v = { e.x, s.y };
-	//m_vVertexList[2].v = { s.x, e.y };
-	//m_vVertexList[3].v = e;	
+	/*TVector2 s = ScreenToNDC(m_rtScreen.x, m_rtScreen.y,
+		g_ptClientSize);
+	TVector2 e = ScreenToNDC(m_rtScreen.x2,m_rtScreen.y2,
+		g_ptClientSize);
+	if (m_Data.m_iType == 0)
+	{
+		e = ScreenToNDC(m_rtScreen.x + m_rtList[m_iAnimFrame].right,
+						m_rtScreen.y + m_rtList[m_iAnimFrame].bottom, g_ptClientSize);
+	}
+	m_vVertexList[0].v = s;
+	m_vVertexList[1].v = { e.x, s.y };
+	m_vVertexList[2].v = { s.x, e.y };
+	m_vVertexList[3].v = e;	*/
 
 	m_fCurrentTime += g_fSPF;
 	m_fLifeTime -= g_fSPF;
-	//if (m_bLoop == false)
-	//{
 	if (m_fLifeTime <= 0.0f) m_bDead = true;
-	//}
-
 	if (m_fCurrentTime > m_fOffsetTime)
 	{
 		m_iAnimFrame++;
@@ -68,7 +65,6 @@ void TEffectObj::Frame()
 			m_rtList[m_iAnimFrame].top,
 			m_rtList[m_iAnimFrame].right,
 			m_rtList[m_iAnimFrame].bottom);
-
 
 		if (m_pTexture)
 		{

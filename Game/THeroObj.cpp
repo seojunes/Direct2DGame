@@ -1,10 +1,11 @@
 #include "THeroObj.h"
 #include "TDevice.h"
+#include "TWorld.h"
 
 void    THeroObj::HitOverlap(TObject* pObj, THitResult hRes)
 {
 
-} 
+}
 
 void THeroObj::SetData(vector<vector<RECT>> SpriteList)
 {
@@ -14,12 +15,31 @@ void THeroObj::SetData(vector<vector<RECT>> SpriteList)
 	m_rtJumpFrames = SpriteList[1];
 }
 
+//void THeroObj::HandleCollision() {
+//	m_CollisionDirection = CollisionDirection::None;
+//
+//	for (const auto& pair : m_pWorld->GetCollisionList()) {
+//		TObject* rect = pair.second; // pair.second가 실제 TObject*임
+//
+//		if (rect->m_iCollisionType == TCollisionType::T_Block &&
+//			TCollision::CheckRectToRect(this->m_rtScreen, rect->m_rtScreen)) {
+//
+//			// 충돌 방향 계산
+//			CollisionDirection dir = TCollision::DetectCollisionDirection(this->m_rtScreen, rect->m_rtScreen);
+//
+//			if (dir != CollisionDirection::None) {
+//				m_CollisionDirection = dir; // 충돌 방향 저장
+//				break; // 첫 번째 충돌만 처리
+//			}
+//		}
+//	}
+//}
 
 void THeroObj::Frame()
 {
 
 	TVector2 vAdd;
-	
+
 	// 점프효과 구현
 	if (m_bIsJumping)
 	{
@@ -27,12 +47,14 @@ void THeroObj::Frame()
 		m_vPos.y -= m_fVerticalSpeed * g_fSPF;
 		if (m_vPos.y >= m_fGroundY)
 		{
-			m_vPos.y = m_fGroundY;
+			//m_vPos.y = m_fGroundY;
 			m_bIsJumping = false;
 			m_fVerticalSpeed = 0.0f;
 			m_iJumpingCount = 0;
 		}
 	}
+
+
 
 	if (g_GameKey.dwWkey == KEY_PUSH && m_iJumpingCount < m_MaxJunp)//&& !m_bIsJumping)
 	{
@@ -96,24 +118,53 @@ void THeroObj::Frame()
 
 
 
-	
-	//if (g_GameKey.dwWkey == KEY_HOLD) m_rtScreen.y -= fSpeed * g_fSPF;
-	/*if (g_GameKey.dwSkey == KEY_HOLD)
-	{
-		m_vPos.y += m_fSpeed * g_fSPF;
-	}*/
-	if (g_GameKey.dwAkey == KEY_HOLD)
+	////if (g_GameKey.dwWkey == KEY_HOLD) m_rtScreen.y -= fSpeed * g_fSPF;
+	//if (g_GameKey.dwAkey == KEY_HOLD)
+	//{
+	//	vAdd.x -= m_fSpeed * g_fSPF;
+	//	m_CurrentState = HeroState::LeftRun; // LeftRun 상태 설정
+	//	m_CurrentView = HeroView::LeftView;  // 바라보는 방향 설정
+	//}
+	//if (g_GameKey.dwDkey == KEY_HOLD)
+	//{
+	//	vAdd.x += m_fSpeed * g_fSPF;
+	//	m_CurrentState = HeroState::RightRun; // RightRun 상태 설정
+	//	m_CurrentView = HeroView::RightView;  // 바라보는 방향 설정
+	//}
+
+	//if (g_GameKey.dwSkey == KEY_HOLD)
+	//{
+	//	m_vPos.y += m_fSpeed * g_fSPF;
+	//}
+
+	//if (g_GameKey.dwWkey == KEY_HOLD)
+	//{
+	//	m_vPos.y -= m_fSpeed * g_fSPF;
+	//	m_CurrentState = HeroState::RightRun; // RightRun 상태 설정
+	//	m_CurrentView = HeroView::RightView;  // 바라보는 방향 설정
+	//}
+	if (g_GameKey.dwAkey == KEY_HOLD && m_CollisionDirection != Left)
 	{
 		vAdd.x -= m_fSpeed * g_fSPF;
-		m_CurrentState = HeroState::LeftRun; // LeftRun 상태 설정
-		m_CurrentView = HeroView::LeftView;  // 바라보는 방향 설정
+		m_CurrentState = HeroState::LeftRun;
+		m_CurrentView = HeroView::LeftView;
 	}
-	if (g_GameKey.dwDkey == KEY_HOLD)
+	if (g_GameKey.dwDkey == KEY_HOLD && m_CollisionDirection != Right)
 	{
 		vAdd.x += m_fSpeed * g_fSPF;
-		m_CurrentState = HeroState::RightRun; // RightRun 상태 설정
-		m_CurrentView = HeroView::RightView;  // 바라보는 방향 설정
+		m_CurrentState = HeroState::RightRun;
+		m_CurrentView = HeroView::RightView;
 	}
+
+	// 위아래 이동
+	/*if (g_GameKey.dwWkey == KEY_HOLD && m_CollisionDirection != Top)
+	{
+		vAdd.y -= m_fSpeed * g_fSPF;
+	}
+	if (g_GameKey.dwSkey == KEY_HOLD && m_CollisionDirection != Bottom)
+	{
+		vAdd.y += m_fSpeed * g_fSPF;
+	}*/
 	AddPosition(vAdd);
 	SetVertexData();
 }
@@ -134,7 +185,7 @@ void THeroObj::SetVertexData()
 
 	float xSize = m_pTexture->m_TexDesc.Width;
 	float ySize = m_pTexture->m_TexDesc.Height;
-	
+
 	if (m_CurrentState == HeroState::RightRun)
 	{
 		m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
@@ -171,9 +222,9 @@ void THeroObj::SetVertexData()
 			m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
 		}
 	}
-	
 
-	
+
+
 	//좌우걷기
 	//if (m_CurrentState == RightRun)
 	//{

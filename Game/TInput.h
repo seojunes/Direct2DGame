@@ -1,6 +1,5 @@
 #pragma once
 #include "TStd.h"
-
 // 1번 윈도우 메시지
 // 2번 윈도우 API(함수)
 

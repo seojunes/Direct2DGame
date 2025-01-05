@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="TEffectObj.cpp" />
+    <ClCompile Include="THeroObj.cpp" />
+    <ClCompile Include="TMapObj.cpp" />
+    <ClCompile Include="TNpcObj.cpp" />
+    <ClCompile Include="TWorld.cpp" />
+    <ClCompile Include="TInput.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="TInputLayout.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="TGameCore.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="TDevice.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="TDxState.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="TDxWrite.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="TObject.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="TObject2D.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="TSound.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="TTexture.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="TTime.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="TWindow.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="TVector.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="TVertex.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="TMatrix.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="TMeshRender.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="TShader.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="TCollision.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="TCollisionManager.cpp" />
+    <ClCompile Include="THeroFSM.cpp" />
+    <ClCompile Include="TScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TGame.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TSceneGameIn.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TSceneIntro.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TSceneLobby.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TSceneResult.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TEnemyFSM.cpp">
+      <Filter>FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="TFiniteState.cpp">
+      <Filter>FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="TControlGUI.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="TGuiFSM.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="TProjectile.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Sample.h" />
+    <ClInclude Include="TEffectObj.h" />
+    <ClInclude Include="THeroObj.h" />
+    <ClInclude Include="TMapObj.h" />
+    <ClInclude Include="TNpcObj.h" />
+    <ClInclude Include="TWorld.h" />
+    <ClInclude Include="..\..\data\shader\stdShader.h">
+      <Filter>shader</Filter>
+    </ClInclude>
+    <ClInclude Include="TInput.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="TInputLayout.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="TGameCore.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="TDevice.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="TDxState.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="TDxWrite.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="TObject.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="TObject2D.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="TSound.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="TStd.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="TTexture.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="TTime.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="TWindow.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="TVertex.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="TVector.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="TMatrix.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="TMeshRender.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="TShader.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="TCollision.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="THeroFSM.h" />
+    <ClInclude Include="TScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TGame.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TSceneGameIn.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TSceneIntro.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TSceneLobby.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TSceneResult.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TEnemyFSM.h">
+      <Filter>FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="TFiniteState.h">
+      <Filter>FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="TControlGUI.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="TGuiFSM.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="TProjectile.h" />
+    <ClInclude Include="TCollisionManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="SpriteData.txt" />
+    <Text Include="..\..\data\shader\BlendMask.txt">
+      <Filter>shader</Filter>
+    </Text>
+    <Text Include="..\..\data\shader\Default.txt">
+      <Filter>shader</Filter>
+    </Text>
+    <Text Include="..\..\data\shader\DefaultBlack.txt">
+      <Filter>shader</Filter>
+    </Text>
+    <Text Include="..\..\data\shader\DefaultMask.txt">
+      <Filter>shader</Filter>
+    </Text>
+    <Text Include="VertexShader.txt">
+      <Filter>shader</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{9941083b-f72e-489b-a506-1b31991fe78a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shader">
+      <UniqueIdentifier>{0778c1a4-9f0d-4ac5-8f24-d13c039a28f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math">
+      <UniqueIdentifier>{66ded35c-d8c6-405c-9324-dee713ea2bfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{92410db6-d761-4fbe-82b4-d452b2d75fa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{1bb9bb74-ea3f-4564-9af1-00a90313579d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM">
+      <UniqueIdentifier>{a03612dd-5cf2-45f2-ae49-87ebcc743c23}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

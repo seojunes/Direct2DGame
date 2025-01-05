@@ -41,43 +41,6 @@ void    TObject2D::TransformCamera(TVector2 vCamera)
 		m_vVertexList[i].v = c;
 	}
 }
-void    TObject2D::SetVertexData()
-{
-	//// Á¤±ÔÈ­ÀåÄ¡(NDC)ÁÂÇ¥°è(x,y)	
-	//// v0:-1,1     0,1          v1:1, 1
-	////    -1,0     0,0          1, 0
-	//// v2:1,-1     0,-1         v3:1,-1
-	//// È­¸éÁÂÇ¥°è  <-> º¯È¯  <-> Á÷°¢ÁÂÇ¥°è
-	//// Á÷°¢ÁÂÇ¥°è  <-> º¯È¯  <-> NDCÁÂÇ¥°è
-	//// NDCÁÂÇ¥°è  <-> º¯È¯  <-> Á÷°¢ÁÂÇ¥°è
-	//m_vScreenList.resize(4);
-	//m_vScreenList[0] = { m_rtScreen.x, m_rtScreen.y };
-	//m_vScreenList[1] = { m_rtScreen.x + m_rtScreen.w, m_rtScreen.y };
-	//m_vScreenList[2] = { m_rtScreen.x, m_rtScreen.y + m_rtScreen.h };
-	//m_vScreenList[3] = { m_rtScreen.x + m_rtScreen.w, m_rtScreen.y + m_rtScreen.h };
-	//
-	//m_vVertexList.resize(4);
-	//TVector2 s = m_vScreenList[0];
-	//TVector2 t = m_vScreenList[2];	
-	//m_vVertexList[0].v = s;
-	//m_vVertexList[1].v = { t.x, s.y };
-	//m_vVertexList[2].v = { s.x, t.y };
-	//m_vVertexList[3].v = t;
-
-	//m_vVertexList[0].c = { 1.0f,0.0f,0.0f,1.0f };
-	//m_vVertexList[1].c = { 0.0f,1.0f,0.0f,1.0f };
-	//m_vVertexList[2].c = { 0.0f,0.0f,1.0f,1.0f };
-	//m_vVertexList[3].c = { 1.0f,1.0f,1.0f,1.0f };
-
-	//m_vVertexList[0].t = { 0.0f,0.0f };
-	//m_vVertexList[1].t = { 1.0f,0.0f };
-	//m_vVertexList[2].t = { 0.0f,1.0f };
-	//m_vVertexList[3].t = { 1.0f,1.0f };
-}
-void    TObject2D::SetIndexData()
-{
-
-}
 
 TObject2D::TObject2D()
 {

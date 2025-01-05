@@ -24,7 +24,7 @@ void   TGameCore::CoreInit()
         I_InputLayout.Init(I_Shader.g_pDefaultShader->m_pCode.Get());
     }
     TLoadResData data;
-    data.texPathName = L"../../data/texture/Title_logo.png";
+    data.texPathName = L"../../data/texture/white.png";
     data.texShaderName = L"../../data/shader/DefaultMask.txt";
     m_MeshRender.Create(data);
     Init();

@@ -2,7 +2,6 @@
 #include "TObject2D.h"
 struct TEffectData
 {
-	
 	std::vector<RECT>   m_rtList;
 	std::vector<T_STR>   m_szList;
 	UINT			    m_iNumAnimFrame = 0;
@@ -11,11 +10,12 @@ struct TEffectData
 	bool			    m_bLoop = false;
 	UINT				m_iType = 0;
 };
-class TEffectObj :   public TObject2D
+class TEffectObj : public TObject2D
 {
-	TTexture*		m_pCurrentTexture = nullptr;
+public:
+	TTexture* m_pCurrentTexture = nullptr;
 	TEffectData		m_Data;// 초기데이터
-public:	
+public:
 	std::vector<RECT>   m_rtList;
 	UINT			m_iNumAnimFrame = 0;
 	UINT			m_iAnimFrame = 0;

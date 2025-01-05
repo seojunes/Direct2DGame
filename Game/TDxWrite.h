@@ -10,10 +10,10 @@
 class TDxWrite
 {
 public:
-	ID2D1Factory*		m_pd2dFactory = nullptr;
-	ID2D1RenderTarget*  m_pd2dRT = nullptr;
-	IDWriteFactory*		m_pDxWrite = nullptr;
-	IDWriteTextFormat*  m_pTextFormat20 = nullptr;
+	ID2D1Factory* m_pd2dFactory = nullptr;
+	ID2D1RenderTarget* m_pd2dRT = nullptr;
+	IDWriteFactory* m_pDxWrite = nullptr;
+	IDWriteTextFormat* m_pTextFormat20 = nullptr;
 	IDWriteTextFormat* m_pTextFormat50 = nullptr;
 	ID2D1SolidColorBrush* m_pColorBrush = nullptr;
 	std::list<std::wstring>	m_msgList;
@@ -26,9 +26,9 @@ public:
 	virtual void   PreRender();
 	virtual void   Render();
 	virtual void   DirectDraw(D2D1_RECT_F layoutRect,
-					  std::wstring msg, D2D1::ColorF Color = D2D1::ColorF(1, 0, 0, 1));
+		std::wstring msg, D2D1::ColorF Color = D2D1::ColorF(1, 0, 0, 1));
 	void   Draw(D2D1_RECT_F layoutRect, std::wstring msg,
-				D2D1::ColorF Color= D2D1::ColorF(1, 1, 1, 1));
+		D2D1::ColorF Color = D2D1::ColorF(1, 1, 1, 1));
 	virtual void   PostRender();
 	virtual void   Release();
 };

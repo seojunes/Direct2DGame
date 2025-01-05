@@ -42,6 +42,7 @@ public:
 	virtual void	PreRender()override;
 	virtual void	Render()override;
 	void PostRender() override;
+
 public:
 	TMapObj(UINT iCellX, UINT iCellY);
 	TMapObj(TRect rt, UINT iCellX, UINT iCellY);

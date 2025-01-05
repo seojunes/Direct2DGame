@@ -7,8 +7,8 @@ class TSound
 {
 	std::wstring m_csName;
 public:
-	FMOD::System*  m_pSystem = nullptr;
-	FMOD::Sound*   m_pSound = nullptr;
+	FMOD::System* m_pSystem = nullptr;
+	FMOD::Sound* m_pSound = nullptr;
 	FMOD::Channel* m_pChannel = nullptr;
 
 	float  m_fVolume = 0.5f;
@@ -21,8 +21,8 @@ public:
 	void	VolumeUp(float fVolume);
 	void	VolumeDown(float fVolume);
 public:
-	virtual bool		Load(  FMOD::System* pSystem,
-								std::wstring filename);
+	virtual bool		Load(FMOD::System* pSystem,
+		std::wstring filename);
 	virtual void		Init();
 	virtual void		Frame();
 	virtual void		Render();
@@ -42,7 +42,7 @@ public:
 	{
 		static TSoundManager mgr;
 		return mgr;
-	}	
+	}
 	TSound* Load(std::wstring filename);
 	TSound* GetPtr(std::wstring key);
 	std::wstring SplitPath(std::wstring file);

@@ -6,7 +6,7 @@ struct TLoadResData
 {
 	std::wstring texPathName;
 	std::wstring texShaderName;
-
+	std::wstring texStateList[4];
 };
 class TMeshRender
 {

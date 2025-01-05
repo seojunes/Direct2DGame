@@ -1,6 +1,5 @@
 #pragma once
 #include "TMatrix.h"
-
 class TObject;
 enum TCollisionType
 {
@@ -9,13 +8,21 @@ enum TCollisionType
 	T_Ignore,  // ¹«½Ã
 };
 
+//enum CollisionDirection
+//{
+//	None = 0,
+//	Top,
+//	Bottom,
+//	Left,
+//	Right,
+//};
 struct THitResult
 {
 	TObject* pObject;
 	TVector2 vPos;
 	TVector2 vDir;
+	UINT     iState;
 };
-
 struct PRect;
 
 struct SRect
@@ -106,5 +113,6 @@ public:
 	static bool CheckSphereToPoint(TSphere& s, TVector2 p);
 	static bool CheckSphereToSphere(TSphere& rt1, TSphere rt2);
 	static bool CheckRectToPoint(TRect& rt, TVector2 pt);
+	/*static CollisionDirection DetectCollisionDirection(const TRect& heroRect, const TRect& rectBox);*/
 };
 

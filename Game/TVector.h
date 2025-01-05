@@ -23,6 +23,7 @@ public:
 	float  Length();
 	void   Normalize();
 	TVector2   Normal();
+	
 public:
 	TVector2();
 	TVector2(float x, float y);

@@ -2,11 +2,14 @@
 #include "TCollision.h"
 #include "TMeshRender.h"
 class TWorld;
+
 class TObject
 {
 public:
 	TMeshRender* m_pMeshRender = nullptr;
 	UINT			m_iCollisionID;
+	UINT			m_iSelectID;
+	UINT			m_iSelectState = 0;
 	TWorld* m_pWorld = nullptr;
 	TCollisionType	m_iCollisionType = TCollisionType::T_Ignore;
 public:
@@ -16,9 +19,11 @@ public:
 	TMatrix3   m_matWorld; // s * r * t
 	TVector2   m_vScale = { 1.0f, 1.0f };
 	float      m_fAngleRadian = 0.0f;
+	TVector2   m_vCamera;
 	TVector2		m_vPos;
 	TVector2		m_vDir;
 	float			m_fSpeed;
+	float			m_fAlpha = 0.0f;
 	bool			m_bDead = false;
 	TRect			m_rtScreen;
 	TSphere			m_Sphere;
@@ -28,7 +33,12 @@ public:
 	std::vector<TVector2>		m_vScreenList;
 	std::vector<PCT_VERTEX>		m_vVertexList;
 public:
+	virtual void	FadeIn(float fAlpha);
+	virtual void	FadeOut(float fAlpha);
+	virtual void	Fade();
+public:
 	virtual void SetScale(float sx, float sy);
+	virtual void SetScale(TVector2 s);
 	virtual void SetRotation(float fRadian);
 	virtual void SetPosition(TVector2 p);
 	virtual void AddPosition(float x, float y);
@@ -60,6 +70,7 @@ public:
 	virtual void	Release();
 public:
 	virtual void    HitOverlap(TObject* pObj, THitResult hRet);
+	virtual void    HitSelect(TObject* pObj, THitResult hRet);
 public:
 	TObject();
 	virtual ~TObject();

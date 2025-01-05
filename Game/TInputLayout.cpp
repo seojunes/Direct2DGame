@@ -2,10 +2,10 @@
 #include "TDevice.h"
 TInputLayout* TTInputLayoutManager::g_pInputLayout = nullptr;
 
-bool		TInputLayout::Load(ID3DBlob* pCode, 
-								D3D11_INPUT_ELEMENT_DESC layout[],
-								UINT szNumCounter)
-{	
+bool		TInputLayout::Load(ID3DBlob* pCode,
+	D3D11_INPUT_ELEMENT_DESC layout[],
+	UINT szNumCounter)
+{
 	if (pCode == nullptr)
 	{
 		return true;
@@ -28,7 +28,7 @@ ID3D11InputLayout* TInputLayout::Get()
 	return m_pInputLayout.Get();
 }
 void TInputLayout::Release()
-{	
+{
 	m_pInputLayout = nullptr;
 }
 void     TTInputLayoutManager::Init(ID3DBlob* pCode)
@@ -43,10 +43,10 @@ void     TTInputLayoutManager::Init(ID3DBlob* pCode)
 	UINT  iNumCnt = sizeof(layout) / sizeof(layout[0]);
 	g_pInputLayout = Load(pCode, layout, iNumCnt, L"PCT");
 }
-TInputLayout* TTInputLayoutManager::Load(ID3DBlob* pCode, 
-									D3D11_INPUT_ELEMENT_DESC layout[],
-									UINT szNumCounter,
-									std::wstring key)
+TInputLayout* TTInputLayoutManager::Load(ID3DBlob* pCode,
+	D3D11_INPUT_ELEMENT_DESC layout[],
+	UINT szNumCounter,
+	std::wstring key)
 {
 	auto data = GetPtr(key);
 	if (data != nullptr)

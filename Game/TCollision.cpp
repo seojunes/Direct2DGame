@@ -86,3 +86,32 @@ bool TCollision::CheckSphereToSphere(TSphere& s, TSphere t)
 	}
 	return false;
 }
+
+//CollisionDirection TCollision::DetectCollisionDirection(const TRect& heroRect, const TRect& rectBox) {
+//	float overlapLeft = heroRect.v2.x - rectBox.v1.x;  // 왼쪽 겹침
+//	float overlapRight = rectBox.v2.x - heroRect.v1.x; // 오른쪽 겹침
+//	float overlapTop = heroRect.v2.y - rectBox.v1.y;   // 위쪽 겹침
+//	float overlapBottom = rectBox.v2.y - heroRect.v1.y; // 아래쪽 겹침
+//
+//	// 최소 겹침 방향 판별
+//	float minOverlap = min( overlapLeft, overlapRight, overlapTop, overlapBottom );
+//
+//	if (minOverlap == overlapBottom) 
+//	{
+//		return CollisionDirection::Bottom; // 바닥 충돌
+//	}
+//	else if (minOverlap == overlapTop) 
+//	{
+//		return CollisionDirection::Top; // 위 충돌
+//	}
+//	else if (minOverlap == overlapLeft) 
+//	{
+//		return CollisionDirection::Left; // 왼쪽 충돌
+//	}
+//	else if (minOverlap == overlapRight) 
+//	{
+//		return CollisionDirection::Right; // 오른쪽 충돌
+//	}
+//
+//	return CollisionDirection::None;
+//}

@@ -4,87 +4,8 @@ struct TCollisionInfo
 {
 
 };
-TEnemyState::TEnemyState(TNpcObj* p) : m_pOwner(p) {
+std::vector<std::shared_ptr<TEnemyState>> TNpcObj::m_pActionList;
 
-}
-TEnemyState::~TEnemyState() {}
-TStandAction::TStandAction(TNpcObj* p) : TEnemyState(p) {
-	m_iEnemyState = 0;
-}
-TStandAction::~TStandAction() {}
-TMoveAction::TMoveAction(TNpcObj* p) : TEnemyState(p) {
-	m_iEnemyState = 1;
-}
-TMoveAction::~TMoveAction() {}
-
-TAttackAction::TAttackAction(TNpcObj* p) : TEnemyState(p) {
-	m_iEnemyState = 2;
-}
-TAttackAction::~TAttackAction() {}
-
-void TStandAction::ProcessAction(TObject* pObj)
-{
-	m_fTimer += g_fSPF;
-	if (m_fTimer > 3.0f)
-	{
-		m_fTimer = 0.0f;
-		m_pOwner->SetTransition(T_ActionEvent::EVENT_PATROL);
-	}
-	m_pOwner->SetRotation(0);
-}
-void TMoveAction::ProcessAction(TObject* pObj)
-{
-	// 공격범위 판단 -> 상태전이
-	// 고격범위 탈출 -> 상태전이
-	float fDistance = (pObj->m_vPos - m_pOwner->m_vPos).Length();
-	if (fDistance < 100.0f)
-	{
-		m_fTimer = 0.0f;
-		m_pOwner->SetTransition(T_ActionEvent::EVENT_FINDTARGET);
-		return;
-	}
-	/*m_pOwner->SetTransition(T_ActionEvent::EVENT_LOSTTARGET);
-	return;
-
-	m_fTimer += g_fSPF;
-	if (m_fTimer > 5.0f)
-	{
-		m_fTimer = 0.0f;
-		m_pOwner->SetTransition(T_ActionEvent::EVENT_STOP);
-		return;
-	}	*/
-	// v = v + d*s : 직선의 벡터의 방정식
-	TVector2 vMove = m_pOwner->m_vPos +
-		m_pOwner->m_vDir * (g_fSPF * m_pOwner->m_fSpeed);
-	m_pOwner->SetPosition(vMove);
-	m_pOwner->SetRotation(T_Pi);
-}
-void TAttackAction::ProcessAction(TObject* pObj)
-{
-	// 공격범위 판단 -> 상태전이
-	// 고격범위 탈출 -> 상태전이
-	m_fTimer += g_fSPF;
-	if (m_fTimer > 10.0f)
-	{
-		m_fTimer = 0.0f;
-		m_pOwner->SetTransition(T_ActionEvent::EVENT_STOP);
-		return;
-	}
-	float fDistance = (pObj->m_vPos - m_pOwner->m_vPos).Length();
-	if (fDistance > 100.0f)
-	{
-		m_fTimer = 0.0f;
-		m_pOwner->SetTransition(T_ActionEvent::EVENT_LOSTTARGET);
-		return;
-	}
-
-	TVector2 vDir = (pObj->m_vPos - m_pOwner->m_vPos);
-	m_pOwner->m_vDir = vDir.Normal();
-	TVector2 vMove = m_pOwner->m_vPos +
-		m_pOwner->m_vDir * (g_fSPF * m_pOwner->m_fSpeed);
-	m_pOwner->SetPosition(vMove);
-	m_pOwner->SetRotation(g_fGT);
-}
 void    TNpcObj::HitOverlap(TObject* pObj, THitResult hRet)
 {
 	//m_bDead = true;
@@ -112,11 +33,9 @@ void TNpcObj::Frame()
 		m_vPos.y = m_pMap->m_rtScreen.v1.y + m_rtScreen.vh.y;
 	}
 }
-
 void TNpcObj::SetVertexData()
 {
 	if (m_pTexture == nullptr) return;
-	TObject2D::SetVertexData();
 	float xSize = m_pTexture->m_TexDesc.Width;
 	float ySize = m_pTexture->m_TexDesc.Height;
 	TRect rt;
@@ -125,4 +44,44 @@ void TNpcObj::SetVertexData()
 	m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
 	m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
 	m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
+}
+void TNpcObj::SetFSM(TFiniteStateMachine* pFsm)
+{
+	m_pFsm = pFsm;
+	m_StateData.resize(TActionState::STATE_COUNT);
+	m_StateData[TActionState::STATE_STAND].m_fTimer = 3.0f;
+	m_StateData[TActionState::STATE_STAND].m_fDefaultTimer = 3.0f;
+	m_StateData[TActionState::STATE_STAND].m_fDistance = 100.0f;
+	m_StateData[TActionState::STATE_MOVE].m_fTimer = 3.0f;
+	m_StateData[TActionState::STATE_MOVE].m_fDefaultTimer = 3.0f;
+	m_StateData[TActionState::STATE_MOVE].m_fDistance = 100.0f;
+	m_StateData[TActionState::STATE_ATTACK].m_fTimer = 3.0f;
+	m_StateData[TActionState::STATE_ATTACK].m_fDefaultTimer = 3.0f;
+	m_StateData[TActionState::STATE_ATTACK].m_fDistance = 100.0f;
+	m_pAction = m_pActionList[0].get();
+}
+void TNpcObj::CreateActionFSM()
+{
+	if (m_pActionList.size()) return;
+	std::shared_ptr<TEnemyState> stand =
+		std::make_shared<TStandAction>();
+	std::shared_ptr<TEnemyState> move =
+		std::make_shared<TMoveAction>();
+	std::shared_ptr<TEnemyState> attack =
+		std::make_shared<TAttackAction>();
+	m_pActionList.emplace_back(stand);
+	m_pActionList.emplace_back(move);
+	m_pActionList.emplace_back(attack);
+}
+void TNpcObj::SetTransition(UINT iEvent)
+{
+	_ASSERT(m_pFsm);
+	UINT iOutput = m_pFsm->GetOutputState(
+		m_pAction->m_iState, iEvent);
+	m_pAction = m_pActionList[iOutput].get();
+}
+void TNpcObj::FrameState(TObject* pHero)
+{
+	m_pAction->m_pOwner = this;
+	m_pAction->ProcessAction(pHero);
 }

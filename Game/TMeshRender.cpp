@@ -137,10 +137,10 @@ void    TMeshRender::SetVertexData()
 	m_vVertexList[2].v = { s.x, t.y };
 	m_vVertexList[3].v = t;
 
-	m_vVertexList[0].c = { 1.0f,0.0f,0.0f,1.0f };
-	m_vVertexList[1].c = { 1.0f,0.0f,0.0f,1.0f };
-	m_vVertexList[2].c = { 1.0f,0.0f,0.0f,1.0f };
-	m_vVertexList[3].c = { 1.0f,0.0f,0.0f,1.0f };
+	m_vVertexList[0].c = { 1.0f,1.0f,1.0f,1.0f };
+	m_vVertexList[1].c = { 1.0f,1.0f,1.0f,1.0f };
+	m_vVertexList[2].c = { 1.0f,1.0f,1.0f,1.0f };
+	m_vVertexList[3].c = { 1.0f,1.0f,1.0f,1.0f };
 
 	m_vVertexList[0].t = { 0.0f,0.0f };
 	m_vVertexList[1].t = { 1.0f,0.0f };

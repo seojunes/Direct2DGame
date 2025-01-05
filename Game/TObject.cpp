@@ -3,8 +3,32 @@
 #include "TWorld.h"
 void    TObject::HitOverlap(TObject* pObj, THitResult hRet)
 {
-
 };
+void    TObject::HitSelect(TObject* pObj, THitResult hRet)
+{
+}
+void    TObject::FadeIn(float fAlpha)
+{
+	for (auto& data : m_vVertexList)
+	{
+		data.c.w = m_fAlpha + fAlpha;
+	}
+}
+void    TObject::FadeOut(float fAlpha)
+{
+	for (auto& data : m_vVertexList)
+	{
+		data.c.w = m_fAlpha - fAlpha;
+	}
+}
+void    TObject::Fade()
+{
+	for (auto& data : m_vVertexList)
+	{
+		data.c.w = m_fAlpha;
+	}
+}
+
 void TObject::SetScale(float sx, float sy)
 {
 	m_vScale.x = sx;
@@ -13,6 +37,10 @@ void TObject::SetScale(float sx, float sy)
 	m_rtScreen.Size(m_vScale * 2.0f);
 	m_Sphere.vCenter = m_rtScreen.vc;
 	m_Sphere.fRadius = m_rtScreen.fR;
+}
+void TObject::SetScale(TVector2 s)
+{
+	SetScale(s.x, s.y);
 }
 void TObject::SetRotation(float fRadian)
 {
@@ -63,6 +91,7 @@ void	TObject::Frame()
 {}
 void	TObject::Transform(TVector2 vCamera)
 {
+	m_vCamera = vCamera;
 	m_matWorld = m_matScale * m_matRotate * m_matTrans;
 	for (int i = 0; i < m_vScreenList.size(); i++)
 	{
@@ -134,6 +163,7 @@ bool	TObject::CreatePixelShader()
 bool	TObject::Create(TWorld* pWorld)
 {
 	m_pWorld = pWorld;
+	Init();
 	SetVertexData();
 	/*if (!CreateVertexBuffer())
 	{
@@ -187,6 +217,11 @@ bool	TObject::Create(TWorld* pWorld, TLoadResData data,
 
 	m_vVertexList.resize(4);
 	m_vScreenList.resize(4);
+
+	if (m_pMeshRender)
+	{
+		m_vVertexList = m_pMeshRender->m_vVertexList;
+	}
 
 	if (!LoadTexture(m_LoadResData.texPathName))
 	{

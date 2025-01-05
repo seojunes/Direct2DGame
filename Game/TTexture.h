@@ -19,7 +19,7 @@ public:
 };
 
 class TTextureManager
-{	
+{
 public:
 
 	// ΩÃ±€≈Ê ∆–≈œ

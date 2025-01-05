@@ -70,15 +70,29 @@ float  TVector2::Length()
 }
 void   TVector2::Normalize()
 {
-	float fInvertLength = 1.0f / Length();
-	x *= fInvertLength;
-	y *= fInvertLength;
-	//Length() == 1.0f
+	if (Length() > 0.0f) 
+	{
+		float fInvertLength = 1.0f / Length();
+		x *= fInvertLength;
+		y *= fInvertLength;
+	}
+	else
+	{
+		x = 0.0f;
+		y = 0.0f; 
+	}
 }
 TVector2   TVector2::Normal()
 {
-	float fInvertLength = 1.0f / Length();
-	return TVector2(x * fInvertLength, y * fInvertLength);
+	if (Length() != 0)
+	{
+		float fInvertLength = 1.0f / Length();
+		return TVector2(x * fInvertLength, y * fInvertLength);
+	}	
+	else
+	{
+		return TVector2(0, 0);
+	}	
 }
 
 TVector2::TVector2()
