@@ -5,6 +5,7 @@
 #include "TNpcObj.h"
 #include "TControlGUI.h"
 #include "TProjectile.h"
+#include "TMonster1.h"
 
 class TScene;
 using CollisionFunction = std::function<void(TObject*, THitResult)>;

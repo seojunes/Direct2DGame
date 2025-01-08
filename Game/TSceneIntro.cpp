@@ -36,7 +36,7 @@ void TSceneIntro::ProcessAction(TObject* pObj)
     if (m_bLoadNextScene == true)
     {
         m_pOwner->SetTransition(TSceneEvent::EVENT_NEXT_SCENE);
-        TScene::m_pSound->Stop();
+        //TScene::m_pSound->Stop();
         m_bNextScene = false;
         m_bLoadNextScene = false;
         return;
@@ -47,7 +47,7 @@ void   TSceneIntro::Init()
 {
     TSoundManager::GetInstance().Frame();
     TScene::CreateSound();
-    TScene::m_pSound->Play();
+    TScene::m_pSound->PlayEffect();
     TButtonGUI::CreateActionFSM();
     m_pWorld = std::make_shared<TWorld>(this);
     m_GuiFSM.AddStateTransition(T_DEFAULT, EVENT_SELECT, T_HOVER);

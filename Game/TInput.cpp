@@ -41,11 +41,18 @@ void    TInput::Frame()
 	g_GameKey.dwSkey = KeyCheck('S');
 	g_GameKey.dwAkey = KeyCheck('A');
 	g_GameKey.dwDkey = KeyCheck('D');
+	g_GameKey.dwPkey = KeyCheck('P');
 	g_GameKey.dwLeftClick = KeyCheck(VK_LBUTTON);
 	g_GameKey.dwRightClick = KeyCheck(VK_RBUTTON);
 	g_GameKey.dwMiddleClick = KeyCheck(VK_MBUTTON);
 	g_GameKey.dwExit = KeyCheck(VK_ESCAPE);
 	g_GameKey.dwSpace = KeyCheck(VK_SPACE);
+	g_GameKey.dwLeftbutton = KeyCheck(VK_LEFT);
+	g_GameKey.dwRightbutton = KeyCheck(VK_RIGHT);
+	g_GameKey.dwUpbutton = KeyCheck(VK_UP);
+	g_GameKey.dwDownbutton = KeyCheck(VK_DOWN);
+
+
 
 #ifdef _DEBUG
 	m_szTime = std::to_wstring(m_ptMouse.x);

@@ -16,7 +16,7 @@ class TEnemyFSM : public TFiniteStateMachine
 class TNpcObj : public TObject2D
 {
 public:
-	int m_HP = 20;
+	INT m_HP = 20;
 	TMapObj* m_pMap = nullptr;
 	TEnemyState* m_pAction = nullptr;
 	std::vector<TStateData>   m_StateData;

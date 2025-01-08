@@ -1,5 +1,12 @@
 #pragma once
 #include "TScene.h"
+
+enum class Debug
+{
+	Normal = 0,
+	Debug,
+};
+
 class TNextBtn : public TButtonGUI
 {
 public:
@@ -83,5 +90,7 @@ public:
 	bool CreateEffect();
 	bool CreateUI();
 	TVector2 GetWorldMousePos();
+public:
+	Debug m_Debug = Debug::Debug;
 };
 

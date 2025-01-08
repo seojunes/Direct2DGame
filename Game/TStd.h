@@ -64,11 +64,16 @@ struct TGameKey
     DWORD dwSkey;
     DWORD dwAkey;
     DWORD dwDkey;
+    DWORD dwPkey;
     DWORD dwLeftClick;
     DWORD dwRightClick;
     DWORD dwMiddleClick;
     DWORD dwExit;
     DWORD dwSpace;
+    DWORD dwLeftbutton;
+    DWORD dwRightbutton;
+    DWORD dwDownbutton;
+    DWORD dwUpbutton;
 };
 
 enum { KEY_FREE = 0, KEY_PUSH, KEY_HOLD, KEY_UP };

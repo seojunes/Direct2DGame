@@ -188,10 +188,16 @@ bool TSceneGameIn::CreateRect()
 
 bool TSceneGameIn::CreateNPC()
 {
-	Mon1Area = { {{1400.0f,500.0f},{1442.0f,560.0f}},
-		{{1700.0f,500.0f},{1742.0f,560.0f}},
-		{{800.0f,500.0f},{842.0f,560.0f}},
-		{{1100.0f,500.0f},{1142.0f,560.0f}},
+	Mon1Area = { {{1400.0f,600.0f},{1442.0f,660.0f}},
+		{{1700.0f,600.0f},{1742.0f,660.0f}},
+		{{800.0f,600.0f},{842.0f,660.0f}},
+		{{1100.0f,600.0f},{1142.0f,660.0f}},
+	};
+	Mon2Area = { {{2000.0f,600.0f},{2042.0f,660.0f}},
+		{{2700.0f,600.0f},{2742.0f,660.0f}},
+	};
+	Mon3Area = { {{3000.0f,600.0f},{3042.0f,660.0f}},
+		{{3700.0f,600.0f},{3742.0f,660.0f}},
 	};
 	TNpcObj::CreateActionFSM();
 	// npc
@@ -200,40 +206,56 @@ bool TSceneGameIn::CreateNPC()
 	{
 		TVector2 tStart = area.first;
 		TVector2 tEnd = area.second;
-		auto npcobj = std::make_shared<TNpcObj>();
-		npcobj->m_pMeshRender = &TGameCore::m_MeshRender;
-		npcobj->SetMap(m_pMap.get());
-		npcobj->SetFSM(&m_fsm);
+		auto npcobj1 = std::make_shared<TMonster1>();
+		npcobj1->m_pMeshRender = &TGameCore::m_MeshRender;
+		npcobj1->SetMap(m_pMap.get());
+		npcobj1->SetFSM(&m_fsm);
 		TLoadResData resData;
-		resData.texPathName = L"../../data/texture/bitmap1.bmp";
-		resData.texShaderName = L"../../data/shader/BlendMask.txt";
-		if (npcobj->Create(m_pWorld.get(), resData, tStart, tEnd))
+		resData.texPathName = L"../../data/texture/monster.png";
+		resData.texShaderName = L"../../data/shader/Default.txt";
+		if (npcobj1->Create(m_pWorld.get(), resData, tStart, tEnd))
 		{
-			npcobj->m_fSpeed = 50.0f + (rand() % 200);
-			npcobj->m_iCollisionType = TCollisionType::T_Overlap;
-			m_NpcList.emplace_back(npcobj);
+			//npcobj1->m_fSpeed = 50.0f + (rand() % 200);
+			npcobj1->m_iCollisionType = TCollisionType::T_Overlap;
+			m_NpcList.emplace_back(npcobj1);
 		}
 	}
-	//for (int iNpc = 0; iNpc < m_Npccount; iNpc++)
-	//{
-	//	auto npcobj = std::make_shared<TNpcObj>();
-	//	npcobj->m_pMeshRender = &TGameCore::m_MeshRender;
-	//	npcobj->SetMap(m_pMap.get());
-	//	npcobj->SetFSM(&m_fsm);
-	//	TVector2 vStart(1400.0f, 500.0f);
-	//		/*rtWorldMap.v1.x + (rand() % (UINT)(rtWorldMap.vs.x - 100.0f)),
-	//		rtWorldMap.v1.y + (rand() % (UINT)(rtWorldMap.vs.y - 100.0f)));*/
-	//	TVector2 tEnd(vStart.x + 42.0f, vStart.y + 60.0f);
-	//	TLoadResData resData;
-	//	resData.texPathName = L"../../data/texture/bitmap1.bmp";
-	//	resData.texShaderName = L"../../data/shader/BlendMask.txt";
-	//	if (npcobj->Create(m_pWorld.get(), resData, vStart, tEnd))
-	//	{
-	//		npcobj->m_fSpeed = 50.0f + (rand() % 200);
-	//		npcobj->m_iCollisionType = TCollisionType::T_Overlap;
-	//		m_NpcList.emplace_back(npcobj);
-	//	}
-	//}
+	for (auto area : Mon2Area)
+	{
+		TVector2 tStart = area.first;
+		TVector2 tEnd = area.second;
+		auto npcobj2 = std::make_shared<TMonster2>();
+		npcobj2->m_pMeshRender = &TGameCore::m_MeshRender;
+		npcobj2->SetMap(m_pMap.get());
+		npcobj2->SetFSM(&m_fsm);
+		TLoadResData resData;
+		resData.texPathName = L"../../data/texture/monster2.png";
+		resData.texShaderName = L"../../data/shader/Default.txt";
+		if (npcobj2->Create(m_pWorld.get(), resData, tStart, tEnd))
+		{
+			//npcobj1->m_fSpeed = 50.0f + (rand() % 200);
+			npcobj2->m_iCollisionType = TCollisionType::T_Overlap;
+			m_NpcList.emplace_back(npcobj2);
+		}
+	}
+	for (auto area : Mon3Area)
+	{
+		TVector2 tStart = area.first;
+		TVector2 tEnd = area.second;
+		auto npcobj3 = std::make_shared<TMonster3>();
+		npcobj3->m_pMeshRender = &TGameCore::m_MeshRender;
+		npcobj3->SetMap(m_pMap.get());
+		npcobj3->SetFSM(&m_fsm);
+		TLoadResData resData;
+		resData.texPathName = L"../../data/texture/monster3.png";
+		resData.texShaderName = L"../../data/shader/Default.txt";
+		if (npcobj3->Create(m_pWorld.get(), resData, tStart, tEnd))
+		{
+			//npcobj1->m_fSpeed = 50.0f + (rand() % 200);
+			npcobj3->m_iCollisionType = TCollisionType::T_Overlap;
+			m_NpcList.emplace_back(npcobj3);
+		}
+	}
 	return true;
 }
 bool TSceneGameIn::CreateUI()
@@ -432,6 +454,7 @@ void   TSceneGameIn::Frame()
 		else
 		{
 			m_pHero->m_bIsJumping = true;
+			m_pHero->m_CurrentState = HeroState::Jump;
 		}
 
 		for (auto& projectile : m_pHero->m_pProjectile->m_datalist)
@@ -450,26 +473,62 @@ void   TSceneGameIn::Frame()
 	/*m_vCamera.x = m_pHero->m_vPos.x;
 	m_vCamera.y = m_pHero->m_vPos.y;*/
 
-	if (m_pHero->m_rtScreen.vc.x >= 640.0f && m_pHero->m_rtScreen.vc.x <= 3240.0f && m_pHero->m_rtScreen.vc.y < 800.0f)
+	if (g_GameKey.dwPkey == KEY_PUSH)
 	{
-		m_vCamera.x = m_pHero->m_vPos.x;
-		m_vCamera.y = 400;
+		
+		if (m_Debug == Debug::Normal)
+		{
+			m_Debug = Debug::Debug;
+		}
+		else
+		{
+			m_Debug = Debug::Normal;
+		}
 	}
-	if (m_pHero->m_rtScreen.vc.x >= 3750.0f && m_pHero->m_rtScreen.vc.x < 5000.0f && m_pHero->m_rtScreen.vc.y > 600.0f)
+
+	if (m_Debug == Debug::Normal)
 	{
-		m_vCamera.y = m_pHero->m_vPos.y - 200.0f;
-		m_vCamera.x = 3240.0f;
+		if (m_pHero->m_rtScreen.vc.x >= 640.0f && m_pHero->m_rtScreen.vc.x <= 3240.0f && m_pHero->m_rtScreen.vc.y < 800.0f)
+		{
+			m_vCamera.x = m_pHero->m_vPos.x;
+			m_vCamera.y = 400;
+		}
+		if (m_pHero->m_rtScreen.vc.x >= 3750.0f && m_pHero->m_rtScreen.vc.x < 5000.0f && m_pHero->m_rtScreen.vc.y > 600.0f)
+		{
+			m_vCamera.y = m_pHero->m_vPos.y - 200.0f;
+			m_vCamera.x = 3240.0f;
+		}
+		if (m_pHero->m_rtScreen.vc.y < 1300.0f && m_pHero->m_rtScreen.vc.y >= 1000.0f && m_pHero->m_rtScreen.vc.x < 3880.0f && m_pHero->m_rtScreen.vc.x > 3200.0f)
+		{
+			m_vCamera.x = 3240.0f;
+			m_vCamera.y = 1300.0f;
+		}
+		else if ((m_pHero->m_rtScreen.vc.y > 1300.0f || m_pHero->m_rtScreen.vc.x > 3840.0f) && m_pHero->m_rtScreen.vc.x < 10880.0f && m_pHero->m_rtScreen.vc.x >3240.0f)
+		{
+			m_vCamera.x = m_pHero->m_vPos.x;
+			m_vCamera.y = 1300.0f;
+		}
 	}
-	if (m_pHero->m_rtScreen.vc.y < 1300.0f && m_pHero->m_rtScreen.vc.y >= 1000.0f && m_pHero->m_rtScreen.vc.x < 3880.0f && m_pHero->m_rtScreen.vc.x > 3200.0f)
+	else
 	{
-		m_vCamera.x = 3240.0f;
-		m_vCamera.y = 1300.0f;
+		if (g_GameKey.dwLeftbutton == KEY_HOLD)
+		{
+			m_vCamera.x -= 1.0f;
+		}
+		else if (g_GameKey.dwRightbutton == KEY_HOLD)
+		{
+			m_vCamera.x += 1.0f;
+		}
+		else if (g_GameKey.dwUpbutton == KEY_HOLD)
+		{
+			m_vCamera.y -= 1.0f;
+		}
+		else if (g_GameKey.dwDownbutton == KEY_HOLD)
+		{
+			m_vCamera.y += 1.0f;
+		}
 	}
-	else if ((m_pHero->m_rtScreen.vc.y > 1300.0f || m_pHero->m_rtScreen.vc.x > 3840.0f) && m_pHero->m_rtScreen.vc.x < 10880.0f && m_pHero->m_rtScreen.vc.x >3240.0f)
-	{
-		m_vCamera.x = m_pHero->m_vPos.x;
-		m_vCamera.y = 1300.0f;
-	}
+	
 
 
 

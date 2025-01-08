@@ -5,7 +5,6 @@
     <ClCompile Include="TEffectObj.cpp" />
     <ClCompile Include="THeroObj.cpp" />
     <ClCompile Include="TMapObj.cpp" />
-    <ClCompile Include="TNpcObj.cpp" />
     <ClCompile Include="TWorld.cpp" />
     <ClCompile Include="TInput.cpp">
       <Filter>core</Filter>
@@ -94,14 +93,18 @@
       <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="TProjectile.cpp" />
-    <ClCompile Include="TMonster1.cpp" />
+    <ClCompile Include="TMonster1.cpp">
+      <Filter>Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="TNpcObj.cpp">
+      <Filter>Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
     <ClInclude Include="TEffectObj.h" />
     <ClInclude Include="THeroObj.h" />
     <ClInclude Include="TMapObj.h" />
-    <ClInclude Include="TNpcObj.h" />
     <ClInclude Include="TWorld.h" />
     <ClInclude Include="..\..\data\shader\stdShader.h">
       <Filter>shader</Filter>
@@ -196,7 +199,12 @@
     </ClInclude>
     <ClInclude Include="TProjectile.h" />
     <ClInclude Include="TCollisionManager.h" />
-    <ClInclude Include="TMonster1.h" />
+    <ClInclude Include="TNpcObj.h">
+      <Filter>Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="TMonster1.h">
+      <Filter>Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="SpriteData.txt" />
@@ -234,6 +242,9 @@
     </Filter>
     <Filter Include="FSM">
       <UniqueIdentifier>{a03612dd-5cf2-45f2-ae49-87ebcc743c23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Monster">
+      <UniqueIdentifier>{97b198b7-c4c7-4fcb-9db4-737d950de870}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
