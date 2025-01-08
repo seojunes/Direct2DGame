@@ -94,6 +94,7 @@
       <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="TProjectile.cpp" />
+    <ClCompile Include="TMonster1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -195,6 +196,7 @@
     </ClInclude>
     <ClInclude Include="TProjectile.h" />
     <ClInclude Include="TCollisionManager.h" />
+    <ClInclude Include="TMonster1.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SpriteData.txt" />

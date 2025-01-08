@@ -3,6 +3,7 @@
 class TObject2D : public TObject
 {
 public:
+	float m_fZoom = 1.0f;
 	TVector2 ScreenToNDC(float x, float y, POINT size);
 	TVector2 CameraToNDC(float x, float y, POINT size);
 	virtual void	Transform(TVector2 vCamera) override;
@@ -12,5 +13,7 @@ public:
 	TObject2D();
 	TObject2D(TVector2 p);
 	TObject2D(float x, float y);
+public:
+	void SetZoom(float zoom);
 };
 

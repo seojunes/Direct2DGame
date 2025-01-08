@@ -46,7 +46,11 @@ class TSceneGameIn : public TScene
 	std::vector< tUI>		    m_UiList;
 	std::list<tObject>			m_EffectList;
 	std::vector<std::pair<TVector2, TVector2>> rectArea;
-	UINT						m_Npccount = 1;
+	std::vector<std::pair<TVector2, TVector2>> Mon1Area;
+	std::vector<std::pair<TVector2, TVector2>> Mon2Area;
+	std::vector<std::pair<TVector2, TVector2>> Mon3Area;
+
+	UINT						m_Npccount = 4;
 	float						m_offsetdis = 5.0f;
 
 	TSound* m_pSound = nullptr;
@@ -72,7 +76,7 @@ public:
 	virtual ~TSceneGameIn();
 public:
 	bool CreateRect();
-	bool CreateSound();
+	bool CreateSound() override;
 	bool CreateMap();
 	bool CreateHero();
 	bool CreateNPC();

@@ -51,7 +51,7 @@ void   TSceneLobby::Init()
     m_GuiFSM.AddStateTransition(T_HOVER, EVENT_SELECT, T_SELECTED);
 
     TLoadResData resData;
-    resData.texPathName = L"../../data/Texture/kgca08.bmp";
+    resData.texPathName = L"../../data/Texture/lobby.png";
     resData.texShaderName = L"../../data/shader/Default.txt";
 
     auto ui1 = std::make_shared<TImageGUI>();
@@ -67,13 +67,13 @@ void   TSceneLobby::Init()
         m_UiList.emplace_back(ui1);
     }
 
-    resData.texPathName = L"../../data/ui/main_start_nor.png";
+    resData.texPathName = L"../../data/ui/pressStart.png";
 
     auto ui = std::make_shared<TButtonGUI>();
     ui->m_pMeshRender = &TGameCore::m_MeshRender;
     ui->SetFSM(&m_GuiFSM);
-    TVector2 vStart = { 400.0f - 50.0f, 500.0f - 25.0f };
-    TVector2 vEnd = { 400.0f + 100.0f, 500.0f + 50.0f };
+    TVector2 vStart = { 328.0f, 680.0f };
+    TVector2 vEnd = { 953.5f, 724.0f };
 
     ui->m_pMeshRender = &TGameCore::m_MeshRender;
     if (ui->Create(m_pWorld.get(), resData, vStart, vEnd))
@@ -86,15 +86,17 @@ void   TSceneLobby::Init()
 }
 void   TSceneLobby::Frame()
 {
+    
     for (auto data : m_UiList)
     {
         if (!data->m_bDead)
         {
-            data->FrameState(nullptr);
+            //data->FrameState(nullptr);
             data->Frame();
         }
     }
 
+    m_UiList[1]->FrameState(nullptr);
     m_pWorld->Frame();
 }
 void   TSceneLobby::Render()

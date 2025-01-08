@@ -13,6 +13,7 @@ enum TActionState
 	STATE_STAND = 0,
 	STATE_MOVE,
 	STATE_ATTACK,
+	STATE_DEAD,
 	STATE_COUNT,
 };
 // 상태전이
@@ -21,7 +22,9 @@ enum TActionEvent
 	EVENT_FINDTARGET = 0,
 	EVENT_LOSTTARGET,
 	EVENT_STOP,
-	EVENT_PATROL,
+	EVNET_DIE,
+	/*EVENT_PATROL,
+	EVENT_HPZERO,*/
 	EVENT_COUNT,
 };
 
@@ -63,4 +66,13 @@ public:
 	TAttackAction() { m_iState = STATE_ATTACK; };
 	virtual ~TAttackAction();
 };
+class TDeadAction : public TEnemyState
+{
+public:
+	virtual void ProcessAction(TObject* pObj);
+	TDeadAction(TNpcObj* p);
+	TDeadAction() { m_iState = STATE_ATTACK; };
+	virtual ~TDeadAction();
+};
+
 

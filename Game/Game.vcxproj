@@ -168,6 +168,7 @@
     <ClInclude Include="TMapObj.h" />
     <ClInclude Include="TMatrix.h" />
     <ClInclude Include="TMeshRender.h" />
+    <ClInclude Include="TMonster1.h" />
     <ClInclude Include="TNpcObj.h" />
     <ClInclude Include="TObject.h" />
     <ClInclude Include="TObject2D.h" />
@@ -208,6 +209,7 @@
     <ClCompile Include="TMapObj.cpp" />
     <ClCompile Include="TMatrix.cpp" />
     <ClCompile Include="TMeshRender.cpp" />
+    <ClCompile Include="TMonster1.cpp" />
     <ClCompile Include="TNpcObj.cpp" />
     <ClCompile Include="TObject.cpp" />
     <ClCompile Include="TObject2D.cpp" />

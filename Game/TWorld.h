@@ -4,6 +4,7 @@
 #include "TEffectObj.h"
 #include "TNpcObj.h"
 #include "TControlGUI.h"
+#include "TProjectile.h"
 
 class TScene;
 using CollisionFunction = std::function<void(TObject*, THitResult)>;

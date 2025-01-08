@@ -15,5 +15,9 @@ public:
 	void HitOverlap(TObject* pObj, THitResult hRes) override;
 	//vector<TVector2> MakeSBox();
 	//vector<TVector2> MakeEBox();
+	TObjectType GetType() const override
+	{
+		return TObjectType::Wall;
+	}
 };
 

@@ -3,6 +3,15 @@
 #include "TMeshRender.h"
 class TWorld;
 
+enum class TObjectType
+{
+	None,
+	Hero,
+	Projectile,
+	Npc,
+	Wall,
+};
+
 class TObject
 {
 public:
@@ -71,6 +80,11 @@ public:
 public:
 	virtual void    HitOverlap(TObject* pObj, THitResult hRet);
 	virtual void    HitSelect(TObject* pObj, THitResult hRet);
+public:
+	virtual TObjectType GetType() const 
+	{
+		return TObjectType::None; // ±âº»°ª
+	}
 public:
 	TObject();
 	virtual ~TObject();

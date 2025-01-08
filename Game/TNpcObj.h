@@ -16,6 +16,7 @@ class TEnemyFSM : public TFiniteStateMachine
 class TNpcObj : public TObject2D
 {
 public:
+	int m_HP = 20;
 	TMapObj* m_pMap = nullptr;
 	TEnemyState* m_pAction = nullptr;
 	std::vector<TStateData>   m_StateData;
@@ -33,8 +34,13 @@ public:
 	TNpcObj()
 	{
 		m_fSpeed = 150.0f;
-		m_vDir.x = 1.0f;
-		m_vDir.y = 1.0f;
+		m_vDir.x = -1.0f;
+		m_vDir.y = 0.0f;
+	}
+public:
+	TObjectType GetType() const override
+	{
+		return TObjectType::Npc;
 	}
 };
 

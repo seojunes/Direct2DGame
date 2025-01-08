@@ -1,6 +1,16 @@
 #include "TProjectile.h"
 #include "TGameCore.h"
 #include "TWorld.h"
+
+void TProjectileEffect::HitOverlap(TObject* pObj, THitResult hRes) {
+	if (pObj->GetType() == TObjectType::Npc) {
+		m_bDead = true; // 충돌 시 미사일 소멸
+	}
+	if (pObj->GetType() == TObjectType::Wall)
+	{
+		m_bDead = true;
+	}
+}
 void TProjectileEffect::Frame()
 {
 	m_fCurrentTime += g_fSPF;
@@ -12,9 +22,8 @@ void TProjectileEffect::Frame()
 		m_fCurrentTime -= m_fOffsetTime;
 	}
 	m_fTimer += g_fSPF;
-	m_vDir = { 0.0f, -1.0f };
-	m_vPos = m_vHeroPos + m_vDir * 700.0f * m_fTimer;
-	m_vPos.x = m_vHeroPos.x;
+	m_vDir = this->m_Data.m_vDirection;	
+	m_vPos = m_vPos + m_vDir * 500.0f * g_fSPF;
 	SetPosition(m_vPos);
 
 	/*if (m_Data.m_iType == 0)
@@ -83,18 +92,37 @@ TProjectile::TProjectile(TWorld* pWorld) : m_pWorld(pWorld)
 {
 
 }
-void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd)
+void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, UINT direction, bool  m_bOncharging)
 {
 	auto obj = std::make_shared<TProjectileEffect>();
 	obj->m_pMeshRender = &TGameCore::m_MeshRender;
 	obj->m_vVertexList = obj->m_pMeshRender->m_vVertexList;
 	TLoadResData resData;
-	resData.texPathName = L"../../data/ui/8.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
 	TEffectData data;
 	data.m_bLoop = true;
-	data.m_fLifeTime = 1.0f;
+	data.m_fLifeTime = 3.0f;
 	data.m_fOffsetTime = 0.01f;
+	if (m_bOncharging == false)
+	{
+		resData.texPathName = L"../../data/ui/newShot.png";
+		data.m_iDamage = 5;
+		//obj->m_iDamage = 5;
+	}
+	else
+	{
+		resData.texPathName = L"../../data/ui/newCShot.png";
+		data.m_iDamage = 15;
+		//obj->m_iDamage = 15;
+	}
+	if (direction == 1)
+	{
+		data.m_vDirection = { 1.0f, 0.0f };
+	}
+	else
+	{
+		data.m_vDirection = { -1.0f, 0.0f };
+	}
 	UINT iSprite = rand() % 3;
 	data.m_iType = 1;// rand() % m_szSpriteList[0].size();
 	data.m_iNumAnimFrame = 1;
@@ -108,12 +136,19 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd)
 		data.m_iNumAnimFrame = m_szSpriteList[0].size();
 		data.m_szList = m_szSpriteList[0];
 	}*/
+
 	obj->SetData(data);
+
+	if (m_pWorld)
+	{ // TWorld 포인터가 유효한지 확인
+		m_pWorld->AddCollisionExecute(obj.get(), std::bind(&TProjectile::HitOverlap, this, std::placeholders::_1, std::placeholders::_2));
+	}
 	if (obj->Create(m_pWorld, resData, vStart, tEnd))
 	{
 		obj->m_pCurrentTexture = obj->m_pTexture;
 		m_datalist.emplace_back(obj);
 	}
+	
 }
 void   TProjectile::Init()
 {

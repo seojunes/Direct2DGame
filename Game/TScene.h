@@ -38,6 +38,8 @@ public:
 	TScene();
 	virtual ~TScene();
 public:
+	TSound* m_pSound = nullptr;
+public:
 	virtual void ProcessAction(TObject* pObj) = 0;
 public:
 	TGame* m_pOwner = nullptr;
@@ -46,5 +48,6 @@ public:
 	virtual void   Frame() = 0;
 	virtual void   Render() = 0;
 	virtual void   Release() = 0;
+	virtual bool   CreateSound();
 };
 

@@ -10,6 +10,7 @@ TSceneGameIn::~TSceneGameIn() {}
 
 void TSceneGameIn::ProcessAction(TObject* pObj)
 {
+	m_pSound->Play();
 	if (m_bNextScene == true)
 	{
 		m_pOwner->SetTransition(TSceneEvent::EVENT_NEXT_SCENE);
@@ -31,7 +32,6 @@ bool TSceneGameIn::CreateSound()
 	m_pJumpSound = mgr.Load(L"../../data/sound/Jump.ogg");
 	m_pShotSound = mgr.Load(L"../../data/sound/Laser Fire.wav");
 	m_pCrashSound = mgr.Load(L"../../data/sound/Crash.wav");
-	m_pSound->Play();
 	return true;
 }
 
@@ -172,40 +172,68 @@ bool TSceneGameIn::CreateRect()
 
 		m_pRect->m_pMeshRender = &TGameCore::m_MeshRender;
 		m_pRect->m_pWorld = m_pWorld.get();
+		//if (m_pWorld)
+		//{ // TWorld 포인터가 유효한지 확인
+		//	m_pWorld->AddCollisionExecute(obj.get(), std::bind(&TProjectile::HitOverlap, this, std::placeholders::_1, std::placeholders::_2));
+		//}
 		if (m_pRect->Create(m_pWorld.get(), resData, tStart, tEnd))
 		{
 			m_pRect->m_iCollisionType = TCollisionType::T_Block;
 			m_ColList.emplace_back(m_pRect);
 		}
+		
 	}
 	return true;
 }
 
 bool TSceneGameIn::CreateNPC()
 {
+	Mon1Area = { {{1400.0f,500.0f},{1442.0f,560.0f}},
+		{{1700.0f,500.0f},{1742.0f,560.0f}},
+		{{800.0f,500.0f},{842.0f,560.0f}},
+		{{1100.0f,500.0f},{1142.0f,560.0f}},
+	};
 	TNpcObj::CreateActionFSM();
 	// npc
 	TRect rtWorldMap = m_pMap->m_rtScreen;
-	for (int iNpc = 0; iNpc < m_Npccount; iNpc++)
+	for (auto area : Mon1Area)
 	{
+		TVector2 tStart = area.first;
+		TVector2 tEnd = area.second;
 		auto npcobj = std::make_shared<TNpcObj>();
 		npcobj->m_pMeshRender = &TGameCore::m_MeshRender;
 		npcobj->SetMap(m_pMap.get());
 		npcobj->SetFSM(&m_fsm);
-		TVector2 vStart(
-			rtWorldMap.v1.x + (rand() % (UINT)(rtWorldMap.vs.x - 100.0f)),
-			rtWorldMap.v1.y + (rand() % (UINT)(rtWorldMap.vs.y - 100.0f)));
-		TVector2 tEnd(vStart.x + 42.0f, vStart.y + 60.0f);
 		TLoadResData resData;
 		resData.texPathName = L"../../data/texture/bitmap1.bmp";
 		resData.texShaderName = L"../../data/shader/BlendMask.txt";
-		if (npcobj->Create(m_pWorld.get(), resData, vStart, tEnd))
+		if (npcobj->Create(m_pWorld.get(), resData, tStart, tEnd))
 		{
 			npcobj->m_fSpeed = 50.0f + (rand() % 200);
 			npcobj->m_iCollisionType = TCollisionType::T_Overlap;
 			m_NpcList.emplace_back(npcobj);
 		}
 	}
+	//for (int iNpc = 0; iNpc < m_Npccount; iNpc++)
+	//{
+	//	auto npcobj = std::make_shared<TNpcObj>();
+	//	npcobj->m_pMeshRender = &TGameCore::m_MeshRender;
+	//	npcobj->SetMap(m_pMap.get());
+	//	npcobj->SetFSM(&m_fsm);
+	//	TVector2 vStart(1400.0f, 500.0f);
+	//		/*rtWorldMap.v1.x + (rand() % (UINT)(rtWorldMap.vs.x - 100.0f)),
+	//		rtWorldMap.v1.y + (rand() % (UINT)(rtWorldMap.vs.y - 100.0f)));*/
+	//	TVector2 tEnd(vStart.x + 42.0f, vStart.y + 60.0f);
+	//	TLoadResData resData;
+	//	resData.texPathName = L"../../data/texture/bitmap1.bmp";
+	//	resData.texShaderName = L"../../data/shader/BlendMask.txt";
+	//	if (npcobj->Create(m_pWorld.get(), resData, vStart, tEnd))
+	//	{
+	//		npcobj->m_fSpeed = 50.0f + (rand() % 200);
+	//		npcobj->m_iCollisionType = TCollisionType::T_Overlap;
+	//		m_NpcList.emplace_back(npcobj);
+	//	}
+	//}
 	return true;
 }
 bool TSceneGameIn::CreateUI()
@@ -285,13 +313,16 @@ void   TSceneGameIn::AddEffect(TVector2 tStart, TVector2 tEnd)
 void   TSceneGameIn::Init()
 {
 	//NPC
-	m_fsm.AddStateTransition(STATE_STAND, EVENT_PATROL, STATE_MOVE);
-	m_fsm.AddStateTransition(STATE_STAND, EVENT_FINDTARGET, STATE_ATTACK);
-	m_fsm.AddStateTransition(STATE_MOVE, EVENT_STOP, STATE_STAND);
-	m_fsm.AddStateTransition(STATE_MOVE, EVENT_LOSTTARGET, STATE_STAND);
-	m_fsm.AddStateTransition(STATE_MOVE, EVENT_FINDTARGET, STATE_ATTACK);
-	m_fsm.AddStateTransition(STATE_ATTACK, EVENT_STOP, STATE_STAND);
-	m_fsm.AddStateTransition(STATE_ATTACK, EVENT_LOSTTARGET, STATE_STAND);
+	//m_fsm.AddStateTransition(STATE_STAND, EVENT_PATROL, STATE_MOVE);
+	//m_fsm.AddStateTransition(STATE_STAND, EVENT_FINDTARGET, STATE_MOVE);
+	//m_fsm.AddStateTransition(STATE_MOVE, EVENT_STOP, STATE_STAND);
+	//m_fsm.AddStateTransition(STATE_MOVE, EVENT_LOSTTARGET, STATE_STAND);
+	//m_fsm.AddStateTransition(STATE_MOVE, EVENT_FINDTARGET, STATE_ATTACK);
+	//m_fsm.AddStateTransition(STATE_ATTACK, EVENT_STOP, STATE_STAND);
+	//m_fsm.AddStateTransition(STATE_ATTACK, EVENT_LOSTTARGET, STATE_STAND);
+	m_fsm.AddStateTransition(STATE_STAND, EVNET_DIE, STATE_DEAD);
+	m_fsm.AddStateTransition(STATE_MOVE, EVNET_DIE, STATE_DEAD);
+	m_fsm.AddStateTransition(STATE_ATTACK, EVNET_DIE, STATE_DEAD);
 	//GUI 기능 추가 예정.
 	m_GuiFSM.AddStateTransition(T_DEFAULT, EVENT_SELECT, T_HOVER);
 	m_GuiFSM.AddStateTransition(T_HOVER, EVENT_DEFAULT, T_DEFAULT);
@@ -322,56 +353,102 @@ void   TSceneGameIn::Frame()
 	{
 		m_pJumpSound->PlayEffect();
 	}
-
-	for (auto list : m_ColList)
+	if (g_GameKey.dwSpace == KEY_UP)
 	{
-
+		m_pShotSound->PlayEffect();
 	}
-	m_pMap->Frame();
-	m_pHero->Frame();
 
-	m_pHero->m_fGravity = 980;
+	m_pMap->Frame();
+
+	//m_pHero->m_fGravity = 980;
+	m_pHero->m_fGroundY = 1800;
 	for (auto rectlist : m_ColList)
 	{
 		TRect Herorect = m_pHero->m_rtScreen;
 		TRect Colrect = rectlist->m_rtScreen;
-
+		/*TRect Projectrect = m_pHero->m_pProjectile->m_rtScreen;*/
+		//m_pHero->GetGroundH(1800.0f);
 		if (TCollision::CheckRectToRect(Colrect, Herorect))
 		{
-			if (Herorect.vc.x < Colrect.vc.x)
+			if (Herorect.vc.x < Colrect.vc.x)																		// 왼쪽에서 올라올때
 			{
-				if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y<Colrect.v1.y && Herorect.vc.x > Colrect.v1.x)
+				if (Herorect.v2.y-0.1f > Colrect.v1.y)																// 왼쪽아래서 올라올때
 				{
-					m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
-					m_pHero->m_iJumpingCount = 0;
-					m_pHero->m_fGravity = 0;
+					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y<Colrect.v1.y && Herorect.vc.x > Colrect.v1.x)
+					{
+						m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
+						m_pHero->GetGroundH(Colrect.v1.y - Herorect.vh.y);
+					}
+				}
+				else																								// 왼쪽 위에서 내려갈때
+				{
+					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y<Colrect.v1.y && Herorect.v2.x + m_offsetdis > Colrect.v1.x)
+					{
+						m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
+						m_pHero->GetGroundH(Colrect.v1.y - Herorect.vh.y);
+					}
+				}
+				
+			}
+			else																									 // 오른쪽에서 올라올때
+			{
+				if (Herorect.v2.y-0.1f > Colrect.v1.y)																 // 오른쪽에서 올라올때
+				{
+					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y<Colrect.v1.y && Herorect.vc.x < Colrect.v2.x)
+					{
+						m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
+						m_pHero->GetGroundH(Colrect.v1.y - Herorect.vh.y);
+					}
+				}
+				else																								 // 오른쪽 위에서 내려갈때
+				{
+					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y<Colrect.v1.y && Herorect.v1.x - m_offsetdis < Colrect.v2.x)
+					{
+						m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
+						m_pHero->GetGroundH(Colrect.v1.y - Herorect.vh.y);
+					}
 				}
 			}
-			else
+
+			if (Herorect.vc.x <Colrect.v2.x && Herorect.vc.x > Colrect.v1.x)									    // 머리 충돌할때
 			{
-				if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y<Colrect.v1.y && Herorect.vc.x < Colrect.v2.x)
+				if (Herorect.v1.y > Colrect.vc.y && Herorect.v1.y < Colrect.v2.y)
 				{
-					m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
-					m_pHero->m_iJumpingCount = 0;
-					m_pHero->m_fGravity = 0;
+					m_pHero->m_vPos.y = Colrect.v2.y + Herorect.vh.y;
+					m_pHero->m_fGravity = 980;
+					m_pHero->m_fVerticalSpeed = 0;
 				}
 			}
-			
-			if (Herorect.v2.x > Colrect.v1.x && Herorect.v2.x - m_offsetdis < Colrect.v1.x && Herorect.v2.y + m_offsetdis >= Colrect.v1.y)
+
+			if (Herorect.v2.x > Colrect.v1.x && Herorect.v2.x - m_offsetdis < Colrect.v1.x && Herorect.v2.y + m_offsetdis >= Colrect.v1.y)		// 오른쪽 벽에 충돌할때
 			{
 				m_pHero->m_vPos.x = Colrect.v1.x - Herorect.vh.x;
 			}
-			if (Herorect.v1.x  < Colrect.v2.x && Herorect.v1.x + m_offsetdis > Colrect.v2.x && Herorect.v2.y + m_offsetdis >= Colrect.v1.y)
+			if (Herorect.v1.x  < Colrect.v2.x && Herorect.v1.x + m_offsetdis > Colrect.v2.x && Herorect.v2.y + m_offsetdis >= Colrect.v1.y)		// 왼쪽 벽에 충돌할때
 			{
 				m_pHero->m_vPos.x = Colrect.v2.x + Herorect.vh.x;
 			}
 		}
-		m_pHero->m_bIsJumping = true;
+		else
+		{
+			m_pHero->m_bIsJumping = true;
+		}
+
+		for (auto& projectile : m_pHero->m_pProjectile->m_datalist)
+		{
+			auto pProjectile = dynamic_cast<TProjectileEffect*>(projectile.get());
+			if (pProjectile && !pProjectile->m_bDead) {
+				if (TCollision::CheckRectToRect(Colrect, pProjectile->m_rtScreen)) {
+					pProjectile->m_bDead = true; // 충돌 시 발사체 제거
+				}
+			}
+		}
+		//m_pHero->m_bIsJumping = true;
 	}
 
 
-	//m_vCamera.x = m_pHero->m_vPos.x;
-	//m_vCamera.y = m_pHero->m_vPos.y;
+	/*m_vCamera.x = m_pHero->m_vPos.x;
+	m_vCamera.y = m_pHero->m_vPos.y;*/
 
 	if (m_pHero->m_rtScreen.vc.x >= 640.0f && m_pHero->m_rtScreen.vc.x <= 3240.0f && m_pHero->m_rtScreen.vc.y < 800.0f)
 	{
@@ -383,7 +460,7 @@ void   TSceneGameIn::Frame()
 		m_vCamera.y = m_pHero->m_vPos.y - 200.0f;
 		m_vCamera.x = 3240.0f;
 	}
-	if (m_pHero->m_rtScreen.vc.y < 1300.0f && m_pHero->m_rtScreen.vc.y >= 1000.0f && m_pHero->m_rtScreen.vc.x < 3840.0f && m_pHero->m_rtScreen.vc.x > 3200.0f)
+	if (m_pHero->m_rtScreen.vc.y < 1300.0f && m_pHero->m_rtScreen.vc.y >= 1000.0f && m_pHero->m_rtScreen.vc.x < 3880.0f && m_pHero->m_rtScreen.vc.x > 3200.0f)
 	{
 		m_vCamera.x = 3240.0f;
 		m_vCamera.y = 1300.0f;
@@ -412,14 +489,55 @@ void   TSceneGameIn::Frame()
 
 
 	TVector2 vMouse = GetWorldMousePos();
-	for (auto data : m_NpcList)
+	for (auto& npc : m_NpcList) 
 	{
-		if (!data->m_bDead)
+		if (!npc->m_bDead) 
 		{
-			data->FrameState(m_pHero.get());
-			data->Frame();
+			if (TCollision::CheckRectToRect(npc->m_rtScreen, m_pHero->m_rtScreen))
+			{
+				npc->HitOverlap(m_pHero.get(), THitResult{}); // NPC가 Hero와 충돌
+				m_pHero->HitOverlap(npc.get(), THitResult{}); // Hero가 NPC와 충돌
+			}
 		}
 	}
+
+	// NPC와 미사일 충돌 처리
+	for (auto& npc : m_NpcList)
+	{
+		if (!npc->m_bDead) 
+		{
+			for (auto& projectile : m_pHero->m_pProjectile->m_datalist)
+			{
+				auto pProjectile = dynamic_cast<TProjectileEffect*>(projectile.get());
+				if (pProjectile && !pProjectile->m_bDead) 
+				{
+					if (TCollision::CheckRectToRect(npc->m_rtScreen, pProjectile->m_rtScreen))
+					{
+  						npc->m_HP -= pProjectile->m_Data.m_iDamage;
+						pProjectile->m_bDead = true; // 미사일 소멸
+						if (npc->m_HP <= 0)
+						{
+							/*npc->m_bDead = true;*/
+							m_pCrashSound->PlayEffect();
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// NPC 상태 업데이트
+	for (auto& npc : m_NpcList) 
+	{
+		if (!npc->m_bDead)
+		{
+			npc->FrameState(m_pHero.get()); // Hero와 NPC 상호작용
+			npc->Frame();
+		}
+	}
+
+	// Hero 상태 업데이트
+	m_pHero->Frame();
 
 
 	TSphere s;
@@ -429,14 +547,14 @@ void   TSceneGameIn::Frame()
 
 
 
-	if (g_GameKey.dwMiddleClick == KEY_HOLD)
-	{
-		TVector2 v1 = vMouse;
-		v1.x = vMouse.x - 50.0f;
-		v1.y = vMouse.y - 50.0f;
-		TVector2 tEnd = { v1.x + 100.0f, v1.y + 100.0f };
-		AddEffect(v1, tEnd);
-	}
+	//if (g_GameKey.dwMiddleClick == KEY_HOLD)
+	//{
+	//	TVector2 v1 = vMouse;
+	//	v1.x = vMouse.x - 50.0f;
+	//	v1.y = vMouse.y - 50.0f;
+	//	TVector2 tEnd = { v1.x + 100.0f, v1.y + 100.0f };
+	//	AddEffect(v1, tEnd);
+	//}
 	for (UINT iNpc1 = 0; iNpc1 < m_NpcList.size(); iNpc1++)
 	{
 		if (m_NpcList[iNpc1]->m_bDead)

@@ -8,9 +8,11 @@
 
 enum class HeroState     // 그냥 enum을 사용할시에는 전역으로 사용되어서 충돌 가능성이 있다. 그래서 enum class사용해주는것이 안정적이다.
 {
-	RightRun = 0,
+	Idle = 0,
+	RightRun,
 	LeftRun,
 	Jump,
+	Shoting,
 }; // 상태 정의
 
 enum HeroView
@@ -34,10 +36,11 @@ class THeroObj : public TObject2D
 	float invincibleTime = 0.0f; // 무적 시간
 	float blinkTimer = 0.0f;     // 깜빡임 타이머
 	//std::shared_ptr<HPBar> m_HeroHPdata;
-	std::shared_ptr<TProjectile>		m_pProjectile;
+	
 	TMapObj* m_pMap = nullptr;
 	const int m_MaxJunp = 3;
 public:
+	std::shared_ptr<TProjectile>		m_pProjectile;
 	std::vector<RECT> m_rtWalkFrames; // 걷기 애니메이션 프레임 리스트
 	std::vector<RECT> m_rtJumpFrames; // 걷기 애니메이션 프레임 리스트
 	UINT m_iWalkFrame = 0;            // 현재 걷기 애니메이션 프레임
@@ -51,33 +54,44 @@ public:
 	//void TakeDamage(UINT damage);
 	//void Heal(UINT healAmount);
 public:
-	HeroState m_CurrentState = HeroState::RightRun; // 초기 상태는 RightRun
+	HeroState m_CurrentState = HeroState::Jump; // 초기 상태는 RightRun
 	HeroView m_CurrentView = HeroView::RightView;  // 초기 상태는 RightView
 	CollisionDirection m_CollisionDirection = CollisionDirection::None;
 
 public:
 	int m_iJumpingCount = 0;
-	bool m_bIsJumping = false;
+	bool m_bIsJumping = true;
 	float m_fJumpSpeed = 400.0f;
 	float m_fVerticalSpeed = 0.0f;
 	float m_fGravity = 980.0f;
 	float m_fGroundY = 1800.0f;
 public:
+	float m_fChargingTime = 0.0f;
+	bool m_bOnCharing = false;
+	bool m_bCharging = false;
+public:
+	UINT m_HP = 100;
 	std::vector <SRect> spriteData;
 	void SetData(vector<vector<RECT>> SpriteList);
 public:
 	void SetMap(TMapObj* pMap) { m_pMap = pMap; }
 	//void InitWalkAnimation();
+	virtual void Init() override;
 	virtual void Frame() override;
-	virtual void SetVertexData();
+	virtual void Render()override;
+	virtual void Release()override;
+	virtual void SetVertexData()override;
 	void HitOverlap(TObject* pObj, THitResult hRes) override;
 	
-	
+public:
+	void GetGroundH(float height);
 	//void HandleCollision(); // 충돌 처리 함수
 	
 public:
-	/*void Update(float g_fGT);
-	virtual void Render() override;*/
+	TObjectType GetType() const override 
+	{
+		return TObjectType::Hero;
+	}
 public:
 	THeroObj()
 	{

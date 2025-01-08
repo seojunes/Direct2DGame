@@ -7,6 +7,12 @@ void    THeroObj::HitOverlap(TObject* pObj, THitResult hRes)
 
 }
 
+void THeroObj::Init()
+{
+	TObject2D::Init();
+	m_pProjectile = std::make_shared<TProjectile>(m_pWorld);
+}
+
 void THeroObj::SetData(vector<vector<RECT>> SpriteList)
 {
 	m_rtWalkFrames.resize(SpriteList[0].size());
@@ -35,11 +41,19 @@ void THeroObj::SetData(vector<vector<RECT>> SpriteList)
 //	}
 //}
 
+void THeroObj::GetGroundH(float height)
+{
+	m_fGroundY = height;
+}
 void THeroObj::Frame()
 {
+	
 
 	TVector2 vAdd;
-
+	if (m_rtScreen.v2.y >= m_fGroundY)
+	{
+		m_CurrentState = HeroState::Idle;
+	}
 	// 점프효과 구현
 	if (m_bIsJumping)
 	{
@@ -55,28 +69,29 @@ void THeroObj::Frame()
 	}
 
 
-
 	if (g_GameKey.dwWkey == KEY_PUSH && m_iJumpingCount < m_MaxJunp)//&& !m_bIsJumping)
 	{
+		m_fGroundY = 1800.0f;
 		m_bIsJumping = true;
 		m_fVerticalSpeed = m_fJumpSpeed;
 		m_iJumpingCount++;
 		m_CurrentState = HeroState::Jump; // Jump 상태 설정.
 	}
 
-	if (g_GameKey.dwWkey == KEY_UP || !m_bIsJumping)
-	{
-		m_iJumpFrame = 0;
-		if (m_CurrentView == HeroView::RightView)
-		{
-			m_CurrentState = HeroState::RightRun; // RightRun 상태 설정
-		}
-		else
-		{
-			m_CurrentState = HeroState::LeftRun; // RightRun 상태 설정
-		}
+	//if (g_GameKey.dwWkey == KEY_UP || !m_bIsJumping)
+	//{
+	//	//m_iJumpFrame = 0;
+	//	//if (m_CurrentView == HeroView::RightView)
+	//	//{
+	//		m_CurrentState = HeroState::Idle; // RightRun 상태 설정
+	//	//}
+	//	//else
+	//	//{
+	//	//	m_CurrentState = HeroState::LeftRun; // RightRun 상태 설정
+	//	//}
 
-	}
+	//}
+
 
 	// 애니메이션 업데이트
 	if (g_GameKey.dwAkey == KEY_HOLD || g_GameKey.dwDkey == KEY_HOLD)
@@ -95,7 +110,8 @@ void THeroObj::Frame()
 			}
 		}
 	}
-	else if (g_GameKey.dwWkey == KEY_HOLD && m_bIsJumping)
+	//else if (g_GameKey.dwWkey == KEY_HOLD)// && m_bIsJumping
+	else if(m_CurrentState == HeroState::Jump)
 	{
 		m_fCurrentTime += g_fSPF; // 시간 업데이트
 		if (m_fCurrentTime >= m_fFrameTime)
@@ -116,66 +132,94 @@ void THeroObj::Frame()
 		m_iWalkFrame = 0; // 정지 상태에서는 첫 프레임 유지
 	}
 
-
-
-	////if (g_GameKey.dwWkey == KEY_HOLD) m_rtScreen.y -= fSpeed * g_fSPF;
-	//if (g_GameKey.dwAkey == KEY_HOLD)
-	//{
-	//	vAdd.x -= m_fSpeed * g_fSPF;
-	//	m_CurrentState = HeroState::LeftRun; // LeftRun 상태 설정
-	//	m_CurrentView = HeroView::LeftView;  // 바라보는 방향 설정
-	//}
-	//if (g_GameKey.dwDkey == KEY_HOLD)
-	//{
-	//	vAdd.x += m_fSpeed * g_fSPF;
-	//	m_CurrentState = HeroState::RightRun; // RightRun 상태 설정
-	//	m_CurrentView = HeroView::RightView;  // 바라보는 방향 설정
-	//}
-
-	//if (g_GameKey.dwSkey == KEY_HOLD)
-	//{
-	//	m_vPos.y += m_fSpeed * g_fSPF;
-	//}
-
-	//if (g_GameKey.dwWkey == KEY_HOLD)
-	//{
-	//	m_vPos.y -= m_fSpeed * g_fSPF;
-	//	m_CurrentState = HeroState::RightRun; // RightRun 상태 설정
-	//	m_CurrentView = HeroView::RightView;  // 바라보는 방향 설정
-	//}
-	if (g_GameKey.dwAkey == KEY_HOLD && m_CollisionDirection != Left)
+	if (g_GameKey.dwAkey == KEY_HOLD)
 	{
+		m_fGroundY = 1800.0f;
 		vAdd.x -= m_fSpeed * g_fSPF;
 		m_CurrentState = HeroState::LeftRun;
 		m_CurrentView = HeroView::LeftView;
 	}
-	if (g_GameKey.dwDkey == KEY_HOLD && m_CollisionDirection != Right)
+	if (g_GameKey.dwDkey == KEY_HOLD)
 	{
+		m_fGroundY = 1800.0f;
 		vAdd.x += m_fSpeed * g_fSPF;
 		m_CurrentState = HeroState::RightRun;
 		m_CurrentView = HeroView::RightView;
 	}
 
-	// 위아래 이동
-	/*if (g_GameKey.dwWkey == KEY_HOLD && m_CollisionDirection != Top)
-	{
-		vAdd.y -= m_fSpeed * g_fSPF;
-	}
-	if (g_GameKey.dwSkey == KEY_HOLD && m_CollisionDirection != Bottom)
-	{
-		vAdd.y += m_fSpeed * g_fSPF;
-	}*/
+	
+
 	AddPosition(vAdd);
 	SetVertexData();
+
+	if (m_bCharging == false)
+	{
+		m_fAlpha = 1.0f;
+	}
+
+	if (g_GameKey.dwSpace == KEY_PUSH)
+	{
+		// 초기화: 키를 누르기 시작하면 충전 시간 리셋
+		m_fChargingTime = 0.0f;
+	}
+
+	if (g_GameKey.dwSpace == KEY_HOLD)
+	{
+		// 키를 누르고 있는 동안 충전 시간 증가
+		m_fChargingTime += g_fSPF;
+		m_bCharging = true;
+	}
+
+	if (g_GameKey.dwSpace == KEY_UP)
+	{
+		m_bCharging = false;
+		// 키를 떼는 순간 발사
+		TVector2 vHalf;
+		TVector2 vStart;
+		TVector2 vEnd;
+
+		if (m_fChargingTime < 0.5f)
+		{
+			// 일반 미사일
+			vHalf = { 20.0f, 20.0f };
+			vStart = m_vPos - vHalf;
+			vEnd = m_vPos + vHalf;
+			
+			m_bOnCharing = false;
+		}
+		else
+		{
+			// 차징샷
+			vHalf = { 25.0f, 40.0f };
+			vStart = m_vPos - vHalf;
+			vEnd = m_vPos + vHalf;
+
+			m_bOnCharing = true;	
+		}
+
+		if (m_CurrentView == RightView)								//바라보는 방향에 따라서 발사체 생성.
+		{
+			m_pProjectile->AddEffect(vStart, vEnd, 1, m_bOnCharing);
+		}
+		else
+		{
+			m_pProjectile->AddEffect(vStart, vEnd, 2, m_bOnCharing);
+		}
+		// 충전 시간 초기화
+		m_fChargingTime = 0.0f;
+	}
+	/*if (m_bCharging == true)  // 깜빡임 효과
+	{
+		if(m_fAlpha <= 1.0f)
+		m_fAlpha = cosf(g_fGT * 5.0f) * 0.25f + 0.75f;
+	}*/
+	m_pProjectile->Frame(m_vPos);
+
 }
 void THeroObj::SetVertexData()
 {
 	if (m_pTexture == nullptr || m_rtWalkFrames.empty()) return;
 	TObject2D::SetVertexData();
-	/*float xSize = m_pTexture->m_TexDesc.Width;
-	float ySize = m_pTexture->m_TexDesc.Height;
-	TRect rt;
-	rt.SetS(2.0f, 128.0f, 39.0f, 170.0f);*/
 
 	TRect rt;
 	rt.SetS(m_rtWalkFrames[m_iWalkFrame].left,
@@ -186,23 +230,40 @@ void THeroObj::SetVertexData()
 	float xSize = m_pTexture->m_TexDesc.Width;
 	float ySize = m_pTexture->m_TexDesc.Height;
 
-	if (m_CurrentState == HeroState::RightRun)
+	if (m_CurrentState == HeroState::Idle)
 	{
+		rt.SetS(0.0f, 0.0f, 50.0f, 50.0f);
+		if (m_CurrentView == RightView)
+		{
+			m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+			m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+			m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
+			m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
+		}
+		else
+		{
+			m_vVertexList[0].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+			m_vVertexList[1].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+			m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
+			m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
+		}
+		
+	}
+	switch (m_CurrentState)
+	{
+	case HeroState::RightRun:
 		m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
 		m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
 		m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
 		m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
-	}
-	else if (m_CurrentState == HeroState::LeftRun)
-	{
+		break;
+	case HeroState::LeftRun:
 		m_vVertexList[0].t = { rt.v2.x / xSize,rt.v1.y / ySize };
 		m_vVertexList[1].t = { rt.v1.x / xSize,rt.v1.y / ySize };
 		m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
 		m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
-	}
-
-	if (m_CurrentState == HeroState::Jump)
-	{
+		break;
+	case HeroState::Jump:
 		rt.SetS(m_rtJumpFrames[m_iJumpFrame].left,
 			m_rtJumpFrames[m_iJumpFrame].top,
 			m_rtJumpFrames[m_iJumpFrame].right,
@@ -221,9 +282,10 @@ void THeroObj::SetVertexData()
 			m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
 			m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
 		}
+		break;
+	default:
+		break;
 	}
-
-
 
 	//좌우걷기
 	//if (m_CurrentState == RightRun)
@@ -288,4 +350,16 @@ void THeroObj::SetVertexData()
 //	TObject::Frame();
 //}
 
+void THeroObj::Render()
+{
+	TObject2D::Render();
+	Fade();
+	m_pProjectile->Render(m_vCamera);
+}
+
+void THeroObj::Release()
+{
+	TObject2D::Release();
+	m_pProjectile->Release();
+}
 

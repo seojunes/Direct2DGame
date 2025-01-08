@@ -30,14 +30,14 @@ void    TObject2D::TransformNDC()
 		TVector2 ndc = CameraToNDC(
 			m_vVertexList[i].v.x,
 			m_vVertexList[i].v.y, g_ptClientSize);
-		m_vVertexList[i].v = ndc;
+		m_vVertexList[i].v = ndc /m_fZoom;
 	}
 }
 void    TObject2D::TransformCamera(TVector2 vCamera)
 {
 	for (UINT i = 0; i < m_vScreenList.size(); i++)
 	{
-		TVector2 c = m_vScreenList[i] - vCamera;
+		TVector2 c = (m_vScreenList[i] - vCamera)/m_fZoom;
 		m_vVertexList[i].v = c;
 	}
 }
@@ -56,4 +56,18 @@ TObject2D::TObject2D(float x, float y)
 	m_vPos.x = x;
 	m_vPos.y = y;
 	m_fSpeed = 100.0f;
+}
+
+void TObject2D::SetZoom(float zoom)
+{
+	if (zoom >= 2.0f)
+	{
+		zoom = 2.0f;
+	}
+	else if (zoom <= 0.5f)
+	{
+		zoom = 0.5f;
+	}
+	m_fZoom = zoom;
+	// 최소 0.5배, 최대 2배
 }
