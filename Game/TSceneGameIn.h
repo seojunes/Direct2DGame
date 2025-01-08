@@ -91,6 +91,6 @@ public:
 	bool CreateUI();
 	TVector2 GetWorldMousePos();
 public:
-	Debug m_Debug = Debug::Debug;
+	Debug m_Debug = Debug::Normal;
 };
 

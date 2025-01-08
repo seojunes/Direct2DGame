@@ -206,7 +206,7 @@ bool TSceneGameIn::CreateNPC()
 	{
 		TVector2 tStart = area.first;
 		TVector2 tEnd = area.second;
-		auto npcobj1 = std::make_shared<TMonster1>();
+		auto npcobj1 = std::make_shared<TMonster1>(tStart);
 		npcobj1->m_pMeshRender = &TGameCore::m_MeshRender;
 		npcobj1->SetMap(m_pMap.get());
 		npcobj1->SetFSM(&m_fsm);
@@ -513,19 +513,19 @@ void   TSceneGameIn::Frame()
 	{
 		if (g_GameKey.dwLeftbutton == KEY_HOLD)
 		{
-			m_vCamera.x -= 1.0f;
+			m_vCamera.x -= 5.0f;
 		}
 		else if (g_GameKey.dwRightbutton == KEY_HOLD)
 		{
-			m_vCamera.x += 1.0f;
+			m_vCamera.x += 5.0f;
 		}
 		else if (g_GameKey.dwUpbutton == KEY_HOLD)
 		{
-			m_vCamera.y -= 1.0f;
+			m_vCamera.y -= 5.0f;
 		}
 		else if (g_GameKey.dwDownbutton == KEY_HOLD)
 		{
-			m_vCamera.y += 1.0f;
+			m_vCamera.y += 5.0f;
 		}
 	}
 	
@@ -576,7 +576,6 @@ void   TSceneGameIn::Frame()
 						pProjectile->m_bDead = true; // ¹Ì»çÀÏ ¼Ò¸ê
 						if (npc->m_HP <= 0)
 						{
-							/*npc->m_bDead = true;*/
 							m_pCrashSound->PlayEffect();
 						}
 					}

@@ -61,7 +61,6 @@
       <Filter>math</Filter>
     </ClCompile>
     <ClCompile Include="TCollisionManager.cpp" />
-    <ClCompile Include="THeroFSM.cpp" />
     <ClCompile Include="TScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -80,9 +79,6 @@
     <ClCompile Include="TSceneResult.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="TEnemyFSM.cpp">
-      <Filter>FSM</Filter>
-    </ClCompile>
     <ClCompile Include="TFiniteState.cpp">
       <Filter>FSM</Filter>
     </ClCompile>
@@ -93,10 +89,13 @@
       <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="TProjectile.cpp" />
-    <ClCompile Include="TMonster1.cpp">
+    <ClCompile Include="TMonster.cpp">
       <Filter>Monster</Filter>
     </ClCompile>
     <ClCompile Include="TNpcObj.cpp">
+      <Filter>Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="TEnemyFSM.cpp">
       <Filter>Monster</Filter>
     </ClCompile>
   </ItemGroup>
@@ -166,7 +165,6 @@
     <ClInclude Include="TCollision.h">
       <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="THeroFSM.h" />
     <ClInclude Include="TScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
@@ -185,9 +183,6 @@
     <ClInclude Include="TSceneResult.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="TEnemyFSM.h">
-      <Filter>FSM</Filter>
-    </ClInclude>
     <ClInclude Include="TFiniteState.h">
       <Filter>FSM</Filter>
     </ClInclude>
@@ -202,7 +197,10 @@
     <ClInclude Include="TNpcObj.h">
       <Filter>Monster</Filter>
     </ClInclude>
-    <ClInclude Include="TMonster1.h">
+    <ClInclude Include="TMonster.h">
+      <Filter>Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="TEnemyFSM.h">
       <Filter>Monster</Filter>
     </ClInclude>
   </ItemGroup>

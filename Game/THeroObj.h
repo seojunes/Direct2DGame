@@ -85,7 +85,7 @@ public:
 	
 public:
 	void GetGroundH(float height);
-	//void HandleCollision(); // 충돌 처리 함수
+	
 	
 public:
 	TObjectType GetType() const override 

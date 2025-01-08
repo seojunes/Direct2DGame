@@ -184,7 +184,6 @@ void THeroObj::Frame()
 			vHalf = { 20.0f, 20.0f };
 			vStart = m_vPos - vHalf;
 			vEnd = m_vPos + vHalf;
-			
 			m_bOnCharing = false;
 		}
 		else
@@ -193,7 +192,6 @@ void THeroObj::Frame()
 			vHalf = { 25.0f, 40.0f };
 			vStart = m_vPos - vHalf;
 			vEnd = m_vPos + vHalf;
-
 			m_bOnCharing = true;	
 		}
 
