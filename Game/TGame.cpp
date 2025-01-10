@@ -30,9 +30,22 @@ void TGame::SetTransition(UINT iEvent)
 {
 	_ASSERT(m_pFsm);
 	UINT iOutput = m_pFsm->GetOutputState(m_pAction->m_iState, iEvent);
+	if (iEvent == TSceneEvent::EVENT_NEXT_SCENE)
+	{
+		m_pAction;
+	}
+	else if (iEvent == TSceneEvent::EVENT_PREV_SCENE)
+	{
+		m_pAction;
+	}
 
+	auto NewScene = m_pActionList[iOutput].get();
+	if (m_pAction == NewScene)
+	{
+		return;
+	}
 	// 새로운 씬으로 전환
-	m_pAction = m_pActionList[iOutput].get();
+	m_pAction = NewScene;
 }
 void TGame::FrameState(TObject* pGame)
 {

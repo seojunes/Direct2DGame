@@ -20,6 +20,8 @@ public:
 	std::map<int, TObject*>  m_SelectList;
 	TScene* m_pScene = nullptr;
 
+
+
 	std::map<int, TObjectType> m_ObjectCollect;
 
 public:

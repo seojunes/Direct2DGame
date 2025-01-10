@@ -94,8 +94,8 @@ void TMonster2::Frame()
 		}*/
 		
 		TVector2	vHalf = { 20.0f, 20.0f };
-		TVector2	vStart = m_vPos - vHalf;
-		TVector2	vEnd = m_vPos - vHalf* 3.0f;
+		TVector2	vStart = m_vPos - vHalf*3.0f;
+		TVector2	vEnd = m_vPos - vHalf;
 		
 		if (m_ftrigger < 0.0f)
 		{
@@ -104,6 +104,7 @@ void TMonster2::Frame()
 		}
 		//Shoot();
 	}
+
 	m_pProjectile->Frame(m_vPos);
 }
 void TMonster2::Render()

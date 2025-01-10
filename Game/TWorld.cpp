@@ -54,17 +54,33 @@ void   TWorld::Frame()
 
 		for (auto dest : m_CollisionList)
 		{
-			if (src == dest) continue;
+			if (src == dest)
+			{
+				continue;
+			}
 			TObject* pDestObj = dest.second;
-			if (pDestObj == nullptr) continue;
-			//if (pSrcObj->GetType() == pDestObj->GetType()) continue;
-			if (pDestObj->m_bDead) continue;
+			if (pDestObj == nullptr) 
+			{
+				continue;
+			}
+			
+			if (pDestObj->m_bDead)
+			{
+				continue;
+			}
 			if (pSrcObj->m_iCollisionType == TCollisionType::T_Ignore)
 			{
 				continue;
 			}
+
 			if (TCollision::CheckRectToRect(pSrcObj->m_rtScreen, pDestObj->m_rtScreen))
 			{
+				if (pSrcObj->GetType() == pDestObj->GetType()) continue;
+				if (pDestObj->GetType() == TObjectType::Projectile)
+				{
+					int temp = 0;
+					temp = 123;
+				}
 				auto iter = m_fnCollisionExecute.find(pSrcObj->m_iCollisionID);
 				if (iter != m_fnCollisionExecute.end())
 				{

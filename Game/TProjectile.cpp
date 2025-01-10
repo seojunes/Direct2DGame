@@ -7,7 +7,7 @@ void TProjectileEffect::HitOverlap(TObject* pObj, THitResult hRes)
 	TObject::HitOverlap(pObj, hRes);
 	if (pObj->GetType() == TObjectType::Npc)
 	{
- 		m_bDead = true; // 충돌 시 미사일 소멸
+ 		//m_bDead = true; // 충돌 시 미사일 소멸
 	}
 	if (pObj->GetType() == TObjectType::Wall)
 	{
@@ -149,7 +149,7 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, UINT direction, bo
 	//}
 	if (obj->Create(m_pWorld, resData, vStart, tEnd))
 	{
-		obj->m_pCurrentTexture = obj->m_pTexture;
+ 		obj->m_pCurrentTexture = obj->m_pTexture;
 		obj->m_iCollisionType = TCollisionType::T_Overlap;
 		m_datalist.emplace_back(obj);
 	}

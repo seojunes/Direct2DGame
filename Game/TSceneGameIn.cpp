@@ -23,7 +23,7 @@ void TSceneGameIn::ProcessAction(TObject* pObj)
 		m_pOwner->m_pAction->Release();
 		m_pOwner->SetTransition(TSceneEvent::EVENT_PREV_SCENE);
 		m_bPrevScene = false;
-		m_bNextScene = false;false;
+		m_bNextScene = false;
 		return;
 	}
 }
@@ -374,6 +374,8 @@ void   TSceneGameIn::AddEffect(TVector2 tStart, TVector2 tEnd)
 }
 void   TSceneGameIn::Init()
 {
+	m_vCamera.x = 640.0f;
+	m_vCamera.y = 400.0f;
 	//NPC
 	//m_fsm.AddStateTransition(STATE_STAND, EVENT_PATROL, STATE_MOVE);
 	//m_fsm.AddStateTransition(STATE_STAND, EVENT_FINDTARGET, STATE_MOVE);
@@ -743,27 +745,55 @@ void   TSceneGameIn::Render()
 }
 void   TSceneGameIn::Release()
 {
-	
-	//m_pSound->Stop();
+	if (m_pSound)
+	{
+		m_pSound->Stop();
+		m_pSound = nullptr;
+	}
 	// 현재는 Object의 Release에서 아무런 작업을 하고있지 않지만, 추후 관리를 위해서 생성.
 	for (auto data : m_NpcList)
 	{
 		data->Release();
+		data = nullptr;
 	}
+	m_NpcList.clear();
 	for (auto data : m_EffectList)
 	{
 		data->Release();
+		data = nullptr;
 	}
+	m_EffectList.clear();
 	for (auto data : m_UiList)
 	{
 		data->Release();
+		data = nullptr;
 	}
+	m_UiList.clear();
 	for (auto data : m_ColList)
 	{
 		data->Release();
+		data = nullptr;
 	}
-	if(m_pHero)		m_pHero->Release();
-	if(m_pMap)		m_pMap->Release();
-	if (m_pBossMap)	m_pBossMap->Release();
-	if (m_pPortal)   m_pPortal->Release();
+	m_ColList.clear();
+	if (m_pHero)
+	{
+		m_pHero->Release();
+		m_pHero = nullptr;
+	}
+
+	if (m_pPortal)
+	{
+		m_pPortal->Release();
+		m_pPortal = nullptr;
+	}
+	if (m_pBossMap)
+	{
+		m_pBossMap->Release();
+		m_pBossMap = nullptr;
+	}
+	if (m_pMap)
+	{
+		m_pMap->Release();
+		m_pMap = nullptr;
+	}
 }

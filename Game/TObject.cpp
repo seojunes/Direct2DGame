@@ -3,13 +3,18 @@
 #include "TWorld.h"
 void    TObject::HitOverlap(TObject* pObj, THitResult hRet)
 {
-	/*if (pObj == nullptr)
+	if (pObj == nullptr)
 	{
 		return;
 	}
 	auto Type = pObj->GetType();
 
-	switch (Type)
+	if (Type != TObjectType::Projectile && GetType() != TObjectType::Projectile)
+	{
+		return;
+	}
+
+  	switch (Type)
 	{
 	case TObjectType::None:
 		break;
@@ -23,7 +28,7 @@ void    TObject::HitOverlap(TObject* pObj, THitResult hRet)
 		break;
 	default:
 		break;
-	}*/
+	}
 };
 void    TObject::HitSelect(TObject* pObj, THitResult hRet)
 {
@@ -52,8 +57,8 @@ void    TObject::Fade()
 
 void TObject::SetScale(float sx, float sy)
 {
-	m_vScale.x = sx;
-	m_vScale.y = sy;
+	m_vScale.x = abs(sx);
+	m_vScale.y = abs(sy);
 	m_matScale.Scale(m_vScale);
 	m_rtScreen.Size(m_vScale * 2.0f);
 	m_Sphere.vCenter = m_rtScreen.vc;
