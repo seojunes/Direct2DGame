@@ -1,12 +1,12 @@
-#include "TSceneLobby.h"
+#include "TSceneBoss.h"
 #include "TGameCore.h"
 #include "TGame.h"
-TSceneLobby::TSceneLobby(TGame* p)
+TSceneBoss::TSceneBoss(TGame* p)
 {
     m_pOwner = p;
 }
-TSceneLobby::~TSceneLobby() {}
-void TSceneLobby::ProcessAction(TObject* pObj)
+TSceneBoss::~TSceneBoss() {}
+void TSceneBoss::ProcessAction(TObject* pObj)
 {
     if (m_bNextScene == false)
     {
@@ -36,14 +36,13 @@ void TSceneLobby::ProcessAction(TObject* pObj)
     if (m_bLoadNextScene == true)
     {
         m_pOwner->SetTransition(TSceneEvent::EVENT_NEXT_SCENE);
-        m_pOwner->m_pAction->Init();
         m_bNextScene = false;
         m_bLoadNextScene = false;
         return;
     }
 }
 
-void   TSceneLobby::Init()
+void   TSceneBoss::Init()
 {
     TButtonGUI::CreateActionFSM();
     m_pWorld = std::make_shared<TWorld>(this);
@@ -85,9 +84,9 @@ void   TSceneLobby::Init()
         m_UiList.emplace_back(ui);
     }
 }
-void   TSceneLobby::Frame()
+void   TSceneBoss::Frame()
 {
-    
+
     for (auto data : m_UiList)
     {
         if (!data->m_bDead)
@@ -100,7 +99,7 @@ void   TSceneLobby::Frame()
     m_UiList[1]->FrameState(nullptr);
     m_pWorld->Frame();
 }
-void   TSceneLobby::Render()
+void   TSceneBoss::Render()
 {
 
     for (auto data : m_UiList)
@@ -117,7 +116,7 @@ void   TSceneLobby::Render()
         m_bNextScene = true;
     }
 }
-void   TSceneLobby::Release()
+void   TSceneBoss::Release()
 {
     for (auto data : m_UiList)
     {

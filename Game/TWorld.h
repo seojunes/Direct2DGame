@@ -7,6 +7,7 @@
 #include "TProjectile.h"
 #include "TCollisionManager.h"
 #include "TMonster.h"
+#include "TPortal.h"
 
 class TScene;
 using CollisionFunction = std::function<void(TObject*, THitResult)>;

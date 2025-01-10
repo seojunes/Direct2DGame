@@ -171,8 +171,10 @@
     <ClInclude Include="TNpcObj.h" />
     <ClInclude Include="TObject.h" />
     <ClInclude Include="TObject2D.h" />
+    <ClInclude Include="TPortal.h" />
     <ClInclude Include="TProjectile.h" />
     <ClInclude Include="TScene.h" />
+    <ClInclude Include="TSceneBoss.h" />
     <ClInclude Include="TSceneGameIn.h" />
     <ClInclude Include="TSceneIntro.h" />
     <ClInclude Include="TSceneLobby.h" />
@@ -211,8 +213,10 @@
     <ClCompile Include="TNpcObj.cpp" />
     <ClCompile Include="TObject.cpp" />
     <ClCompile Include="TObject2D.cpp" />
+    <ClCompile Include="TPortal.cpp" />
     <ClCompile Include="TProjectile.cpp" />
     <ClCompile Include="TScene.cpp" />
+    <ClCompile Include="TSceneBoss.cpp" />
     <ClCompile Include="TSceneGameIn.cpp" />
     <ClCompile Include="TSceneIntro.cpp" />
     <ClCompile Include="TSceneLobby.cpp" />

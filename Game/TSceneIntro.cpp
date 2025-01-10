@@ -33,6 +33,7 @@ void TSceneIntro::ProcessAction(TObject* pObj)
             }
         }
     }
+    
     if (m_bLoadNextScene == true)
     {
         m_pOwner->SetTransition(TSceneEvent::EVENT_NEXT_SCENE);

@@ -151,10 +151,10 @@ void TMapObj::SetIndexData()
 		}
 	}
 
-	m_pTexs[0] = I_Tex.Load(L"../../data/texture/Map7.png");
-	m_pTexs[1] = I_Tex.Load(L"../../data/texture/kgcalogo.bmp");
-	m_pTexs[2] = I_Tex.Load(L"../../data/texture/kgca08.bmp");
-	m_pTexs[3] = I_Tex.Load(L"../../data/texture/MegaMap.png");
+	///*m_pTexs[0] = I_Tex.Load(L"../../data/texture/Map7.png");
+	//m_pTexs[1] = I_Tex.Load(L"../../data/texture/kgcalogo.bmp");
+	//m_pTexs[2] = I_Tex.Load(L"../../data/texture/kgca08.bmp");
+	//m_pTexs[3] = I_Tex.Load(L"../../data/texture/MegaMap.png");*/
 }
 bool	TMapObj::CreateVertexBuffer()
 {
@@ -291,8 +291,7 @@ void	TMapObj::PostRender()
 		for (int iCell = 0; iCell < m_iNumCellRow * m_iNumCellCol; iCell++)
 		{
 			UINT iTex = m_Cells[iCell].iTexID;// rand() % 4;
-			TDevice::m_pd3dContext->PSSetShaderResources(
-				0, 1, &m_pTexs[0]->m_pTexSRV);
+			TDevice::m_pd3dContext->PSSetShaderResources(0, 1, &m_pTexture->m_pTexSRV);
 			TDevice::m_pd3dContext->DrawIndexed(6, 6 * iCell, 0);
 		}
 	}

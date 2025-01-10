@@ -4,6 +4,7 @@
 #include "TSceneLobby.h"
 #include "TSceneGameIn.h"
 #include "TSceneResult.h"
+#include "TSceneBoss.h"
 
 class TSceneFSM : public TFiniteStateMachine
 {

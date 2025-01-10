@@ -98,6 +98,10 @@
     <ClCompile Include="TEnemyFSM.cpp">
       <Filter>Monster</Filter>
     </ClCompile>
+    <ClCompile Include="TSceneBoss.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TPortal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -203,6 +207,10 @@
     <ClInclude Include="TEnemyFSM.h">
       <Filter>Monster</Filter>
     </ClInclude>
+    <ClInclude Include="TSceneBoss.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TPortal.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SpriteData.txt" />

@@ -10,6 +10,7 @@ enum class TObjectType
 	Projectile,
 	Npc,
 	Wall,
+	Portal,
 };
 
 class TObject

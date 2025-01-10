@@ -132,10 +132,10 @@ void TMapObj::SetIndexData()
 		}
 	}
 
-	m_pTexs[0] = I_Tex.Load(L"../../data/texture/Map.png");
-	m_pTexs[1] = I_Tex.Load(L"../../data/texture/kgcalogo.bmp");
-	m_pTexs[2] = I_Tex.Load(L"../../data/texture/kgca08.bmp");
-	m_pTexs[3] = I_Tex.Load(L"../../data/texture/kgcalogo.jpg");
+	//m_pTexs[0] = I_Tex.Load(L"../../data/texture/Map.png");
+	//m_pTexs[1] = I_Tex.Load(L"../../data/texture/kgcalogo.bmp");
+	//m_pTexs[2] = I_Tex.Load(L"../../data/texture/kgca08.bmp");
+	//m_pTexs[3] = I_Tex.Load(L"../../data/texture/kgcalogo.jpg");
 }
 
 void	TMapObj::PostRender()

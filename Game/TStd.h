@@ -65,6 +65,7 @@ struct TGameKey
     DWORD dwAkey;
     DWORD dwDkey;
     DWORD dwPkey;
+    DWORD dwKkey;
     DWORD dwLeftClick;
     DWORD dwRightClick;
     DWORD dwMiddleClick;

@@ -42,6 +42,7 @@ void    TInput::Frame()
 	g_GameKey.dwAkey = KeyCheck('A');
 	g_GameKey.dwDkey = KeyCheck('D');
 	g_GameKey.dwPkey = KeyCheck('P');
+	g_GameKey.dwKkey = KeyCheck('K');
 	g_GameKey.dwLeftClick = KeyCheck(VK_LBUTTON);
 	g_GameKey.dwRightClick = KeyCheck(VK_RBUTTON);
 	g_GameKey.dwMiddleClick = KeyCheck(VK_MBUTTON);

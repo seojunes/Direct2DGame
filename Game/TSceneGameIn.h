@@ -47,6 +47,8 @@ class TSceneGameIn : public TScene
 	using tCol = std::shared_ptr<TCollisionManager>;
 
 	std::shared_ptr<TMapObj>	m_pMap = nullptr;
+	std::shared_ptr<TMapObj>	m_pBossMap = nullptr;
+	std::shared_ptr<TPortal>	m_pPortal = nullptr;
 	std::shared_ptr<THeroObj>	m_pHero = nullptr;
 	std::vector<tCol>			m_ColList;
 	std::vector<tNpc>		    m_NpcList;
@@ -85,6 +87,8 @@ public:
 	bool CreateRect();
 	bool CreateSound() override;
 	bool CreateMap();
+	bool CreatePortal();
+	bool CreateBossMap();
 	bool CreateHero();
 	bool CreateNPC();
 	bool CreateEffect();

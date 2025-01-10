@@ -14,13 +14,16 @@ void TSceneGameIn::ProcessAction(TObject* pObj)
 	if (m_bNextScene == true)
 	{
 		m_pOwner->SetTransition(TSceneEvent::EVENT_NEXT_SCENE);
+		m_bPrevScene = false;
 		m_bNextScene = false;
 		return;
 	}
 	if (m_bPrevScene == true)
 	{
+		m_pOwner->m_pAction->Release();
 		m_pOwner->SetTransition(TSceneEvent::EVENT_PREV_SCENE);
 		m_bPrevScene = false;
+		m_bNextScene = false;false;
 		return;
 	}
 }
@@ -110,6 +113,35 @@ bool TSceneGameIn::CreateMap()
 	}
 	return true;
 }
+
+bool TSceneGameIn::CreateBossMap()
+{
+	TRect rt;
+	rt.SetS(12800.0f, 0.0f, 1280.0f, 900.0f );
+	m_pBossMap = std::make_shared<TMapObj>(rt, 1, 1);
+	if (m_pBossMap->Create(m_pWorld.get()))
+	{
+		TTexture* pTex = I_Tex.Load(L"../../data/texture/bossMap.png");
+		m_pBossMap->SetTexture(pTex).SetShader().SetLayout();
+	}
+	return true;
+}
+bool TSceneGameIn::CreatePortal()
+{
+	m_pPortal = std::make_shared<TPortal>();
+	TVector2 tStart = {500.0f, 500.0f};
+	TVector2 tEnd = {600.0f, 600.0f};
+	//m_pPortal->m_pWorld = m_pWorld.get();
+	TLoadResData resData;
+	resData.texPathName = L"../../data/texture/portal.png";
+	resData.texShaderName = L"../../data/shader/Default.txt";
+	m_pPortal->m_pMeshRender = &TGameCore::m_MeshRender;
+	if (m_pPortal->Create(m_pWorld.get(), resData, tStart, tEnd))
+	{
+		m_pPortal->m_iCollisionType = TCollisionType::T_Overlap;
+	}
+	return true;
+}
 bool TSceneGameIn::CreateHero()
 {
 	m_pHero = std::make_shared<THeroObj>();
@@ -167,7 +199,7 @@ bool TSceneGameIn::CreateRect()
 		TVector2 tEnd = area.second;
 		auto m_pRect = std::make_shared<TCollisionManager>();
 		m_pRect->m_pWorld = m_pWorld.get();
-		//m_pRect->SetMap(m_pMap.get());
+		m_pRect->SetMap(m_pMap.get());
 		TLoadResData resData;
 		resData.texPathName = L"../../data/texture/collision.png";
 		resData.texShaderName = L"../../data/shader/Default.txt";
@@ -366,7 +398,9 @@ void   TSceneGameIn::Init()
 
 	m_pWorld = std::make_shared<TWorld>(this);
 	CreateMap();
+	CreateBossMap();
 	CreateRect();
+	CreatePortal();
 	CreateHero();
 	CreateNPC();
 	//CreateUI();
@@ -389,7 +423,11 @@ void   TSceneGameIn::Frame()
 	}
 
 	m_pMap->Frame();
-
+	if (g_GameKey.dwKkey == KEY_PUSH)
+	{
+		m_bPrevScene = true;
+	}
+	
 	//m_pHero->m_fGravity = 980;
 	m_pHero->m_fGroundY = 1800;
 	for (auto rectlist : m_ColList)
@@ -611,16 +649,6 @@ void   TSceneGameIn::Frame()
 	s.fRadius = 100.0f;
 
 
-
-
-	//if (g_GameKey.dwMiddleClick == KEY_HOLD)
-	//{
-	//	TVector2 v1 = vMouse;
-	//	v1.x = vMouse.x - 50.0f;
-	//	v1.y = vMouse.y - 50.0f;
-	//	TVector2 tEnd = { v1.x + 100.0f, v1.y + 100.0f };
-	//	AddEffect(v1, tEnd);
-	//}
 	for (UINT iNpc1 = 0; iNpc1 < m_NpcList.size(); iNpc1++)
 	{
 		if (m_NpcList[iNpc1]->m_bDead)
@@ -662,14 +690,16 @@ void   TSceneGameIn::Frame()
 	}
 
 	m_pWorld->Frame();
+	m_pPortal->Frame();
 
 }
 void   TSceneGameIn::Render()
 {
 	TSoundManager::GetInstance().Render();
-
 	m_pMap->Transform(m_vCamera);
 	m_pMap->Render();
+	m_pBossMap->Transform(m_vCamera);
+	m_pBossMap->Render();
 
 	TDevice::m_pd3dContext->PSSetSamplers(0, 1, TDxState::m_pPointSS.GetAddressOf());
 	TDevice::m_pd3dContext->PSSetShaderResources(1, 1, &m_pBitmap1Mask->m_pTexSRV);
@@ -681,8 +711,13 @@ void   TSceneGameIn::Render()
 		data->Render();
 	}
 
+
+	m_pPortal->Transform(m_vCamera);
+	m_pPortal->Render();
+
 	m_pHero->Transform(m_vCamera);
 	m_pHero->Render();
+	
 
 
 	for (auto data : m_ColList)
@@ -708,6 +743,8 @@ void   TSceneGameIn::Render()
 }
 void   TSceneGameIn::Release()
 {
+	
+	//m_pSound->Stop();
 	// 현재는 Object의 Release에서 아무런 작업을 하고있지 않지만, 추후 관리를 위해서 생성.
 	for (auto data : m_NpcList)
 	{
@@ -725,6 +762,8 @@ void   TSceneGameIn::Release()
 	{
 		data->Release();
 	}
-	m_pHero->Release();
-	m_pMap->Release();
+	if(m_pHero)		m_pHero->Release();
+	if(m_pMap)		m_pMap->Release();
+	if (m_pBossMap)	m_pBossMap->Release();
+	if (m_pPortal)   m_pPortal->Release();
 }
