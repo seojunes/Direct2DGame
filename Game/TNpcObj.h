@@ -1,5 +1,6 @@
 #pragma once
 #include "TEnemyFSM.h"
+#include "THeroObj.h"
 struct TStateData
 {
 	float m_fTimer;
@@ -16,6 +17,9 @@ class TEnemyFSM : public TFiniteStateMachine
 class TNpcObj : public TObject2D
 {
 public:
+	THeroObj* m_pHero = nullptr;
+	TVector2 InitPos;
+public:
 	INT m_HP = 20;
 	TMapObj* m_pMap = nullptr;
 	TEnemyState* m_pAction = nullptr;
@@ -28,7 +32,7 @@ public:
 	static void CreateActionFSM();
 	void FrameState(TObject* pHero);
 	void SetMap(TMapObj* pMap) { m_pMap = pMap; }
-	virtual void Frame() override;
+	
 	virtual void SetVertexData();
 	void    HitOverlap(TObject* pObj, THitResult hRet) override;
 	TNpcObj()

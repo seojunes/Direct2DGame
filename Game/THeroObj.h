@@ -21,22 +21,9 @@ enum HeroView
 	LeftView,
 };
 
-enum CollisionDirection
-{
-	None = 0,
-	Top,
-	Bottom,
-	Left,
-	Right,
-};
 
 class THeroObj : public TObject2D
-{
-	bool isInvincible = false;  // 무적 상태
-	float invincibleTime = 0.0f; // 무적 시간
-	float blinkTimer = 0.0f;     // 깜빡임 타이머
-	//std::shared_ptr<HPBar> m_HeroHPdata;
-	
+{	
 	TMapObj* m_pMap = nullptr;
 	const int m_MaxJunp = 3;
 public:
@@ -56,7 +43,7 @@ public:
 public:
 	HeroState m_CurrentState = HeroState::Jump; // 초기 상태는 RightRun
 	HeroView m_CurrentView = HeroView::RightView;  // 초기 상태는 RightView
-	CollisionDirection m_CollisionDirection = CollisionDirection::None;
+	
 
 public:
 	int m_iJumpingCount = 0;
@@ -75,7 +62,6 @@ public:
 	void SetData(vector<vector<RECT>> SpriteList);
 public:
 	void SetMap(TMapObj* pMap) { m_pMap = pMap; }
-	//void InitWalkAnimation();
 	virtual void Init() override;
 	virtual void Frame() override;
 	virtual void Render()override;

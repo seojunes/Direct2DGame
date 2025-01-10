@@ -5,6 +5,7 @@
 #include "TNpcObj.h"
 #include "TControlGUI.h"
 #include "TProjectile.h"
+#include "TCollisionManager.h"
 #include "TMonster.h"
 
 class TScene;
@@ -17,6 +18,9 @@ public:
 	UINT   m_iExecuteSelectID = 0;
 	std::map<int, TObject*>  m_SelectList;
 	TScene* m_pScene = nullptr;
+
+	std::map<int, TObjectType> m_ObjectCollect;
+
 public:
 	std::map<int, CollisionFunction>  m_fnCollisionExecute;
 	void AddCollisionExecute(TObject* pOwnder, CollisionFunction fun);

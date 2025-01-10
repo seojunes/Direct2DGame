@@ -9,43 +9,48 @@ std::vector<std::shared_ptr<TEnemyState>> TNpcObj::m_pActionList;
 
 void TNpcObj::HitOverlap(TObject* pObj, THitResult hRes)  //충돌했을떄 실행되는 콜백함수
 {
-	if (pObj->GetType() == TObjectType::Hero)			 //충돌체가 Hero일때, 
+	TObject::HitOverlap(pObj, hRes);
+	const TObjectType OtherType = pObj == nullptr ? TObjectType::None : pObj->GetType();
+	if (OtherType == TObjectType::Hero)			 //충돌체가 Hero일때, 
 	{
 		// Hero와 충돌 시 Hero의 체력을 감소
-		auto pHero = dynamic_cast<THeroObj*>(pObj);        
-		if (pHero) 
+		auto pHero = dynamic_cast<THeroObj*>(pObj);
+		if (pHero)
 		{
 			pHero->m_HP -= 5; // Hero의 HP를 5 감소
-			if (pHero->m_HP <= 0) 
+			if (pHero->m_HP <= 0)
 			{
 				pHero->m_bDead = true; // Hero 사망 처리
 			}
 		}
 	}
+	if (OtherType == TObjectType::Projectile)
+	{
+		auto pMissile = dynamic_cast<TProjectileEffect*>(pObj);
+		if (pMissile)
+		{
+			pMissile->m_bDead = true;
+			m_HP -= pMissile->m_Data.m_iDamage;
+		}
+	}
+	if (OtherType == TObjectType::Wall)
+	{
+		auto pWall = dynamic_cast<TCollisionManager*>(pObj);
+		if (pWall)
+		{
+			if (m_vPos.x < pWall->m_vPos.x)
+			{
+				m_vPos.x = pWall->m_rtScreen.v1.x - m_rtScreen.vh.x;
+			}
+			else
+			{
+				m_vPos.x = pWall->m_rtScreen.v2.x + m_rtScreen.vh.x;
+			}
+		}
+	}
 }
-void TNpcObj::Frame()
-{
-	/*if (m_vPos.x > m_pMap->m_rtScreen.v2.x - m_rtScreen.vh.x)
-	{
-		m_vDir.x *= -1.0f;
-		m_vPos.x = m_pMap->m_rtScreen.v2.x - m_rtScreen.vh.x;
-	}
-	if (m_vPos.x < m_pMap->m_rtScreen.v1.x + m_rtScreen.vh.x)
-	{
-		m_vDir.x *= -1.0f;
-		m_vPos.x = m_pMap->m_rtScreen.v1.x + m_rtScreen.vh.x;
-	}
-	if (m_vPos.y > m_pMap->m_rtScreen.v2.y - m_rtScreen.vh.y)
-	{
-		m_vDir.y *= -1.0f;
-		m_vPos.y = m_pMap->m_rtScreen.v2.y - m_rtScreen.vh.y;
-	}
-	if (m_vPos.y < m_pMap->m_rtScreen.v1.y + m_rtScreen.vh.y)
-	{
-		m_vDir.y *= -1.0f;
-		m_vPos.y = m_pMap->m_rtScreen.v1.y + m_rtScreen.vh.y;
-	}*/
-}
+
+
 void TNpcObj::SetVertexData()
 {
 	if (m_pTexture == nullptr) return;
@@ -76,17 +81,17 @@ void TNpcObj::SetFSM(TFiniteStateMachine* pFsm)
 void TNpcObj::CreateActionFSM()
 {
 	if (m_pActionList.size()) return;
-	std::shared_ptr<TEnemyState> stand =	std::make_shared<TStandAction>();
-	std::shared_ptr<TEnemyState> move =  	std::make_shared<TMoveAction>();
-	std::shared_ptr<TEnemyState> attack =	std::make_shared<TAttackAction>();
-	std::shared_ptr<TEnemyState> dead =	std::make_shared<TDeadAction>();
+	std::shared_ptr<TEnemyState> stand = std::make_shared<TStandAction>();
+	std::shared_ptr<TEnemyState> move = std::make_shared<TMoveAction>();
+	std::shared_ptr<TEnemyState> attack = std::make_shared<TAttackAction>();
+	std::shared_ptr<TEnemyState> dead = std::make_shared<TDeadAction>();
 	m_pActionList.emplace_back(stand);
 	m_pActionList.emplace_back(move);
 	m_pActionList.emplace_back(attack);
 	m_pActionList.emplace_back(dead);
 }
 void TNpcObj::SetTransition(UINT iEvent)
-{
+ {
 	_ASSERT(m_pFsm);
 	UINT iOutput = m_pFsm->GetOutputState(m_pAction->m_iState, iEvent);
 	m_pAction = m_pActionList[iOutput].get();

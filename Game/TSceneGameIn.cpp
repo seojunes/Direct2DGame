@@ -162,26 +162,28 @@ bool TSceneGameIn::CreateRect()
 	};
 	for (auto area : rectArea)
 	{
+
 		TVector2 tStart = area.first;
 		TVector2 tEnd = area.second;
 		auto m_pRect = std::make_shared<TCollisionManager>();
-		m_pRect->SetMap(m_pMap.get());
+		m_pRect->m_pWorld = m_pWorld.get();
+		//m_pRect->SetMap(m_pMap.get());
 		TLoadResData resData;
 		resData.texPathName = L"../../data/texture/collision.png";
 		resData.texShaderName = L"../../data/shader/Default.txt";
 
 		m_pRect->m_pMeshRender = &TGameCore::m_MeshRender;
-		m_pRect->m_pWorld = m_pWorld.get();
+		
 		//if (m_pWorld)
 		//{ // TWorld 포인터가 유효한지 확인
 		//	m_pWorld->AddCollisionExecute(obj.get(), std::bind(&TProjectile::HitOverlap, this, std::placeholders::_1, std::placeholders::_2));
 		//}
 		if (m_pRect->Create(m_pWorld.get(), resData, tStart, tEnd))
 		{
-			m_pRect->m_iCollisionType = TCollisionType::T_Block;
+			m_pRect->m_iCollisionType = TCollisionType::T_Overlap;
 			m_ColList.emplace_back(m_pRect);
 		}
-		
+
 	}
 	return true;
 }
@@ -193,7 +195,7 @@ bool TSceneGameIn::CreateNPC()
 		{{800.0f,600.0f},{842.0f,660.0f}},
 		{{1100.0f,600.0f},{1142.0f,660.0f}},
 	};
-	Mon2Area = { {{2000.0f,600.0f},{2042.0f,660.0f}},
+	Mon2Area = { {{2000.0f,400.0f},{2042.0f,460.0f}},
 		{{2700.0f,600.0f},{2742.0f,660.0f}},
 	};
 	Mon3Area = { {{3000.0f,600.0f},{3042.0f,660.0f}},
@@ -206,10 +208,12 @@ bool TSceneGameIn::CreateNPC()
 	{
 		TVector2 tStart = area.first;
 		TVector2 tEnd = area.second;
-		auto npcobj1 = std::make_shared<TMonster1>(tStart);
+		auto npcobj1 = std::make_shared<TMonster1>((tStart+tEnd)/2.0f);
 		npcobj1->m_pMeshRender = &TGameCore::m_MeshRender;
 		npcobj1->SetMap(m_pMap.get());
 		npcobj1->SetFSM(&m_fsm);
+		npcobj1->m_pHero = m_pHero.get(); // Hero 연결
+		npcobj1->m_pWorld = m_pWorld.get();
 		TLoadResData resData;
 		resData.texPathName = L"../../data/texture/monster.png";
 		resData.texShaderName = L"../../data/shader/Default.txt";
@@ -228,6 +232,8 @@ bool TSceneGameIn::CreateNPC()
 		npcobj2->m_pMeshRender = &TGameCore::m_MeshRender;
 		npcobj2->SetMap(m_pMap.get());
 		npcobj2->SetFSM(&m_fsm);
+		npcobj2->m_pHero = m_pHero.get(); // Hero 연결
+		npcobj2->m_pWorld = m_pWorld.get();
 		TLoadResData resData;
 		resData.texPathName = L"../../data/texture/monster2.png";
 		resData.texShaderName = L"../../data/shader/Default.txt";
@@ -246,6 +252,8 @@ bool TSceneGameIn::CreateNPC()
 		npcobj3->m_pMeshRender = &TGameCore::m_MeshRender;
 		npcobj3->SetMap(m_pMap.get());
 		npcobj3->SetFSM(&m_fsm);
+		npcobj3->m_pHero = m_pHero.get(); // Hero 연결
+		npcobj3->m_pWorld = m_pWorld.get();
 		TLoadResData resData;
 		resData.texPathName = L"../../data/texture/monster3.png";
 		resData.texShaderName = L"../../data/shader/Default.txt";
@@ -394,7 +402,7 @@ void   TSceneGameIn::Frame()
 		{
 			if (Herorect.vc.x < Colrect.vc.x)																		// 왼쪽에서 올라올때
 			{
-				if (Herorect.v2.y-0.1f > Colrect.v1.y)																// 왼쪽아래서 올라올때
+				if (Herorect.v2.y - 0.1f > Colrect.v1.y)																// 왼쪽아래서 올라올때
 				{
 					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y<Colrect.v1.y && Herorect.vc.x > Colrect.v1.x)
 					{
@@ -410,13 +418,13 @@ void   TSceneGameIn::Frame()
 						m_pHero->GetGroundH(Colrect.v1.y - Herorect.vh.y);
 					}
 				}
-				
+
 			}
 			else																									 // 오른쪽에서 올라올때
 			{
-				if (Herorect.v2.y-0.1f > Colrect.v1.y)																 // 오른쪽에서 올라올때
+				if (Herorect.v2.y - 0.1f > Colrect.v1.y)																 // 오른쪽에서 올라올때
 				{
-					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y<Colrect.v1.y && Herorect.vc.x < Colrect.v2.x)
+					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y < Colrect.v1.y && Herorect.vc.x < Colrect.v2.x)
 					{
 						m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
 						m_pHero->GetGroundH(Colrect.v1.y - Herorect.vh.y);
@@ -424,7 +432,7 @@ void   TSceneGameIn::Frame()
 				}
 				else																								 // 오른쪽 위에서 내려갈때
 				{
-					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y<Colrect.v1.y && Herorect.v1.x - m_offsetdis < Colrect.v2.x)
+					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y < Colrect.v1.y && Herorect.v1.x - m_offsetdis < Colrect.v2.x)
 					{
 						m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
 						m_pHero->GetGroundH(Colrect.v1.y - Herorect.vh.y);
@@ -457,15 +465,15 @@ void   TSceneGameIn::Frame()
 			m_pHero->m_CurrentState = HeroState::Jump;
 		}
 
-		for (auto& projectile : m_pHero->m_pProjectile->m_datalist)
-		{
-			auto pProjectile = dynamic_cast<TProjectileEffect*>(projectile.get());
-			if (pProjectile && !pProjectile->m_bDead) {
-				if (TCollision::CheckRectToRect(Colrect, pProjectile->m_rtScreen)) {
-					pProjectile->m_bDead = true; // 충돌 시 발사체 제거
-				}
-			}
-		}
+		//for (auto& projectile : m_pHero->m_pProjectile->m_datalist)
+		//{
+		//	auto pProjectile = dynamic_cast<TProjectileEffect*>(projectile.get());
+		//	if (pProjectile && !pProjectile->m_bDead) {
+		//		if (TCollision::CheckRectToRect(Colrect, pProjectile->m_rtScreen)) {
+		//			pProjectile->m_bDead = true; // 충돌 시 발사체 제거
+		//		}
+		//	}
+		//}
 		//m_pHero->m_bIsJumping = true;
 	}
 
@@ -475,7 +483,7 @@ void   TSceneGameIn::Frame()
 
 	if (g_GameKey.dwPkey == KEY_PUSH)
 	{
-		
+
 		if (m_Debug == Debug::Normal)
 		{
 			m_Debug = Debug::Debug;
@@ -528,7 +536,7 @@ void   TSceneGameIn::Frame()
 			m_vCamera.y += 5.0f;
 		}
 	}
-	
+
 
 
 
@@ -548,44 +556,44 @@ void   TSceneGameIn::Frame()
 
 
 	TVector2 vMouse = GetWorldMousePos();
-	for (auto& npc : m_NpcList) 
-	{
-		if (!npc->m_bDead) 
-		{
-			if (TCollision::CheckRectToRect(npc->m_rtScreen, m_pHero->m_rtScreen))
-			{
-				npc->HitOverlap(m_pHero.get(), THitResult{}); // NPC가 Hero와 충돌
-				m_pHero->HitOverlap(npc.get(), THitResult{}); // Hero가 NPC와 충돌
-			}
-		}
-	}
+	//for (auto& npc : m_NpcList) 
+	//{
+	//	if (!npc->m_bDead) 
+	//	{
+	//		if (TCollision::CheckRectToRect(npc->m_rtScreen, m_pHero->m_rtScreen))
+	//		{
+	//			npc->HitOverlap(m_pHero.get(), THitResult{}); // NPC가 Hero와 충돌
+	//			m_pHero->HitOverlap(npc.get(), THitResult{}); // Hero가 NPC와 충돌
+	//		}
+	//	}
+	//}
 
 	// NPC와 미사일 충돌 처리
-	for (auto& npc : m_NpcList)
-	{
-		if (!npc->m_bDead) 
-		{
-			for (auto& projectile : m_pHero->m_pProjectile->m_datalist)
-			{
-				auto pProjectile = dynamic_cast<TProjectileEffect*>(projectile.get());
-				if (pProjectile && !pProjectile->m_bDead) 
-				{
-					if (TCollision::CheckRectToRect(npc->m_rtScreen, pProjectile->m_rtScreen))
-					{
-  						npc->m_HP -= pProjectile->m_Data.m_iDamage;
-						pProjectile->m_bDead = true; // 미사일 소멸
-						if (npc->m_HP <= 0)
-						{
-							m_pCrashSound->PlayEffect();
-						}
-					}
-				}
-			}
-		}
-	}
+	//for (auto& npc : m_NpcList)
+	//{
+	//	if (!npc->m_bDead) 
+	//	{
+	//		for (auto& projectile : m_pHero->m_pProjectile->m_datalist)
+	//		{
+	//			auto pProjectile = dynamic_cast<TProjectileEffect*>(projectile.get());
+	//			if (pProjectile && !pProjectile->m_bDead) 
+	//			{
+	//				if (TCollision::CheckRectToRect(npc->m_rtScreen, pProjectile->m_rtScreen))
+	//				{
+	//					npc->m_HP -= pProjectile->m_Data.m_iDamage;
+	//					//pProjectile->m_bDead = true; // 미사일 소멸
+	//					if (npc->m_HP <= 0)
+	//					{
+	//						m_pCrashSound->PlayEffect();
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 
 	// NPC 상태 업데이트
-	for (auto& npc : m_NpcList) 
+	for (auto& npc : m_NpcList)
 	{
 		if (!npc->m_bDead)
 		{

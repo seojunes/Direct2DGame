@@ -5,7 +5,15 @@ enum class Monster1State
 {
 	STATE_Move = 0,
 	STATE_Attack,
+	STATE_Return,
 };
+
+//enum class Monster1Event
+//{
+//	EVENT_Findtarget = 0,
+//	EVENT_Losstarget,
+//	EVENT_BeAttacked,
+//};
 class TMonster1 : public TNpcObj
 {
 public:
@@ -32,11 +40,28 @@ public:
 	}
 };
 
+
+enum class Monster2State
+{
+	STATE_Idle = 0,
+	STATE_Attack,
+};
+
 class TMonster2 : public TNpcObj
 {
 public:
+	std::shared_ptr<TProjectile>		m_pProjectile;
+public:
 	void SetVertexData() override;
-	void Frame() override;
+	virtual void Init() override;
+	virtual void Frame() override;
+	virtual void Render()override;
+	virtual void Release()override;
+public:
+	Monster2State m_state = Monster2State::STATE_Idle;
+public:
+	float m_ftrigger = 1.0f;
+	//void shot();
 public:
 	TMonster2()
 	{

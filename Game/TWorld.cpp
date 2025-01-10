@@ -6,6 +6,7 @@ void TWorld::AddCollisionExecute(TObject* pOwner, CollisionFunction fun)
 	pOwner->m_iCollisionID = ++m_iExecuteCollisionID;
 	m_CollisionList.insert(std::make_pair(pOwner->m_iCollisionID, pOwner));
 	m_fnCollisionExecute.insert(std::make_pair(pOwner->m_iCollisionID, fun));
+	m_ObjectCollect.insert(std::make_pair(pOwner->m_iCollisionID, pOwner->GetType()));
 }
 void TWorld::DeleteCollisionExecute(TObject* pOwner)
 {
@@ -44,15 +45,19 @@ void   TWorld::Frame()
 	for (auto src : m_CollisionList)
 	{
 		TObject* pSrcObj = src.second;
+		if (pSrcObj == nullptr) continue;
 		if (pSrcObj->m_bDead) continue;
 		if (pSrcObj->m_iCollisionType == TCollisionType::T_Ignore)
 		{
 			continue;
 		}
+
 		for (auto dest : m_CollisionList)
 		{
 			if (src == dest) continue;
 			TObject* pDestObj = dest.second;
+			if (pDestObj == nullptr) continue;
+			//if (pSrcObj->GetType() == pDestObj->GetType()) continue;
 			if (pDestObj->m_bDead) continue;
 			if (pSrcObj->m_iCollisionType == TCollisionType::T_Ignore)
 			{
@@ -89,7 +94,7 @@ void   TWorld::Frame()
 				THitResult ret;
 				//ret.iState = TSelectState::T_DEFAULT;
 				ret.iState = TSelectState::T_HOVER;
-				if (g_GameKey.dwLeftClick == KEY_PUSH ||g_GameKey.dwLeftClick == KEY_HOLD)
+				if (g_GameKey.dwLeftClick == KEY_PUSH || g_GameKey.dwLeftClick == KEY_HOLD)
 				{
 					ret.iState = TSelectState::T_ACTIVE;
 				}

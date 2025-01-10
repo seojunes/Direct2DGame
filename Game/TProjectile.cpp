@@ -2,9 +2,12 @@
 #include "TGameCore.h"
 #include "TWorld.h"
 
-void TProjectileEffect::HitOverlap(TObject* pObj, THitResult hRes) {
-	if (pObj->GetType() == TObjectType::Npc) {
-		m_bDead = true; // 충돌 시 미사일 소멸
+void TProjectileEffect::HitOverlap(TObject* pObj, THitResult hRes)
+{
+	TObject::HitOverlap(pObj, hRes);
+	if (pObj->GetType() == TObjectType::Npc)
+	{
+ 		m_bDead = true; // 충돌 시 미사일 소멸
 	}
 	if (pObj->GetType() == TObjectType::Wall)
 	{
@@ -22,7 +25,7 @@ void TProjectileEffect::Frame()
 		m_fCurrentTime -= m_fOffsetTime;
 	}
 	m_fTimer += g_fSPF;
-	m_vDir = this->m_Data.m_vDirection;	
+	m_vDir = this->m_Data.m_vDirection;
 	m_vPos = m_vPos + m_vDir * 500.0f * g_fSPF;
 	SetPosition(m_vPos);
 
@@ -92,6 +95,7 @@ TProjectile::TProjectile(TWorld* pWorld) : m_pWorld(pWorld)
 {
 
 }
+
 void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, UINT direction, bool  m_bOncharging)
 {
 	auto obj = std::make_shared<TProjectileEffect>();
@@ -101,7 +105,7 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, UINT direction, bo
 	resData.texShaderName = L"../../data/shader/Default.txt";
 	TEffectData data;
 	data.m_bLoop = true;
-	data.m_fLifeTime = 3.0f;
+	data.m_fLifeTime = 2.0f;
 	data.m_fOffsetTime = 0.01f;
 	if (m_bOncharging == false)
 	{
@@ -139,29 +143,36 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, UINT direction, bo
 
 	obj->SetData(data);
 
-	if (m_pWorld)
-	{ // TWorld 포인터가 유효한지 확인
-		m_pWorld->AddCollisionExecute(obj.get(), std::bind(&TProjectile::HitOverlap, this, std::placeholders::_1, std::placeholders::_2));
-	}
+	//if (m_pWorld)
+	//{ // TWorld 포인터가 유효한지 확인
+	//	m_pWorld->AddCollisionExecute(obj.get(), std::bind(&TProjectile::HitOverlap, this, std::placeholders::_1, std::placeholders::_2));
+	//}
 	if (obj->Create(m_pWorld, resData, vStart, tEnd))
 	{
 		obj->m_pCurrentTexture = obj->m_pTexture;
+		obj->m_iCollisionType = TCollisionType::T_Overlap;
 		m_datalist.emplace_back(obj);
 	}
-	
+
 }
+
+//void TProjectile::ApplyOwnerType(const TObjectType& InObjectType)
+//{
+//	OwnerType = InObjectType;
+//}
+
 void   TProjectile::Init()
 {
 
 }
-void   TProjectile::Frame(TVector2 vHeroPos)
+void   TProjectile::Frame(TVector2 vObjPos)
 {
 	for (auto iter = std::begin(m_datalist); iter != m_datalist.end();)
 	{
 		TProjectileEffect* pObj = (TProjectileEffect*)iter->get();
 		if (pObj->m_bDead == false)
 		{
-			pObj->m_vHeroPos = vHeroPos;
+			pObj->m_vObjPos = vObjPos;
 			pObj->Frame();
 			iter++;
 		}

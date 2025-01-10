@@ -3,6 +3,27 @@
 #include "TWorld.h"
 void    TObject::HitOverlap(TObject* pObj, THitResult hRet)
 {
+	/*if (pObj == nullptr)
+	{
+		return;
+	}
+	auto Type = pObj->GetType();
+
+	switch (Type)
+	{
+	case TObjectType::None:
+		break;
+	case TObjectType::Hero:
+		break;
+	case TObjectType::Projectile:
+		break;
+	case TObjectType::Npc:
+		break;
+	case TObjectType::Wall:
+		break;
+	default:
+		break;
+	}*/
 };
 void    TObject::HitSelect(TObject* pObj, THitResult hRet)
 {

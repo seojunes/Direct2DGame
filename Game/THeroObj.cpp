@@ -285,73 +285,13 @@ void THeroObj::SetVertexData()
 		break;
 	}
 
-	//좌우걷기
-	//if (m_CurrentState == RightRun)
-	//{
-	//	m_vVertexList[0].t = { rt.x / xSize, rt.y / ySize };
-	//	m_vVertexList[1].t = { rt.w / xSize, rt.y / ySize };
-	//	m_vVertexList[2].t = { rt.x / xSize, rt.h / ySize };
-	//	m_vVertexList[3].t = { rt.w / xSize, rt.h / ySize };
-	//}
-	//// LeftRun 상태 (UV 좌우 반전)
-	//else if (m_CurrentState == LeftRun)
-	//{
-	//	// 반전된 좌표
-	//	m_vVertexList[0].t = { rt.w / xSize, rt.y / ySize }; 
-	//	m_vVertexList[1].t = { rt.x / xSize, rt.y / ySize };
-	//	m_vVertexList[2].t = { rt.w / xSize, rt.h / ySize };
-	//	m_vVertexList[3].t = { rt.x / xSize, rt.h / ySize };
-	//}
-
-
-	/*rt.SetS(2.0f, 128.0f, 39.0f, 170.0f);
-	m_vVertexList[0].t = { rt.x / xSize,rt.y / ySize };
-	m_vVertexList[1].t = { rt.w / xSize,rt.y / ySize };
-	m_vVertexList[2].t = { rt.x / xSize,rt.h / ySize };
-	m_vVertexList[3].t = { rt.w / xSize,rt.h / ySize };*/
-
-	/*rt.SetP(2.0f, 128.0f, 39.0f, 170.0f);
-	m_vVertexList[0].t = { rt.x / xSize, rt.y / ySize };
-	m_vVertexList[1].t = { rt.x2 / xSize, rt.y / ySize };
-	m_vVertexList[2].t = { rt.x / xSize, rt.y2 / ySize };
-	m_vVertexList[3].t = { rt.x2 / xSize, rt.y2 / ySize };*/
 
 }
 
 
-//void THeroObj::Render() 
-//{
-//	if (isInvincible) {
-//		blinkTimer += g_fGT;
-//
-//		// 깜빡임 효과 (0.2초 간격)
-//		if (fmod(blinkTimer, 0.2f) < 0.1f) {
-//			return; // 깜빡임 주기 동안 렌더링 생략
-//		}
-//	}
-//
-//	// 기본 TObject 렌더링 호출
-//	TObject::Render();
-//}
-//
-//void THeroObj::Update(float g_fGT)
-//{
-//	if (isInvincible) {
-//		invincibleTime -= g_fGT; // 무적 시간 감소
-//		if (invincibleTime <= 0.0f) {
-//			isInvincible = false; // 무적 상태 해제
-//			blinkTimer = 0.0f;    // 깜빡임 타이머 초기화
-//		}
-//	}
-//
-//	// TObject의 기본 업데이트 호출 (필요하면)
-//	TObject::Frame();
-//}
-
 void THeroObj::Render()
 {
 	TObject2D::Render();
-	Fade();
 	m_pProjectile->Render(m_vCamera);
 }
 
