@@ -26,6 +26,16 @@ class THeroObj : public TObject2D
 {	
 	TMapObj* m_pMap = nullptr;
 	const int m_MaxJunp = 3;
+
+
+//public:
+//	static THeroObj* GetInstance()
+//	{
+//		static THeroObj instance;
+//		return &instance;
+//	}
+
+
 public:
 	std::shared_ptr<TProjectile>		m_pProjectile;
 	std::vector<RECT> m_rtWalkFrames; // 걷기 애니메이션 프레임 리스트
@@ -56,6 +66,8 @@ public:
 	float m_fChargingTime = 0.0f;
 	bool m_bOnCharing = false;
 	bool m_bCharging = false;
+	TVector2 m_vRightDir = { 1.0f, 0.0f };
+	TVector2 m_vLeftDir = { -1.0f, 0.0f };
 public:
 	UINT m_HP = 100;
 	std::vector <SRect> spriteData;

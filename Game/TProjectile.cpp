@@ -2,12 +2,13 @@
 #include "TGameCore.h"
 #include "TWorld.h"
 
+
 void TProjectileEffect::HitOverlap(TObject* pObj, THitResult hRes)
 {
 	TObject::HitOverlap(pObj, hRes);
 	if (pObj->GetType() == TObjectType::Npc)
 	{
- 		//m_bDead = true; // 충돌 시 미사일 소멸
+		//m_bDead = true; // 충돌 시 미사일 소멸
 	}
 	if (pObj->GetType() == TObjectType::Wall)
 	{
@@ -26,6 +27,10 @@ void TProjectileEffect::Frame()
 	}
 	m_fTimer += g_fSPF;
 	m_vDir = this->m_Data.m_vDirection;
+	/*if (this->m_pOwner == Shooter::OWNER_MON2)
+	{
+		m_vDir = { -1.0f, -1.0f };
+	}*/
 	m_vPos = m_vPos + m_vDir * 500.0f * g_fSPF;
 	SetPosition(m_vPos);
 
@@ -96,11 +101,12 @@ TProjectile::TProjectile(TWorld* pWorld) : m_pWorld(pWorld)
 
 }
 
-void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, UINT direction, bool  m_bOncharging)
+void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction, Shooter owner, bool  m_bOncharging)
 {
 	auto obj = std::make_shared<TProjectileEffect>();
 	obj->m_pMeshRender = &TGameCore::m_MeshRender;
 	obj->m_vVertexList = obj->m_pMeshRender->m_vVertexList;
+	obj->m_pOwner = owner;
 	TLoadResData resData;
 	resData.texShaderName = L"../../data/shader/Default.txt";
 	TEffectData data;
@@ -119,14 +125,13 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, UINT direction, bo
 		data.m_iDamage = 15;
 		//obj->m_iDamage = 15;
 	}
-	if (direction == 1)
+
+	if (owner == Shooter::OWNER_MON2)
 	{
-		data.m_vDirection = { 1.0f, 0.0f };
+		resData.texPathName = L"../../data/ui/Mon2Shot.png";
+		data.m_iDamage = 3;
 	}
-	else
-	{
-		data.m_vDirection = { -1.0f, 0.0f };
-	}
+	data.m_vDirection = direction;
 	UINT iSprite = rand() % 3;
 	data.m_iType = 1;// rand() % m_szSpriteList[0].size();
 	data.m_iNumAnimFrame = 1;
@@ -149,7 +154,7 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, UINT direction, bo
 	//}
 	if (obj->Create(m_pWorld, resData, vStart, tEnd))
 	{
- 		obj->m_pCurrentTexture = obj->m_pTexture;
+		obj->m_pCurrentTexture = obj->m_pTexture;
 		obj->m_iCollisionType = TCollisionType::T_Overlap;
 		m_datalist.emplace_back(obj);
 	}

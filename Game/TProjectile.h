@@ -1,5 +1,13 @@
 #pragma once
 #include "TEffectObj.h"
+
+enum Shooter
+{
+	OWNER_HERO = 0,
+	OWNER_MON2,
+	OWNER_MON3,
+};
+
 class TProjectileEffect : public TEffectObj
 {
 public:
@@ -7,6 +15,8 @@ public:
 	TVector2 m_vOffsetPos;
 	TVector2 m_vPrePos;
 	float    m_fTimer = 0.0f;
+	Shooter m_pOwner = Shooter::OWNER_HERO;
+
 
 	void Frame();
 	void Render();
@@ -25,7 +35,8 @@ public:
 public:
 	using tObject = std::shared_ptr<TProjectileEffect>;
 	std::list< tObject>   m_datalist;
-	void   AddEffect(TVector2 vStart, TVector2 tEnd, UINT direction, bool m_bOncharging = false);
+	void   AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction, Shooter owner, bool m_bOncharging = false);
+	
 	//void   ApplyOwnerType(const TObjectType& InObjectType);
 	void   Init();
 	void   Frame(TVector2 vPos);

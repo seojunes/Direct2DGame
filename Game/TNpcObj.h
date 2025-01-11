@@ -27,6 +27,8 @@ public:
 	static std::vector<std::shared_ptr<TEnemyState>>  m_pActionList;
 	TFiniteStateMachine* m_pFsm = nullptr;
 public:
+	std::shared_ptr<TProjectile>		m_pProjectile;
+public:
 	void SetFSM(TFiniteStateMachine* pFsm);
 	void SetTransition(UINT iEvent);
 	static void CreateActionFSM();

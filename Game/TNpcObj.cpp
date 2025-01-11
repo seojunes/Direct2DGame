@@ -18,16 +18,16 @@ void TNpcObj::HitOverlap(TObject* pObj, THitResult hRes)  //충돌했을떄 실행되는 
 		if (pHero)
 		{
 			pHero->m_HP -= 5; // Hero의 HP를 5 감소
-			if (pHero->m_HP <= 0)
-			{
-				pHero->m_bDead = true; // Hero 사망 처리
-			}
+			//if (pHero->m_HP <= 0)
+			//{
+			//	pHero->m_bDead = true; // Hero 사망 처리
+			//}
 		}
 	}
 	if (OtherType == TObjectType::Projectile)
 	{
 		auto pMissile = dynamic_cast<TProjectileEffect*>(pObj);
-		if (pMissile)
+		if (pMissile && pMissile->m_pOwner == Shooter::OWNER_HERO)
 		{
 			pMissile->m_bDead = true;
 			m_HP -= pMissile->m_Data.m_iDamage;

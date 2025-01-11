@@ -4,7 +4,17 @@
 
 void    THeroObj::HitOverlap(TObject* pObj, THitResult hRes)
 {
-
+	TObject::HitOverlap(pObj, hRes);
+	const TObjectType OtherType = pObj == nullptr ? TObjectType::None : pObj->GetType();
+ 	if (OtherType == TObjectType::Projectile)
+	{
+		auto pMissile = dynamic_cast<TProjectileEffect*>(pObj);
+		if (pMissile && (pMissile->m_pOwner == Shooter::OWNER_MON2 || pMissile->m_pOwner == Shooter::OWNER_MON3))
+		{
+			pMissile->m_bDead = true;
+			m_HP -= pMissile->m_Data.m_iDamage;
+		}
+	}
 }
 
 void THeroObj::Init()
@@ -197,13 +207,14 @@ void THeroObj::Frame()
 
 		if (m_CurrentView == RightView)								//바라보는 방향에 따라서 발사체 생성.
 		{
-			m_pProjectile->AddEffect(vStart, vEnd, 1, m_bOnCharing);
+			m_pProjectile->AddEffect(vStart, vEnd, m_vRightDir, Shooter::OWNER_HERO ,m_bOnCharing);
 		}
 		else
 		{
-			m_pProjectile->AddEffect(vStart, vEnd, 2, m_bOnCharing);
+			m_pProjectile->AddEffect(vStart, vEnd, m_vLeftDir, Shooter::OWNER_HERO,m_bOnCharing);
 		}
 		// 충전 시간 초기화
+		//m_pProjectile->
 		m_fChargingTime = 0.0f;
 	}
 	/*if (m_bCharging == true)  // 깜빡임 효과

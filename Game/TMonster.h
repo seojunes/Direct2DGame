@@ -49,8 +49,34 @@ enum class Monster2State
 
 class TMonster2 : public TNpcObj
 {
+
 public:
-	std::shared_ptr<TProjectile>		m_pProjectile;
+	void SetVertexData() override;
+	virtual void Init() override;
+	virtual void Frame() override;
+	virtual void Render()override;
+	virtual void Release()override;
+public:
+	Monster2State m_state = Monster2State::STATE_Idle;
+public:
+	float m_ftrigger = 0.5f;
+	//void shot();
+public:
+	TMonster2()
+	{
+		TNpcObj::m_HP = 30;
+		m_fSpeed = 100.0f;
+	}
+};
+
+enum class Monster3State
+{
+	STATE_Idle = 0,
+	STATE_Attack,
+};
+
+class TMonster3 : public TNpcObj
+{
 public:
 	void SetVertexData() override;
 	virtual void Init() override;
@@ -61,20 +87,6 @@ public:
 	Monster2State m_state = Monster2State::STATE_Idle;
 public:
 	float m_ftrigger = 1.0f;
-	//void shot();
-public:
-	TMonster2()
-	{
-		TNpcObj::m_HP = 30;
-		m_fSpeed = 100.0f;
-	}
-};
-
-class TMonster3 : public TNpcObj
-{
-public:
-	void SetVertexData() override;
-	void Frame() override;
 public:
 	TMonster3()
 	{
