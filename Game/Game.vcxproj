@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\data\shader\stdShader.h" />
     <ClInclude Include="Sample.h" />
+    <ClInclude Include="TBossObj.h" />
     <ClInclude Include="TCollision.h" />
     <ClInclude Include="TCollisionManager.h" />
     <ClInclude Include="TControlGUI.h" />
@@ -191,6 +192,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="TBossObj.cpp" />
     <ClCompile Include="TCollision.cpp" />
     <ClCompile Include="TCollisionManager.cpp" />
     <ClCompile Include="TControlGUI.cpp" />

@@ -16,7 +16,7 @@ public:
 	TVector2 m_vPrePos;
 	float    m_fTimer = 0.0f;
 	Shooter m_pOwner = Shooter::OWNER_HERO;
-
+	float temp = 0.0f;
 
 	void Frame();
 	void Render();

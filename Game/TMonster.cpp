@@ -41,7 +41,7 @@ void TMonster1::Frame()
 		{
 			m_state = Monster1State::STATE_Return;
 		}
-		if (fHeroDistance > 300.0f)
+		if (fHeroDistance > 500.0f)
 		{
 			m_state = Monster1State::STATE_Return;
 		}
@@ -158,10 +158,10 @@ void TMonster3::Frame()
 			m_state = Monster2State::STATE_Idle;
 		}
 
-		TVector2	vHalf = { 30.0f, 30.0f };
+		TVector2	vHalf = { 25.0f, 25.0f };
 		TVector2	vStart = m_vPos - vHalf;
 		TVector2	vEnd = m_vPos + vHalf;
-		TVector2    dir = (m_pHero->m_vPos - m_vPos).Normal();
+		TVector2    dir = { 0.0f, -1.0f };
 
 		if (m_ftrigger < 0.0f)
 		{

@@ -26,6 +26,20 @@ void TSceneGameIn::ProcessAction(TObject* pObj)
 		m_bNextScene = false;
 		return;
 	}
+	if (m_pHero->m_BossMoving == BossRoomMovingState::STATE_ABLE && g_GameKey.dwSkey == KEY_PUSH)
+	{
+		for (auto data : m_UiList)
+		{
+			if (data->m_fAlpha <= 1.0f)
+			{
+				data->m_fAlpha += g_fSPF * 0.5f;
+				if (data->m_fAlpha >= 1.0f)
+				{
+					data->m_fAlpha = 1.0f;
+				}
+			}
+		}
+	}
 }
 
 bool TSceneGameIn::CreateSound()
@@ -117,7 +131,7 @@ bool TSceneGameIn::CreateMap()
 bool TSceneGameIn::CreateBossMap()
 {
 	TRect rt;
-	rt.SetS(12800.0f, 0.0f, 1280.0f, 900.0f );
+	rt.SetS(12800.0f, 0.0f, 1280.0f, 900.0f);
 	m_pBossMap = std::make_shared<TMapObj>(rt, 1, 1);
 	if (m_pBossMap->Create(m_pWorld.get()))
 	{
@@ -129,8 +143,8 @@ bool TSceneGameIn::CreateBossMap()
 bool TSceneGameIn::CreatePortal()
 {
 	m_pPortal = std::make_shared<TPortal>();
-	TVector2 tStart = {500.0f, 500.0f};
-	TVector2 tEnd = {600.0f, 600.0f};
+	TVector2 tStart = { 11272.0f,1023.0f };
+	TVector2 tEnd = { 11432.0f, 1200.0f };
 	//m_pPortal->m_pWorld = m_pWorld.get();
 	TLoadResData resData;
 	resData.texPathName = L"../../data/texture/portal.png";
@@ -148,7 +162,7 @@ bool TSceneGameIn::CreateHero()
 	m_pHero->SetData(m_rtSpriteList);
 	m_pHero->SetMap(m_pMap.get());
 	TVector2 tStart = { 400.0f,300.0f };//m_pHero->m_fGroundY };
-	TVector2 tEnd = { tStart.x + 80.0f, tStart.y + 100.0f };
+	TVector2 tEnd = { tStart.x + 80.0f, tStart.y + 110.0f };
 	TLoadResData resData;
 	resData.texPathName = L"../../data/texture/walk.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
@@ -191,6 +205,9 @@ bool TSceneGameIn::CreateRect()
 		{{ 0.0f  , -50.0f },{3880.0f,0.0f}},
 		{{ -50.0f  , 0.0f },{0.0f,900.0f} },
 		{{11520.0f,0.0f},{11720.0f,1800.0f}},
+		{{12800.0f,0.0f},{12880.3f,1800.0f}},
+		{{14004.0f,0.0f},{14080.0f,1800.0f}},
+		{{12800.0f,843.5f},{14080.0f,900.0f}},
 	};
 	for (auto area : rectArea)
 	{
@@ -205,7 +222,7 @@ bool TSceneGameIn::CreateRect()
 		resData.texShaderName = L"../../data/shader/Default.txt";
 
 		m_pRect->m_pMeshRender = &TGameCore::m_MeshRender;
-		
+
 		//if (m_pWorld)
 		//{ // TWorld 포인터가 유효한지 확인
 		//	m_pWorld->AddCollisionExecute(obj.get(), std::bind(&TProjectile::HitOverlap, this, std::placeholders::_1, std::placeholders::_2));
@@ -222,25 +239,36 @@ bool TSceneGameIn::CreateRect()
 
 bool TSceneGameIn::CreateNPC()
 {
-	Mon1Area = { {{1400.0f,600.0f},{1442.0f,660.0f}},
-		{{1700.0f,600.0f},{1742.0f,660.0f}},
-		{{800.0f,600.0f},{842.0f,660.0f}},
-		{{1100.0f,600.0f},{1142.0f,660.0f}},
+	Mon1Area = { {{1085.0f,620.0f},{1185.0f,720.0f}},
+		{{885.0f,620.0f},{985.0f,720.0f}},
+		{{2383.0f,620.0f},{2483.0f,720.0f}},
+		{{3482.0f,1279.0f},{3582.0f,1379.0f}},
+		{{4182.0f,1279.0f},{4282.0f,1379.0f}},
+		{{5300.0f,1457.0f},{5400.0f,1557.0f}},
+		{{7372.0f,1218.0f},{7472.0f,1318.0f}},
 	};
-	Mon2Area = { {{2000.0f,400.0f},{2042.0f,460.0f}},
-		{{2600.0f,600.0f},{2642.0f,660.0f}},
+	Mon2Area = { {{1896.0f,440.0f},{1996.0f,540.0f}},
+		{{3000.0f,440.0f},{3100.0f,540.0f}},
+		{{4450.0f,1457.0f},{4550.0f,1557.0f}},
+		{{6800.0f,1277.0f},{6900.0f,1377.0f}},
+		{{9400.0f,1277.0f},{9500.0f,1377.0f}},
 	};
-	Mon3Area = { {{3000.0f,300.0f},{3042.0f,360.0f}},
-		{{3700.0f,600.0f},{3742.0f,660.0f}},
+	Mon3Area = { {{3356,318.5f},{3456.0f,418.5f}},
+		{{4247.0f,1100.0f},{4347.0f,1200.0f}},
+		{{5700.0f,1280.0f},{5800.0f,1380.0f}},
+		{{6200.0f,1158.5f},{6300.0f,1258.5f}},
+		{{9700.0f,1218.5f},{9800.0f,1318.5f}},
 	};
 	TNpcObj::CreateActionFSM();
 	// npc
-	TRect rtWorldMap = m_pMap->m_rtScreen;
+	//TRect rtWorldMap = m_pMap->m_rtScreen;
+
+
 	for (auto area : Mon1Area)
 	{
 		TVector2 tStart = area.first;
 		TVector2 tEnd = area.second;
-		auto npcobj1 = std::make_shared<TMonster1>((tStart+tEnd)/2.0f);
+		auto npcobj1 = std::make_shared<TMonster1>((tStart + tEnd) / 2.0f);
 		npcobj1->m_pMeshRender = &TGameCore::m_MeshRender;
 		npcobj1->SetMap(m_pMap.get());
 		npcobj1->SetFSM(&m_fsm);
@@ -298,6 +326,32 @@ bool TSceneGameIn::CreateNPC()
 	}
 	return true;
 }
+bool TSceneGameIn::CreateBoss()
+{
+	TNpcObj::CreateActionFSM();
+	TVector2 tStart = { 13700.0f, 743.0f };
+	TVector2 tEnd = { 13900.0f, 843.0f };
+	m_pBoss = std::make_shared<TBossObj>((tStart + tEnd) / 2.0f);
+	m_pBoss->m_pMeshRender = &TGameCore::m_MeshRender;
+	m_pBoss->SetMap(m_pMap.get());
+	m_pBoss->SetFSM(&m_fsm);
+	m_pBoss->m_pHero = m_pHero.get(); // Hero 연결
+	m_pBoss->m_pWorld = m_pWorld.get();
+	//m_pBoss->m_pHero = m_pHero.get(); // Hero 연결
+	//m_pBoss->m_pWorld = m_pWorld.get();
+	TLoadResData resData;
+	resData.texPathName = L"../../data/texture/NewBoss.png";
+	resData.texShaderName = L"../../data/shader/Default.txt";
+	m_pBoss->m_pMeshRender = &TGameCore::m_MeshRender;
+	m_pBoss->m_pWorld = m_pWorld.get();
+	if (m_pBoss->Create(m_pWorld.get(), resData, tStart, tEnd))
+	{
+		m_pBoss->m_iCollisionType = TCollisionType::T_Overlap;
+		//m_NpcList.emplace_back(m_pBoss);
+	}
+	return true;
+}
+
 bool TSceneGameIn::CreateUI()
 {
 	TButtonGUI::CreateActionFSM();
@@ -377,13 +431,6 @@ void   TSceneGameIn::Init()
 	m_vCamera.x = 640.0f;
 	m_vCamera.y = 400.0f;
 	//NPC
-	//m_fsm.AddStateTransition(STATE_STAND, EVENT_PATROL, STATE_MOVE);
-	//m_fsm.AddStateTransition(STATE_STAND, EVENT_FINDTARGET, STATE_MOVE);
-	//m_fsm.AddStateTransition(STATE_MOVE, EVENT_STOP, STATE_STAND);
-	//m_fsm.AddStateTransition(STATE_MOVE, EVENT_LOSTTARGET, STATE_STAND);
-	//m_fsm.AddStateTransition(STATE_MOVE, EVENT_FINDTARGET, STATE_ATTACK);
-	//m_fsm.AddStateTransition(STATE_ATTACK, EVENT_STOP, STATE_STAND);
-	//m_fsm.AddStateTransition(STATE_ATTACK, EVENT_LOSTTARGET, STATE_STAND);
 	m_fsm.AddStateTransition(STATE_STAND, EVNET_DIE, STATE_DEAD);
 	m_fsm.AddStateTransition(STATE_MOVE, EVNET_DIE, STATE_DEAD);
 	m_fsm.AddStateTransition(STATE_ATTACK, EVNET_DIE, STATE_DEAD);
@@ -405,6 +452,7 @@ void   TSceneGameIn::Init()
 	CreatePortal();
 	CreateHero();
 	CreateNPC();
+	CreateBoss();
 	//CreateUI();
 	//CreateEffect();
 }
@@ -429,7 +477,7 @@ void   TSceneGameIn::Frame()
 	{
 		m_bPrevScene = true;
 	}
-	
+
 	//m_pHero->m_fGravity = 980;
 	m_pHero->m_fGroundY = 1800;
 	for (auto rectlist : m_ColList)
@@ -444,7 +492,7 @@ void   TSceneGameIn::Frame()
 			{
 				if (Herorect.v2.y - 0.1f > Colrect.v1.y)																// 왼쪽아래서 올라올때
 				{
-					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y<Colrect.v1.y && Herorect.vc.x > Colrect.v1.x)
+					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y<Colrect.v1.y && Herorect.v2.x - m_offsetdis > Colrect.v1.x)
 					{
 						m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
 						m_pHero->GetGroundH(Colrect.v1.y - Herorect.vh.y);
@@ -464,7 +512,7 @@ void   TSceneGameIn::Frame()
 			{
 				if (Herorect.v2.y - 0.1f > Colrect.v1.y)																 // 오른쪽에서 올라올때
 				{
-					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y < Colrect.v1.y && Herorect.vc.x < Colrect.v2.x)
+					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y < Colrect.v1.y && Herorect.v1.x + m_offsetdis < Colrect.v2.x)
 					{
 						m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
 						m_pHero->GetGroundH(Colrect.v1.y - Herorect.vh.y);
@@ -556,6 +604,14 @@ void   TSceneGameIn::Frame()
 			m_vCamera.x = m_pHero->m_vPos.x;
 			m_vCamera.y = 1300.0f;
 		}
+
+		if (m_pHero->m_BossMoving == BossRoomMovingState::STATE_ABLE && g_GameKey.dwSkey == KEY_PUSH)
+		{
+			m_vCamera.x = 13440.0f;
+			m_vCamera.y = 500.0f;
+			m_pHero->m_vPos = { 13440.0f, 500.0f };
+			m_MapAction = MapAction::STATE_BOSS;
+		}
 	}
 	else
 	{
@@ -577,8 +633,16 @@ void   TSceneGameIn::Frame()
 		}
 	}
 
-
-
+	m_pBoss->GetState(m_MapAction == MapAction::STATE_BOSS);
+	if (!m_pBoss->m_bDead)
+	{
+		m_pBoss->FrameState(m_pHero.get()); // Hero와 NPC 상호작용
+		m_pBoss->Frame();
+	}
+	/*if (m_fBossInitCount < 0.0f)
+	{
+		m_pBoss->Fream();
+	}*/
 
 	/*else if (m_pHero->m_rtScreen.vc.x < 640.0f)
 	{
@@ -693,7 +757,6 @@ void   TSceneGameIn::Frame()
 
 	m_pWorld->Frame();
 	m_pPortal->Frame();
-
 }
 void   TSceneGameIn::Render()
 {
@@ -719,7 +782,12 @@ void   TSceneGameIn::Render()
 
 	m_pHero->Transform(m_vCamera);
 	m_pHero->Render();
-	
+
+	if (m_MapAction == MapAction::STATE_BOSS && !m_pBoss->m_bDead)
+	{
+		m_pBoss->Transform(m_vCamera);
+		m_pBoss->Render();
+	}
 
 
 	for (auto data : m_ColList)
@@ -795,5 +863,10 @@ void   TSceneGameIn::Release()
 	{
 		m_pMap->Release();
 		m_pMap = nullptr;
+	}
+	if (m_pBoss)
+	{
+		m_pBoss->Release();
+		m_pBoss = nullptr;
 	}
 }

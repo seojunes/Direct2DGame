@@ -11,6 +11,7 @@ enum class TObjectType
 	Npc,
 	Wall,
 	Portal,
+	Boss,
 };
 
 class TObject

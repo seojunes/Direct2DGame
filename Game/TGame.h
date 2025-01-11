@@ -13,6 +13,7 @@ class TSceneFSM : public TFiniteStateMachine
 
 class TGame : public TObject
 {
+
 public:
 	TScene* m_pAction = nullptr;
 	static std::vector<std::shared_ptr<TScene>>  m_pActionList;

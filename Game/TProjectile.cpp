@@ -20,18 +20,25 @@ void TProjectileEffect::Frame()
 	m_fCurrentTime += g_fSPF;
 	m_fLifeTime -= g_fSPF;
 	if (m_fLifeTime <= 0.0f) m_bDead = true;
-	if (m_fCurrentTime > m_fOffsetTime)
+	/*if (m_fCurrentTime > m_fOffsetTime)
 	{
 		m_iAnimFrame++;
 		m_fCurrentTime -= m_fOffsetTime;
 	}
-	m_fTimer += g_fSPF;
-	m_vDir = this->m_Data.m_vDirection;
-	/*if (this->m_pOwner == Shooter::OWNER_MON2)
+	m_fTimer += g_fSPF;*/
+	
+	if (this->m_pOwner == Shooter::OWNER_MON3)
+	{	
+		m_vDir.x = -1.0f;
+		temp += 5.0f * g_fSPF;
+		m_vDir.y = -2.0f + temp;
+		m_vDir = m_vDir.Normal();
+	}
+	else
 	{
-		m_vDir = { -1.0f, -1.0f };
-	}*/
-	m_vPos = m_vPos + m_vDir * 500.0f * g_fSPF;
+		m_vDir = this->m_Data.m_vDirection;
+	}
+	m_vPos = m_vPos + m_vDir * 800.0f * g_fSPF;
 	SetPosition(m_vPos);
 
 	/*if (m_Data.m_iType == 0)
@@ -130,6 +137,12 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction
 	{
 		resData.texPathName = L"../../data/ui/Mon2Shot.png";
 		data.m_iDamage = 3;
+	}
+	else if (owner == Shooter::OWNER_MON3)
+	{
+		resData.texPathName = L"../../data/ui/bomb.png";
+		data.m_iDamage = 10;
+		data.m_fLifeTime = 30.0f;
 	}
 	data.m_vDirection = direction;
 	UINT iSprite = rand() % 3;

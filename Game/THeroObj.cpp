@@ -15,6 +15,14 @@ void    THeroObj::HitOverlap(TObject* pObj, THitResult hRes)
 			m_HP -= pMissile->m_Data.m_iDamage;
 		}
 	}
+	if (OtherType == TObjectType::Portal)
+	{
+		m_BossMoving = BossRoomMovingState::STATE_ABLE;
+	}
+	else
+	{
+		m_BossMoving = BossRoomMovingState::STATE_UNABLE;
+	}
 }
 
 void THeroObj::Init()

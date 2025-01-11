@@ -102,6 +102,9 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="TPortal.cpp" />
+    <ClCompile Include="TBossObj.cpp">
+      <Filter>Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -211,6 +214,9 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="TPortal.h" />
+    <ClInclude Include="TBossObj.h">
+      <Filter>Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="SpriteData.txt" />

@@ -38,14 +38,18 @@ void TNpcObj::HitOverlap(TObject* pObj, THitResult hRes)  //충돌했을떄 실행되는 
 		auto pWall = dynamic_cast<TCollisionManager*>(pObj);
 		if (pWall)
 		{
-			if (m_vPos.x < pWall->m_vPos.x)
+			if (m_vPos.y > pWall->m_vPos.y)
 			{
-				m_vPos.x = pWall->m_rtScreen.v1.x - m_rtScreen.vh.x;
+				if (m_vPos.x < pWall->m_rtScreen.v1.x)
+				{
+					m_vPos.x = pWall->m_rtScreen.v1.x - m_rtScreen.vh.x;
+				}
+				else
+				{
+					m_vPos.x = pWall->m_rtScreen.v2.x + m_rtScreen.vh.x;
+				}
 			}
-			else
-			{
-				m_vPos.x = pWall->m_rtScreen.v2.x + m_rtScreen.vh.x;
-			}
+			
 		}
 	}
 }

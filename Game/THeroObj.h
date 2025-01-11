@@ -15,6 +15,12 @@ enum class HeroState     // 그냥 enum을 사용할시에는 전역으로 사용되어서 충돌 가
 	Shoting,
 }; // 상태 정의
 
+
+enum class BossRoomMovingState
+{
+	STATE_UNABLE = 0,
+	STATE_ABLE,
+};
 enum HeroView
 {
 	RightView=0,
@@ -53,7 +59,8 @@ public:
 public:
 	HeroState m_CurrentState = HeroState::Jump; // 초기 상태는 RightRun
 	HeroView m_CurrentView = HeroView::RightView;  // 초기 상태는 RightView
-	
+public:
+	BossRoomMovingState m_BossMoving = BossRoomMovingState::STATE_UNABLE;
 
 public:
 	int m_iJumpingCount = 0;
@@ -93,7 +100,7 @@ public:
 public:
 	THeroObj()
 	{
-		m_fSpeed = 300.0f;
+		m_fSpeed = 500.0f;
 	}
 };
 

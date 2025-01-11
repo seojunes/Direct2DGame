@@ -7,6 +7,11 @@ enum class Debug
 	Debug,
 };
 
+enum class MapAction
+{
+	STATE_STAGE = 0,
+	STATE_BOSS,
+};
 class TNextBtn : public TButtonGUI
 {
 public:
@@ -50,6 +55,7 @@ class TSceneGameIn : public TScene
 	std::shared_ptr<TMapObj>	m_pBossMap = nullptr;
 	std::shared_ptr<TPortal>	m_pPortal = nullptr;
 	std::shared_ptr<THeroObj>	m_pHero = nullptr;
+	std::shared_ptr<TBossObj>	m_pBoss = nullptr;
 	std::vector<tCol>			m_ColList;
 	std::vector<tNpc>		    m_NpcList;
 	std::vector< tUI>		    m_UiList;
@@ -87,6 +93,7 @@ public:
 	bool CreateRect();
 	bool CreateSound() override;
 	bool CreateMap();
+	bool CreateBoss();
 	bool CreatePortal();
 	bool CreateBossMap();
 	bool CreateHero();
@@ -95,6 +102,8 @@ public:
 	bool CreateUI();
 	TVector2 GetWorldMousePos();
 public:
-	Debug m_Debug = Debug::Normal;
+	Debug		m_Debug = Debug::Normal;
+	MapAction   m_MapAction = MapAction::STATE_STAGE;
+	float		m_fBossInitCount = 1.0f;
 };
 

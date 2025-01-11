@@ -23,7 +23,7 @@ public:
 	Monster1State m_state = Monster1State::STATE_Move;
 public:
 	TVector2 m_vInitedPos;
-	UINT	 m_iLimitedDis = 300.0f;
+	UINT	 m_iLimitedDis = 150.0f;
 public:
 	/*TMonster1()
 	{

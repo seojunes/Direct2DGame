@@ -133,7 +133,8 @@ void TButtonGUI::PostRender()
 }
 bool TButtonGUI::LoadTexture(std::wstring texName)
 {
-	auto tex0 = I_Tex.Load(L"../../data/ui/pressStart.png");
+	auto tex0 = I_Tex.Load(texName);
+	//auto tex0 = I_Tex.Load(L"../../data/ui/pressStart.png");
 	auto tex1 = I_Tex.Load(L"../../data/ui/main_start_sel.png");
 	auto tex2 = I_Tex.Load(L"../../data/ui/main_start_pus.png");
 	auto tex3 = I_Tex.Load(L"../../data/ui/main_start_dis.png");
