@@ -105,7 +105,12 @@
     <ClCompile Include="TBossObj.cpp">
       <Filter>Monster</Filter>
     </ClCompile>
-    <ClCompile Include="THpBar.cpp" />
+    <ClCompile Include="THpBar.cpp">
+      <Filter>HPbar</Filter>
+    </ClCompile>
+    <ClCompile Include="TUiHpBar.cpp">
+      <Filter>HPbar</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -218,7 +223,12 @@
     <ClInclude Include="TBossObj.h">
       <Filter>Monster</Filter>
     </ClInclude>
-    <ClInclude Include="THpBar.h" />
+    <ClInclude Include="THpBar.h">
+      <Filter>HPbar</Filter>
+    </ClInclude>
+    <ClInclude Include="TUiHpBar.h">
+      <Filter>HPbar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="SpriteData.txt" />
@@ -259,6 +269,9 @@
     </Filter>
     <Filter Include="Monster">
       <UniqueIdentifier>{97b198b7-c4c7-4fcb-9db4-737d950de870}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HPbar">
+      <UniqueIdentifier>{fd3a6aac-e2ec-46e5-87f6-587c3eb52783}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -2,8 +2,26 @@
 
 void THpBar::Frame()
 {
+	if (m_pNpc == nullptr) return;
+
+	// 현재 HP 가져오기
+	INT currentHP = m_pNpc->m_HP;
+
+	if (currentHP != m_iPreviousHP)
+	{
+		m_fShowTime = m_fMaxShowTime; // 타이머 초기화
+		m_iPreviousHP = currentHP;   // 이전 HP 갱신
+	}
+
+	// 타이머 감소
+	if (m_fShowTime > 0.0f)
+	{
+		m_fShowTime -= g_fSPF; 
+	}
+
 	m_iHP = m_pNpc->m_HP;
 	m_fHpRatio = (float)m_iHP / m_iMaxHp;
+	
 	TVector2 ratio = { m_fHpRatio * m_vInitialScale.x, m_vInitialScale.y };
 	SetScale(ratio);
 	
@@ -17,10 +35,8 @@ void THpBar::Frame()
 
 void THpBar::Render()
 {
-	/*if (m_HPSTATE == HPSTATE::STATE_IDEL)
+	if (m_fShowTime > 0.0f)
 	{
-		return;
-	}*/
-
-	TObject2D::Render();
+		TObject2D::Render();
+	}
 }

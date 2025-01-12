@@ -6,15 +6,16 @@ void    THeroObj::HitOverlap(TObject* pObj, THitResult hRes)
 {
 	TObject::HitOverlap(pObj, hRes);
 	const TObjectType OtherType = pObj == nullptr ? TObjectType::None : pObj->GetType();
- 	if (OtherType == TObjectType::Projectile)
+	if (OtherType == TObjectType::Projectile)
 	{
 		auto pMissile = dynamic_cast<TProjectileEffect*>(pObj);
 		if (pMissile && (pMissile->m_pOwner == Shooter::OWNER_MON2 || pMissile->m_pOwner == Shooter::OWNER_MON3))
 		{
-			pMissile->m_bDead = true;
 			m_HP -= pMissile->m_Data.m_iDamage;
+			pMissile->m_bDead = true;
 		}
 	}
+	
 	if (OtherType == TObjectType::Portal)
 	{
 		m_BossMoving = BossRoomMovingState::STATE_ABLE;
@@ -22,6 +23,10 @@ void    THeroObj::HitOverlap(TObject* pObj, THitResult hRes)
 	else
 	{
 		m_BossMoving = BossRoomMovingState::STATE_UNABLE;
+	}
+	if (OtherType == TObjectType::Npc)
+	{
+		TakeDamage(5);
 	}
 }
 
@@ -39,25 +44,18 @@ void THeroObj::SetData(vector<vector<RECT>> SpriteList)
 	m_rtJumpFrames = SpriteList[1];
 }
 
-//void THeroObj::HandleCollision() {
-//	m_CollisionDirection = CollisionDirection::None;
-//
-//	for (const auto& pair : m_pWorld->GetCollisionList()) {
-//		TObject* rect = pair.second; // pair.second가 실제 TObject*임
-//
-//		if (rect->m_iCollisionType == TCollisionType::T_Block &&
-//			TCollision::CheckRectToRect(this->m_rtScreen, rect->m_rtScreen)) {
-//
-//			// 충돌 방향 계산
-//			CollisionDirection dir = TCollision::DetectCollisionDirection(this->m_rtScreen, rect->m_rtScreen);
-//
-//			if (dir != CollisionDirection::None) {
-//				m_CollisionDirection = dir; // 충돌 방향 저장
-//				break; // 첫 번째 충돌만 처리
-//			}
-//		}
-//	}
-//}
+void THeroObj::TakeDamage(int damage)
+{
+	if (m_bInvincible == false) // 무적 상태가 아닐 때만 데미지를 받음
+	{
+		m_HP -= damage;
+
+		// 무적 상태 시작
+		m_bInvincible = true;
+		m_fInvincibleTime = m_fMaxInvincibleTime;
+	}
+
+}
 
 void THeroObj::GetGroundH(float height)
 {
@@ -65,7 +63,23 @@ void THeroObj::GetGroundH(float height)
 }
 void THeroObj::Frame()
 {
-	
+
+	if (m_HP <= 0)
+	{
+		m_HP = 0;
+		m_bDead = true; // 히어로 사망 처리
+	}
+
+	if (m_bInvincible)
+	{
+		m_fInvincibleTime -= g_fSPF;
+		if (m_fInvincibleTime <= 0.0f)
+		{
+			m_bInvincible = false; // 무적 상태 해제
+			m_fInvincibleTime = 0.0f;
+		}
+	}
+
 
 	TVector2 vAdd;
 	if (m_rtScreen.v2.y >= m_fGroundY)
@@ -86,31 +100,6 @@ void THeroObj::Frame()
 		}
 	}
 
-
-	if (g_GameKey.dwWkey == KEY_PUSH && m_iJumpingCount < m_MaxJunp)//&& !m_bIsJumping)
-	{
-		m_fGroundY = 1800.0f;
-		m_bIsJumping = true;
-		m_fVerticalSpeed = m_fJumpSpeed;
-		m_iJumpingCount++;
-		m_CurrentState = HeroState::Jump; // Jump 상태 설정.
-	}
-
-	//if (g_GameKey.dwWkey == KEY_UP || !m_bIsJumping)
-	//{
-	//	//m_iJumpFrame = 0;
-	//	//if (m_CurrentView == HeroView::RightView)
-	//	//{
-	//		m_CurrentState = HeroState::Idle; // RightRun 상태 설정
-	//	//}
-	//	//else
-	//	//{
-	//	//	m_CurrentState = HeroState::LeftRun; // RightRun 상태 설정
-	//	//}
-
-	//}
-
-
 	// 애니메이션 업데이트
 	if (g_GameKey.dwAkey == KEY_HOLD || g_GameKey.dwDkey == KEY_HOLD)
 	{
@@ -129,7 +118,7 @@ void THeroObj::Frame()
 		}
 	}
 	//else if (g_GameKey.dwWkey == KEY_HOLD)// && m_bIsJumping
-	else if(m_CurrentState == HeroState::Jump)
+	else if (m_CurrentState == HeroState::Jump)
 	{
 		m_fCurrentTime += g_fSPF; // 시간 업데이트
 		if (m_fCurrentTime >= m_fFrameTime)
@@ -150,6 +139,14 @@ void THeroObj::Frame()
 		m_iWalkFrame = 0; // 정지 상태에서는 첫 프레임 유지
 	}
 
+	if (g_GameKey.dwWkey == KEY_PUSH && m_iJumpingCount < m_MaxJunp)//&& !m_bIsJumping)
+	{
+		m_fGroundY = 1800.0f;
+		m_bIsJumping = true;
+		m_fVerticalSpeed = m_fJumpSpeed;
+		m_iJumpingCount++;
+		m_CurrentState = HeroState::Jump; // Jump 상태 설정.
+	}
 	if (g_GameKey.dwAkey == KEY_HOLD)
 	{
 		m_fGroundY = 1800.0f;
@@ -164,12 +161,6 @@ void THeroObj::Frame()
 		m_CurrentState = HeroState::RightRun;
 		m_CurrentView = HeroView::RightView;
 	}
-
-	
-
-	AddPosition(vAdd);
-	SetVertexData();
-
 	if (m_bCharging == false)
 	{
 		m_fAlpha = 1.0f;
@@ -210,16 +201,16 @@ void THeroObj::Frame()
 			vHalf = { 25.0f, 40.0f };
 			vStart = m_vPos - vHalf;
 			vEnd = m_vPos + vHalf;
-			m_bOnCharing = true;	
+			m_bOnCharing = true;
 		}
 
 		if (m_CurrentView == RightView)								//바라보는 방향에 따라서 발사체 생성.
 		{
-			m_pProjectile->AddEffect(vStart, vEnd, m_vRightDir, Shooter::OWNER_HERO ,m_bOnCharing);
+			m_pProjectile->AddEffect(vStart, vEnd, m_vRightDir, Shooter::OWNER_HERO, m_bOnCharing);
 		}
 		else
 		{
-			m_pProjectile->AddEffect(vStart, vEnd, m_vLeftDir, Shooter::OWNER_HERO,m_bOnCharing);
+			m_pProjectile->AddEffect(vStart, vEnd, m_vLeftDir, Shooter::OWNER_HERO, m_bOnCharing);
 		}
 		// 충전 시간 초기화
 		//m_pProjectile->
@@ -230,6 +221,11 @@ void THeroObj::Frame()
 		if(m_fAlpha <= 1.0f)
 		m_fAlpha = cosf(g_fGT * 5.0f) * 0.25f + 0.75f;
 	}*/
+
+	AddPosition(vAdd);
+	SetVertexData();
+
+
 	m_pProjectile->Frame(m_vPos);
 
 }
@@ -264,7 +260,7 @@ void THeroObj::SetVertexData()
 			m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
 			m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
 		}
-		
+
 	}
 	switch (m_CurrentState)
 	{

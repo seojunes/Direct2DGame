@@ -186,6 +186,7 @@
     <ClInclude Include="TStd.h" />
     <ClInclude Include="TTexture.h" />
     <ClInclude Include="TTime.h" />
+    <ClInclude Include="TUiHpBar.h" />
     <ClInclude Include="TVector.h" />
     <ClInclude Include="TVertex.h" />
     <ClInclude Include="TWindow.h" />
@@ -229,6 +230,7 @@
     <ClCompile Include="TSound.cpp" />
     <ClCompile Include="TTexture.cpp" />
     <ClCompile Include="TTime.cpp" />
+    <ClCompile Include="TUiHpBar.cpp" />
     <ClCompile Include="TVector.cpp" />
     <ClCompile Include="TVertex.cpp" />
     <ClCompile Include="TWindow.cpp" />

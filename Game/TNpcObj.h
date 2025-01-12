@@ -8,6 +8,11 @@ struct TStateData
 	float m_fDistance;
 };
 
+//enum ATTACKSTATE
+//{
+//	STATE_NONE = 0,
+//	STATE_OK,
+//};
 class TEnemyFSM : public TFiniteStateMachine
 {
 
@@ -28,6 +33,7 @@ public:
 	TFiniteStateMachine* m_pFsm = nullptr;
 public:
 	std::shared_ptr<TProjectile>		m_pProjectile;
+	//ATTACKSTATE m_eAttacked = ATTACKSTATE::STATE_NONE;
 public:
 	void SetFSM(TFiniteStateMachine* pFsm);
 	void SetTransition(UINT iEvent);

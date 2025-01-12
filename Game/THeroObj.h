@@ -28,6 +28,7 @@ enum HeroView
 };
 
 
+
 class THeroObj : public TObject2D
 {	
 	TMapObj* m_pMap = nullptr;
@@ -53,9 +54,12 @@ public:
 	bool m_bLoop = true;              // 반복 여부
 	
 public:
-	//void InitHero(UINT maxHP, float hpBarWidth, float hpBarHeight);
-	//void TakeDamage(UINT damage);
-	//void Heal(UINT healAmount);
+	bool m_bInvincible = false;					// 무적 상태 여부
+	float m_fInvincibleTime = 0.0f;				// 무적 상태 남은 시간
+	const float m_fMaxInvincibleTime = 1.0f;	// 무적 상태 지속 시간
+public:
+	void TakeDamage(int damage);
+	bool IsInvincible() const	{ return m_bInvincible; }
 public:
 	HeroState m_CurrentState = HeroState::Jump; // 초기 상태는 RightRun
 	HeroView m_CurrentView = HeroView::RightView;  // 초기 상태는 RightView
@@ -76,7 +80,7 @@ public:
 	TVector2 m_vRightDir = { 1.0f, 0.0f };
 	TVector2 m_vLeftDir = { -1.0f, 0.0f };
 public:
-	UINT m_HP = 100;
+	INT m_HP = 100;
 	std::vector <SRect> spriteData;
 	void SetData(vector<vector<RECT>> SpriteList);
 public:

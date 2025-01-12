@@ -6,7 +6,9 @@ enum class BossState
 	STATE_Idle = 0,
 	STATE_Create,
 	STATE_Move,
-	STATE_Attack,
+	STATE_Attack1,
+	STATE_Attack2,
+	STATE_Attack3,
 	STATE_Return,
 };
 
@@ -15,16 +17,17 @@ class TBossObj : public TNpcObj
 public:
 	TMapObj* m_pMap = nullptr;
 	void SetVertexData() override;
-	//virtual void Init() override;
+	virtual void Init() override;
 	virtual void Frame() override;
-	//virtual void Render()override;
-	//virtual void Release()override;
+	virtual void Render()override;
+	virtual void Release()override;
 public:
-	BossState m_state = BossState::STATE_Create;
+	BossState m_state = BossState::STATE_Move;
 public:
 	TVector2 m_vInitedPos;
 	UINT	 m_iLimitedDis = 300.0f;
-	float    m_ftrigger = 1.0f;
+	float    m_ftrigger = 0.1f;
+	std::vector<TVector2> m_MissleDirList;
 public:
 	void GetState(bool state);
 	bool m_bGameState;

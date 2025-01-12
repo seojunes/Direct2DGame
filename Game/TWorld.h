@@ -10,6 +10,7 @@
 #include "TPortal.h"
 #include "TBossObj.h"
 #include "THpBar.h"
+#include "TUiHpBar.h"
 class TScene;
 using CollisionFunction = std::function<void(TObject*, THitResult)>;
 class TWorld

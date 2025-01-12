@@ -13,6 +13,7 @@ void TSceneGameIn::ProcessAction(TObject* pObj)
 	m_pSound->Play();
 	if (m_bNextScene == true)
 	{
+		m_pOwner->m_pAction->Release();
 		m_pOwner->SetTransition(TSceneEvent::EVENT_NEXT_SCENE);
 		m_bPrevScene = false;
 		m_bNextScene = false;
@@ -26,7 +27,7 @@ void TSceneGameIn::ProcessAction(TObject* pObj)
 		m_bNextScene = false;
 		return;
 	}
-	if (m_pHero->m_BossMoving == BossRoomMovingState::STATE_ABLE && g_GameKey.dwSkey == KEY_PUSH)
+	/*if (m_pHero->m_BossMoving == BossRoomMovingState::STATE_ABLE && g_GameKey.dwSkey == KEY_PUSH)
 	{
 		for (auto data : m_UiList)
 		{
@@ -39,7 +40,7 @@ void TSceneGameIn::ProcessAction(TObject* pObj)
 				}
 			}
 		}
-	}
+	}*/
 }
 
 bool TSceneGameIn::CreateSound()
@@ -363,7 +364,6 @@ bool TSceneGameIn::CreateNPC()
 		m_pHP->m_pWorld = m_pWorld.get();
 		m_pHP->SetMap(m_pMap.get());
 		m_pHP->SetNpc(npcobj3.get());
-		//TLoadResData resData;
 		resData.texPathName = L"../../data/ui/HpBar.png";
 		resData.texShaderName = L"../../data/shader/Default.txt";
 		tStart.y -= 30.0f;
@@ -391,8 +391,6 @@ bool TSceneGameIn::CreateBoss()
 	m_pBoss->SetFSM(&m_fsm);
 	m_pBoss->m_pHero = m_pHero.get(); // Hero 연결
 	m_pBoss->m_pWorld = m_pWorld.get();
-	//m_pBoss->m_pHero = m_pHero.get(); // Hero 연결
-	//m_pBoss->m_pWorld = m_pWorld.get();
 	TLoadResData resData;
 	resData.texPathName = L"../../data/texture/NewBoss.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
@@ -411,34 +409,34 @@ bool TSceneGameIn::CreateUI()
 	TButtonGUI::CreateActionFSM();
 
 	TLoadResData resData;
-	resData.texPathName = L"../../data/ui/main_start_nor.png";
+	resData.texPathName = L"../../data/ui/HpBar.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
 
-	auto ui1 = std::make_shared<TPrevBtn>();
+	auto ui1 = std::make_shared<TUiHpBar>(m_pHero->m_HP);
+	ui1->SetHero(m_pHero.get());
 	ui1->m_pMeshRender = &TGameCore::m_MeshRender;
 	ui1->SetFSM(&m_GuiFSM);
-	TVector2 vStart1 = { 0.0f, 0.0f };
-	TVector2 vEnd1 = { 100.0f, 100.0f };
+	TVector2 vStart1 = { 80.0f, 100.0f };
+	TVector2 vEnd1 = { 480.0f, 150.0f };
 	if (ui1->Create(m_pWorld.get(), resData, vStart1, vEnd1))
 	{
 		ui1->m_iCollisionType = TCollisionType::T_Overlap;
-		//ui1->SetScale(100.0f, 50.0f);
-		//ui1->SetRotation(T_Pi * 0.25f);
+		ui1->m_vInitialScale = ui1->m_rtScreen.vh;
 		m_UiList.emplace_back(ui1);
 	}
 
-	auto ui2 = std::make_shared<TNextBtn>();
-	ui2->m_pMeshRender = &TGameCore::m_MeshRender;
-	ui2->SetFSM(&m_GuiFSM);
-	TVector2 vStart2 = { 700.0f, 0.0f };
-	TVector2 vEnd2 = { 800.0f, 100.0f };
-	if (ui2->Create(m_pWorld.get(), resData, vStart2, vEnd2))
-	{
-		ui2->m_iCollisionType = TCollisionType::T_Overlap;
-		//ui2->SetScale(50.0f, 100.0f);
-		//ui2->SetRotation(T_Pi * -0.25f);
-		m_UiList.emplace_back(ui2);
-	}
+	//auto ui2 = std::make_shared<TNextBtn>();
+	//ui2->m_pMeshRender = &TGameCore::m_MeshRender;
+	//ui2->SetFSM(&m_GuiFSM);
+	//TVector2 vStart2 = { 700.0f, 0.0f };
+	//TVector2 vEnd2 = { 800.0f, 100.0f };
+	//if (ui2->Create(m_pWorld.get(), resData, vStart2, vEnd2))
+	//{
+	//	ui2->m_iCollisionType = TCollisionType::T_Overlap;
+	//	//ui2->SetScale(50.0f, 100.0f);
+	//	//ui2->SetRotation(T_Pi * -0.25f);
+	//	m_UiList.emplace_back(ui2);
+	//}
 
 	return true;
 }
@@ -507,15 +505,17 @@ void   TSceneGameIn::Init()
 	CreateHero();
 	CreateNPC();
 	CreateBoss();
-	//CreateHPbar();
-	//CreateUI();
-	//CreateEffect();
+	CreateUI();
 }
 
 
 
 void   TSceneGameIn::Frame()
 {
+	if (m_pHero->m_HP <= 0)
+	{
+		m_bNextScene = true;
+	}
 	// 점프 사운드
 	TSoundManager::GetInstance().Frame();
 	if (m_pHero->m_iJumpingCount < 3 && m_pHero->m_iJumpingCount >= 0 && g_GameKey.dwWkey == KEY_PUSH)
@@ -607,22 +607,7 @@ void   TSceneGameIn::Frame()
 			m_pHero->m_bIsJumping = true;
 			m_pHero->m_CurrentState = HeroState::Jump;
 		}
-
-		//for (auto& projectile : m_pHero->m_pProjectile->m_datalist)
-		//{
-		//	auto pProjectile = dynamic_cast<TProjectileEffect*>(projectile.get());
-		//	if (pProjectile && !pProjectile->m_bDead) {
-		//		if (TCollision::CheckRectToRect(Colrect, pProjectile->m_rtScreen)) {
-		//			pProjectile->m_bDead = true; // 충돌 시 발사체 제거
-		//		}
-		//	}
-		//}
-		//m_pHero->m_bIsJumping = true;
 	}
-
-
-	/*m_vCamera.x = m_pHero->m_vPos.x;
-	m_vCamera.y = m_pHero->m_vPos.y;*/
 
 	if (g_GameKey.dwPkey == KEY_PUSH)
 	{
@@ -660,7 +645,7 @@ void   TSceneGameIn::Frame()
 			m_vCamera.y = 1300.0f;
 		}
 
-		if (m_pHero->m_BossMoving == BossRoomMovingState::STATE_ABLE && g_GameKey.dwSkey == KEY_PUSH)
+		if (m_pHero->m_BossMoving == BossRoomMovingState::STATE_UNABLE && g_GameKey.dwSkey == KEY_PUSH)
 		{
 			m_vCamera.x = 13440.0f;
 			m_vCamera.y = 500.0f;
@@ -694,62 +679,10 @@ void   TSceneGameIn::Frame()
 		m_pBoss->FrameState(m_pHero.get()); // Hero와 NPC 상호작용
 		m_pBoss->Frame();
 	}
-	/*if (m_fBossInitCount < 0.0f)
-	{
-		m_pBoss->Fream();
-	}*/
-
-	/*else if (m_pHero->m_rtScreen.vc.x < 640.0f)
-	{
-		m_vCamera.x = 640.0f;
-	}
-	else if (m_pHero->m_rtScreen.vc.x > 4480.0f)
-	{
-		m_vCamera.x = 4480.0f;
-	}*/
-	//m_vCamera.y = m_pHero->m_vPos.y;
-
-
-	// m_vCamera.y = m_pHero->m_rtScreen.y - 225;// 초기 카메라 세팅
-	  // 메가맨 위치와 카메라 위치 보정
-
+	
 
 	TVector2 vMouse = GetWorldMousePos();
-	//for (auto& npc : m_NpcList) 
-	//{
-	//	if (!npc->m_bDead) 
-	//	{
-	//		if (TCollision::CheckRectToRect(npc->m_rtScreen, m_pHero->m_rtScreen))
-	//		{
-	//			npc->HitOverlap(m_pHero.get(), THitResult{}); // NPC가 Hero와 충돌
-	//			m_pHero->HitOverlap(npc.get(), THitResult{}); // Hero가 NPC와 충돌
-	//		}
-	//	}
-	//}
 
-	// NPC와 미사일 충돌 처리
-	//for (auto& npc : m_NpcList)
-	//{
-	//	if (!npc->m_bDead) 
-	//	{
-	//		for (auto& projectile : m_pHero->m_pProjectile->m_datalist)
-	//		{
-	//			auto pProjectile = dynamic_cast<TProjectileEffect*>(projectile.get());
-	//			if (pProjectile && !pProjectile->m_bDead) 
-	//			{
-	//				if (TCollision::CheckRectToRect(npc->m_rtScreen, pProjectile->m_rtScreen))
-	//				{
-	//					npc->m_HP -= pProjectile->m_Data.m_iDamage;
-	//					//pProjectile->m_bDead = true; // 미사일 소멸
-	//					if (npc->m_HP <= 0)
-	//					{
-	//						m_pCrashSound->PlayEffect();
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
 
 	// NPC 상태 업데이트
 	for (auto& npc : m_NpcList)
@@ -812,7 +745,6 @@ void   TSceneGameIn::Frame()
 	{
 		if (!data->m_bDead)
 		{
-			//data->FrameState(m_pHero.get());
 			data->Frame();
 		}
 	}

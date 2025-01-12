@@ -6,6 +6,9 @@ enum Shooter
 	OWNER_HERO = 0,
 	OWNER_MON2,
 	OWNER_MON3,
+	OWNER_BOSS1,
+	OWNER_BOSS2,
+	OWNER_BOSS3,
 };
 
 class TProjectileEffect : public TEffectObj

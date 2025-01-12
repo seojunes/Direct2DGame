@@ -136,7 +136,7 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction
 	if (owner == Shooter::OWNER_MON2)
 	{
 		resData.texPathName = L"../../data/ui/Mon2Shot.png";
-		data.m_iDamage = 3;
+		data.m_iDamage = 30;
 	}
 	else if (owner == Shooter::OWNER_MON3)
 	{
@@ -144,6 +144,13 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction
 		data.m_iDamage = 10;
 		data.m_fLifeTime = 30.0f;
 	}
+	else if (owner == Shooter::OWNER_BOSS1)
+	{
+		resData.texPathName = L"../../data/ui/bossMissile1.png";
+		data.m_iDamage = 10;
+		data.m_fLifeTime = 3.0f;
+	}
+	
 	data.m_vDirection = direction;
 	UINT iSprite = rand() % 3;
 	data.m_iType = 1;// rand() % m_szSpriteList[0].size();

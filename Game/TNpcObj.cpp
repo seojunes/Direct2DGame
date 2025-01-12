@@ -11,19 +11,15 @@ void TNpcObj::HitOverlap(TObject* pObj, THitResult hRes)  //충돌했을떄 실행되는 
 {
 	TObject::HitOverlap(pObj, hRes);
 	const TObjectType OtherType = pObj == nullptr ? TObjectType::None : pObj->GetType();
-	if (OtherType == TObjectType::Hero)			 //충돌체가 Hero일때, 
-	{
-		// Hero와 충돌 시 Hero의 체력을 감소
-		auto pHero = dynamic_cast<THeroObj*>(pObj);
-		if (pHero)
-		{
-			pHero->m_HP -= 5; // Hero의 HP를 5 감소
-			//if (pHero->m_HP <= 0)
-			//{
-			//	pHero->m_bDead = true; // Hero 사망 처리
-			//}
-		}
-	}
+	//if (OtherType == TObjectType::Hero)			 //충돌체가 Hero일때, 
+	//{
+	//	// Hero와 충돌 시 Hero의 체력을 감소
+	//	auto pHero = dynamic_cast<THeroObj*>(pObj);
+	//	if (pHero && pHero->m_bInvincible == false)
+	//	{
+	//		pHero->TakeDamage(5);
+	//	}
+	//}
 	if (OtherType == TObjectType::Projectile)
 	{
 		auto pMissile = dynamic_cast<TProjectileEffect*>(pObj);
@@ -31,6 +27,8 @@ void TNpcObj::HitOverlap(TObject* pObj, THitResult hRes)  //충돌했을떄 실행되는 
 		{
 			pMissile->m_bDead = true;
 			m_HP -= pMissile->m_Data.m_iDamage;
+			if (m_HP <= 0)		m_HP = 0;
+			//m_eAttacked = ATTACKSTATE::STATE_OK;
 		}
 	}
 	if (OtherType == TObjectType::Wall)
@@ -38,7 +36,7 @@ void TNpcObj::HitOverlap(TObject* pObj, THitResult hRes)  //충돌했을떄 실행되는 
 		auto pWall = dynamic_cast<TCollisionManager*>(pObj);
 		if (pWall)
 		{
-			if (m_vPos.y > pWall->m_vPos.y)
+			if (m_vPos.y > pWall->m_rtScreen.v1.y)
 			{
 				if (m_vPos.x < pWall->m_rtScreen.v1.x)
 				{
