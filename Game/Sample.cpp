@@ -9,7 +9,7 @@ void   Sample::Init()
 	m_SceneFSM.AddStateTransition(SCENE_INGAME, EVENT_PREV_SCENE, SCENE_LOBBY);
 	m_SceneFSM.AddStateTransition(SCENE_RESULT, EVENT_NEXT_SCENE, SCENE_LOBBY);
 	m_SceneFSM.AddStateTransition(SCENE_RESULT, EVENT_PREV_SCENE, SCENE_INGAME);
-	m_SceneFSM.AddStateTransition(SCENE_RESULT, EVENT_PREV_SCENE, SCENE_INGAME);
+	m_SceneFSM.AddStateTransition(SCENE_INGAME, EVENT_BOSS_DIED, SCENE_FINAL);
 	m_Game.SetFSM(&m_SceneFSM);
 	m_Game.Init();
 }
