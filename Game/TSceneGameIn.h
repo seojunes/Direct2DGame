@@ -50,6 +50,7 @@ class TSceneGameIn : public TScene
 	using tNpc = std::shared_ptr<TNpcObj>;
 	using tUI = std::shared_ptr<TControlGUI>;
 	using tCol = std::shared_ptr<TCollisionManager>;
+	using tHP = std::shared_ptr<THpBar>;
 
 	std::shared_ptr<TMapObj>	m_pMap = nullptr;
 	std::shared_ptr<TMapObj>	m_pBossMap = nullptr;
@@ -59,11 +60,13 @@ class TSceneGameIn : public TScene
 	std::vector<tCol>			m_ColList;
 	std::vector<tNpc>		    m_NpcList;
 	std::vector< tUI>		    m_UiList;
+	std::vector<tHP>		    m_HPList;
 	std::list<tObject>			m_EffectList;
 	std::vector<std::pair<TVector2, TVector2>> rectArea;
 	std::vector<std::pair<TVector2, TVector2>> Mon1Area;
 	std::vector<std::pair<TVector2, TVector2>> Mon2Area;
 	std::vector<std::pair<TVector2, TVector2>> Mon3Area;
+	std::vector<std::pair<TVector2, TVector2>> HPArea;
 
 	UINT						m_Npccount = 4;
 	float						m_offsetdis = 5.0f;
@@ -96,6 +99,7 @@ public:
 	bool CreateBoss();
 	bool CreatePortal();
 	bool CreateBossMap();
+	bool CreateHPbar();
 	bool CreateHero();
 	bool CreateNPC();
 	bool CreateEffect();

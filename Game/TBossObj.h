@@ -31,7 +31,7 @@ public:
 public:
 	TBossObj(const TVector2& initialPos)
 	{
-		TNpcObj::m_HP = 10;
+		TNpcObj::m_HP = 200;
 		m_fSpeed = 100.0f;
 		m_vInitedPos = initialPos; // 초기 위치 설정
 		m_vPos = initialPos;       // 현재 위치도 초기 위치로 설정

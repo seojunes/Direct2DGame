@@ -283,6 +283,24 @@ bool TSceneGameIn::CreateNPC()
 			npcobj1->m_iCollisionType = TCollisionType::T_Overlap;
 			m_NpcList.emplace_back(npcobj1);
 		}
+		auto m_pHP = std::make_shared<THpBar>(npcobj1->m_HP);
+		m_pHP->m_pWorld = m_pWorld.get();
+		m_pHP->SetMap(m_pMap.get());
+		m_pHP->SetNpc(npcobj1.get());
+		//TLoadResData resData;
+		resData.texPathName = L"../../data/ui/HpBar.png";
+		resData.texShaderName = L"../../data/shader/Default.txt";
+		tStart.y -= 30.0f;
+		tStart.x += 20.0f;
+		tEnd.y -= 110.0f;
+		tEnd.x -= 20.0f;
+		m_pHP->m_pMeshRender = &TGameCore::m_MeshRender;
+		if (m_pHP->Create(m_pWorld.get(), resData, tStart, tEnd))
+		{
+			m_pHP->m_iCollisionType = TCollisionType::T_Overlap;
+			m_pHP->m_vInitialScale = m_pHP->m_rtScreen.vh;
+			m_HPList.emplace_back(m_pHP);
+		}
 	}
 	for (auto area : Mon2Area)
 	{
@@ -303,6 +321,24 @@ bool TSceneGameIn::CreateNPC()
 			npcobj2->m_iCollisionType = TCollisionType::T_Overlap;
 			m_NpcList.emplace_back(npcobj2);
 		}
+		auto m_pHP = std::make_shared<THpBar>(npcobj2->m_HP);
+		m_pHP->m_pWorld = m_pWorld.get();
+		m_pHP->SetMap(m_pMap.get());
+		m_pHP->SetNpc(npcobj2.get());
+		//TLoadResData resData;
+		resData.texPathName = L"../../data/ui/HpBar.png";
+		resData.texShaderName = L"../../data/shader/Default.txt";
+		tStart.y -= 30.0f;
+		tStart.x += 20.0f;
+		tEnd.y -= 110.0f;
+		tEnd.x -= 20.0f;
+		m_pHP->m_pMeshRender = &TGameCore::m_MeshRender;
+		if (m_pHP->Create(m_pWorld.get(), resData, tStart, tEnd))
+		{
+			m_pHP->m_iCollisionType = TCollisionType::T_Overlap;
+			m_pHP->m_vInitialScale = m_pHP->m_rtScreen.vh;
+			m_HPList.emplace_back(m_pHP);
+		}
 	}
 	for (auto area : Mon3Area)
 	{
@@ -322,6 +358,24 @@ bool TSceneGameIn::CreateNPC()
 			//npcobj1->m_fSpeed = 50.0f + (rand() % 200);
 			npcobj3->m_iCollisionType = TCollisionType::T_Overlap;
 			m_NpcList.emplace_back(npcobj3);
+		}
+		auto m_pHP = std::make_shared<THpBar>(npcobj3->m_HP);
+		m_pHP->m_pWorld = m_pWorld.get();
+		m_pHP->SetMap(m_pMap.get());
+		m_pHP->SetNpc(npcobj3.get());
+		//TLoadResData resData;
+		resData.texPathName = L"../../data/ui/HpBar.png";
+		resData.texShaderName = L"../../data/shader/Default.txt";
+		tStart.y -= 30.0f;
+		tStart.x += 20.0f;
+		tEnd.y -= 110.0f;
+		tEnd.x -= 20.0f;
+		m_pHP->m_pMeshRender = &TGameCore::m_MeshRender;
+		if (m_pHP->Create(m_pWorld.get(), resData, tStart, tEnd))
+		{
+			m_pHP->m_iCollisionType = TCollisionType::T_Overlap;
+			m_pHP->m_vInitialScale = m_pHP->m_rtScreen.vh;
+			m_HPList.emplace_back(m_pHP);
 		}
 	}
 	return true;
@@ -453,6 +507,7 @@ void   TSceneGameIn::Init()
 	CreateHero();
 	CreateNPC();
 	CreateBoss();
+	//CreateHPbar();
 	//CreateUI();
 	//CreateEffect();
 }
@@ -706,6 +761,13 @@ void   TSceneGameIn::Frame()
 		}
 	}
 
+	for (auto& hp : m_HPList)
+	{
+		if (!hp->m_bDead)
+		{
+			hp->Frame();
+		}
+	}
 	// Hero 상태 업데이트
 	m_pHero->Frame();
 
@@ -796,6 +858,12 @@ void   TSceneGameIn::Render()
 		data->Transform(m_vCamera);
 		data->Render();
 	}
+	for (auto data : m_HPList)
+	{
+		if (data->m_bDead)	continue;
+		data->Transform(m_vCamera);
+		data->Render();
+	}
 	for (auto data : m_EffectList)
 	{
 		data->Transform(m_vCamera);
@@ -838,6 +906,12 @@ void   TSceneGameIn::Release()
 	}
 	m_UiList.clear();
 	for (auto data : m_ColList)
+	{
+		data->Release();
+		data = nullptr;
+	}
+	m_ColList.clear();
+	for (auto data : m_HPList)
 	{
 		data->Release();
 		data = nullptr;

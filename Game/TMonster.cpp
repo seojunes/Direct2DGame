@@ -50,6 +50,10 @@ void TMonster1::Frame()
 	{
 		m_fSpeed = 500.0f;
 		m_vDir = (m_vInitedPos - m_vPos).Normal();
+		if (m_HP < 50)
+		{
+			m_HP++;
+		}
 		if (fInitDistance < 1.0f)
 		{
 			m_state = Monster1State::STATE_Move;

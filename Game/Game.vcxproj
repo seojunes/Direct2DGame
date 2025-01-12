@@ -163,6 +163,7 @@
     <ClInclude Include="TGameCore.h" />
     <ClInclude Include="TGuiFSM.h" />
     <ClInclude Include="THeroObj.h" />
+    <ClInclude Include="THpBar.h" />
     <ClInclude Include="TInput.h" />
     <ClInclude Include="TInputLayout.h" />
     <ClInclude Include="TMapObj.h" />
@@ -206,6 +207,7 @@
     <ClCompile Include="TGameCore.cpp" />
     <ClCompile Include="TGuiFSM.cpp" />
     <ClCompile Include="THeroObj.cpp" />
+    <ClCompile Include="THpBar.cpp" />
     <ClCompile Include="TInput.cpp" />
     <ClCompile Include="TInputLayout.cpp" />
     <ClCompile Include="TMapObj.cpp" />
