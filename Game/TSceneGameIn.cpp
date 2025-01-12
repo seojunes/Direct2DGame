@@ -848,7 +848,8 @@ void   TSceneGameIn::Release()
 		data->Release();
 		data = nullptr;
 	}
-	m_ColList.clear();
+	m_HPList.clear();
+	
 	if (m_pHero)
 	{
 		m_pHero->Release();

@@ -9,7 +9,7 @@ void    THeroObj::HitOverlap(TObject* pObj, THitResult hRes)
 	if (OtherType == TObjectType::Projectile)
 	{
 		auto pMissile = dynamic_cast<TProjectileEffect*>(pObj);
-		if (pMissile && (pMissile->m_pOwner == Shooter::OWNER_MON2 || pMissile->m_pOwner == Shooter::OWNER_MON3))
+		if (pMissile && pMissile->m_pOwner != Shooter::OWNER_HERO)
 		{
 			m_HP -= pMissile->m_Data.m_iDamage;
 			pMissile->m_bDead = true;
