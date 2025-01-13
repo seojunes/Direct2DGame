@@ -49,6 +49,7 @@ public:
 	std::vector<RECT> m_rtWalkFrames; // 걷기 애니메이션 프레임 리스트
 	std::vector<RECT> m_rtJumpFrames; // 걷기 애니메이션 프레임 리스트
 	std::vector<RECT> m_rtShotFrames; // 슈팅 애니메이션 프레임 리스트
+	std::vector<RECT> m_rtShotNRunFrames; // 슈팅 애니메이션 프레임 리스트
 
 
 	UINT m_iIdleFrame = 0;            // 현재 정지 애니메이션 프레임
@@ -63,7 +64,7 @@ public:
 	float m_fIdleFrameTime = 0.1f;	  // idle 한 프레임당 지속시간	
 
 	float m_fShootingMotionTime = 0.0f; //슈팅모션 남은지속시간.
-	float m_fMaxMotionTime = 0.3f;		//슈팅모션 최대지속시간.
+	float m_fMaxMotionTime = 1.0f;		//슈팅모션 최대지속시간.
 	bool  m_bLoop = true;               // 반복 여부
 	
 public:

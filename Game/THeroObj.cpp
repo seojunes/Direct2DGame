@@ -49,11 +49,13 @@ void THeroObj::SetData(vector<vector<RECT>> SpriteList)
 	m_rtJumpFrames.resize(SpriteList[1].size());
 	m_rtIdleFrames.resize(SpriteList[2].size());
 	m_rtShotFrames.resize(SpriteList[3].size());
+	m_rtShotNRunFrames.resize(SpriteList[3].size());
 
 	m_rtWalkFrames = SpriteList[0];
 	m_rtJumpFrames = SpriteList[1];
 	m_rtIdleFrames = SpriteList[2];
 	m_rtShotFrames = SpriteList[3];
+	m_rtShotNRunFrames = SpriteList[4];
 }
 
 void THeroObj::TakeDamage(int damage)
@@ -95,7 +97,6 @@ void THeroObj::Frame()
 	if (m_fShootingMotionTime >= 0.0f)
 	{
 		m_fShootingMotionTime -= g_fSPF;
-		m_bIsShooting = false;
 	}
 	else
 	{
@@ -103,6 +104,7 @@ void THeroObj::Frame()
 		{
 			m_CurrentState = HeroState::Idle;
 		}
+		m_bIsShooting = false;
 	}
 	
 	// 점프효과 구현
@@ -129,6 +131,12 @@ void THeroObj::Frame()
 			m_CurrentState = HeroState::LeftRun;
 		}
 		m_CurrentView = HeroView::LeftView;
+		
+		if (g_GameKey.dwSpace == KEY_PUSH|| g_GameKey.dwSpace == KEY_HOLD)
+		{
+			m_fChargingTime = 0.0f;
+			m_bIsShooting = true;
+		}
 	}
 	if (g_GameKey.dwDkey == KEY_HOLD)
 	{
@@ -139,6 +147,12 @@ void THeroObj::Frame()
 			m_CurrentState = HeroState::RightRun;
 		}
 		m_CurrentView = HeroView::RightView;
+
+		if (g_GameKey.dwSpace == KEY_PUSH || g_GameKey.dwSpace == KEY_HOLD)
+		{
+			m_fChargingTime = 0.0f;
+			m_bIsShooting = true;
+		}
 	}
 	if (g_GameKey.dwWkey == KEY_PUSH && m_iJumpingCount < m_MaxJunp)//&& !m_bIsJumping)
 	{
@@ -240,7 +254,7 @@ void THeroObj::Frame()
 	{
 		// 초기화: 키를 누르기 시작하면 충전 시간 리셋
 		m_fChargingTime = 0.0f;
-	    m_bIsShooting = true;
+		//m_bIsShooting = true;
 	}
 
 
@@ -312,43 +326,26 @@ void THeroObj::SetVertexData()
 	float xSize = m_pTexture->m_TexDesc.Width;
 	float ySize = m_pTexture->m_TexDesc.Height;
 
-	if (m_CurrentState == HeroState::Idle)
-	{
-		//rt.SetS(0.0f, 0.0f, 50.0f, 50.0f);
-		rt.SetS(m_rtIdleFrames[m_iIdleFrame].left,
-			m_rtIdleFrames[m_iIdleFrame].top,
-			m_rtIdleFrames[m_iIdleFrame].right,
-			m_rtIdleFrames[m_iIdleFrame].bottom); // 현재 프레임의 텍스처 좌표,
-		if (m_CurrentView == RightView)
-		{
-			m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
-			m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
-		}
-		else
-		{
-			m_vVertexList[0].t = { rt.v2.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[1].t = { rt.v1.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
-			m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
-		}
-
-	}
 	switch (m_CurrentState)
 	{
 	case HeroState::RightRun:
-		rt.SetS(m_rtWalkFrames[m_iWalkFrame].left,
-			m_rtWalkFrames[m_iWalkFrame].top,
-			m_rtWalkFrames[m_iWalkFrame].right,
-			m_rtWalkFrames[m_iWalkFrame].bottom); // 현재 프레임의 텍스처 좌표,
-		break;
 	case HeroState::LeftRun:
-		rt.SetS(m_rtWalkFrames[m_iWalkFrame].left,
-			m_rtWalkFrames[m_iWalkFrame].top,
-			m_rtWalkFrames[m_iWalkFrame].right,
-			m_rtWalkFrames[m_iWalkFrame].bottom); // 현재 프레임의 텍스처 좌표,
-		break;
+		if (m_bIsShooting == false)
+		{
+			rt.SetS(m_rtWalkFrames[m_iWalkFrame].left,
+				m_rtWalkFrames[m_iWalkFrame].top,
+				m_rtWalkFrames[m_iWalkFrame].right,
+				m_rtWalkFrames[m_iWalkFrame].bottom); // 현재 프레임의 텍스처 좌표,
+			break;
+		}
+		else
+		{
+			rt.SetS(m_rtShotNRunFrames[m_iWalkFrame].left,
+				m_rtShotNRunFrames[m_iWalkFrame].top,
+				m_rtShotNRunFrames[m_iWalkFrame].right,
+				m_rtShotNRunFrames[m_iWalkFrame].bottom); // 현재 프레임의 텍스처 좌표,
+			break;
+		}
 	case HeroState::Jump:
 		rt.SetS(m_rtJumpFrames[m_iJumpFrame].left,
 			m_rtJumpFrames[m_iJumpFrame].top,
@@ -360,7 +357,12 @@ void THeroObj::SetVertexData()
 			m_rtShotFrames[0].top,
 			m_rtShotFrames[0].right,
 			m_rtShotFrames[0].bottom);
-		
+		break;
+	case HeroState::Idle:
+		rt.SetS(m_rtIdleFrames[m_iIdleFrame].left,
+			m_rtIdleFrames[m_iIdleFrame].top,
+			m_rtIdleFrames[m_iIdleFrame].right,
+			m_rtIdleFrames[m_iIdleFrame].bottom);
 		break;
 	default:
 		break;
