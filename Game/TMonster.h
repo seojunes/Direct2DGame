@@ -86,7 +86,7 @@ public:
 public:
 	Monster2State m_state = Monster2State::STATE_Idle;
 public:
-	float m_ftrigger = 1.0f;
+	float m_ftrigger = 0.3f;
 public:
 	TMonster3()
 	{

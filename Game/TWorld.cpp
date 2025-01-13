@@ -87,7 +87,7 @@ void   TWorld::Frame()
 					THitResult ret;
 					CollisionFunction call = iter->second;
 					call(pDestObj, ret);
-				}
+ 				}
 			}
 		}
 	}

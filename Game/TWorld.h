@@ -11,6 +11,10 @@
 #include "TBossObj.h"
 #include "THpBar.h"
 #include "TUiHpBar.h"
+#include "TVictory.h"
+#include "TRadderObj.h"
+
+
 class TScene;
 using CollisionFunction = std::function<void(TObject*, THitResult)>;
 class TWorld

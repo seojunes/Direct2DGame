@@ -86,7 +86,7 @@ void TMonster2::Frame()
 	float fHeroDistance = (m_pHero->m_vPos - m_vPos).Length();
 	if (m_state == Monster2State::STATE_Idle)
 	{
-		if (fHeroDistance < 300.0f)
+		if (fHeroDistance < 640.0f)
 		{
 			m_state = Monster2State::STATE_Attack;
 		}
@@ -94,7 +94,7 @@ void TMonster2::Frame()
 	else if (m_state == Monster2State::STATE_Attack)
 	{
 		m_ftrigger -= g_fSPF;
-		if (fHeroDistance >= 600.0f)
+		if (fHeroDistance >= 640.0f)
 		{
 			m_state = Monster2State::STATE_Idle;
 		}
@@ -106,7 +106,7 @@ void TMonster2::Frame()
 				
 		if (m_ftrigger < 0.0f)
 		{
-			m_pProjectile->AddEffect(vStart, vEnd, dir, Shooter::OWNER_MON2);
+			m_pProjectile->AddEffect(vStart, vEnd, dir, Shooter::OWNER_MON2, this);
 			m_ftrigger = 1.0f;
 		}
 		//Shoot();
@@ -149,7 +149,7 @@ void TMonster3::Frame()
 	float fHeroDistance = (m_pHero->m_vPos - m_vPos).Length();
 	if (m_state == Monster2State::STATE_Idle)
 	{
-		if (fHeroDistance < 300.0f)
+		if (fHeroDistance < 640.0f)
 		{
 			m_state = Monster2State::STATE_Attack;
 		}
@@ -157,7 +157,7 @@ void TMonster3::Frame()
 	else if (m_state == Monster2State::STATE_Attack)
 	{
 		m_ftrigger -= g_fSPF;
-		if (fHeroDistance >= 600.0f)
+		if (fHeroDistance >= 640.0f)
 		{
 			m_state = Monster2State::STATE_Idle;
 		}
@@ -169,7 +169,7 @@ void TMonster3::Frame()
 
 		if (m_ftrigger < 0.0f)
 		{
-			m_pProjectile->AddEffect(vStart, vEnd, dir, Shooter::OWNER_MON3);
+			m_pProjectile->AddEffect(vStart, vEnd, dir, Shooter::OWNER_MON3,this);
 			m_ftrigger = 1.0f;
 		}
 		//Shoot();

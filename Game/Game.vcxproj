@@ -190,6 +190,7 @@
     <ClInclude Include="TUiHpBar.h" />
     <ClInclude Include="TVector.h" />
     <ClInclude Include="TVertex.h" />
+    <ClInclude Include="TVictory.h" />
     <ClInclude Include="TWindow.h" />
     <ClInclude Include="TWorld.h" />
   </ItemGroup>
@@ -235,6 +236,7 @@
     <ClCompile Include="TUiHpBar.cpp" />
     <ClCompile Include="TVector.cpp" />
     <ClCompile Include="TVertex.cpp" />
+    <ClCompile Include="TVictory.cpp" />
     <ClCompile Include="TWindow.cpp" />
     <ClCompile Include="TWorld.cpp" />
   </ItemGroup>

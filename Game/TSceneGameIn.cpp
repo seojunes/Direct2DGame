@@ -141,7 +141,7 @@ bool TSceneGameIn::CreateBossMap()
 	}
 	return true;
 }
-bool TSceneGameIn::CreatePortal()
+bool TSceneGameIn::CreateObject()
 {
 	m_pPortal = std::make_shared<TPortal>();
 	TVector2 tStart = { 11272.0f,1023.0f };
@@ -154,6 +154,30 @@ bool TSceneGameIn::CreatePortal()
 	if (m_pPortal->Create(m_pWorld.get(), resData, tStart, tEnd))
 	{
 		m_pPortal->m_iCollisionType = TCollisionType::T_Overlap;
+	}
+
+	m_pVictory = std::make_shared<TVictory>();
+	tStart = { 13100.0f,-300.0f };
+	tEnd = { 13780.0f, 0.0f };
+	//m_pPortal->m_pWorld = m_pWorld.get();
+	resData.texPathName = L"../../data/texture/victory.png";
+	resData.texShaderName = L"../../data/shader/Default.txt";
+	m_pVictory->m_pMeshRender = &TGameCore::m_MeshRender;
+	if (m_pVictory->Create(m_pWorld.get(), resData, tStart, tEnd))
+	{
+		m_pVictory->m_iCollisionType = TCollisionType::T_Overlap;
+	}
+
+	m_pRadder = std::make_shared<TRadderObj>();
+	tStart = { 3960.0f,720.0f };
+	tEnd = { 3980.0f, 900.0f };
+	//m_pPortal->m_pWorld = m_pWorld.get();
+	resData.texPathName = L"../../data/texture/Radder.png";
+	resData.texShaderName = L"../../data/shader/Default.txt";
+	m_pRadder->m_pMeshRender = &TGameCore::m_MeshRender;
+	if (m_pRadder->Create(m_pWorld.get(), resData, tStart, tEnd))
+	{
+		m_pRadder->m_iCollisionType = TCollisionType::T_Overlap;
 	}
 	return true;
 }
@@ -237,7 +261,7 @@ bool TSceneGameIn::CreateRect()
 	}
 	return true;
 }
-
+// 몬스터와 hp바 같이 관리
 bool TSceneGameIn::CreateNPC()
 {
 	Mon1Area = { {{1085.0f,620.0f},{1185.0f,720.0f}},
@@ -439,47 +463,46 @@ bool TSceneGameIn::CreateUI()
 		boss_hp->m_vBInitialScale = boss_hp->m_rtScreen.vh;
 		m_UiList.emplace_back(boss_hp);
 	}
-
 	return true;
 }
-bool TSceneGameIn::CreateEffect()
-{
-	auto pObject3 = std::make_shared<TEffectObj>();
-	TVector2 tStart = { 640.0f,0.0f };
-	TVector2 tEnd2 = { tStart.x + 100.0f, tStart.y + 100.0f };
-	AddEffect(tStart, tEnd2);
-	return true;
-}
-
-void   TSceneGameIn::AddEffect(TVector2 tStart, TVector2 tEnd)
-{
-	auto pObject3 = std::make_shared<TEffectObj>();
-	pObject3->m_pMeshRender = &TGameCore::m_MeshRender;
-	pObject3->m_vVertexList = pObject3->m_pMeshRender->m_vVertexList;
-	TLoadResData resData;
-	resData.texPathName = L"../../data/texture/newMega.png";
-	resData.texShaderName = L"../../data/shader/Default.txt";
-	TEffectData data;
-	data.m_bLoop = true;
-	data.m_fLifeTime = 2.0f;
-	UINT iSprite = 0;
-	data.m_iType = 0;// rand() % m_szSpriteList[0].size();
-	if (data.m_iType == 0)
-	{
-		data.m_iNumAnimFrame = m_rtSpriteList[iSprite].size();
-		data.m_rtList = m_rtSpriteList[iSprite];
-	}
-	if (data.m_iType == 1)
-	{
-		data.m_iNumAnimFrame = m_szSpriteList[0].size();
-		data.m_szList = m_szSpriteList[0];
-	}
-	pObject3->SetData(data);
-	if (pObject3->Create(m_pWorld.get(), resData, tStart, tEnd))
-	{
-		m_EffectList.emplace_back(pObject3);
-	}
-}
+//bool TSceneGameIn::CreateEffect()
+//{
+//	auto pObject3 = std::make_shared<TEffectObj>();
+//	TVector2 tStart = { 640.0f,0.0f };
+//	TVector2 tEnd2 = { tStart.x + 100.0f, tStart.y + 100.0f };
+//	AddEffect(tStart, tEnd2);
+//	return true;
+//}
+//
+//void   TSceneGameIn::AddEffect(TVector2 tStart, TVector2 tEnd)
+//{
+//	auto pObject3 = std::make_shared<TEffectObj>();
+//	pObject3->m_pMeshRender = &TGameCore::m_MeshRender;
+//	pObject3->m_vVertexList = pObject3->m_pMeshRender->m_vVertexList;
+//	TLoadResData resData;
+//	resData.texPathName = L"../../data/texture/newMega.png";
+//	resData.texShaderName = L"../../data/shader/Default.txt";
+//	TEffectData data;
+//	data.m_bLoop = true;
+//	data.m_fLifeTime = 2.0f;
+//	UINT iSprite = 0;
+//	data.m_iType = 0;// rand() % m_szSpriteList[0].size();
+//	if (data.m_iType == 0)
+//	{
+//		data.m_iNumAnimFrame = m_rtSpriteList[iSprite].size();
+//		data.m_rtList = m_rtSpriteList[iSprite];
+//	}
+//	if (data.m_iType == 1)
+//	{
+//		data.m_iNumAnimFrame = m_szSpriteList[0].size();
+//		data.m_szList = m_szSpriteList[0];
+//	}
+//	pObject3->SetData(data);
+//	if (pObject3->Create(m_pWorld.get(), resData, tStart, tEnd))
+//	{
+//		m_EffectList.emplace_back(pObject3);
+//	}
+//}
 void   TSceneGameIn::Init()
 {
 	m_vCamera.x = 640.0f;
@@ -503,7 +526,7 @@ void   TSceneGameIn::Init()
 	CreateMap();
 	CreateBossMap();
 	CreateRect();
-	CreatePortal();
+	CreateObject();
 	CreateHero();
 	CreateNPC();
 	CreateBoss();
@@ -514,6 +537,19 @@ void   TSceneGameIn::Init()
 
 void   TSceneGameIn::Frame()
 {
+	if (g_GameKey.dwPkey == KEY_PUSH)
+	{
+
+		if (m_Debug == Debug::Normal)
+		{
+			m_Debug = Debug::Debug;
+		}
+		else
+		{
+			m_Debug = Debug::Normal;
+		}
+	}
+
 	if (m_pHero->m_HP <= 0)
 	{
 		m_bNextScene = true;
@@ -607,25 +643,14 @@ void   TSceneGameIn::Frame()
 		else
 		{
 			m_pHero->m_bIsJumping = true;
-			if (m_pHero->m_CurrentState == HeroState::Idle)
+			if (m_pHero->m_CurrentState != HeroState::Victory)
 			{
 				m_pHero->m_CurrentState = HeroState::Jump;
 			}
 		}
 	}
 
-	if (g_GameKey.dwPkey == KEY_PUSH)
-	{
 
-		if (m_Debug == Debug::Normal)
-		{
-			m_Debug = Debug::Debug;
-		}
-		else
-		{
-			m_Debug = Debug::Normal;
-		}
-	}
 
 	if (m_Debug == Debug::Normal)
 	{
@@ -698,6 +723,7 @@ void   TSceneGameIn::Frame()
 			npc->FrameState(m_pHero.get()); // Hero와 NPC 상호작용
 			npc->Frame();
 		}
+		/*npc->m_pProjectile->Frame(npc->m_vPos);*/
 	}
 
 	for (auto& hp : m_HPList)
@@ -757,6 +783,23 @@ void   TSceneGameIn::Frame()
 
 	m_pWorld->Frame();
 	m_pPortal->Frame();
+	if (m_pBoss->m_HP <= 0)
+	{
+		m_pVictory->Frame();
+	}
+
+	if (m_pBoss->m_HP <= 0)
+	{
+		m_bBossDefeated = true;
+	}
+	if (m_bBossDefeated)
+	{
+		m_pHero->m_CurrentState = HeroState::Victory;
+		m_pHero->m_vPos = { 13440.0f, 500.0f };
+		m_pHero->SetScale({ 150.0f,150.0f });
+		m_bBossDefeated = false;
+		m_pHero->m_bKeyinput = false;
+	}
 }
 void   TSceneGameIn::Render()
 {
@@ -771,7 +814,10 @@ void   TSceneGameIn::Render()
 
 	for (auto data : m_NpcList)
 	{
-		if (data->m_bDead)	continue;
+		if (data->m_bDead)
+		{
+			continue;
+		}
 		data->Transform(m_vCamera);
 		data->Render();
 	}
@@ -779,6 +825,15 @@ void   TSceneGameIn::Render()
 
 	m_pPortal->Transform(m_vCamera);
 	m_pPortal->Render();
+	m_pRadder->Transform(m_vCamera);
+	m_pRadder->Render();
+
+
+	if (m_pBoss->m_HP <= 0)
+	{
+		m_pVictory->Transform(m_vCamera);
+		m_pVictory->Render();
+	}
 
 	m_pHero->Transform(m_vCamera);
 	m_pHero->Render();
@@ -808,7 +863,7 @@ void   TSceneGameIn::Render()
 		data->Render();
 	}
 
-	if (!m_UiList[0]->m_bDead)
+	if (!m_UiList[0]->m_bDead && m_pBoss->m_HP > 0)
 	{
 		m_UiList[0]->Transform(m_vCamera);
 		m_UiList[0]->Render();
@@ -870,11 +925,20 @@ void   TSceneGameIn::Release()
 		m_pHero->Release();
 		m_pHero = nullptr;
 	}
-
+	if (m_pRadder)
+	{
+		m_pRadder->Release();
+		m_pRadder = nullptr;
+	}
 	if (m_pPortal)
 	{
 		m_pPortal->Release();
 		m_pPortal = nullptr;
+	}
+	if (m_pVictory)
+	{
+		m_pVictory->Release();
+		m_pVictory = nullptr;
 	}
 	if (m_pBossMap)
 	{

@@ -23,7 +23,7 @@ void TNpcObj::HitOverlap(TObject* pObj, THitResult hRes)  //충돌했을떄 실행되는 
 	if (OtherType == TObjectType::Projectile)
 	{
 		auto pMissile = dynamic_cast<TProjectileEffect*>(pObj);
-		if (pMissile && pMissile->m_pOwner == Shooter::OWNER_HERO)
+		if (pMissile && pMissile->m_pOwnerType == Shooter::OWNER_HERO)
 		{
 			pMissile->m_bDead = true;
 			m_HP -= pMissile->m_Data.m_iDamage;

@@ -78,7 +78,7 @@ void TBossObj::Frame()
 		{
 			for (int num = 0; num < 8; num++)
 			{
-				m_pProjectile->AddEffect(vStart, vEnd, m_MissleDirList[num], Shooter::OWNER_BOSS1);
+				m_pProjectile->AddEffect(vStart, vEnd, m_MissleDirList[num], Shooter::OWNER_BOSS1, this);
 			}
 			m_ftrigger = 1.0f;
 		}

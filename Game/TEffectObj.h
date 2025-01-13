@@ -11,6 +11,7 @@ struct TEffectData
 	UINT				m_iType = 0;
 	TVector2			m_vDirection = { 1.0f, 0.0f };
 	UINT				m_iDamage = 5;
+	TObject* m_pOwner = nullptr;
 };
 class TEffectObj : public TObject2D
 {

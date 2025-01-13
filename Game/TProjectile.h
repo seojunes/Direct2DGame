@@ -18,7 +18,7 @@ public:
 	TVector2 m_vOffsetPos;
 	TVector2 m_vPrePos;
 	float    m_fTimer = 0.0f;
-	Shooter m_pOwner = Shooter::OWNER_HERO;
+	Shooter m_pOwnerType = Shooter::OWNER_HERO;
 	float temp = 0.0f;
 
 	void Frame();
@@ -33,12 +33,13 @@ public:
 class TProjectile : public TObject2D
 {
 	TWorld* m_pWorld = nullptr;
+
 public:
 	bool  m_bOncharging = false;
 public:
 	using tObject = std::shared_ptr<TProjectileEffect>;
 	std::list< tObject>   m_datalist;
-	void   AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction, Shooter owner, bool m_bOncharging = false);
+	void   AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction, Shooter owner, TObject* m_pOwner, bool m_bOncharging = false);
 	
 	//void   ApplyOwnerType(const TObjectType& InObjectType);
 	void   Init();

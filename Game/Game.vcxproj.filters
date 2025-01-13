@@ -2,9 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Sample.cpp" />
-    <ClCompile Include="TEffectObj.cpp" />
     <ClCompile Include="THeroObj.cpp" />
-    <ClCompile Include="TMapObj.cpp" />
     <ClCompile Include="TWorld.cpp" />
     <ClCompile Include="TInput.cpp">
       <Filter>core</Filter>
@@ -60,7 +58,6 @@
     <ClCompile Include="TCollision.cpp">
       <Filter>math</Filter>
     </ClCompile>
-    <ClCompile Include="TCollisionManager.cpp" />
     <ClCompile Include="TScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -101,7 +98,6 @@
     <ClCompile Include="TSceneBoss.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="TPortal.cpp" />
     <ClCompile Include="TBossObj.cpp">
       <Filter>Monster</Filter>
     </ClCompile>
@@ -111,13 +107,28 @@
     <ClCompile Include="TUiHpBar.cpp">
       <Filter>HPbar</Filter>
     </ClCompile>
-    <ClCompile Include="TRadderObj.cpp" />
+    <ClCompile Include="TEffectObj.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="TMapObj.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="TCollisionManager.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="TVictory.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="TRadderObj.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="TPortal.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
-    <ClInclude Include="TEffectObj.h" />
     <ClInclude Include="THeroObj.h" />
-    <ClInclude Include="TMapObj.h" />
     <ClInclude Include="TWorld.h" />
     <ClInclude Include="..\..\data\shader\stdShader.h">
       <Filter>shader</Filter>
@@ -207,7 +218,6 @@
       <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="TProjectile.h" />
-    <ClInclude Include="TCollisionManager.h" />
     <ClInclude Include="TNpcObj.h">
       <Filter>Monster</Filter>
     </ClInclude>
@@ -220,7 +230,6 @@
     <ClInclude Include="TSceneBoss.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="TPortal.h" />
     <ClInclude Include="TBossObj.h">
       <Filter>Monster</Filter>
     </ClInclude>
@@ -230,7 +239,24 @@
     <ClInclude Include="TUiHpBar.h">
       <Filter>HPbar</Filter>
     </ClInclude>
-    <ClInclude Include="TRadderObj.h" />
+    <ClInclude Include="TEffectObj.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="TMapObj.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="TCollisionManager.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="TVictory.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="TRadderObj.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="TPortal.h">
+      <Filter>object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="SpriteData.txt" />
@@ -274,6 +300,9 @@
     </Filter>
     <Filter Include="HPbar">
       <UniqueIdentifier>{fd3a6aac-e2ec-46e5-87f6-587c3eb52783}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="object">
+      <UniqueIdentifier>{d9a4090e-8b4d-4b87-8483-017815d9bc63}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

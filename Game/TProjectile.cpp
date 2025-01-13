@@ -27,7 +27,7 @@ void TProjectileEffect::Frame()
 	}
 	m_fTimer += g_fSPF;*/
 	
-	if (this->m_pOwner == Shooter::OWNER_MON3)
+	if (this->m_pOwnerType == Shooter::OWNER_MON3)
 	{	
 		m_vDir.x = -1.0f;
 		temp += 5.0f * g_fSPF;
@@ -108,12 +108,12 @@ TProjectile::TProjectile(TWorld* pWorld) : m_pWorld(pWorld)
 
 }
 
-void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction, Shooter owner, bool  m_bOncharging)
+void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction, Shooter ownertype,TObject* owner, bool  m_bOncharging)
 {
 	auto obj = std::make_shared<TProjectileEffect>();
 	obj->m_pMeshRender = &TGameCore::m_MeshRender;
 	obj->m_vVertexList = obj->m_pMeshRender->m_vVertexList;
-	obj->m_pOwner = owner;
+	obj->m_pOwnerType = ownertype;
 	TLoadResData resData;
 	resData.texShaderName = L"../../data/shader/Default.txt";
 	TEffectData data;
@@ -133,18 +133,18 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction
 		//obj->m_iDamage = 15;
 	}
 
-	if (owner == Shooter::OWNER_MON2)
+	if (ownertype == Shooter::OWNER_MON2)
 	{
 		resData.texPathName = L"../../data/ui/Mon2Shot.png";
 		data.m_iDamage = 30;
 	}
-	else if (owner == Shooter::OWNER_MON3)
+	else if (ownertype == Shooter::OWNER_MON3)
 	{
 		resData.texPathName = L"../../data/ui/bomb.png";
 		data.m_iDamage = 10;
 		data.m_fLifeTime = 30.0f;
 	}
-	else if (owner == Shooter::OWNER_BOSS1)
+	else if (ownertype == Shooter::OWNER_BOSS1)
 	{
 		resData.texPathName = L"../../data/ui/bossMissile1.png";
 		data.m_iDamage = 10;
@@ -155,6 +155,7 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction
 	UINT iSprite = rand() % 3;
 	data.m_iType = 1;// rand() % m_szSpriteList[0].size();
 	data.m_iNumAnimFrame = 1;
+	data.m_pOwner = owner;
 	/*if (data.m_iType == 0)
 	{
 		data.m_iNumAnimFrame = m_rtSpriteList[iSprite].size();
