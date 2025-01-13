@@ -12,6 +12,7 @@ enum class HeroState     // 그냥 enum을 사용할시에는 전역으로 사용되어서 충돌 가
 	RightRun,
 	LeftRun,
 	Jump,
+	Radder,
 	Shotting,
 	Victory,
 }; // 상태 정의

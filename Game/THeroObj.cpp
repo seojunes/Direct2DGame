@@ -170,11 +170,33 @@ void THeroObj::Frame()
 			m_iJumpingCount++;
 			m_CurrentState = HeroState::Jump; // Jump 상태 설정.
 		}
+
+		
+		
+		if (m_CurrentState == HeroState::Radder)
+		{
+			if (g_GameKey.dwSkey == KEY_HOLD)
+			{
+				vAdd.y += m_fSpeed * g_fSPF;
+			}
+			if (g_GameKey.dwWkey == KEY_HOLD)
+			{
+				vAdd.y -= m_fSpeed * g_fSPF;
+			}
+		}
+		else
+		{
+			if (g_GameKey.dwSkey == KEY_PUSH)
+			{
+				m_CurrentState == HeroState::Jump;
+				m_fGravity = 980.0f;
+			}
+		}
+		
 		if (g_GameKey.dwSpace == KEY_PUSH)
 		{
 			m_fChargingTime = 0.0f;
 		}
-
 
 		if (g_GameKey.dwSpace == KEY_HOLD)
 		{
@@ -359,6 +381,7 @@ void THeroObj::SetVertexData()
 			break;
 		}
 	case HeroState::Idle:
+	case HeroState::Radder:
 		if(!m_bIsShooting)
 		{
 			rt.SetS(m_rtIdleFrames[m_iIdleFrame].left,

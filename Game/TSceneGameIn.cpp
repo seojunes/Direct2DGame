@@ -169,8 +169,10 @@ bool TSceneGameIn::CreateObject()
 	}
 
 	m_pRadder = std::make_shared<TRadderObj>();
-	tStart = { 3960.0f,720.0f };
-	tEnd = { 3980.0f, 900.0f };
+	tStart = { 3760.0f,760.0f };
+	tEnd = { 3780.0f, 900.0f };
+	
+
 	//m_pPortal->m_pWorld = m_pWorld.get();
 	resData.texPathName = L"../../data/texture/Radder.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
@@ -643,7 +645,7 @@ void   TSceneGameIn::Frame()
 		else
 		{
 			m_pHero->m_bIsJumping = true;
-			if (m_pHero->m_CurrentState != HeroState::Victory)
+			if (m_pHero->m_CurrentState != HeroState::Victory && m_pHero->m_CurrentState != HeroState::Radder)
 			{
 				m_pHero->m_CurrentState = HeroState::Jump;
 			}
@@ -783,6 +785,7 @@ void   TSceneGameIn::Frame()
 
 	m_pWorld->Frame();
 	m_pPortal->Frame();
+	m_pRadder->Frame();
 	if (m_pBoss->m_HP <= 0)
 	{
 		m_pVictory->Frame();
