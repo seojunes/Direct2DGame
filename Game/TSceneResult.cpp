@@ -61,22 +61,22 @@ void   TSceneResult::Init()
         m_UiList.emplace_back(ui1);
     }
 
-    //resData.texPathName = L"../../data/ui/restart.png";
+    resData.texPathName = L"../../data/ui/pressrestart.png";
 
-    //auto ui = std::make_shared<TButtonGUI>();
-    //ui->m_pMeshRender = &TGameCore::m_MeshRender;
-    //ui->SetFSM(&m_GuiFSM);
-    //TVector2 vStart = { 328.0f, 680.0f };
-    //TVector2 vEnd = { 953.5f, 724.0f };
+    auto ui = std::make_shared<TButtonGUI>();
+    ui->m_pMeshRender = &TGameCore::m_MeshRender;
+    ui->SetFSM(&m_GuiFSM);
+    TVector2 vStart = { 491.25f, 603.125f };
+    TVector2 vEnd = { 822.5f,  658.594f};
 
-    //ui->m_pMeshRender = &TGameCore::m_MeshRender;
-    //if (ui->Create(m_pWorld.get(), resData, vStart, vEnd))
-    //{
-    //    ui->m_iCollisionType = TCollisionType::T_Overlap;
-    //    //ui->SetScale(300.0f, 300.0f );
-    //    //ui->SetRotation(T_Pi*0.25f);
-    //    m_UiList.emplace_back(ui);
-    //}
+    ui->m_pMeshRender = &TGameCore::m_MeshRender;
+    if (ui->Create(m_pWorld.get(), resData, vStart, vEnd))
+    {
+        ui->m_iCollisionType = TCollisionType::T_Overlap;
+        //ui->SetScale(300.0f, 300.0f );
+        //ui->SetRotation(T_Pi*0.25f);
+        m_UiList.emplace_back(ui);
+    }
 }
 void   TSceneResult::Frame()
 {
@@ -89,6 +89,7 @@ void   TSceneResult::Frame()
         }
     }
 
+    m_UiList[1]->FrameState(nullptr);
     m_pWorld->Frame();
 }
 void   TSceneResult::Render()
@@ -101,7 +102,7 @@ void   TSceneResult::Render()
             data->Render();
         }
     }
-    if (m_UiList[0]->m_iSelectState == T_SELECTED)
+    if (m_UiList[1]->m_iSelectState == T_SELECTED)
     {
         m_bPrevScene = true;
     }

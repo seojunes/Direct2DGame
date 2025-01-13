@@ -128,7 +128,7 @@ void TButtonGUI::Frame()
 }
 void TButtonGUI::PostRender()
 {
-	TDevice::m_pd3dContext->PSSetShaderResources(0, 1, &m_pTexState[m_iSelectState]->m_pTexSRV);
+	TDevice::m_pd3dContext->PSSetShaderResources(0, 1, &m_pTexture->m_pTexSRV);// &m_pTexState[m_iSelectState]->m_pTexSRV);
 	m_pMeshRender->PostRender();
 }
 bool TButtonGUI::LoadTexture(std::wstring texName)

@@ -9,7 +9,10 @@ void THpBar::Frame()
 
 	if (currentHP != m_iPreviousHP)
 	{
-		m_fShowTime = m_fMaxShowTime; // 타이머 초기화
+		if (m_iPreviousHP != 0)
+		{
+			m_fShowTime = m_fMaxShowTime; // 타이머 초기화
+		}
 		m_iPreviousHP = currentHP;   // 이전 HP 갱신
 	}
 

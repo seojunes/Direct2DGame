@@ -12,7 +12,7 @@ enum class HeroState     // 그냥 enum을 사용할시에는 전역으로 사용되어서 충돌 가
 	RightRun,
 	LeftRun,
 	Jump,
-	Shoting,
+	Shotting,
 }; // 상태 정의
 
 
@@ -45,23 +45,37 @@ class THeroObj : public TObject2D
 
 public:
 	std::shared_ptr<TProjectile>		m_pProjectile;
+	std::vector<RECT> m_rtIdleFrames; // 정지 애니메이션 프레임 리스트
 	std::vector<RECT> m_rtWalkFrames; // 걷기 애니메이션 프레임 리스트
 	std::vector<RECT> m_rtJumpFrames; // 걷기 애니메이션 프레임 리스트
+	std::vector<RECT> m_rtShotFrames; // 슈팅 애니메이션 프레임 리스트
+
+
+	UINT m_iIdleFrame = 0;            // 현재 정지 애니메이션 프레임
 	UINT m_iWalkFrame = 0;            // 현재 걷기 애니메이션 프레임
-	UINT m_iJumpFrame = 0;			  // 현재 점프 애니메이션 프레임	
+	UINT m_iJumpFrame = 0;			  // 현재 점프 애니메이션 프레임
+	UINT m_iShotFrame = 0;			  // 현재 발사 애니메이션 프레임
+
+
 	float m_fCurrentTime = 0.0f;      // 현재 프레임 지속 시간
-	float m_fFrameTime = 0.1f;        // 한 프레임당 지속 시간
-	bool m_bLoop = true;              // 반복 여부
+	float m_fWalkFrameTime = 0.2f;    // 한 프레임당 지속 시간
+	float m_fJumpFrameTime = 0.1f;    // 한 프레임당 지속 시간
+	float m_fIdleFrameTime = 0.1f;	  // idle 한 프레임당 지속시간	
+
+	float m_fShootingMotionTime = 0.0f; //슈팅모션 남은지속시간.
+	float m_fMaxMotionTime = 0.3f;		//슈팅모션 최대지속시간.
+	bool  m_bLoop = true;               // 반복 여부
 	
 public:
+	bool m_bIsShooting = false;
 	bool m_bInvincible = false;					// 무적 상태 여부
 	float m_fInvincibleTime = 0.0f;				// 무적 상태 남은 시간
-	const float m_fMaxInvincibleTime = 1.0f;	// 무적 상태 지속 시간
+	const float m_fMaxInvincibleTime = 2.0f;	// 무적 상태 지속 시간
 public:
 	void TakeDamage(int damage);
 	bool IsInvincible() const	{ return m_bInvincible; }
 public:
-	HeroState m_CurrentState = HeroState::Jump; // 초기 상태는 RightRun
+	HeroState m_CurrentState = HeroState::Jump; // 초기 상태는 Jump
 	HeroView m_CurrentView = HeroView::RightView;  // 초기 상태는 RightView
 public:
 	BossRoomMovingState m_BossMoving = BossRoomMovingState::STATE_UNABLE;
@@ -69,7 +83,7 @@ public:
 public:
 	int m_iJumpingCount = 0;
 	bool m_bIsJumping = true;
-	float m_fJumpSpeed = 400.0f;
+	float m_fJumpSpeed = 450.0f;
 	float m_fVerticalSpeed = 0.0f;
 	float m_fGravity = 980.0f;
 	float m_fGroundY = 1800.0f;

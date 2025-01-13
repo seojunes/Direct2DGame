@@ -175,6 +175,7 @@
     <ClInclude Include="TObject2D.h" />
     <ClInclude Include="TPortal.h" />
     <ClInclude Include="TProjectile.h" />
+    <ClInclude Include="TRadderObj.h" />
     <ClInclude Include="TScene.h" />
     <ClInclude Include="TSceneBoss.h" />
     <ClInclude Include="TSceneGameIn.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="TObject2D.cpp" />
     <ClCompile Include="TPortal.cpp" />
     <ClCompile Include="TProjectile.cpp" />
+    <ClCompile Include="TRadderObj.cpp" />
     <ClCompile Include="TScene.cpp" />
     <ClCompile Include="TSceneBoss.cpp" />
     <ClCompile Include="TSceneGameIn.cpp" />

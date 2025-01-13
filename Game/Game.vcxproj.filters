@@ -111,6 +111,7 @@
     <ClCompile Include="TUiHpBar.cpp">
       <Filter>HPbar</Filter>
     </ClCompile>
+    <ClCompile Include="TRadderObj.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -229,6 +230,7 @@
     <ClInclude Include="TUiHpBar.h">
       <Filter>HPbar</Filter>
     </ClInclude>
+    <ClInclude Include="TRadderObj.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SpriteData.txt" />

@@ -163,9 +163,9 @@ bool TSceneGameIn::CreateHero()
 	m_pHero->SetData(m_rtSpriteList);
 	m_pHero->SetMap(m_pMap.get());
 	TVector2 tStart = { 400.0f,300.0f };//m_pHero->m_fGroundY };
-	TVector2 tEnd = { tStart.x + 80.0f, tStart.y + 110.0f };
+	TVector2 tEnd = { tStart.x + 85.0f, tStart.y + 110.0f };
 	TLoadResData resData;
-	resData.texPathName = L"../../data/texture/walk.png";
+	resData.texPathName = L"../../data/texture/character.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
 	m_pHero->m_pMeshRender = &TGameCore::m_MeshRender;
 	m_pHero->m_pWorld = m_pWorld.get();
@@ -179,7 +179,7 @@ bool TSceneGameIn::CreateRect()
 {
 	rectArea = {
 
-		{{ 0.0f  , 720.0f },{3730.0f,1020.0f} },
+		{{ 0.0f  , 720.0f },{3720.0f,1020.0f} },
 		{{ 1786.0f  , 540.0f },{2106.0f,720.0f}},
 		{{ 3246.0f  , 418.5f },{3566.0f,540.0f}},
 		{{ 2760.0f   , 540.0f },{3566.0f,720.0f}},
@@ -412,31 +412,33 @@ bool TSceneGameIn::CreateUI()
 	resData.texPathName = L"../../data/ui/HpBar.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
 
-	auto ui1 = std::make_shared<TUiHpBar>(m_pHero->m_HP);
-	ui1->SetHero(m_pHero.get());
-	ui1->m_pMeshRender = &TGameCore::m_MeshRender;
-	ui1->SetFSM(&m_GuiFSM);
+	auto hero_hp = std::make_shared<TUiHpBar>(HPBAR_OWNER::BAROWNER_HERO);
+	hero_hp->SetHero(m_pHero.get());
+	hero_hp->SetHeroHp(m_pHero->m_HP);
+	hero_hp->m_pMeshRender = &TGameCore::m_MeshRender;
+	hero_hp->SetFSM(&m_GuiFSM);
 	TVector2 vStart1 = { 80.0f, 100.0f };
 	TVector2 vEnd1 = { 480.0f, 150.0f };
-	if (ui1->Create(m_pWorld.get(), resData, vStart1, vEnd1))
+	if (hero_hp->Create(m_pWorld.get(), resData, vStart1, vEnd1))
 	{
-		ui1->m_iCollisionType = TCollisionType::T_Overlap;
-		ui1->m_vInitialScale = ui1->m_rtScreen.vh;
-		m_UiList.emplace_back(ui1);
+		hero_hp->m_iCollisionType = TCollisionType::T_Overlap;
+		hero_hp->m_vInitialScale = hero_hp->m_rtScreen.vh;
+		m_UiList.emplace_back(hero_hp);
 	}
 
-	//auto ui2 = std::make_shared<TNextBtn>();
-	//ui2->m_pMeshRender = &TGameCore::m_MeshRender;
-	//ui2->SetFSM(&m_GuiFSM);
-	//TVector2 vStart2 = { 700.0f, 0.0f };
-	//TVector2 vEnd2 = { 800.0f, 100.0f };
-	//if (ui2->Create(m_pWorld.get(), resData, vStart2, vEnd2))
-	//{
-	//	ui2->m_iCollisionType = TCollisionType::T_Overlap;
-	//	//ui2->SetScale(50.0f, 100.0f);
-	//	//ui2->SetRotation(T_Pi * -0.25f);
-	//	m_UiList.emplace_back(ui2);
-	//}
+	auto boss_hp = std::make_shared<TUiHpBar>(HPBAR_OWNER::BAROWNER_BOSS);
+	boss_hp->SetBoss(m_pBoss.get());
+	boss_hp->SetBossHp(m_pBoss->m_HP);
+	boss_hp->m_pMeshRender = &TGameCore::m_MeshRender;
+	boss_hp->SetFSM(&m_GuiFSM);
+	vStart1 = { 800.0f, 100.0f };
+	vEnd1 = { 1200.0f, 150.0f };
+	if (boss_hp->Create(m_pWorld.get(), resData, vStart1, vEnd1))
+	{
+		boss_hp->m_iCollisionType = TCollisionType::T_Overlap;
+		boss_hp->m_vBInitialScale = boss_hp->m_rtScreen.vh;
+		m_UiList.emplace_back(boss_hp);
+	}
 
 	return true;
 }
@@ -605,7 +607,10 @@ void   TSceneGameIn::Frame()
 		else
 		{
 			m_pHero->m_bIsJumping = true;
-			m_pHero->m_CurrentState = HeroState::Jump;
+			if (m_pHero->m_CurrentState == HeroState::Idle)
+			{
+				m_pHero->m_CurrentState = HeroState::Jump;
+			}
 		}
 	}
 
@@ -645,12 +650,13 @@ void   TSceneGameIn::Frame()
 			m_vCamera.y = 1300.0f;
 		}
 
-		if (m_pHero->m_BossMoving == BossRoomMovingState::STATE_UNABLE && g_GameKey.dwSkey == KEY_PUSH)
+		if (m_pHero->m_BossMoving == BossRoomMovingState::STATE_ABLE && g_GameKey.dwSkey == KEY_PUSH)
 		{
 			m_vCamera.x = 13440.0f;
 			m_vCamera.y = 500.0f;
 			m_pHero->m_vPos = { 13440.0f, 500.0f };
 			m_MapAction = MapAction::STATE_BOSS;
+			m_pHero->m_BossMoving = BossRoomMovingState::STATE_UNABLE;
 		}
 	}
 	else
@@ -679,7 +685,7 @@ void   TSceneGameIn::Frame()
 		m_pBoss->FrameState(m_pHero.get()); // Hero와 NPC 상호작용
 		m_pBoss->Frame();
 	}
-	
+
 
 	TVector2 vMouse = GetWorldMousePos();
 
@@ -801,14 +807,22 @@ void   TSceneGameIn::Render()
 		data->Transform(m_vCamera);
 		data->Render();
 	}
-	for (auto data : m_UiList)
+
+	if (!m_UiList[0]->m_bDead)
 	{
-		if (!data->m_bDead)
+		m_UiList[0]->Transform(m_vCamera);
+		m_UiList[0]->Render();
+	}
+
+	if (m_MapAction == MapAction::STATE_BOSS)
+	{
+		if (!m_UiList[1]->m_bDead)
 		{
-			data->Transform(m_vCamera);
-			data->Render();
+			m_UiList[1]->Transform(m_vCamera);
+			m_UiList[1]->Render();
 		}
 	}
+
 
 }
 void   TSceneGameIn::Release()
@@ -847,9 +861,10 @@ void   TSceneGameIn::Release()
 	{
 		data->Release();
 		data = nullptr;
+		m_MapAction = MapAction::STATE_STAGE;
 	}
 	m_HPList.clear();
-	
+
 	if (m_pHero)
 	{
 		m_pHero->Release();

@@ -27,7 +27,7 @@ void TMonster1::Frame()
 			m_vDir.x *= -1.0f;
 		}
 	
-		if (fHeroDistance < 200.0f)
+		if (fHeroDistance < 400.0f)
 		{
 			m_state = Monster1State::STATE_Attack;
 		}
@@ -99,7 +99,7 @@ void TMonster2::Frame()
 			m_state = Monster2State::STATE_Idle;
 		}
 		
-		TVector2	vHalf = { 10.0f, 10.0f };
+		TVector2	vHalf = { 30.0f, 30.0f };
 		TVector2	vStart = m_vPos - vHalf;
 		TVector2	vEnd = m_vPos + vHalf;
 		TVector2    dir = (m_pHero->m_vPos - m_vPos).Normal();

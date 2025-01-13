@@ -21,7 +21,7 @@ public:
 	void SetMap(TMapObj* pMap) { m_pMap = pMap; }
 	void SetNpc(TNpcObj* pNpc) { m_pNpc = pNpc; }
 public:
-	UINT m_iPreviousHP;
+	UINT m_iPreviousHP = 0;
 	UINT m_iHP;
 	UINT m_iMaxHp;
 	float m_fHpRatio = 1.0f;

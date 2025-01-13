@@ -39,5 +39,10 @@ public:
 		m_vInitedPos = initialPos; // 초기 위치 설정
 		m_vPos = initialPos;       // 현재 위치도 초기 위치로 설정
 	}
+public:
+	TObjectType GetType() const override
+	{
+		return TObjectType::Boss;
+	}
 };
 

@@ -118,7 +118,7 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction
 	resData.texShaderName = L"../../data/shader/Default.txt";
 	TEffectData data;
 	data.m_bLoop = true;
-	data.m_fLifeTime = 2.0f;
+	data.m_fLifeTime = 1.0f;
 	data.m_fOffsetTime = 0.01f;
 	if (m_bOncharging == false)
 	{
