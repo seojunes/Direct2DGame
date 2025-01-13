@@ -342,65 +342,43 @@ void THeroObj::SetVertexData()
 			m_rtWalkFrames[m_iWalkFrame].top,
 			m_rtWalkFrames[m_iWalkFrame].right,
 			m_rtWalkFrames[m_iWalkFrame].bottom); // 현재 프레임의 텍스처 좌표,
-		m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
-		m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
-		m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
-		m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
 		break;
 	case HeroState::LeftRun:
 		rt.SetS(m_rtWalkFrames[m_iWalkFrame].left,
 			m_rtWalkFrames[m_iWalkFrame].top,
 			m_rtWalkFrames[m_iWalkFrame].right,
 			m_rtWalkFrames[m_iWalkFrame].bottom); // 현재 프레임의 텍스처 좌표,
-		m_vVertexList[0].t = { rt.v2.x / xSize,rt.v1.y / ySize };
-		m_vVertexList[1].t = { rt.v1.x / xSize,rt.v1.y / ySize };
-		m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
-		m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
 		break;
 	case HeroState::Jump:
 		rt.SetS(m_rtJumpFrames[m_iJumpFrame].left,
 			m_rtJumpFrames[m_iJumpFrame].top,
 			m_rtJumpFrames[m_iJumpFrame].right,
 			m_rtJumpFrames[m_iJumpFrame].bottom);
-		if (m_CurrentView == HeroView::RightView)
-		{
-			m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
-			m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
-		}
-		else
-		{
-			m_vVertexList[0].t = { rt.v2.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[1].t = { rt.v1.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
-			m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
-		}
 		break;
 	case HeroState::Shotting:
 		rt.SetS(m_rtShotFrames[0].left,
 			m_rtShotFrames[0].top,
 			m_rtShotFrames[0].right,
 			m_rtShotFrames[0].bottom);
-		if (m_CurrentView == HeroView::RightView)
-		{
-			m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
-			m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
-		}
-		else
-		{
-			m_vVertexList[0].t = { rt.v2.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[1].t = { rt.v1.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
-			m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
-		}
+		
 		break;
 	default:
 		break;
 	}
-
+	if (m_CurrentView == HeroView::RightView)
+	{
+		m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
+		m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
+	}
+	else
+	{
+		m_vVertexList[0].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[1].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
+		m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
+	}
 
 }
 
