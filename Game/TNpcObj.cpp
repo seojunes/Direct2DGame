@@ -52,6 +52,13 @@ void TNpcObj::HitOverlap(TObject* pObj, THitResult hRes)  //충돌했을떄 실행되는 
 	}
 }
 
+void TNpcObj::SetData(vector<vector<RECT>> SpriteList)
+{
+	m_rtMon1AttackFrames.resize(SpriteList[8].size());
+
+	m_rtMon1AttackFrames = SpriteList[8];
+}
+
 
 void TNpcObj::SetVertexData()
 {

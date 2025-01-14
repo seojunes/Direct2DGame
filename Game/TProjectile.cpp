@@ -29,7 +29,7 @@ void TProjectileEffect::Frame()
 	
 	if (this->m_pOwnerType == Shooter::OWNER_MON3)
 	{	
-		m_vDir.x = -1.0f;
+		m_vDir.x = this->m_Data.m_vDirection.x;
 		temp += 5.0f * g_fSPF;
 		m_vDir.y = -2.0f + temp;
 		m_vDir = m_vDir.Normal();

@@ -51,11 +51,11 @@ void   TGameCore::CoreRender()
 
         m_DxWrite.PreRender();
         {
-            D2D1_RECT_F rt = { 0.0f, 0.0f, 800.0f, 600.0f };
+            D2D1_RECT_F rt = { 1000.0f, 0.0f, 1280.0f, 600.0f };
             m_DxWrite.Draw(rt, m_GameTimer.m_szTime);
-            rt.top += 25.0f;
+            /*rt.top += 25.0f;
             m_DxWrite.Draw(rt, m_Input.m_szTime,
-                D2D1::ColorF(1, 0, 0, 1));
+                D2D1::ColorF(1, 0, 0, 1));*/
 
         }
 

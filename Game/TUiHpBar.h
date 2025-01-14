@@ -12,7 +12,6 @@ enum HPBAR_OWNER
 
 class TUiHpBar :public TImageGUI
 {
-	TMapObj* m_pMap = nullptr;
 	THeroObj* m_pHero = nullptr;
 	TBossObj* m_pBoss = nullptr;
 public:
@@ -20,7 +19,6 @@ public:
 	void SetBoss(TBossObj* pBoss) { m_pBoss = pBoss; }
 	void SetHeroHp(INT hp);
 	void SetBossHp(INT hp);
-	
 public:
 	INT m_iHP;
 	INT m_iMaxHp;
@@ -41,5 +39,10 @@ public:
 	{
 		m_eBarOwner = owner;
 	}
+};
+
+class TUIHpTile : public TImageGUI
+{
+	
 };
 

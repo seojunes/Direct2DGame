@@ -51,6 +51,8 @@ void THeroObj::SetData(vector<vector<RECT>> SpriteList)
 	m_rtShotFrames.resize(SpriteList[3].size());
 	m_rtShotNRunFrames.resize(SpriteList[4].size());
 	m_rtVictoryFrames.resize(SpriteList[5].size());
+	m_rtRadderFrames.resize(SpriteList[6].size());
+	m_rtShotNJumpFrames.resize(SpriteList[7].size());
 
 	m_rtWalkFrames = SpriteList[0];
 	m_rtJumpFrames = SpriteList[1];
@@ -58,6 +60,8 @@ void THeroObj::SetData(vector<vector<RECT>> SpriteList)
 	m_rtShotFrames = SpriteList[3];
 	m_rtShotNRunFrames = SpriteList[4];
 	m_rtVictoryFrames = SpriteList[5];
+	m_rtRadderFrames = SpriteList[6];
+	m_rtShotNJumpFrames = SpriteList[7];
 }
 
 void THeroObj::TakeDamage(int damage)
@@ -140,11 +144,6 @@ void THeroObj::Frame()
 			}
 			m_CurrentView = HeroView::LeftView;
 
-			if (g_GameKey.dwSpace == KEY_PUSH || g_GameKey.dwSpace == KEY_HOLD)
-			{
-				m_fChargingTime = 0.0f;
-				//m_bIsShooting = true;
-			}
 		}
 		if (g_GameKey.dwDkey == KEY_HOLD)
 		{
@@ -156,11 +155,6 @@ void THeroObj::Frame()
 			}
 			m_CurrentView = HeroView::RightView;
 
-			if (g_GameKey.dwSpace == KEY_PUSH || g_GameKey.dwSpace == KEY_HOLD)
-			{
-				m_fChargingTime = 0.0f;
-				//m_bIsShooting = true;
-			}
 		}
 		if (g_GameKey.dwWkey == KEY_PUSH && m_iJumpingCount < m_MaxJunp)//&& !m_bIsJumping)
 		{
@@ -219,6 +213,18 @@ void THeroObj::Frame()
 				vHalf = { 20.0f, 20.0f };
 				vStart = m_vPos - vHalf;
 				vEnd = m_vPos + vHalf;
+				if (m_CurrentView == HeroView::RightView)
+				{
+					vStart.x += m_rtScreen.vh.x;
+					vEnd.x += m_rtScreen.vh.x;
+				}
+				else
+				{
+					vStart.x -= m_rtScreen.vh.x;
+					vEnd.x -= m_rtScreen.vh.x;
+				}
+				
+				
 				m_bOnCharing = false;
 			}
 			else
@@ -280,22 +286,29 @@ void THeroObj::Frame()
 			}
 		}
 	}
-	if (m_CurrentState == HeroState::Jump)
-	{
-		m_fCurrentTime += g_fSPF; // 시간 업데이트
-		if (m_fCurrentTime >= m_fJumpFrameTime)
-		{
-			m_fCurrentTime -= m_fJumpFrameTime;
-			m_iJumpFrame++; // 다음 프레임으로 이동
-			if (m_iJumpFrame >= m_rtJumpFrames.size())
-			{
-				if (m_bLoop)
-					m_iJumpFrame = 0; // 반복일 경우 첫 프레임으로 이동
-				else
-					m_iJumpFrame = m_rtJumpFrames.size() - 1; // 마지막 프레임 유지
-			}
-		}
-	}
+	//if (m_CurrentState == HeroState::Jump)
+	//{
+	//	m_fCurrentTime += g_fSPF; // 시간 업데이트
+	//	if (m_fCurrentTime >= m_fJumpFrameTime)
+	//	{
+	//		m_fCurrentTime -= m_fJumpFrameTime;
+	//		m_iJumpFrame++;
+	//		if (m_fVerticalSpeed > 0)
+	//		{
+	//			if (m_iJumpFrame >= 2)
+	//			{
+	//				m_iJumpFrame = 1;
+	//			}
+	//		}
+	//		else
+	//		{
+	//			if (m_iJumpFrame >= m_rtJumpFrames.size())
+	//			{
+	//				m_iJumpFrame = m_rtJumpFrames.size() - 1; // 마지막 프레임 유지
+	//			}
+	//		}
+	//	}
+	//}
 	if (m_CurrentState == HeroState::Victory)
 	{
 		m_fCurrentTime += g_fSPF; // 시간 업데이트
@@ -309,6 +322,41 @@ void THeroObj::Frame()
 					m_iVictoryFrame = 0; // 반복일 경우 첫 프레임으로 이동
 				else
 					m_iVictoryFrame = m_rtVictoryFrames.size() - 1; // 마지막 프레임 유지
+			}
+		}
+	}
+	if (m_CurrentState == HeroState::Radder)
+	{
+		if (g_GameKey.dwSkey == KEY_HOLD)
+		{
+			m_fCurrentTime += g_fSPF; // 시간 업데이트
+			if (m_fCurrentTime >= m_fRadderFrameTime)
+			{
+				m_fCurrentTime -= m_fRadderFrameTime;
+				m_iRadderFrame++; // 다음 프레임으로 이동
+				if (m_iRadderFrame >= m_rtRadderFrames.size())
+				{
+					if (m_bLoop)
+						m_iRadderFrame = 0; // 반복일 경우 첫 프레임으로 이동
+					else
+						m_iRadderFrame = m_rtRadderFrames.size() - 1; // 마지막 프레임 유지
+				}
+			}
+		}
+		else if (g_GameKey.dwWkey == KEY_HOLD)
+		{
+			m_fCurrentTime += g_fSPF; // 시간 업데이트
+			if (m_fCurrentTime >= m_fRadderFrameTime)
+			{
+				m_fCurrentTime -= m_fRadderFrameTime;
+				m_iRadderFrame--; // 이전 프레임으로 이동
+				if (m_iRadderFrame >= m_rtRadderFrames.size())
+				{
+					if (m_bLoop)
+						m_iRadderFrame = 0; // 반복일 경우 첫 프레임으로 이동
+					else
+						m_iRadderFrame = m_rtRadderFrames.size() - 1; // 마지막 프레임 유지
+				}
 			}
 		}
 	}
@@ -330,11 +378,10 @@ void THeroObj::Frame()
 
 
 	m_pProjectile->Frame(m_vPos);
-
 }
 void THeroObj::SetVertexData()
 {
-	if (m_pTexture == nullptr || m_rtWalkFrames.empty()) return;
+	if (m_pTexture == nullptr) return;
 	TObject2D::SetVertexData();
 
 	TRect rt;
@@ -364,6 +411,14 @@ void THeroObj::SetVertexData()
 			break;
 		}
 	case HeroState::Jump:
+		if (m_fVerticalSpeed > 0)
+		{
+			m_iJumpFrame = 0;
+		}
+		else
+		{
+			m_iJumpFrame = 1;
+		}
 		if (m_bIsShooting == false)
 		{
 			rt.SetS(m_rtJumpFrames[m_iJumpFrame].left,
@@ -374,14 +429,13 @@ void THeroObj::SetVertexData()
 		}
 		else
 		{
-			rt.SetS(m_rtShotFrames[0].left,
-				m_rtShotFrames[0].top,
-				m_rtShotFrames[0].right,
-				m_rtShotFrames[0].bottom);
+			rt.SetS(m_rtShotNJumpFrames[0].left,
+				m_rtShotNJumpFrames[0].top,
+				m_rtShotNJumpFrames[0].right,
+				m_rtShotNJumpFrames[0].bottom);
 			break;
 		}
 	case HeroState::Idle:
-	case HeroState::Radder:
 		if(!m_bIsShooting)
 		{
 			rt.SetS(m_rtIdleFrames[m_iIdleFrame].left,
@@ -398,6 +452,22 @@ void THeroObj::SetVertexData()
 				m_rtShotFrames[0].bottom);
 			break;
 		}
+	case HeroState::Radder:
+		if (m_rtScreen.v2.y <= m_pRadder->m_rtScreen.v1.y+ 10.0f)
+		{
+			rt.SetS(m_rtIdleFrames[0].left,
+				m_rtIdleFrames[0].top,
+				m_rtIdleFrames[0].right,
+				m_rtIdleFrames[0].bottom);
+		}
+		else
+		{
+			rt.SetS(m_rtRadderFrames[m_iRadderFrame].left,
+				m_rtRadderFrames[m_iRadderFrame].top,
+				m_rtRadderFrames[m_iRadderFrame].right,
+				m_rtRadderFrames[m_iRadderFrame].bottom);
+		}
+		break;
 	case HeroState::Victory:
 	{
 		m_CurrentView = HeroView::RightView;

@@ -40,7 +40,18 @@ public:
 	static void CreateActionFSM();
 	void FrameState(TObject* pHero);
 	void SetMap(TMapObj* pMap) { m_pMap = pMap; }
-	
+public:
+	std::vector<RECT> m_rtMon1AttackFrames; // 사다리 애니메이션 프레임 리스트
+
+	UINT m_iMon1AttckFrame = 0;            // 현재 정지 애니메이션 프레임
+
+	float m_fMon1AttackFrameTime = 0.3f;
+
+	bool m_bLoop = true;
+	void SetData(vector<vector<RECT>> SpriteList);
+public:
+	HeroView m_eCurrentView = HeroView::LeftView;
+public:
 	virtual void SetVertexData();
 	void    HitOverlap(TObject* pObj, THitResult hRet) override;
 	TNpcObj()

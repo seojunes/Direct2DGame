@@ -25,10 +25,11 @@ void    TTime::Frame()
     m_StartClock= m_EndClock;
 
 #ifdef _DEBUG
-    m_szTime = std::to_wstring(m_fGameTimer);
-    m_szTime += L" ";
-    m_szTime += std::to_wstring(m_fSecondPerFrame);
-    m_szTime += L" ";
+    m_szTime = L"Game Time: ";
+    m_szTime += std::to_wstring((int)m_fGameTimer);
+    m_szTime += L"    FPS: ";
+    //m_szTime += std::to_wstring(m_fSecondPerFrame);
+    //m_szTime += L" ";
     m_szTime += std::to_wstring(m_iGameFrame);
     m_szTime += L"\n";
 #endif

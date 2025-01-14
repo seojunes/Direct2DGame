@@ -6,45 +6,101 @@ void TMonster1::SetVertexData()
 	float xSize = m_pTexture->m_TexDesc.Width;
 	float ySize = m_pTexture->m_TexDesc.Height;
 	TRect rt;
-	rt.SetP(8.0f, 0.0f, 35.0f, 26.0f);
-	m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
-	m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
-	m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
-	m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
+	rt.SetP(8.0f, 0.0f, 36.0f, 26.0f);
+	switch (m_state)
+	{
+	case Monster1State::STATE_Move:
+		break;
+	case Monster1State::STATE_Attack:
+		rt.SetS(m_rtMon1AttackFrames[m_iMon1AttckFrame].left,
+			m_rtMon1AttackFrames[m_iMon1AttckFrame].top,
+			m_rtMon1AttackFrames[m_iMon1AttckFrame].right,
+			m_rtMon1AttackFrames[m_iMon1AttckFrame].bottom); // 현재 프레임의 텍스처 좌표,
+		break;
+	case Monster1State::STATE_Return:
+		break;
+	default:
+		break;
+	}
+	if (m_eCurrentView == HeroView::LeftView)
+	{
+		m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
+		m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
+	}
+	else
+	{
+		m_vVertexList[0].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[1].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
+		m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
+	}
 }
 void TMonster1::Frame()
 {
+	if (m_vPos.x > m_pHero->m_vPos.x)
+	{
+		m_eCurrentView = HeroView::LeftView;
+	}
+	else
+	{
+		m_eCurrentView = HeroView::RightView;
+	}
+
+	m_fCurrentTime += g_fSPF; // 시간 업데이트
+	if (m_fCurrentTime >= m_fMon1AttackFrameTime)
+	{
+		m_fCurrentTime -= m_fMon1AttackFrameTime;
+		m_iMon1AttckFrame++; // 다음 프레임으로 이동
+		if (m_iMon1AttckFrame >= m_rtMon1AttackFrames.size())
+		{
+			if (m_bLoop)
+				m_iMon1AttckFrame = 0; // 반복일 경우 첫 프레임으로 이동
+			else
+				m_iMon1AttckFrame = m_rtMon1AttackFrames.size() - 1; // 마지막 프레임 유지
+		}
+	}
+
+
 	TVector2 vMove = m_vPos + m_vDir * (g_fSPF * m_fSpeed);
 	SetPosition(vMove);
 	float fHeroDistance = (m_pHero->m_vPos - m_vPos).Length();
 	float fInitDistance = (m_vInitedPos - m_vPos).Length();
 	if (m_state == Monster1State::STATE_Move)
 	{
-		//if (m_vPos.x <= m_vInitedPos.x + m_iLimitedDis && m_vPos.x >= m_vInitedPos.x - m_iLimitedDis)
 		m_fSpeed = 100.0f;
 		if (m_vPos.x >= m_vInitedPos.x + m_iLimitedDis || m_vPos.x <= m_vInitedPos.x - m_iLimitedDis)
 		{
 			m_vDir.x *= -1.0f;
 		}
-	
+
 		if (fHeroDistance < 400.0f)
 		{
+			m_fFindTime -= g_fSPF;
+		}
+
+
+		if (m_fFindTime < 0.0f || m_iPreHP != m_HP)
+		{
 			m_state = Monster1State::STATE_Attack;
+			m_fFindTime = 1.0f;
+			m_fSpeed = rand() % 50 + 200.0f;
 		}
 	}
 	else if (m_state == Monster1State::STATE_Attack)
 	{
-		m_fSpeed = 250.0f;
+		//m_fSpeed = 250.0f;
 		m_vDir = (m_pHero->m_vPos - m_vPos).Normal();
 		m_vDir.y = 0.0f;
 		if (fInitDistance > 600.0f)
 		{
 			m_state = Monster1State::STATE_Return;
 		}
-		if (fHeroDistance > 500.0f)
+		/*if (fHeroDistance > 500.0f)
 		{
 			m_state = Monster1State::STATE_Return;
-		}
+		}*/
 	}
 	else if (m_state == Monster1State::STATE_Return)
 	{
@@ -59,6 +115,7 @@ void TMonster1::Frame()
 			m_state = Monster1State::STATE_Move;
 		}
 	}
+	SetVertexData();
 }
 
 void TMonster2::SetVertexData()
@@ -69,11 +126,20 @@ void TMonster2::SetVertexData()
 	float ySize = m_pTexture->m_TexDesc.Height;
 	TRect rt;
 	rt.SetP(10.0f, 26.0f, 57.0f, 57.0f);
-	m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
-	m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
-	m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
-	m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
-	
+	if (m_eCurrentView == HeroView::RightView)
+	{
+		m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
+		m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
+	}
+	else
+	{
+		m_vVertexList[0].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[1].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
+		m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
+	}
 }
 void TMonster2::Init()
 {
@@ -82,6 +148,15 @@ void TMonster2::Init()
 }
 void TMonster2::Frame()
 {
+	if (m_vPos.x > m_pHero->m_vPos.x)
+	{
+		m_eCurrentView = HeroView::LeftView;
+	}
+	else
+	{
+		m_eCurrentView = HeroView::RightView;
+	}
+	SetVertexData();
 	TNpcObj::Frame();
 	float fHeroDistance = (m_pHero->m_vPos - m_vPos).Length();
 	if (m_state == Monster2State::STATE_Idle)
@@ -98,12 +173,12 @@ void TMonster2::Frame()
 		{
 			m_state = Monster2State::STATE_Idle;
 		}
-		
+
 		TVector2	vHalf = { 30.0f, 30.0f };
 		TVector2	vStart = m_vPos - vHalf;
 		TVector2	vEnd = m_vPos + vHalf;
 		TVector2    dir = (m_pHero->m_vPos - m_vPos).Normal();
-				
+
 		if (m_ftrigger < 0.0f)
 		{
 			m_pProjectile->AddEffect(vStart, vEnd, dir, Shooter::OWNER_MON2, this);
@@ -111,7 +186,7 @@ void TMonster2::Frame()
 		}
 		//Shoot();
 	}
-	
+
 	m_pProjectile->Frame(m_vPos);
 }
 void TMonster2::Render()
@@ -133,10 +208,20 @@ void TMonster3::SetVertexData()
 	float ySize = m_pTexture->m_TexDesc.Height;
 	TRect rt;
 	rt.SetP(3.0f, 7.0f, 27.0f, 36.0f);
-	m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
-	m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
-	m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
-	m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
+	if (m_eCurrentView == HeroView::LeftView)
+	{
+		m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
+		m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
+	}
+	else
+	{
+		m_vVertexList[0].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[1].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
+		m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
+	}
 }
 void TMonster3::Init()
 {
@@ -145,36 +230,54 @@ void TMonster3::Init()
 }
 void TMonster3::Frame()
 {
+	if (m_vPos.x > m_pHero->m_vPos.x)
+	{
+		m_eCurrentView = HeroView::LeftView;
+	}
+	else
+	{
+		m_eCurrentView = HeroView::RightView;
+	}
+	SetVertexData();
 	TNpcObj::Frame();
 	float fHeroDistance = (m_pHero->m_vPos - m_vPos).Length();
-	if (m_state == Monster2State::STATE_Idle)
+	if (m_state == Monster3State::STATE_Idle)
 	{
 		if (fHeroDistance < 640.0f)
 		{
-			m_state = Monster2State::STATE_Attack;
+			m_state = Monster3State::STATE_Attack;
 		}
 	}
-	else if (m_state == Monster2State::STATE_Attack)
+	else if (m_state == Monster3State::STATE_Attack)
 	{
 		m_ftrigger -= g_fSPF;
 		if (fHeroDistance >= 640.0f)
 		{
-			m_state = Monster2State::STATE_Idle;
+			m_state = Monster3State::STATE_Idle;
 		}
 
 		TVector2	vHalf = { 25.0f, 25.0f };
 		TVector2	vStart = m_vPos - vHalf;
 		TVector2	vEnd = m_vPos + vHalf;
-		TVector2    dir = { 0.0f, -1.0f };
+		TVector2    dir;
+		if (m_eCurrentView == HeroView::LeftView)
+		{
+			dir = { -1.0f, -1.0f };
+		}
+		else
+		{
+			dir = { 1.0f, -1.0f };
+		}
 
 		if (m_ftrigger < 0.0f)
 		{
-			m_pProjectile->AddEffect(vStart, vEnd, dir, Shooter::OWNER_MON3,this);
+			m_pProjectile->AddEffect(vStart, vEnd, dir, Shooter::OWNER_MON3, this);
 			m_ftrigger = 1.0f;
 		}
 		//Shoot();
 	}
 
+	
 	m_pProjectile->Frame(m_vPos);
 }
 void TMonster3::Render()

@@ -2,6 +2,7 @@
 #include "TMapObj.h"
 #include "TCollisionManager.h"
 #include "TProjectile.h"
+#include "TRadderObj.h"
 
 //#include ""
 //#include "TCollision.h"
@@ -34,6 +35,7 @@ enum HeroView
 class THeroObj : public TObject2D
 {	
 	TMapObj* m_pMap = nullptr;
+	TRadderObj* m_pRadder = nullptr;
 	const int m_MaxJunp = 3;
 // 스프라이트 조절단
 public:
@@ -42,8 +44,10 @@ public:
 	std::vector<RECT> m_rtWalkFrames; // 걷기 애니메이션 프레임 리스트
 	std::vector<RECT> m_rtJumpFrames; // 걷기 애니메이션 프레임 리스트
 	std::vector<RECT> m_rtShotFrames; // 슈팅 애니메이션 프레임 리스트
-	std::vector<RECT> m_rtShotNRunFrames; // 슈팅 애니메이션 프레임 리스트
-	std::vector<RECT> m_rtVictoryFrames; // 슈팅 애니메이션 프레임 리스트
+	std::vector<RECT> m_rtShotNRunFrames; // 러닝슈팅 애니메이션 프레임 리스트
+	std::vector<RECT> m_rtVictoryFrames; // 빅토리 애니메이션 프레임 리스트
+	std::vector<RECT> m_rtRadderFrames; // 사다리 애니메이션 프레임 리스트
+	std::vector<RECT> m_rtShotNJumpFrames; // 점프샷 애니메이션 프레임 리스트
 
 
 	UINT m_iIdleFrame = 0;            // 현재 정지 애니메이션 프레임
@@ -51,13 +55,15 @@ public:
 	UINT m_iJumpFrame = 0;			  // 현재 점프 애니메이션 프레임
 	UINT m_iShotFrame = 0;			  // 현재 발사 애니메이션 프레임
 	UINT m_iVictoryFrame = 0;
+	UINT m_iRadderFrame = 0;
 
 
 	float m_fCurrentTime = 0.0f;      // 현재 프레임 지속 시간
 	float m_fWalkFrameTime = 0.2f;    // 한 프레임당 지속 시간
-	float m_fJumpFrameTime = 0.1f;    // 한 프레임당 지속 시간
+	float m_fJumpFrameTime = 0.2f;    // 한 프레임당 지속 시간
 	float m_fIdleFrameTime = 0.1f;	  // idle 한 프레임당 지속시간	
 	float m_fVictoryFrameTime = 0.3f;
+	float m_fRadderFrameTime = 0.1f;
 
 	float m_fShootingMotionTime = 0.0f; //슈팅모션 남은지속시간.
 	float m_fMaxMotionTime = 0.2f;		//슈팅모션 최대지속시간.
@@ -97,6 +103,7 @@ public:
 	void SetData(vector<vector<RECT>> SpriteList);
 public:
 	void SetMap(TMapObj* pMap) { m_pMap = pMap; }
+	void SetRadder(TRadderObj* pRadder) { m_pRadder = pRadder; }
 	virtual void Init() override;
 	virtual void Frame() override;
 	virtual void Render()override;
