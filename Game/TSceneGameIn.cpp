@@ -169,8 +169,8 @@ bool TSceneGameIn::CreateObject()
 	}
 
 	m_pRadder = std::make_shared<TRadderObj>();
-	tStart = { 3760.0f,760.0f };
-	tEnd = { 3780.0f, 900.0f };
+	tStart = { 3760.0f,720.0f };
+	tEnd = { 3780.0f, 850.0f };
 	
 
 	//m_pPortal->m_pWorld = m_pWorld.get();
@@ -573,14 +573,11 @@ void   TSceneGameIn::Frame()
 		m_bPrevScene = true;
 	}
 
-	//m_pHero->m_fGravity = 980;
 	m_pHero->m_fGroundY = 1800;
 	for (auto rectlist : m_ColList)
 	{
 		TRect Herorect = m_pHero->m_rtScreen;
 		TRect Colrect = rectlist->m_rtScreen;
-		/*TRect Projectrect = m_pHero->m_pProjectile->m_rtScreen;*/
-		//m_pHero->GetGroundH(1800.0f);
 		if (TCollision::CheckRectToRect(Colrect, Herorect))
 		{
 			if (Herorect.vc.x < Colrect.vc.x)																		// 왼쪽에서 올라올때
@@ -798,6 +795,7 @@ void   TSceneGameIn::Frame()
 	if (m_bBossDefeated)
 	{
 		m_pHero->m_CurrentState = HeroState::Victory;
+		m_pHero->m_bInvincible = false;
 		m_pHero->m_vPos = { 13440.0f, 500.0f };
 		m_pHero->SetScale({ 150.0f,150.0f });
 		m_bBossDefeated = false;
