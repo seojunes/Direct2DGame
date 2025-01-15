@@ -3,7 +3,7 @@
 void    TCollisionManager::HitOverlap(TObject* pObj, THitResult hRes)
 {
 	TObject::HitOverlap(pObj, hRes);
-	const TObjectType OtherType = pObj == nullptr ? TObjectType::None : pObj->GetType();
+ 	const TObjectType OtherType = pObj == nullptr ? TObjectType::None : pObj->GetType();
 	
 	if (OtherType == TObjectType::Projectile)
 	{

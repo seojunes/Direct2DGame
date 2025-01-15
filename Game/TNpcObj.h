@@ -65,5 +65,8 @@ public:
 	{
 		return TObjectType::Npc;
 	}
+public:
+	TVector2 Attacked(TVector2 pos);
+	bool m_bAttacked = false;
 };
 

@@ -25,9 +25,11 @@ void TNpcObj::HitOverlap(TObject* pObj, THitResult hRes)  //충돌했을떄 실행되는 
 		auto pMissile = dynamic_cast<TProjectileEffect*>(pObj);
 		if (pMissile && pMissile->m_pOwnerType == Shooter::OWNER_HERO)
 		{
+			
 			pMissile->m_bDead = true;
 			m_HP -= pMissile->m_Data.m_iDamage;
 			if (m_HP <= 0)		m_HP = 0;
+			m_bAttacked = true;
 			//m_eAttacked = ATTACKSTATE::STATE_OK;
 		}
 	}
@@ -52,6 +54,11 @@ void TNpcObj::HitOverlap(TObject* pObj, THitResult hRes)  //충돌했을떄 실행되는 
 	}
 }
 
+TVector2 TNpcObj::Attacked(TVector2 pos)
+{
+	m_bAttacked = false;
+	return pos;
+}
 void TNpcObj::SetData(vector<vector<RECT>> SpriteList)
 {
 	m_rtMon1AttackFrames.resize(SpriteList[8].size());

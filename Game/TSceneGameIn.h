@@ -73,16 +73,12 @@ class TSceneGameIn : public TScene
 	UINT						m_Npccount = 4;
 	float						m_offsetdis = 5.0f;
 
-	TSound* m_pInGame = nullptr;
-	TSound* m_pTeleport = nullptr;
-	TSound* m_pJumpSound = nullptr;
-	TSound* m_pShotSound = nullptr;
-	TSound* m_pCrashSound = nullptr;
+
 
 	std::vector<RECT_ARRAY>  m_rtSpriteList;
 	std::vector<T_STR_VECTOR> m_szSpriteList;
 public:
-	//void   AddEffect(TVector2 tStart, TVector2 tEnd);
+	void   AddEffect(TVector2 tStart, TVector2 tEnd);
 	bool   GameDataLoad(W_STR filename);
 
 	virtual void   Init() override;
@@ -97,7 +93,7 @@ public:
 	virtual ~TSceneGameIn();
 public:
 	bool CreateRect();
-	bool CreateSound() override;
+	//bool CreateSound() override;
 	bool CreateMap();
 	bool CreateBoss();
 	bool CreateObject();

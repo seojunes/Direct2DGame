@@ -10,7 +10,7 @@ TSceneGameIn::~TSceneGameIn() {}
 
 void TSceneGameIn::ProcessAction(TObject* pObj)
 {
-	m_pInGame->Play();
+	
 	if (m_bNextScene == true)
 	{
 		m_pOwner->m_pAction->Release();
@@ -27,31 +27,6 @@ void TSceneGameIn::ProcessAction(TObject* pObj)
 		m_bNextScene = false;
 		return;
 	}
-	/*if (m_pHero->m_BossMoving == BossRoomMovingState::STATE_ABLE && g_GameKey.dwSkey == KEY_PUSH)
-	{
-		for (auto data : m_UiList)
-		{
-			if (data->m_fAlpha <= 1.0f)
-			{
-				data->m_fAlpha += g_fSPF * 0.5f;
-				if (data->m_fAlpha >= 1.0f)
-				{
-					data->m_fAlpha = 1.0f;
-				}
-			}
-		}
-	}*/
-}
-
-bool TSceneGameIn::CreateSound()
-{
-	TSoundManager& mgr = TSoundManager::GetInstance();
-	m_pInGame = mgr.Load(L"../../data/sound/GameIn.mp3");
-	m_pTeleport = mgr.Load(L"../../data/sound/TeleportAble.wav");
-	m_pJumpSound = mgr.Load(L"../../data/sound/Jump.ogg");
-	m_pShotSound = mgr.Load(L"../../data/sound/Laser Fire.wav");
-	m_pCrashSound = mgr.Load(L"../../data/sound/Crash.wav");
-	return true;
 }
 
 TVector2 TSceneGameIn::GetWorldMousePos()
@@ -542,35 +517,37 @@ bool TSceneGameIn::CreateUI()
 //	return true;
 //}
 //
-//void   TSceneGameIn::AddEffect(TVector2 tStart, TVector2 tEnd)
-//{
-//	auto pObject3 = std::make_shared<TEffectObj>();
-//	pObject3->m_pMeshRender = &TGameCore::m_MeshRender;
-//	pObject3->m_vVertexList = pObject3->m_pMeshRender->m_vVertexList;
-//	TLoadResData resData;
-//	resData.texPathName = L"../../data/texture/newMega.png";
-//	resData.texShaderName = L"../../data/shader/Default.txt";
-//	TEffectData data;
-//	data.m_bLoop = true;
-//	data.m_fLifeTime = 2.0f;
-//	UINT iSprite = 0;
-//	data.m_iType = 0;// rand() % m_szSpriteList[0].size();
-//	if (data.m_iType == 0)
-//	{
-//		data.m_iNumAnimFrame = m_rtSpriteList[iSprite].size();
-//		data.m_rtList = m_rtSpriteList[iSprite];
-//	}
-//	if (data.m_iType == 1)
-//	{
-//		data.m_iNumAnimFrame = m_szSpriteList[0].size();
-//		data.m_szList = m_szSpriteList[0];
-//	}
-//	pObject3->SetData(data);
-//	if (pObject3->Create(m_pWorld.get(), resData, tStart, tEnd))
-//	{
-//		m_EffectList.emplace_back(pObject3);
-//	}
-//}
+void   TSceneGameIn::AddEffect(TVector2 tStart, TVector2 tEnd)
+{
+	auto pObject3 = std::make_shared<TEffectObj>();
+	pObject3->m_pMeshRender = &TGameCore::m_MeshRender;
+	pObject3->m_vVertexList = pObject3->m_pMeshRender->m_vVertexList;
+	TLoadResData resData;
+	resData.texPathName = L"../../data/effect/attacked.png";
+	resData.texShaderName = L"../../data/shader/Default.txt";
+	TEffectData data;
+	data.m_bLoop = true;
+	data.m_fLifeTime = 0.3f;
+	UINT iSprite = 0;
+	data.m_iType = 0;// rand() % m_szSpriteList[0].size();
+	if (data.m_iType == 0)
+	{
+		data.m_iNumAnimFrame = m_rtSpriteList[11].size();
+		data.m_rtList = m_rtSpriteList[11];
+	}
+	if (data.m_iType == 1)
+	{
+		data.m_iNumAnimFrame = m_szSpriteList[0].size();
+		data.m_szList = m_szSpriteList[0];
+	}
+	pObject3->SetData(data);
+	pObject3->m_bCollisionCheck = false;
+	if (pObject3->Create(m_pWorld.get(), resData, tStart, tEnd))
+	{
+		pObject3->m_pCurrentTexture = pObject3->m_pTexture;
+		m_EffectList.emplace_back(pObject3);
+	}
+}
 void   TSceneGameIn::Init()
 {
 	m_vCamera.x = 640.0f;
@@ -585,11 +562,12 @@ void   TSceneGameIn::Init()
 	m_GuiFSM.AddStateTransition(T_HOVER, EVENT_SELECT, T_SELECTED);
 	m_GuiFSM.AddStateTransition(T_SELECTED, EVENT_DEFAULT, T_DEFAULT);
 
+	TScene::CreateSound();
+	m_pInGame->Play();
 
-	CreateSound();
 	m_pBitmap1Mask = I_Tex.Load(L"../../data/texture/bitmap2.bmp");
 	GameDataLoad(L"SpriteData.txt");
-
+	
 	m_pWorld = std::make_shared<TWorld>(this);
 	CreateMap();
 	CreateBossMap();
@@ -605,6 +583,9 @@ void   TSceneGameIn::Init()
 
 void   TSceneGameIn::Frame()
 {
+	TVector2 vMouse = GetWorldMousePos();
+	
+	
 	// 디버그 모드 변환 벽충돌 표시, 카메라 수동이동
 	if (g_GameKey.dwPkey == KEY_PUSH)
 	{
@@ -625,9 +606,9 @@ void   TSceneGameIn::Frame()
 		m_bNextScene = true;
 	}
 
-	// 점프 사운드
+	// 점프 사운드, 슈팅 사운드
 	TSoundManager::GetInstance().Frame();
-	if (m_pHero->m_iJumpingCount < 3 /*&& m_pHero->m_iJumpingCount >= 0*/ && g_GameKey.dwWkey == KEY_PUSH)
+	if (m_pHero->m_iJumpingCount < 3 /*&& m_pHero->m_iJumpingCount >= 0*/ && g_GameKey.dwWkey == KEY_PUSH && m_pHero->m_CurrentState != HeroState::Radder)
 	{
 		m_pJumpSound->PlayEffect();
 	}
@@ -642,7 +623,8 @@ void   TSceneGameIn::Frame()
 		m_bPrevScene = true;
 	}
 
-	m_pHero->m_fGroundY = 1800;
+	//기본 바닥높이 설정.
+	//m_pHero->m_fGroundY = 1800;
 	for (auto rectlist : m_ColList)
 	{
 		TRect Herorect = m_pHero->m_rtScreen;
@@ -749,9 +731,12 @@ void   TSceneGameIn::Frame()
 
 		if (m_pHero->m_BossMoving == BossRoomMovingState::STATE_ABLE && g_GameKey.dwSkey == KEY_PUSH)
 		{
+			m_pInGame->Stop();
+			m_pBossSound ->Play();
 			m_vCamera.x = 13440.0f;
 			m_vCamera.y = 500.0f;
 			m_pHero->m_vPos = { 13440.0f, 500.0f };
+			m_pHero->m_fGroundY = 900.0f;
 			m_MapAction = MapAction::STATE_BOSS;
 			m_pHero->m_BossMoving = BossRoomMovingState::STATE_UNABLE;
 		}
@@ -783,12 +768,20 @@ void   TSceneGameIn::Frame()
 	m_pBoss->GetState(m_MapAction == MapAction::STATE_BOSS);
 	if (!m_pBoss->m_bDead)
 	{
-		m_pBoss->FrameState(m_pHero.get()); // Hero와 NPC 상호작용
+		if (m_pBoss->m_bAttacked == true)
+		{
+			TVector2 dd = m_pBoss->Attacked(m_pBoss->m_vPos);
+			TVector2 cc = { 50.0f,50.0f };
+			TVector2 aa = dd - cc;
+			TVector2 bb = dd + cc;
+			AddEffect(aa, bb);
+		}
+		m_pBoss->FrameState(m_pHero.get()); 
 		m_pBoss->Frame();
 	}
 
 
-	TVector2 vMouse = GetWorldMousePos();
+	
 
 
 	// NPC 상태 업데이트
@@ -796,12 +789,19 @@ void   TSceneGameIn::Frame()
 	{
 		if (!npc->m_bDead)
 		{
+			if (npc->m_bAttacked == true)
+			{
+				TVector2 dd = npc->Attacked(npc->m_vPos);
+				TVector2 cc = { 50.0f,50.0f };
+				TVector2 aa = dd - cc;
+				TVector2 bb = dd + cc;
+				AddEffect(aa, bb);
+			}
 			npc->FrameState(m_pHero.get()); // Hero와 NPC 상호작용
 			npc->Frame();
 		}
-		/*npc->m_pProjectile->Frame(npc->m_vPos);*/
 	}
-
+	// HP바 상태 업데이트
 	for (auto& hp : m_HPList)
 	{
 		if (!hp->m_bDead)
@@ -825,6 +825,7 @@ void   TSceneGameIn::Frame()
 			m_pWorld->DeleteCollisionExecute(m_NpcList[iNpc1].get());
 		};
 	}
+	// 이펙트 관리.
 	for (auto iter = std::begin(m_EffectList);
 		iter != m_EffectList.end();)
 	{
@@ -867,26 +868,27 @@ void   TSceneGameIn::Frame()
 	{
 		if (m_pTeleport)		m_pTeleport->Stop();
 	}
-	m_pRadder->Frame();
-	if (m_pBoss->m_HP <= 0)
-	{
-		m_pVictory->Frame();
-	}
 
+	m_pRadder->Frame();
+	// 보스피가 빠지면 보스죽었을때 상태로 이동.
 	if (m_pBoss->m_HP <= 0)
 	{
 		m_bBossDefeated = true;
+		m_pVictory->Frame();
 	}
+	// 보스죽었을때 1번만 실행
 	if (m_bBossDefeated)
 	{
-		if(m_pTeleport)		m_pTeleport->Stop();
 		m_pHero->m_CurrentState = HeroState::Victory;
+		m_pBossSound->Stop();
+		m_pClearSound->PlayEffect();
 		m_pHero->m_bInvincible = false;
-		m_pHero->m_vPos = { 13440.0f, 500.0f };
+		m_pHero->m_vPos = { 13440.0f, 550.0f };
+		m_pHero->m_fGravity = 0.0f;
+		m_pHero->m_fVerticalSpeed = 0.0f;
 		m_pHero->SetScale({ 150.0f,150.0f });
 		m_bBossDefeated = false;
 		m_pHero->m_bKeyinput = false;
-		
 	}
 }
 void   TSceneGameIn::Render()
@@ -977,10 +979,10 @@ void   TSceneGameIn::Render()
 }
 void   TSceneGameIn::Release()
 {
-	if (m_pInGame)
-	{
-		m_pInGame->Stop();
-	}
+	if (m_pInGame)			m_pInGame->Stop();
+	if (m_pBossSound)		m_pBossSound->Stop();
+	if (m_pClearSound)		m_pClearSound->Stop();
+
 	// 현재는 Object의 Release에서 아무런 작업을 하고있지 않지만, 추후 관리를 위해서 생성.
 	for (auto data : m_NpcList)
 	{

@@ -43,6 +43,16 @@ public:
 public:
 	TSound* m_pIntro = nullptr;
 	TSound* m_pRobby = nullptr;
+	TSound* m_pInGame = nullptr;
+	TSound* m_pTeleport = nullptr;
+	TSound* m_pJumpSound = nullptr;
+	TSound* m_pShotSound = nullptr;
+	TSound* m_pCrashSound = nullptr;
+	TSound* m_pBossSound = nullptr;
+	TSound* m_pClearSound = nullptr;
+
+	vector<TSound*> m_BGMList;
+	vector<TSound*> m_EffectList;
 public:
 	virtual void ProcessAction(TObject* pObj) = 0;
 public:

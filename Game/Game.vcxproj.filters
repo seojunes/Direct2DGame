@@ -107,9 +107,6 @@
     <ClCompile Include="TUiHpBar.cpp">
       <Filter>HPbar</Filter>
     </ClCompile>
-    <ClCompile Include="TEffectObj.cpp">
-      <Filter>object</Filter>
-    </ClCompile>
     <ClCompile Include="TMapObj.cpp">
       <Filter>object</Filter>
     </ClCompile>
@@ -124,6 +121,9 @@
     </ClCompile>
     <ClCompile Include="TPortal.cpp">
       <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="TEffectObj.cpp">
+      <Filter>core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -239,9 +239,6 @@
     <ClInclude Include="TUiHpBar.h">
       <Filter>HPbar</Filter>
     </ClInclude>
-    <ClInclude Include="TEffectObj.h">
-      <Filter>object</Filter>
-    </ClInclude>
     <ClInclude Include="TMapObj.h">
       <Filter>object</Filter>
     </ClInclude>
@@ -256,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="TPortal.h">
       <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="TEffectObj.h">
+      <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

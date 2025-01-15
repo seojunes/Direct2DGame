@@ -44,6 +44,8 @@ public:
 	TTexture* m_pTexture = nullptr;
 	std::vector<TVector2>		m_vScreenList;
 	std::vector<PCT_VERTEX>		m_vVertexList;
+
+	bool m_bCollisionCheck = true;
 public:
 	virtual void	FadeIn(float fAlpha);
 	virtual void	FadeOut(float fAlpha);

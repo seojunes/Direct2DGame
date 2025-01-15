@@ -213,13 +213,9 @@ bool	TObject::Create(TWorld* pWorld)
 		return false;
 	}*/
 
-	auto bindFun = std::bind(&TObject::HitOverlap,
-		this,
-		std::placeholders::_1,
-		std::placeholders::_2);
-	m_pWorld->AddCollisionExecute(
-		this,
-		bindFun);
+	auto bindFun = std::bind(&TObject::HitOverlap, this,std::placeholders::_1,	std::placeholders::_2);
+	if(m_bCollisionCheck == true)	m_pWorld->AddCollisionExecute(this,	bindFun);
+	m_bCollisionCheck = true;
 	return true;
 }
 bool	TObject::Create(TWorld* pWorld, TLoadResData data)

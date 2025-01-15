@@ -107,7 +107,7 @@ void   TDevice::PreRender()
 {
     float ClearColor[] = { 0.0f, 0.0f,0.0f, 1.0f };
     m_pd3dContext->ClearRenderTargetView(m_pRTV.Get(), ClearColor);
-    m_pd3dContext->PSSetSamplers(0, 1, TDxState::m_pLinearSS.GetAddressOf());
+    m_pd3dContext->PSSetSamplers(0, 1, TDxState::m_pPointSS.GetAddressOf());
     m_pd3dContext->OMSetBlendState(TDxState::m_pAlphaBlend.Get(), 0, -1);
     if (!m_bWireFrame)
     {

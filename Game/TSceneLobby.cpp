@@ -48,7 +48,7 @@ void TSceneLobby::ProcessAction(TObject* pObj)
 
 void   TSceneLobby::Init()
 {
-    TSoundManager::GetInstance().Frame();
+    //TSoundManager::GetInstance().Frame();
     TScene::CreateSound();
     TScene::m_pRobby->Play();
 

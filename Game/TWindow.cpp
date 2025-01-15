@@ -22,6 +22,7 @@ bool   TWindow::SetWindowClass(HINSTANCE hInstance)
     wcex.lpfnWndProc = WndProc;  // 전화번호,주소,메일
     wcex.hInstance = m_hInstance;  // 허가권
     wcex.lpszClassName = L"KGCA";// 건축명
+    wcex.hCursor = LoadCursorFromFile(L"../../data/curser/mega1.ani");
     //wcex.hbrBackground = (HBRUSH)GetStockObject(GRAY_BRUSH);
     //wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground = (HBRUSH)CreateSolidBrush(RGB(128, 128, 128));
