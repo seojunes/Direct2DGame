@@ -125,6 +125,9 @@
     <ClCompile Include="TEffectObj.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="TBossCreate.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -257,9 +260,11 @@
     <ClInclude Include="TEffectObj.h">
       <Filter>core</Filter>
     </ClInclude>
+    <ClInclude Include="TBossCreate.h">
+      <Filter>object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="SpriteData.txt" />
     <Text Include="..\..\data\shader\BlendMask.txt">
       <Filter>shader</Filter>
     </Text>
@@ -275,6 +280,7 @@
     <Text Include="VertexShader.txt">
       <Filter>shader</Filter>
     </Text>
+    <Text Include="SpriteData.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="core">

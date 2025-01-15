@@ -41,12 +41,20 @@ public:
 	void FrameState(TObject* pHero);
 	void SetMap(TMapObj* pMap) { m_pMap = pMap; }
 public:
-	std::vector<RECT> m_rtMon1AttackFrames; // 사다리 애니메이션 프레임 리스트
-
-	UINT m_iMon1AttckFrame = 0;            // 현재 정지 애니메이션 프레임
-
+	std::vector<RECT> m_rtMon1AttackFrames; 
+	std::vector<RECT> m_rtBossCreateFrames;
+	std::vector<RECT> m_rtBossIdleFrames;
+	std::vector<RECT> m_rtBossAttack1Frames;
+	UINT m_iMon1AttckFrame = 0;            
+	UINT m_iBossCreateFrame = 0;
+	UINT m_iBossIdleFrame = 0;
+	UINT m_iBossAttack1Frame = 0;
 	float m_fMon1AttackFrameTime = 0.3f;
+	float m_fBossCreateFrameTime = 0.2f;
+	float m_fBossIdleFrameTime = 0.2f;
+	float m_fBossAttack1FrameTime = 0.2f;
 
+	
 	bool m_bLoop = true;
 	void SetData(vector<vector<RECT>> SpriteList);
 public:

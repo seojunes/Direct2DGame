@@ -62,8 +62,14 @@ TVector2 TNpcObj::Attacked(TVector2 pos)
 void TNpcObj::SetData(vector<vector<RECT>> SpriteList)
 {
 	m_rtMon1AttackFrames.resize(SpriteList[8].size());
-
+	m_rtBossCreateFrames.resize(SpriteList[12].size());
+	m_rtBossIdleFrames.resize(SpriteList[13].size());
+	m_rtBossAttack1Frames.resize(SpriteList[14].size());
+	
 	m_rtMon1AttackFrames = SpriteList[8];
+	m_rtBossCreateFrames = SpriteList[12];
+	m_rtBossIdleFrames = SpriteList[13];
+	m_rtBossAttack1Frames = SpriteList[14];
 }
 
 

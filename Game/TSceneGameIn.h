@@ -10,6 +10,7 @@ enum class Debug
 enum class MapAction
 {
 	STATE_STAGE = 0,
+	STATE_CREATEBOSS,
 	STATE_BOSS,
 };
 class TNextBtn : public TButtonGUI
@@ -59,6 +60,7 @@ class TSceneGameIn : public TScene
 	std::shared_ptr<TRadderObj>	m_pRadder = nullptr;
 	std::shared_ptr<THeroObj>	m_pHero = nullptr;
 	std::shared_ptr<TBossObj>	m_pBoss = nullptr;
+	std::shared_ptr<TBossCreate>	m_pBossCreate = nullptr;
 	std::vector<tCol>			m_ColList;
 	std::vector<tNpc>		    m_NpcList;
 	std::vector< tUI>		    m_UiList;

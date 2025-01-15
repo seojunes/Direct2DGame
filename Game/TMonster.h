@@ -17,11 +17,12 @@ public:
 public:
 	Monster1State m_state = Monster1State::STATE_Move;
 public:
-	float	 m_fCurrentTime = 0.0f;
+	//float	 m_fCurrentTime = 0.0f;
 	TVector2 m_vInitedPos;
 	UINT	 m_iLimitedDis = 150.0f;
 	INT		 m_iPreHP = 0;
 	float    m_fFindTime = 0.5f;
+	float	 m_fCurrentTime = 0.0f;
 public:
 	TMonster1(const TVector2& initialPos)
 	{
@@ -52,6 +53,7 @@ public:
 	Monster2State m_state = Monster2State::STATE_Idle;
 public:
 	float m_ftrigger = 0.5f;
+	float	 m_fCurrentTime = 0.0f;
 	//void shot();
 public:
 	TMonster2()
@@ -79,6 +81,7 @@ public:
 	Monster3State m_state = Monster3State::STATE_Idle;
 public:
 	float m_ftrigger = 0.3f;
+	float	 m_fCurrentTime = 0.0f;
 public:
 	TMonster3()
 	{

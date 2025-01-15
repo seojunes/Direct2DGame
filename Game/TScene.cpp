@@ -30,7 +30,8 @@ bool TScene::CreateSound()
 	m_EffectList.emplace_back(m_pIntro);
 	m_pBossSound = mgr.Load(L"../../data/sound/Boss.mp3");
 	m_BGMList.emplace_back(m_pIntro);
-	m_pClearSound = mgr.Load(L"../../data/sound/StageClear.mp3");
+	m_pClearSound = mgr.Load(L"../../data/sound/StageCleard.mp3");
 	m_BGMList.emplace_back(m_pIntro);
+	m_pClearSound->m_fVolume = 0.05f;
 	return true;
 }

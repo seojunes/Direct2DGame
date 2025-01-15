@@ -13,6 +13,7 @@
 #include "TUiHpBar.h"
 #include "TVictory.h"
 #include "TRadderObj.h"
+#include "TBossCreate.h"
 
 
 class TScene;

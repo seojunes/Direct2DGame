@@ -119,12 +119,26 @@ bool TSceneGameIn::CreateBossMap()
 }
 bool TSceneGameIn::CreateObject()
 {
+	TLoadResData resData;
+	TVector2 tStart;
+	TVector2 tEnd;
+
+	m_pBossCreate = std::make_shared<TBossCreate>();
+	tStart = { 13800.0f, 100.0f };
+	tEnd = { 13830.0f , 280.0f };
+	resData.texPathName = L"../../data/texture/Boss2.png";
+	resData.texShaderName = L"../../data/shader/Default.txt";
+	m_pBossCreate->m_pMeshRender = &TGameCore::m_MeshRender;
+	if (m_pBossCreate->Create(m_pWorld.get(), resData, tStart, tEnd))
+	{
+		m_pBossCreate->m_iCollisionType = TCollisionType::T_Overlap;
+	}
+
 	m_pPortal = std::make_shared<TPortal>();
 	m_pPortal->SetData(m_rtSpriteList);
-	TVector2 tStart = { 11272.0f,1023.0f };
-	TVector2 tEnd = { 11432.0f, 1200.0f };
+	tStart = { 11272.0f,1023.0f };
+	tEnd = { 11432.0f, 1200.0f };
 	//m_pPortal->m_pWorld = m_pWorld.get();
-	TLoadResData resData;
 	resData.texPathName = L"../../data/texture/portal.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
 	m_pPortal->m_pMeshRender = &TGameCore::m_MeshRender;
@@ -396,10 +410,11 @@ bool TSceneGameIn::CreateBoss()
 	m_pBoss->m_pMeshRender = &TGameCore::m_MeshRender;
 	m_pBoss->SetMap(m_pMap.get());
 	m_pBoss->SetFSM(&m_fsm);
+	m_pBoss->SetData(m_rtSpriteList);
 	m_pBoss->m_pHero = m_pHero.get(); // Hero ¿¬°á
 	m_pBoss->m_pWorld = m_pWorld.get();
 	TLoadResData resData;
-	resData.texPathName = L"../../data/texture/NewBoss.png";
+	resData.texPathName = L"../../data/texture/Boss2.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
 	m_pBoss->m_pMeshRender = &TGameCore::m_MeshRender;
 	m_pBoss->m_pWorld = m_pWorld.get();
@@ -729,7 +744,7 @@ void   TSceneGameIn::Frame()
 			m_vCamera.y = 1300.0f;
 		}
 
-		if (m_pHero->m_BossMoving == BossRoomMovingState::STATE_ABLE && g_GameKey.dwSkey == KEY_PUSH)
+		if (m_pHero->m_BossMoving == BossRoomMovingState::STATE_UNABLE && g_GameKey.dwSkey == KEY_PUSH)
 		{
 			m_pInGame->Stop();
 			m_pBossSound ->Play();
@@ -737,7 +752,7 @@ void   TSceneGameIn::Frame()
 			m_vCamera.y = 500.0f;
 			m_pHero->m_vPos = { 13440.0f, 500.0f };
 			m_pHero->m_fGroundY = 900.0f;
-			m_MapAction = MapAction::STATE_BOSS;
+			m_MapAction = MapAction::STATE_CREATEBOSS;
 			m_pHero->m_BossMoving = BossRoomMovingState::STATE_UNABLE;
 		}
 	}
@@ -764,8 +779,15 @@ void   TSceneGameIn::Frame()
 			m_vCamera.y += 5.0f;
 		}
 	}
-
+	
+	
+	m_pBossCreate->GetState(m_MapAction == MapAction::STATE_CREATEBOSS);
+	if (m_pBossCreate->m_bCreate == true)
+	{
+		m_MapAction = MapAction::STATE_BOSS;
+	}
 	m_pBoss->GetState(m_MapAction == MapAction::STATE_BOSS);
+
 	if (!m_pBoss->m_bDead)
 	{
 		if (m_pBoss->m_bAttacked == true)
@@ -779,7 +801,7 @@ void   TSceneGameIn::Frame()
 		m_pBoss->FrameState(m_pHero.get()); 
 		m_pBoss->Frame();
 	}
-
+	m_pBossCreate->Frame();
 
 	
 
@@ -890,6 +912,7 @@ void   TSceneGameIn::Frame()
 		m_bBossDefeated = false;
 		m_pHero->m_bKeyinput = false;
 	}
+	
 }
 void   TSceneGameIn::Render()
 {
@@ -898,7 +921,12 @@ void   TSceneGameIn::Render()
 	m_pMap->Render();
 	m_pBossMap->Transform(m_vCamera);
 	m_pBossMap->Render();
-
+	if (m_pBossCreate->m_bCreate == false)
+	{
+		m_pBossCreate->Transform(m_vCamera);
+		m_pBossCreate->Render();
+	}
+	
 	TDevice::m_pd3dContext->PSSetSamplers(0, 1, TDxState::m_pPointSS.GetAddressOf());
 	TDevice::m_pd3dContext->PSSetShaderResources(1, 1, &m_pBitmap1Mask->m_pTexSRV);
 
@@ -1050,5 +1078,10 @@ void   TSceneGameIn::Release()
 	{
 		m_pBoss->Release();
 		m_pBoss = nullptr;
+	}
+	if (m_pBossCreate)
+	{
+		m_pBossCreate->Release();
+		m_pBossCreate = nullptr;
 	}
 }
