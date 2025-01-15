@@ -25,8 +25,10 @@ public:
 	BossState m_state = BossState::STATE_Move;
 public:
 	TVector2 m_vInitedPos;
+	TVector2 m_vMapCenter = { 13440.0f , 450.0f };
 	UINT	 m_iLimitedDis = 300.0f;
 	float    m_ftrigger = 0.1f;
+	float    m_fNextState = 5.0f;
 	std::vector<TVector2> m_MissleDirList;
 public:
 	void GetState(bool state);

@@ -7,10 +7,12 @@ void    TPortal::HitOverlap(TObject* pObj, THitResult hRes)
 	if (OtherType == TObjectType::Hero)
 	{
 		m_eActive = PortalActiveState::STATE_ACTIVE;
+		m_bAble = true;
 	}
 	else
 	{
 		m_eActive = PortalActiveState::STATE_INACTIVE;
+		m_bAble = false;
 	}
 
 }

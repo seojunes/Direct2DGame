@@ -10,7 +10,7 @@ TSceneGameIn::~TSceneGameIn() {}
 
 void TSceneGameIn::ProcessAction(TObject* pObj)
 {
-	m_pSound->Play();
+	m_pInGame->Play();
 	if (m_bNextScene == true)
 	{
 		m_pOwner->m_pAction->Release();
@@ -46,7 +46,8 @@ void TSceneGameIn::ProcessAction(TObject* pObj)
 bool TSceneGameIn::CreateSound()
 {
 	TSoundManager& mgr = TSoundManager::GetInstance();
-	m_pSound = mgr.Load(L"../../data/sound/Festival Theme.ogg");
+	m_pInGame = mgr.Load(L"../../data/sound/GameIn.mp3");
+	m_pTeleport = mgr.Load(L"../../data/sound/TeleportAble.wav");
 	m_pJumpSound = mgr.Load(L"../../data/sound/Jump.ogg");
 	m_pShotSound = mgr.Load(L"../../data/sound/Laser Fire.wav");
 	m_pCrashSound = mgr.Load(L"../../data/sound/Crash.wav");
@@ -604,6 +605,7 @@ void   TSceneGameIn::Init()
 
 void   TSceneGameIn::Frame()
 {
+	// 디버그 모드 변환 벽충돌 표시, 카메라 수동이동
 	if (g_GameKey.dwPkey == KEY_PUSH)
 	{
 
@@ -617,13 +619,15 @@ void   TSceneGameIn::Frame()
 		}
 	}
 
+	// 영웅 관리, 밖으로 빼야됨
 	if (m_pHero->m_HP <= 0)
 	{
 		m_bNextScene = true;
 	}
+
 	// 점프 사운드
 	TSoundManager::GetInstance().Frame();
-	if (m_pHero->m_iJumpingCount < 3 && m_pHero->m_iJumpingCount >= 0 && g_GameKey.dwWkey == KEY_PUSH)
+	if (m_pHero->m_iJumpingCount < 3 /*&& m_pHero->m_iJumpingCount >= 0*/ && g_GameKey.dwWkey == KEY_PUSH)
 	{
 		m_pJumpSound->PlayEffect();
 	}
@@ -855,6 +859,14 @@ void   TSceneGameIn::Frame()
 
 	m_pWorld->Frame();
 	m_pPortal->Frame();
+	if (m_pPortal->m_bAble == true)
+	{
+		m_pTeleport->Play();
+	}
+	else
+	{
+		if (m_pTeleport)		m_pTeleport->Stop();
+	}
 	m_pRadder->Frame();
 	if (m_pBoss->m_HP <= 0)
 	{
@@ -867,12 +879,14 @@ void   TSceneGameIn::Frame()
 	}
 	if (m_bBossDefeated)
 	{
+		if(m_pTeleport)		m_pTeleport->Stop();
 		m_pHero->m_CurrentState = HeroState::Victory;
 		m_pHero->m_bInvincible = false;
 		m_pHero->m_vPos = { 13440.0f, 500.0f };
 		m_pHero->SetScale({ 150.0f,150.0f });
 		m_bBossDefeated = false;
 		m_pHero->m_bKeyinput = false;
+		
 	}
 }
 void   TSceneGameIn::Render()
@@ -963,10 +977,9 @@ void   TSceneGameIn::Render()
 }
 void   TSceneGameIn::Release()
 {
-	if (m_pSound)
+	if (m_pInGame)
 	{
-		m_pSound->Stop();
-		m_pSound = nullptr;
+		m_pInGame->Stop();
 	}
 	// 현재는 Object의 Release에서 아무런 작업을 하고있지 않지만, 추후 관리를 위해서 생성.
 	for (auto data : m_NpcList)

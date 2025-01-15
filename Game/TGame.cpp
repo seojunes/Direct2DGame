@@ -15,7 +15,7 @@ void TGame::CreateActionFSM()
 	std::shared_ptr<TScene> Result = std::make_shared<TSceneResult>();
 
 	intro->Init();
-	lobby->Init();
+	//lobby->Init();
 	//InGame->Init();
 	Boss->Init();
 	Result->Init();

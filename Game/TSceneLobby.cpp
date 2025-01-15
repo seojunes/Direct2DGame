@@ -32,11 +32,14 @@ void TSceneLobby::ProcessAction(TObject* pObj)
                 m_bLoadNextScene = true;
             }
         }
+       
     }
     if (m_bLoadNextScene == true)
     {
+        m_pRobby->Stop();
         m_pOwner->SetTransition(TSceneEvent::EVENT_NEXT_SCENE);
         m_pOwner->m_pAction->Init();
+       
         m_bNextScene = false;
         m_bLoadNextScene = false;
         return;
@@ -45,6 +48,10 @@ void TSceneLobby::ProcessAction(TObject* pObj)
 
 void   TSceneLobby::Init()
 {
+    TSoundManager::GetInstance().Frame();
+    TScene::CreateSound();
+    TScene::m_pRobby->Play();
+
     TButtonGUI::CreateActionFSM();
     m_pWorld = std::make_shared<TWorld>(this);
     m_GuiFSM.AddStateTransition(T_DEFAULT, EVENT_SELECT, T_HOVER);
@@ -123,4 +130,5 @@ void   TSceneLobby::Release()
     {
         data->Release();
     }
+   
 }

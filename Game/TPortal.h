@@ -31,6 +31,7 @@ public:
 	float m_fPortalFrameTime = 0.1f;
 	
 	bool m_bLoop = true;
+	bool m_bAble = false;
 	void SetData(vector<vector<RECT>> SpriteList);
 public:
 	PortalActiveState m_eActive = PortalActiveState::STATE_INACTIVE;

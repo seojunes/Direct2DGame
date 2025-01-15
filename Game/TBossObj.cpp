@@ -33,45 +33,38 @@ void TBossObj::Frame()
 	else if (m_state == BossState::STATE_Move)
 	{
 		//if (m_vPos.x <= m_vInitedPos.x + m_iLimitedDis && m_vPos.x >= m_vInitedPos.x - m_iLimitedDis)
-		m_fSpeed = 100.0f;
-		if (m_vPos.x >= m_vInitedPos.x + m_iLimitedDis || m_vPos.x <= m_vInitedPos.x - m_iLimitedDis)
-		{
-			m_vDir.x *= -1.0f;
-		}
+		m_fSpeed = 350.0f;
+		m_vDir = (m_vMapCenter - m_vPos).Normal();
 
-		if (fHeroDistance < 200.0f)
+		if ((m_vMapCenter - m_vPos).Length() < 1.0f)
 		{
 			m_state = BossState::STATE_Attack1;
 		}
 	}
 	else if (m_state == BossState::STATE_Attack1)
 	{
-		m_fSpeed = 250.0f;
-		m_vDir = (m_pHero->m_vPos - m_vPos).Normal();
-		m_vDir.y = 0.0f;
-		if (fInitDistance > 600.0f)
+		m_fSpeed = 100.0f;
+		m_vDir = {0.0f, 1.0f };
+		if (m_rtScreen.v2.y >= 843.5f)
 		{
-			m_state = BossState::STATE_Return;
-		}
-		if (fHeroDistance > 300.0f)
-		{
-			m_state = BossState::STATE_Return;
+			m_vDir = { 0.0f, 0.0f };
 		}
 		m_ftrigger -= g_fSPF;
-
+		m_fNextState -= g_fSPF;
 		TVector2	vHalf = { 25.0f, 25.0f };
 		TVector2	vStart = m_vPos - vHalf;
 		TVector2	vEnd = m_vPos + vHalf;
 		TVector2    dir = { 0.0f, -1.0f };
 		m_MissleDirList = {
-			{1.0f, 1.0f},
+			
 			{1.0f, 0.0f},
-			{1.0f, -1.0f},
+			{1.0f, 1.0f},
 			{0.0f, 1.0f},
-			{0.0f, -1.0f},
 			{-1.0f, 1.0f},
 			{-1.0f, 0.0f},
 			{-1.0f, -1.0f},
+			{0.0f, -1.0f},
+			{1.0f, -1.0f},
 		};
 		//INT index = rand() % 8;
 		if (m_ftrigger < 0.0f)
@@ -79,11 +72,18 @@ void TBossObj::Frame()
 			for (int num = 0; num < 8; num++)
 			{
 				m_pProjectile->AddEffect(vStart, vEnd, m_MissleDirList[num], Shooter::OWNER_BOSS1, this);
+				m_pProjectile->SetRotation(T_Pi / 4.0f);
 			}
 			m_ftrigger = 1.0f;
 		}
+		if (m_fNextState < 0.0f)
+		{
+			m_state = BossState::STATE_Attack2;
+			m_fNextState = 5.0f;
+		}
+
 	}
-	else if (m_state == BossState::STATE_Return)
+	else if (m_state == BossState::STATE_Attack2)
 	{
 		m_fSpeed = 500.0f;
 		m_vDir = (m_vInitedPos - m_vPos).Normal();

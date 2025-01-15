@@ -41,7 +41,8 @@ public:
 	TScene();
 	virtual ~TScene();
 public:
-	TSound* m_pSound = nullptr;
+	TSound* m_pIntro = nullptr;
+	TSound* m_pRobby = nullptr;
 public:
 	virtual void ProcessAction(TObject* pObj) = 0;
 public:

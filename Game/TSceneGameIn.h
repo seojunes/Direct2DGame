@@ -73,7 +73,8 @@ class TSceneGameIn : public TScene
 	UINT						m_Npccount = 4;
 	float						m_offsetdis = 5.0f;
 
-	TSound* m_pSound = nullptr;
+	TSound* m_pInGame = nullptr;
+	TSound* m_pTeleport = nullptr;
 	TSound* m_pJumpSound = nullptr;
 	TSound* m_pShotSound = nullptr;
 	TSound* m_pCrashSound = nullptr;

@@ -124,12 +124,14 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction
 	{
 		resData.texPathName = L"../../data/ui/newShot.png";
 		data.m_iDamage = 5;
+		obj->m_fSpeed = 700.0f;
 		//obj->m_iDamage = 5;
 	}
 	else
 	{
 		resData.texPathName = L"../../data/ui/newCShot.png";
 		data.m_iDamage = 15;
+		obj->m_fSpeed = 500.0f;
 		//obj->m_iDamage = 15;
 	}
 
