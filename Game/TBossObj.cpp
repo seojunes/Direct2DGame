@@ -428,7 +428,7 @@ void TBossObj::Frame()
 			m_fPhase2CurrentTime -= g_fSPF;
 			if (m_bHealing == true)
 			{
-				m_HP = 200;
+				if (m_HP <= 200) m_HP++;				
 				m_bHealing = false;
 			}
 			if (m_fPhase2CurrentTime <= 0.0f)			m_state = BossState::STATE_Attack2;

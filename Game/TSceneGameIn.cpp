@@ -266,11 +266,11 @@ bool TSceneGameIn::CreateNPC()
 		{{5300.0f,1457.0f},{5400.0f,1557.0f}},
 		{{7372.0f,1218.0f},{7472.0f,1318.0f}},
 	};
-	Mon2Area = { {{1896.0f,440.0f},{1996.0f,540.0f}},
-		{{3000.0f,440.0f},{3100.0f,540.0f}},
-		{{4450.0f,1457.0f},{4550.0f,1557.0f}},
-		{{6800.0f,1277.0f},{6900.0f,1377.0f}},
-		{{9400.0f,1277.0f},{9500.0f,1377.0f}},
+	Mon2Area = { {{1878.5f,440.0f},{1996.0f,540.0f}},
+		{{2982.5f,440.0f},{3100.0f,540.0f}},
+		{{4432.5,1457.0f},{4550.0f,1557.0f}},
+		{{6782.5f,1277.0f},{6900.0f,1377.0f}},
+		{{9382.5f,1277.0f},{9500.0f,1377.0f}},
 	};
 	Mon3Area = { {{3356,318.5f},{3456.0f,418.5f}},
 		{{4247.0f,1100.0f},{4347.0f,1200.0f}},
@@ -311,9 +311,9 @@ bool TSceneGameIn::CreateNPC()
 		resData.texPathName = L"../../data/ui/HpBar.png";
 		resData.texShaderName = L"../../data/shader/Default.txt";
 		tStart.y -= 30.0f;
-		tStart.x += 20.0f;
+		tStart.x += 25.0f;
 		tEnd.y -= 110.0f;
-		tEnd.x -= 20.0f;
+		tEnd.x -= 25.0f;
 		m_pHP->m_pMeshRender = &TGameCore::m_MeshRender;
 		if (m_pHP->Create(m_pWorld.get(), resData, tStart, tEnd))
 		{
@@ -350,9 +350,9 @@ bool TSceneGameIn::CreateNPC()
 		resData.texPathName = L"../../data/ui/HpBar.png";
 		resData.texShaderName = L"../../data/shader/Default.txt";
 		tStart.y -= 30.0f;
-		tStart.x += 20.0f;
+		tStart.x += 40.0f;
 		tEnd.y -= 110.0f;
-		tEnd.x -= 20.0f;
+		tEnd.x -= 40.0f;
 		m_pHP->m_pMeshRender = &TGameCore::m_MeshRender;
 		if (m_pHP->Create(m_pWorld.get(), resData, tStart, tEnd))
 		{
@@ -373,7 +373,7 @@ bool TSceneGameIn::CreateNPC()
 		npcobj3->m_pHero = m_pHero.get(); // Hero ¿¬°á
 		npcobj3->m_pWorld = m_pWorld.get();
 		TLoadResData resData;
-		resData.texPathName = L"../../data/texture/monster3.png";
+		resData.texPathName = L"../../data/texture/Mon3.png";
 		resData.texShaderName = L"../../data/shader/Default.txt";
 		if (npcobj3->Create(m_pWorld.get(), resData, tStart, tEnd))
 		{

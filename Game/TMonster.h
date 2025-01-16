@@ -71,6 +71,7 @@ enum class Monster3State
 {
 	STATE_Idle = 0,
 	STATE_Attack,
+	STATE_Dead,
 };
 
 class TMonster3 : public TNpcObj

@@ -29,6 +29,7 @@ void THpBar::Frame()
 	SetScale(ratio);
 	
 	m_vPos.x = m_pNpc->m_vPos.x;
+	m_vPos.y = m_pNpc->m_rtScreen.v1.y - 30.0f;
 	SetPosition({ m_vPos.x- (m_vInitialScale.x - ratio.x) , m_vPos.y});  //hp바 좌측고정.
 	if (m_iHP == 0)
 	{

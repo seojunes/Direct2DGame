@@ -132,7 +132,7 @@ void TMonster1::Frame()
 		{
 			m_bDead = true;
 		}
-		SetRotation(T_Pi * 0.5f);
+		SetRotation(T_Pi * 0.4f);
 	}
 
 
@@ -149,9 +149,11 @@ void TMonster2::SetVertexData()
 	switch (m_state)
 	{
 	case Monster2State::STATE_Idle:
+		SetScale(58.75f, 50.0f);
 		rt.SetS(10.0f, 26.0f, 46.0f, 31.0f);
 		break;
 	case Monster2State::STATE_Attack:
+		SetScale(67.5f, 37.1f);
 		rt.SetS(m_rtMon2AttackFrames[m_iMon2AttckFrame].left,
 			m_rtMon2AttackFrames[m_iMon2AttckFrame].top,
 			m_rtMon2AttackFrames[m_iMon2AttckFrame].right,
@@ -203,9 +205,10 @@ void TMonster2::Frame()
 	{
 		if (m_state == Monster2State::STATE_Idle)
 		{
-			if (fHeroDistance < 640.0f)
+			if (fHeroDistance < 500.0f)
 			{
 				m_state = Monster2State::STATE_Attack;
+				AddPosition(0, 13.0f);
 			}
 		}
 		else if (m_state == Monster2State::STATE_Attack)
@@ -214,6 +217,7 @@ void TMonster2::Frame()
 			if (fHeroDistance >= 640.0f)
 			{
 				m_state = Monster2State::STATE_Idle;
+				AddPosition(0, -13.0f);
 			}
 
 			m_fCurrentTime += g_fSPF; // 시간 업데이트
@@ -223,14 +227,29 @@ void TMonster2::Frame()
 				m_iMon2AttckFrame++; // 다음 프레임으로 이동
 				if (m_iMon2AttckFrame >= m_rtMon2AttackFrames.size())
 				{
-					m_iMon2AttckFrame = m_rtMon2AttackFrames.size() -1; 
+					m_iMon2AttckFrame = 0; 
 				}
 			}
-			TVector2	vHalf = { 30.0f, 30.0f };
-			TVector2	vStart = m_vPos - vHalf;
-			TVector2	vEnd = m_vPos + vHalf;
+			TVector2	vHalf = { 20.0f, 10.0f };
+			TVector2 vStart;
+			TVector2 vEnd;
+			if (m_eCurrentView == HeroView::LeftView)
+			{
+				vStart = m_vPos - vHalf;
+				vStart.x -= 20.0f;
+				vEnd = m_vPos + vHalf;
+				vEnd.x -= 20.f;
+			}
+			else
+			{
+				vStart = m_vPos - vHalf;
+				vStart.x += 20.0f;
+				vEnd = m_vPos + vHalf;
+				vEnd.x += 20.0f;
+			}
+			
 			TVector2    dir = (m_pHero->m_vPos - m_vPos).Normal();
-
+			dir = { dir.x,0.0f };
 			if (m_ftrigger < 0.0f)
 			{
 				m_pProjectile->AddEffect(vStart, vEnd, dir, Shooter::OWNER_MON2, this);
@@ -281,7 +300,24 @@ void TMonster3::SetVertexData()
 	float xSize = m_pTexture->m_TexDesc.Width;
 	float ySize = m_pTexture->m_TexDesc.Height;
 	TRect rt;
-	rt.SetP(3.0f, 7.0f, 27.0f, 36.0f);
+	switch (m_state)
+	{
+	case Monster3State::STATE_Idle:
+		rt.SetS(90.0f, 6.0f, 38.0f, 30.0f);
+		break;
+	case Monster3State::STATE_Attack:
+		rt.SetS(m_rtMon3AttackFrames[m_iMon3AttckFrame].left,
+			m_rtMon3AttackFrames[m_iMon3AttckFrame].top,
+			m_rtMon3AttackFrames[m_iMon3AttckFrame].right,
+			m_rtMon3AttackFrames[m_iMon3AttckFrame].bottom); 
+		break;
+	case Monster3State::STATE_Dead:
+		rt.SetS(132.0f, 6.0f, 38.0f, 30.0f);
+		break;
+	default:
+		break;
+	}
+	
 	if (m_eCurrentView == HeroView::LeftView)
 	{
 		m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
@@ -315,41 +351,67 @@ void TMonster3::Frame()
 	SetVertexData();
 	TNpcObj::Frame();
 	float fHeroDistance = (m_pHero->m_vPos - m_vPos).Length();
-	if (m_state == Monster3State::STATE_Idle)
+	if (m_HP > 0)
 	{
-		if (fHeroDistance < 640.0f)
+		if (m_state == Monster3State::STATE_Idle)
 		{
-			m_state = Monster3State::STATE_Attack;
+			if (fHeroDistance < 500.0f)
+			{
+				m_state = Monster3State::STATE_Attack;
+			}
+		}
+		else if (m_state == Monster3State::STATE_Attack)
+		{
+			m_ftrigger -= g_fSPF;
+			if (fHeroDistance >= 500.0f)
+			{
+				m_state = Monster3State::STATE_Idle;
+			}
+
+			TVector2	vHalf = { 25.0f, 25.0f };
+			TVector2	vStart = m_vPos - vHalf;
+			TVector2	vEnd = m_vPos + vHalf;
+			TVector2    dir;
+			if (m_eCurrentView == HeroView::LeftView)
+			{
+				dir = { -1.0f, -1.0f };
+			}
+			else
+			{
+				dir = { 1.0f, -1.0f };
+			}
+
+			if (m_ftrigger < 0.0f)
+			{
+				m_pProjectile->AddEffect(vStart, vEnd, dir, Shooter::OWNER_MON3, this);
+				m_ftrigger = 1.0f;
+			}
+
+			m_fCurrentTime += g_fSPF; // 시간 업데이트
+			if (m_fCurrentTime >= m_fMon3AttackFrameTime)
+			{
+				m_fCurrentTime -= m_fMon3AttackFrameTime;
+				m_iMon3AttckFrame++; // 다음 프레임으로 이동
+				if (m_iMon3AttckFrame >= m_rtMon3AttackFrames.size())
+				{
+					m_iMon3AttckFrame = 0;
+				}
+			}
+			//Shoot();
 		}
 	}
-	else if (m_state == Monster3State::STATE_Attack)
+	else
 	{
-		m_ftrigger -= g_fSPF;
-		if (fHeroDistance >= 640.0f)
+		m_vDir = { 0.0f,0.0f };
+		m_state = Monster3State::STATE_Dead;
+		m_fDeadTime -= g_fSPF;
+		m_bAbleAttack = false;
+		if (m_fDeadTime < 0.0f)
 		{
-			m_state = Monster3State::STATE_Idle;
+			m_bDead = true;
 		}
-
-		TVector2	vHalf = { 25.0f, 25.0f };
-		TVector2	vStart = m_vPos - vHalf;
-		TVector2	vEnd = m_vPos + vHalf;
-		TVector2    dir;
-		if (m_eCurrentView == HeroView::LeftView)
-		{
-			dir = { -1.0f, -1.0f };
-		}
-		else
-		{
-			dir = { 1.0f, -1.0f };
-		}
-
-		if (m_ftrigger < 0.0f)
-		{
-			m_pProjectile->AddEffect(vStart, vEnd, dir, Shooter::OWNER_MON3, this);
-			m_ftrigger = 1.0f;
-		}
-		//Shoot();
 	}
+	
 
 
 	m_pProjectile->Frame(m_vPos);

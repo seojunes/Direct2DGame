@@ -75,12 +75,15 @@ public:
 	std::vector<RECT> m_rtMon1AttackFrames;
 	std::vector<RECT> m_rtMon2AttackFrames;
 	std::vector<RECT> m_rtMon2DyingFrames;
+	std::vector<RECT> m_rtMon3AttackFrames;
 	UINT m_iMon1AttckFrame = 0;
 	UINT m_iMon2AttckFrame = 0;
 	UINT m_iMon2DyingFrame = 0;
+	UINT m_iMon3AttckFrame = 0;
 	float m_fMon1AttackFrameTime = 0.3f;
 	float m_fMon2AttackFrameTime = 0.3f;
 	float m_fMon2DyingFrameTime = 0.3f;
+	float m_fMon3AttackFrameTime = 0.3f;
 
 public:
 	float    m_fDeadTime = 1.0f;
