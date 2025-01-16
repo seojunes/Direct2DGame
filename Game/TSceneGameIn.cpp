@@ -580,15 +580,16 @@ void TSceneGameIn::AddDrop()
 		m_iDrop.insert(droparea);
 	}
 	std::vector<int> m_iDropv(m_iDrop.begin(), m_iDrop.end());
-	
+
 	for (int i = 0; i < 4; ++i)
 	{
 		TVector2 tStart = DropArea[m_iDropv[i]].first;
 		TVector2 tEnd = DropArea[m_iDropv[i]].second;
 		auto m_pRect = std::make_shared<TDropObj>();
 		m_pRect->m_pWorld = m_pWorld.get();
+		m_pRect->SetData(m_rtSpriteList);
 		TLoadResData resData;
-		resData.texPathName = L"../../data/ui/BossM2.png";
+		resData.texPathName = L"../../data/texture/Boss2.png";
 		resData.texShaderName = L"../../data/shader/Default.txt";
 
 		m_pRect->m_pMeshRender = &TGameCore::m_MeshRender;
@@ -945,6 +946,10 @@ void   TSceneGameIn::Frame()
 	// 보스죽었을때 1번만 실행
 	if (m_bBossDefeated)
 	{
+		for (auto data : m_DropList)
+		{
+			data->m_bDead = true;
+		}
 		m_pHero->m_CurrentState = HeroState::Victory;
 		m_pBossSound->Stop();
 		m_pClearSound->PlayEffect();
@@ -970,7 +975,7 @@ void   TSceneGameIn::Frame()
 			drop->Frame();
 		}
 	}
-	
+
 }
 void   TSceneGameIn::Render()
 {
@@ -1088,11 +1093,14 @@ void   TSceneGameIn::Release()
 		data->Release();
 		data = nullptr;
 	}
+
 	for (auto data : m_DropList)
 	{
+		if (data->m_bDead)	continue;
 		data->Release();
 		data = nullptr;
 	}
+
 	m_EffectList.clear();
 	for (auto data : m_UiList)
 	{

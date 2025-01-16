@@ -7,7 +7,8 @@ void TBossObj::HitOverlap(TObject* pObj, THitResult hRes)  //충돌했을떄 실행되는
 	if (OtherType == TObjectType::Projectile)
 	{
 		auto pMissile = dynamic_cast<TProjectileEffect*>(pObj);
-		if (pMissile && pMissile->m_pOwnerType == Shooter::OWNER_HERO && m_state != BossState::STATE_Create)
+		if (pMissile && pMissile->m_pOwnerType == Shooter::OWNER_HERO && m_state != BossState::STATE_Create && m_state != BossState::STATE_PHASE2Create 
+																	  && m_state != BossState::STATE_Transition)
 		{
 			pMissile->m_bDead = true;
 			m_HP -= pMissile->m_Data.m_iDamage;
@@ -151,6 +152,11 @@ void TBossObj::SetVertexData()
 			break;
 		}
 		break;
+	case BossState::STATE_Flying:
+		rt.SetS(m_rtBossFlyingFrames[m_iBossFlyingFrames].left,
+			m_rtBossFlyingFrames[m_iBossFlyingFrames].top,
+			m_rtBossFlyingFrames[m_iBossFlyingFrames].right,
+			m_rtBossFlyingFrames[m_iBossFlyingFrames].bottom); // 현재 프레임의 텍스처 좌표,
 	default:
 		break;
 	}
@@ -279,15 +285,18 @@ void TBossObj::Frame()
 			m_iBossM1Frame = 0;
 		}
 	}
-	else if (m_state == BossState::STATE_Attack3)
+	else if (m_state == BossState::STATE_Flying)
 	{
-		if (m_bShotting)
+		m_fCurrentTime += g_fSPF; // 시간 업데이트
+
+		if (m_fCurrentTime >= m_fBossFlyingFrameTime)
 		{
-			m_iBossM2Frame = 0;
-		}
-		else
-		{
-			m_iBossM2Frame = 1;
+			m_fCurrentTime -= m_fBossFlyingFrameTime;
+			m_iBossFlyingFrames++; // 다음 프레임으로 이동
+			if (m_iBossFlyingFrames >= m_rtBossFlyingFrames.size())
+			{
+				m_iBossFlyingFrames = m_rtBossFlyingFrames.size() - 1; // 마지막 프레임 유지
+			}
 		}
 	}
 
@@ -445,7 +454,7 @@ void TBossObj::Frame()
 	}
 	else if (m_state == BossState::STATE_Attack3)
 	{
-		m_vDir = (m_vMapCenter- m_vPos).Normal();
+		m_vDir = (m_vMapCenter - m_vPos).Normal();
 		if ((m_vMapCenter - m_vPos).Length() < 2.0f)
 		{
 			m_vDir = { 0.0f, 0.0f };
@@ -456,7 +465,20 @@ void TBossObj::Frame()
 		{
 			m_bM2Fire = true;
 			m_fM2TriggerTime = 1.5f;
+			m_iBossM2Frame = 0;
 		}
+		if (m_fM2TriggerTime < 1.0f && m_fM2TriggerTime > 0.0f)
+		{
+			m_iBossM2Frame = 1;
+		}
+		if (m_fM2Time < 0.0f)
+		{
+			m_state = BossState::STATE_Flying;
+		}
+	}
+	else if (m_state == BossState::STATE_Flying)
+	{
+
 	}
 
 

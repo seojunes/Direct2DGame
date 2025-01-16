@@ -13,6 +13,7 @@ enum class BossState
 	STATE_Attack2,
 	STATE_PAUSE,
 	STATE_Attack3,
+	STATE_Flying,
 	STATE_Return,
 };
 
