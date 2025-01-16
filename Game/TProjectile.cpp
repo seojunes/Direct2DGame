@@ -123,7 +123,7 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction
 	if (m_bOncharging == false)
 	{
 		resData.texPathName = L"../../data/ui/newShot.png";
-		data.m_iDamage = 500;
+		data.m_iDamage = 5;
 		obj->m_fSpeed = 700.0f;
 		//obj->m_iDamage = 5;
 	}
@@ -151,6 +151,7 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction
 		resData.texPathName = L"../../data/ui/bossMissile1.png";
 		data.m_iDamage = 10;
 		data.m_fLifeTime = 3.0f;
+		obj->SetRotation(T_Pi);
 	}
 	
 	data.m_vDirection = direction;

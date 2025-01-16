@@ -51,7 +51,7 @@ struct TRect
 	}
 	void    Size(TVector2 s)
 	{
-		SetS(v1, s);
+		SetCenterS(vc, s);
 	}
 	void    Move(float x, float y)
 	{
@@ -87,6 +87,17 @@ struct TRect
 		vs = s;
 		v2 = v1 + vs;
 		vh = vs / 2.0f;
+		fR = (v2 - v1).Length() * 0.5f;
+		Move((v2 + v1) / 2.0f);
+	}
+	void    SetCenterS(TVector2 c, TVector2 s)
+	{
+		vc = c;
+		vs = s;
+		vh = vs / 2.0f;
+		v1 = vc - vh;
+		v2 = vc + vh;
+		
 		fR = (v2 - v1).Length() * 0.5f;
 		Move((v2 + v1) / 2.0f);
 	}

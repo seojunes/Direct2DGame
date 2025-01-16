@@ -11,6 +11,8 @@ void TUiHpBar::Frame()
 
 		TVector2 ratio = { m_fHpRatio * m_vInitialScale.x, m_vInitialScale.y };
 		SetScale(ratio);
+		m_vPos.x = 331.684998f;
+		SetPosition({ m_vPos.x - (m_vInitialScale.x - ratio.x) , m_vPos.y });  //hp바 좌측고정.
 	}
 	else
 	{
@@ -21,6 +23,8 @@ void TUiHpBar::Frame()
 
 		TVector2 ratio = { m_fBHpRatio * m_vBInitialScale.x, m_vBInitialScale.y };
 		SetScale(ratio);
+		m_vPos.x = 679.125f;
+		SetPosition({ m_vPos.x - (m_vBInitialScale.x - ratio.x) , m_vPos.y });  //hp바 좌측고정.
 	}
 	
 	

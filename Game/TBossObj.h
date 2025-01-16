@@ -7,6 +7,9 @@ enum class BossState
 	STATE_Create,
 	STATE_Move,
 	STATE_Attack1,
+	STATE_Transition,
+	STATE_PHASE2Create,
+	STATE_PHASE2,
 	STATE_Attack2,
 	STATE_Attack3,
 	STATE_Return,
@@ -15,6 +18,7 @@ enum class BossState
 class TBossObj : public TNpcObj
 {
 public:
+	void    HitOverlap(TObject* pObj, THitResult hRet) override;
 	TMapObj* m_pMap = nullptr;
 	void SetVertexData() override;
 	virtual void Init() override;
@@ -26,11 +30,15 @@ public:
 public:
 	TVector2 m_vInitedPos;
 	TVector2 m_vMapCenter = { 13440.0f , 450.0f };
+	TVector2 m_vDir = { -1.0f, 0.0f };
 	UINT	 m_iLimitedDis = 300.0f;
 	float    m_ftrigger = 0.1f;
 	float    m_fNextState = 3.0f;
-	float    m_fCreateTime = 3.0f;
+	float    m_fCreateTime = 2.6f;
 	float	 m_fCurrentTime = 0.0f;
+	float    m_fTransTime = 3.0f;
+	bool     m_bHealing = false;
+	float    m_fPhase2CurrentTime = 3.0f;
 	std::vector<TVector2> m_MissleDirList;
 public:
 	void GetState(bool state);
@@ -50,5 +58,7 @@ public:
 	{
 		return TObjectType::Boss;
 	}
+public:
+	HeroView BossView = HeroView::LeftView;
 };
 

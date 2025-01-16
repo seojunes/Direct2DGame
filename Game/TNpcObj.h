@@ -45,14 +45,20 @@ public:
 	std::vector<RECT> m_rtBossCreateFrames;
 	std::vector<RECT> m_rtBossIdleFrames;
 	std::vector<RECT> m_rtBossAttack1Frames;
+	std::vector<RECT> m_rtBossTransFrames;
+	std::vector<RECT> m_rtBoss2PhaseFrames;
 	UINT m_iMon1AttckFrame = 0;            
 	UINT m_iBossCreateFrame = 0;
 	UINT m_iBossIdleFrame = 0;
 	UINT m_iBossAttack1Frame = 0;
+	UINT m_iBossTransFrame = 0;
+	UINT m_iBoss2PhaseFrame = 0;
 	float m_fMon1AttackFrameTime = 0.3f;
 	float m_fBossCreateFrameTime = 0.2f;
 	float m_fBossIdleFrameTime = 0.2f;
 	float m_fBossAttack1FrameTime = 0.2f;
+	float m_fBossTransFrameTime = 0.5f;
+	float m_fBoss2PhaseFrameTime = 0.5f;
 
 	
 	bool m_bLoop = true;

@@ -60,7 +60,7 @@ void TObject::SetScale(float sx, float sy)
 	m_vScale.x = sx;
 	m_vScale.y = sy;
 	m_matScale.Scale(m_vScale);
-	m_rtScreen.vc = m_vPos;
+	//m_rtScreen.vc = m_vPos;
 	m_rtScreen.Size(m_vScale * 2.0f);
 	m_Sphere.vCenter = m_rtScreen.vc;
 	m_Sphere.fRadius = m_rtScreen.fR;
