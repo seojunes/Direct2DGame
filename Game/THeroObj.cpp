@@ -29,7 +29,8 @@ void    THeroObj::HitOverlap(TObject* pObj, THitResult hRes)
 	// 몬스터와 부딪쳤을때, 데미지
 	if (OtherType == TObjectType::Npc)
 	{
-		TakeDamage(5);
+		auto pNpc = dynamic_cast<TNpcObj*>(pObj);
+		if(pNpc->m_bAbleAttack)		TakeDamage(10);
 	}
 	else if (OtherType == TObjectType::Boss)
 	{
@@ -66,7 +67,7 @@ void THeroObj::SetData(vector<vector<RECT>> SpriteList)
 
 void THeroObj::TakeDamage(int damage)
 {
-	if (m_bInvincible == false) // 무적 상태가 아닐 때만 데미지를 받음
+	if (m_bInvincible == false && m_bEnd == false) // 무적 상태가 아닐 때만 데미지를 받음
 	{
 		m_HeroHP -= damage;
 

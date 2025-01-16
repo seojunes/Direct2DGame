@@ -7,8 +7,8 @@ void TBossObj::HitOverlap(TObject* pObj, THitResult hRes)  //충돌했을떄 실행되는
 	if (OtherType == TObjectType::Projectile)
 	{
 		auto pMissile = dynamic_cast<TProjectileEffect*>(pObj);
-		if (pMissile && pMissile->m_pOwnerType == Shooter::OWNER_HERO && m_state != BossState::STATE_Create && m_state != BossState::STATE_PHASE2Create 
-																	  && m_state != BossState::STATE_Transition)
+		if (pMissile && pMissile->m_pOwnerType == Shooter::OWNER_HERO && m_state != BossState::STATE_Create && m_state != BossState::STATE_PHASE2Create
+			&& m_state != BossState::STATE_Transition && m_state != BossState::STATE_PHASE2)
 		{
 			pMissile->m_bDead = true;
 			m_HP -= pMissile->m_Data.m_iDamage;
@@ -157,6 +157,29 @@ void TBossObj::SetVertexData()
 			m_rtBossFlyingFrames[m_iBossFlyingFrames].top,
 			m_rtBossFlyingFrames[m_iBossFlyingFrames].right,
 			m_rtBossFlyingFrames[m_iBossFlyingFrames].bottom); // 현재 프레임의 텍스처 좌표,
+		switch (m_iBossFlyingFrames)
+		{
+		case 0:
+			SetScale({ 82.78f, 74.9f });
+			break;
+		case 1:
+			SetScale({ 82.78f,74.9f });
+			break;
+		case 2:
+			SetScale({ 82.78f, 74.9f });
+			break;
+		case 3:
+			SetScale({ 82.78f,74.9f });
+			break;
+		default:
+			break;
+		}
+		break;
+	case BossState::STATE_Dead:
+		rt.SetS(m_rtBossDyingFrames[m_iBossDyingFrames].left,
+			m_rtBossDyingFrames[m_iBossDyingFrames].top,
+			m_rtBossDyingFrames[m_iBossDyingFrames].right,
+			m_rtBossDyingFrames[m_iBossDyingFrames].bottom); // 현재 프레임의 텍스처 좌표,
 	default:
 		break;
 	}
@@ -193,6 +216,12 @@ void TBossObj::Frame()
 
 	SetVertexData();
 
+	float fHeroDistance = (m_pHero->m_vPos - m_vPos).Length();
+	float fInitDistance = (m_vInitedPos - m_vPos).Length();
+	TVector2 vMove = m_vPos + m_vDir * (g_fSPF * m_fSpeed);
+	SetPosition(vMove);
+
+
 	if (m_vDir.x > 0)
 	{
 		BossView = HeroView::RightView;
@@ -202,283 +231,334 @@ void TBossObj::Frame()
 		BossView = HeroView::LeftView;
 	}
 
-	if (m_state == BossState::STATE_Idle)
+	if (m_HP > 0)
 	{
-		m_fCurrentTime += g_fSPF; // 시간 업데이트
-		if (m_fCurrentTime >= m_fBossIdleFrameTime)
+		if (m_state == BossState::STATE_Idle)
 		{
-			m_fCurrentTime -= m_fBossIdleFrameTime;
-			m_iBossIdleFrame++; // 다음 프레임으로 이동
-			if (m_iBossIdleFrame >= m_rtBossIdleFrames.size())
+			m_fCurrentTime += g_fSPF; // 시간 업데이트
+			if (m_fCurrentTime >= m_fBossIdleFrameTime)
 			{
-				if (m_bLoop)
-					m_iBossIdleFrame = 0; // 반복일 경우 첫 프레임으로 이동
-				else
-					m_iBossIdleFrame = m_rtBossIdleFrames.size() - 1; // 마지막 프레임 유지
+				m_fCurrentTime -= m_fBossIdleFrameTime;
+				m_iBossIdleFrame++; // 다음 프레임으로 이동
+				if (m_iBossIdleFrame >= m_rtBossIdleFrames.size())
+				{
+					if (m_bLoop)
+						m_iBossIdleFrame = 0; // 반복일 경우 첫 프레임으로 이동
+					else
+						m_iBossIdleFrame = m_rtBossIdleFrames.size() - 1; // 마지막 프레임 유지
+				}
 			}
 		}
-	}
-	else if (m_state == BossState::STATE_Create)
-	{
-		m_fCurrentTime += g_fSPF; // 시간 업데이트
-
-		if (m_fCurrentTime >= m_fBossCreateFrameTime)
+		else if (m_state == BossState::STATE_Create)
 		{
-			m_fCurrentTime -= m_fBossCreateFrameTime;
-			m_iBossCreateFrame++; // 다음 프레임으로 이동
-			if (m_iBossCreateFrame >= m_rtBossCreateFrames.size())
+			m_fCurrentTime += g_fSPF; // 시간 업데이트
+
+			if (m_fCurrentTime >= m_fBossCreateFrameTime)
 			{
-				m_iBossCreateFrame = m_rtBossCreateFrames.size() - 1; // 마지막 프레임 유지
+				m_fCurrentTime -= m_fBossCreateFrameTime;
+				m_iBossCreateFrame++; // 다음 프레임으로 이동
+				if (m_iBossCreateFrame >= m_rtBossCreateFrames.size())
+				{
+					m_iBossCreateFrame = m_rtBossCreateFrames.size() - 1; // 마지막 프레임 유지
+				}
 			}
 		}
-	}
-	else if (m_state == BossState::STATE_Attack1)
-	{
-		m_fCurrentTime += g_fSPF; // 시간 업데이트
-
-		if (m_fCurrentTime >= m_fBossAttack1FrameTime)
+		else if (m_state == BossState::STATE_Attack1)
 		{
-			m_fCurrentTime -= m_fBossAttack1FrameTime;
-			m_iBossAttack1Frame++; // 다음 프레임으로 이동
-			if (m_iBossAttack1Frame >= m_rtBossAttack1Frames.size())
+			m_fCurrentTime += g_fSPF; // 시간 업데이트
+
+			if (m_fCurrentTime >= m_fBossAttack1FrameTime)
 			{
-				m_iBossAttack1Frame = 0; // 반복일 경우 첫 프레임으로 이동
+				m_fCurrentTime -= m_fBossAttack1FrameTime;
+				m_iBossAttack1Frame++; // 다음 프레임으로 이동
+				if (m_iBossAttack1Frame >= m_rtBossAttack1Frames.size())
+				{
+					m_iBossAttack1Frame = 0; // 반복일 경우 첫 프레임으로 이동
+				}
 			}
 		}
-	}
-	else if (m_state == BossState::STATE_Transition)
-	{
-		m_fCurrentTime += g_fSPF; // 시간 업데이트
-
-		if (m_fCurrentTime >= m_fBossTransFrameTime)
+		else if (m_state == BossState::STATE_Transition)
 		{
-			m_fCurrentTime -= m_fBossTransFrameTime;
-			m_iBossTransFrame++; // 다음 프레임으로 이동
-			if (m_iBossTransFrame >= m_rtBossTransFrames.size())
+			m_fCurrentTime += g_fSPF; // 시간 업데이트
+
+			if (m_fCurrentTime >= m_fBossTransFrameTime)
 			{
-				m_iBossTransFrame = m_rtBossTransFrames.size() - 1; // 마지막 프레임 유지
+				m_fCurrentTime -= m_fBossTransFrameTime;
+				m_iBossTransFrame++; // 다음 프레임으로 이동
+				if (m_iBossTransFrame >= m_rtBossTransFrames.size())
+				{
+					m_iBossTransFrame = m_rtBossTransFrames.size() - 1; // 마지막 프레임 유지
+				}
 			}
 		}
-	}
-	else if (m_state == BossState::STATE_PHASE2)
-	{
-		m_fCurrentTime += g_fSPF; // 시간 업데이트
-
-		if (m_fCurrentTime >= m_fBoss2PhaseFrameTime)
+		else if (m_state == BossState::STATE_PHASE2)
 		{
-			m_fCurrentTime -= m_fBoss2PhaseFrameTime;
-			m_iBoss2PhaseFrame++; // 다음 프레임으로 이동
-			if (m_iBoss2PhaseFrame >= m_rtBoss2PhaseFrames.size())
+			m_fCurrentTime += g_fSPF; // 시간 업데이트
+
+			if (m_fCurrentTime >= m_fBoss2PhaseFrameTime)
 			{
-				m_iBoss2PhaseFrame = m_rtBoss2PhaseFrames.size() - 1; // 마지막 프레임 유지
+				m_fCurrentTime -= m_fBoss2PhaseFrameTime;
+				m_iBoss2PhaseFrame++; // 다음 프레임으로 이동
+				if (m_iBoss2PhaseFrame >= m_rtBoss2PhaseFrames.size())
+				{
+					m_iBoss2PhaseFrame = m_rtBoss2PhaseFrames.size() - 1; // 마지막 프레임 유지
+				}
 			}
 		}
-	}
-	else if (m_state == BossState::STATE_Attack2)
-	{
-		if (m_bShotting)
+		else if (m_state == BossState::STATE_Attack2)
 		{
-			m_iBossM1Frame = 1;
-		}
-		else
-		{
-			m_iBossM1Frame = 0;
-		}
-	}
-	else if (m_state == BossState::STATE_Flying)
-	{
-		m_fCurrentTime += g_fSPF; // 시간 업데이트
-
-		if (m_fCurrentTime >= m_fBossFlyingFrameTime)
-		{
-			m_fCurrentTime -= m_fBossFlyingFrameTime;
-			m_iBossFlyingFrames++; // 다음 프레임으로 이동
-			if (m_iBossFlyingFrames >= m_rtBossFlyingFrames.size())
+			if (m_bShotting)
 			{
-				m_iBossFlyingFrames = m_rtBossFlyingFrames.size() - 1; // 마지막 프레임 유지
+				m_iBossM1Frame = 1;
+			}
+			else
+			{
+				m_iBossM1Frame = 0;
 			}
 		}
-	}
-
-
-	float fHeroDistance = (m_pHero->m_vPos - m_vPos).Length();
-	float fInitDistance = (m_vInitedPos - m_vPos).Length();
-	TVector2 vMove = m_vPos + m_vDir * (g_fSPF * m_fSpeed);
-	SetPosition(vMove);
-	if (m_state == BossState::STATE_Create)
-	{
-		m_fSpeed = 0.0f;
-		m_fCreateTime -= g_fSPF;
-		if (m_fCreateTime <= 0.0f)
+		else if (m_state == BossState::STATE_Flying)
 		{
-			m_state = BossState::STATE_Idle;
-		}
-	}
-	else if (m_state == BossState::STATE_Idle)
-	{
-		m_vDir = { 0.0f,0.0f };
-		if (fHeroDistance < 600.0f || m_HP != m_iPreHP)
-		{
-			m_state = BossState::STATE_Attack1;
-			m_vDir = { -1.0f,0.0f };
-		}
-	}
-	else if (m_state == BossState::STATE_Attack1)
-	{
-		m_fSpeed = 1000.0f;
+			m_fCurrentTime += g_fSPF; // 시간 업데이트
 
-		if (m_HP < 180.0f)
-		{
-			m_fSpeed = 300.0f;
-			m_vDir = (m_vInitedPos - m_vPos).Normal();
-			if (fInitDistance < 1.0f)
+			if (m_fCurrentTime >= m_fBossFlyingFrameTime)
 			{
-				m_vDir = { 0.0f,0.0f };
-				m_state = BossState::STATE_Transition;
+				m_fCurrentTime -= m_fBossFlyingFrameTime;
+				m_iBossFlyingFrames++; // 다음 프레임으로 이동
+				if (m_iBossFlyingFrames >= m_rtBossFlyingFrames.size())
+				{
+					m_iBossFlyingFrames = 0;
+				}
 			}
 		}
-
-		//if (m_rtScreen.v2.y >= 843.5f)
-		//{
-		//	m_vDir = { 0.0f, 0.0f };
-		//}
-		//m_ftrigger -= g_fSPF;
-		//m_fNextState -= g_fSPF;
-		//TVector2	vHalf = { 25.0f, 25.0f };
-		//TVector2	vStart = m_vPos - vHalf;
-		//TVector2	vEnd = m_vPos + vHalf;
-		//TVector2    dir = { 0.0f, -1.0f };
-		//m_MissleDirList = {
-
-		//	{1.0f, 0.0f},
-		//	{1.0f, 1.0f},
-		//	{0.0f, 1.0f},
-		//	{-1.0f, 1.0f},
-		//	{-1.0f, 0.0f},
-		//	{-1.0f, -1.0f},
-		//	{0.0f, -1.0f},
-		//	{1.0f, -1.0f},
-		//};
-		////INT index = rand() % 8;
-		//if (m_ftrigger < 0.0f)
-		//{
-		//	for (int num = 0; num < 8; num++)
-		//	{
-		//		m_pProjectile->AddEffect(vStart, vEnd, m_MissleDirList[num], Shooter::OWNER_BOSS1, this);
-		//		m_pProjectile->SetRotation(T_Pi / 4.0f);
-		//	}
-		//	m_ftrigger = 1.0f;
-		//}
-		//if (m_fNextState < 0.0f)
-		//{
-		//	m_state = BossState::STATE_Attack2;
-		//	m_fNextState = 5.0f;
-		//}
-
-	}
-	else if (m_state == BossState::STATE_Transition)
-	{
-		m_fTransTime -= g_fSPF;
-		if (m_fTransTime > 0.0f)
+		if (m_state == BossState::STATE_Create)
 		{
-			m_vDir = { 0.0f, -1.0f };
-			m_fSpeed = 300.0f;
-		}
-		else
-		{
-			m_vDir = { 0.0f , +1.0f };
-			m_state = BossState::STATE_PHASE2Create;
-		}
-	}
-	else if (m_state == BossState::STATE_PHASE2Create)
-	{
-		if (m_vPos.y >= 720.0f)
-		{
-			m_state = BossState::STATE_PHASE2;
-			m_bHealing = true;
-		}
-	}
-	else if (m_state == BossState::STATE_PHASE2)
-	{
-		m_fPhase2CurrentTime -= g_fSPF;
-		if (m_bHealing == true)
-		{
-			m_HP = 200;
-			m_bHealing = false;
-		}
-		if (m_fPhase2CurrentTime <= 0.0f)			m_state = BossState::STATE_Attack2;
-	}
-	else if (m_state == BossState::STATE_Attack2)
-	{
-		m_fM1Time -= g_fSPF;
-		if (m_vPos.x < 13900.0f)
-		{
-			m_vDir = { 1.0f,0.0f };
-		}
-		else
-		{
-			if (m_vPos.y <= 400.0f)
+			m_fSpeed = 0.0f;
+			m_fCreateTime -= g_fSPF;
+			if (m_fCreateTime <= 0.0f)
 			{
-				m_vDir = { 0.0f, +1.0f };
+				m_state = BossState::STATE_Idle;
 			}
-			else if (m_vPos.y > 720.0f)
+		}
+		else if (m_state == BossState::STATE_Idle)
+		{
+			m_vDir = { 0.0f,0.0f };
+			if (fHeroDistance < 600.0f || m_HP != m_iPreHP)
+			{
+				m_state = BossState::STATE_Attack1;
+				m_vDir = { -1.0f,0.0f };
+			}
+		}
+		else if (m_state == BossState::STATE_Attack1)
+		{
+			m_fSpeed = 1000.0f;
+
+			if (m_HP < 130.0f)
+			{
+				m_fSpeed = 300.0f;
+				m_vDir = (m_vInitedPos - m_vPos).Normal();
+				if (fInitDistance < 1.0f)
+				{
+					m_vDir = { 0.0f,0.0f };
+					m_state = BossState::STATE_Transition;
+				}
+			}
+
+			//if (m_rtScreen.v2.y >= 843.5f)
+			//{
+			//	m_vDir = { 0.0f, 0.0f };
+			//}
+			//m_ftrigger -= g_fSPF;
+			//m_fNextState -= g_fSPF;
+			//TVector2	vHalf = { 25.0f, 25.0f };
+			//TVector2	vStart = m_vPos - vHalf;
+			//TVector2	vEnd = m_vPos + vHalf;
+			//TVector2    dir = { 0.0f, -1.0f };
+			//m_MissleDirList = {
+
+			//	{1.0f, 0.0f},
+			//	{1.0f, 1.0f},
+			//	{0.0f, 1.0f},
+			//	{-1.0f, 1.0f},
+			//	{-1.0f, 0.0f},
+			//	{-1.0f, -1.0f},
+			//	{0.0f, -1.0f},
+			//	{1.0f, -1.0f},
+			//};
+			////INT index = rand() % 8;
+			//if (m_ftrigger < 0.0f)
+			//{
+			//	for (int num = 0; num < 8; num++)
+			//	{
+			//		m_pProjectile->AddEffect(vStart, vEnd, m_MissleDirList[num], Shooter::OWNER_BOSS1, this);
+			//		m_pProjectile->SetRotation(T_Pi / 4.0f);
+			//	}
+			//	m_ftrigger = 1.0f;
+			//}
+			//if (m_fNextState < 0.0f)
+			//{
+			//	m_state = BossState::STATE_Attack2;
+			//	m_fNextState = 5.0f;
+			//}
+
+		}
+		else if (m_state == BossState::STATE_Transition)
+		{
+			m_fTransTime -= g_fSPF;
+			if (m_fTransTime > 0.0f)
 			{
 				m_vDir = { 0.0f, -1.0f };
+				m_fSpeed = 300.0f;
+			}
+			else
+			{
+				m_vDir = { 0.0f , +1.0f };
+				m_state = BossState::STATE_PHASE2Create;
 			}
 		}
-		m_ftrigger -= g_fSPF;
-		TVector2	vHalf = { 25.0f, 25.0f };
-		TVector2    vPos;
-		vPos.x = m_vPos.x - m_rtScreen.vh.x;
-		vPos.y = m_vPos.y;
-		TVector2 vStart = vPos - vHalf;
-		TVector2	vEnd = vPos + vHalf;
-		TVector2    dir = { -1.0f, 0.0f };
+		else if (m_state == BossState::STATE_PHASE2Create)
+		{
+			if (m_vPos.y >= 720.0f)
+			{
+				m_state = BossState::STATE_PHASE2;
+				m_bHealing = true;
+			}
+		}
+		else if (m_state == BossState::STATE_PHASE2)
+		{
+			m_fPhase2CurrentTime -= g_fSPF;
+			if (m_bHealing == true)
+			{
+				m_HP = 200;
+				m_bHealing = false;
+			}
+			if (m_fPhase2CurrentTime <= 0.0f)			m_state = BossState::STATE_Attack2;
+		}
+		else if (m_state == BossState::STATE_Attack2)
+		{
+			m_fSpeed = 400;
+			m_fM1Time -= g_fSPF;
+			if (m_vPos.x < 13900.0f)
+			{
+				m_vDir = { 1.0f,0.0f };
+			}
+			else
+			{
+				if (m_vPos.y <= 400.0f)
+				{
+					m_vDir = { 0.0f, +1.0f };
+				}
+				else if (m_vPos.y > 720.0f)
+				{
+					m_vDir = { 0.0f, -1.0f };
+				}
+			}
+			m_ftrigger -= g_fSPF;
+			TVector2	vHalf = { 25.0f, 25.0f };
+			TVector2    vPos;
+			vPos.x = m_vPos.x - m_rtScreen.vh.x;
+			vPos.y = m_vPos.y;
+			TVector2 vStart = vPos - vHalf;
+			TVector2	vEnd = vPos + vHalf;
+			TVector2    dir = { -1.0f, 0.0f };
 
-		if (m_ftrigger < 0.0f)
+			if (m_ftrigger < 0.0f)
+			{
+
+				m_pProjectile->AddEffect(vStart, vEnd, dir, Shooter::OWNER_BOSS1, this);
+				m_ftrigger = 0.5f;
+				m_bShotting = true;
+			}
+
+			if (m_ftrigger < 0.25f && m_ftrigger>0.0f)
+			{
+				m_bShotting = false;
+			}
+			if (m_fM1Time < 0.0f)
+			{
+				m_state = BossState::STATE_Attack3;
+				m_fM1Time = 10.0f;
+				m_fM2TriggerTime = 1.5f;
+			}
+		}
+		else if (m_state == BossState::STATE_Attack3)
+		{
+			m_vDir = (m_vMapCenter - m_vPos).Normal();
+			if ((m_vMapCenter - m_vPos).Length() < 2.0f)
+			{
+				m_vDir = { 0.0f, 0.0f };
+			}
+			m_fM2TriggerTime -= g_fSPF;
+			m_fM2Time -= g_fSPF;
+			if (m_fM2TriggerTime <= 0.0f)
+			{
+				m_bM2Fire = true;
+				m_fM2TriggerTime = 1.5f;
+				m_iBossM2Frame = 0;
+			}
+			if (m_fM2TriggerTime < 1.0f && m_fM2TriggerTime > 0.0f)
+			{
+				m_iBossM2Frame = 1;
+			}
+			if (m_fM2Time < 0.0f)
+			{
+				m_state = BossState::STATE_Flying;
+				m_vDir = (m_vLeftSide - m_vPos).Normal();
+				m_fM2Time = 10.0f;
+				m_fSpeed = 300.0f;
+			}
+		}
+		else if (m_state == BossState::STATE_Flying)
 		{
 
-			m_pProjectile->AddEffect(vStart, vEnd, dir, Shooter::OWNER_BOSS1, this);
-			m_ftrigger = 0.5f;
-			m_bShotting = true;
+			if ((m_vLeftSide - m_vPos).Length() < 1.0f)
+			{
+				m_fSpeed = 1100.0f;
+				m_vDir.x = 1.0f;
+			}
+			if (m_vPos.x > 13800.0f)
+			{
+				m_state = BossState::STATE_Attack2;
+				m_ftrigger = 1.0f;
+			}
 		}
 
-		if (m_ftrigger < 0.25f && m_ftrigger>0.0f)
+	}
+	else if (m_state == BossState::STATE_Dead)
+	{
+		m_fSpeed = 500.0f;
+		
+		if ((m_vLastPos - m_vPos).Length() > 3.0f)
 		{
-			m_bShotting = false;
+			m_iBossDyingFrames = 0;
 		}
-		if (m_fM1Time < 0.0f)
-		{
-			m_state = BossState::STATE_Attack3;
+		else
+		{ 
+			m_vDir = { 0.0f,0.0f };
+			m_fCurrentTime += g_fSPF; // 시간 업데이트
+
+			if (m_fCurrentTime >= m_fBossDyingFrameTime)
+			{
+				m_fCurrentTime -= m_fBossDyingFrameTime;
+				m_iBossDyingFrames++; // 다음 프레임으로 이동
+				if (m_iBossDyingFrames >= m_rtBossDyingFrames.size())
+				{
+					m_iBossDyingFrames = m_rtBossDyingFrames.size() - 1;
+				}
+			}
 		}
 	}
-	else if (m_state == BossState::STATE_Attack3)
-	{
-		m_vDir = (m_vMapCenter - m_vPos).Normal();
-		if ((m_vMapCenter - m_vPos).Length() < 2.0f)
-		{
-			m_vDir = { 0.0f, 0.0f };
-		}
-		m_fM2TriggerTime -= g_fSPF;
-		m_fM2Time -= g_fSPF;
-		if (m_fM2TriggerTime <= 0.0f)
-		{
-			m_bM2Fire = true;
-			m_fM2TriggerTime = 1.5f;
-			m_iBossM2Frame = 0;
-		}
-		if (m_fM2TriggerTime < 1.0f && m_fM2TriggerTime > 0.0f)
-		{
-			m_iBossM2Frame = 1;
-		}
-		if (m_fM2Time < 0.0f)
-		{
-			m_state = BossState::STATE_Flying;
-		}
-	}
-	else if (m_state == BossState::STATE_Flying)
-	{
 
+
+	if (m_HP <= 0)
+	{
+		m_state = BossState::STATE_Dead;
+		m_bDeadCheck = true;
+	}
+
+	if (m_bDeadCheck &&(m_vLastPos - m_vPos).Length() > 3.0f)
+	{
+		m_vDir = (m_vLastPos - m_vPos).Normal();
+		m_bDeadCheck = false;
 	}
 
 

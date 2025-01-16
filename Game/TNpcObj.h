@@ -50,6 +50,7 @@ public:
 	std::vector<RECT> m_rtBossM1Frames;
 	std::vector<RECT> m_rtBossM2Frames;
 	std::vector<RECT> m_rtBossFlyingFrames;
+	std::vector<RECT> m_rtBossDyingFrames;
 	UINT m_iMon1AttckFrame = 0;            
 	UINT m_iBossCreateFrame = 0;
 	UINT m_iBossIdleFrame = 0;
@@ -59,6 +60,7 @@ public:
 	UINT m_iBossM1Frame = 0;
 	UINT m_iBossM2Frame = 0;
 	UINT m_iBossFlyingFrames = 0;
+	UINT m_iBossDyingFrames = 0;
 	float m_fMon1AttackFrameTime = 0.3f;
 	float m_fBossCreateFrameTime = 0.2f;
 	float m_fBossIdleFrameTime = 0.2f;
@@ -68,8 +70,9 @@ public:
 	float m_fBossM1FrameTime = 0.5f;
 	float m_fBossM2FrameTime = 0.5f;
 	float m_fBossFlyingFrameTime = 0.2f;
+	float m_fBossDyingFrameTime = 0.2f;
 
-	
+	bool m_bAbleAttack = true;
 	bool m_bLoop = true;
 	void SetData(vector<vector<RECT>> SpriteList);
 public:

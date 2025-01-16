@@ -16,7 +16,7 @@ void    TDropObj::HitOverlap(TObject* pObj, THitResult hRes)
 	{
 		auto pHero = dynamic_cast<THeroObj*>(pObj);
 		pHero->TakeDamage(30);
-		m_bExplosion = true;
+		if(pHero->m_bInvincible == false)	m_bExplosion = true;
 		//m_state = DropState::STATE_EXPLOSION;
 		//m_bDead = true;
 	}

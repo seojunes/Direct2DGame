@@ -19,6 +19,9 @@ void TMonster1::SetVertexData()
 		break;
 	case Monster1State::STATE_Return:
 		break;
+	case Monster1State::STATE_Dead:
+		rt.SetS(8, 104, 26, 30);
+		break;
 	default:
 		break;
 	}
@@ -67,53 +70,61 @@ void TMonster1::Frame()
 	SetPosition(vMove);
 	float fHeroDistance = (m_pHero->m_vPos - m_vPos).Length();
 	float fInitDistance = (m_vInitedPos - m_vPos).Length();
-	if (m_state == Monster1State::STATE_Move)
+	if (m_HP > 0)
 	{
-		m_fSpeed = 100.0f;
-		if (m_vPos.x >= m_vInitedPos.x + m_iLimitedDis || m_vPos.x <= m_vInitedPos.x - m_iLimitedDis)
+		if (m_state == Monster1State::STATE_Move)
 		{
-			m_vDir.x *= -1.0f;
+			m_fSpeed = 100.0f;
+			if (m_vPos.x >= m_vInitedPos.x + m_iLimitedDis || m_vPos.x <= m_vInitedPos.x - m_iLimitedDis)
+			{
+				m_vDir.x *= -1.0f;
+			}
+
+			if (fHeroDistance < 400.0f)
+			{
+				m_fFindTime -= g_fSPF;
+			}
+
+
+			if (m_fFindTime < 0.0f || m_iPreHP != m_HP)
+			{
+				m_state = Monster1State::STATE_Attack;
+				m_fFindTime = 1.0f;
+				m_fSpeed = rand() % 50 + 200.0f;
+			}
 		}
-
-		if (fHeroDistance < 400.0f)
+		else if (m_state == Monster1State::STATE_Attack)
 		{
-			m_fFindTime -= g_fSPF;
+			//m_fSpeed = 250.0f;
+			m_vDir = (m_pHero->m_vPos - m_vPos).Normal();
+			m_vDir.y = 0.0f;
+			if (fInitDistance > 600.0f)
+			{
+				m_state = Monster1State::STATE_Return;
+			}
+			/*if (fHeroDistance > 500.0f)
+			{
+				m_state = Monster1State::STATE_Return;
+			}*/
 		}
-
-
-		if (m_fFindTime < 0.0f || m_iPreHP != m_HP)
+		else if (m_state == Monster1State::STATE_Return)
 		{
-			m_state = Monster1State::STATE_Attack;
-			m_fFindTime = 1.0f;
-			m_fSpeed = rand() % 50 + 200.0f;
+			m_fSpeed = 500.0f;
+			m_vDir = (m_vInitedPos - m_vPos).Normal();
+			if (m_HP < 50)
+			{
+				m_HP++;
+			}
+			if (fInitDistance < 1.0f)
+			{
+				m_state = Monster1State::STATE_Move;
+			}
 		}
 	}
-	else if (m_state == Monster1State::STATE_Attack)
+	else
 	{
-		//m_fSpeed = 250.0f;
-		m_vDir = (m_pHero->m_vPos - m_vPos).Normal();
-		m_vDir.y = 0.0f;
-		if (fInitDistance > 600.0f)
-		{
-			m_state = Monster1State::STATE_Return;
-		}
-		/*if (fHeroDistance > 500.0f)
-		{
-			m_state = Monster1State::STATE_Return;
-		}*/
-	}
-	else if (m_state == Monster1State::STATE_Return)
-	{
-		m_fSpeed = 500.0f;
-		m_vDir = (m_vInitedPos - m_vPos).Normal();
-		if (m_HP < 50)
-		{
-			m_HP++;
-		}
-		if (fInitDistance < 1.0f)
-		{
-			m_state = Monster1State::STATE_Move;
-		}
+		m_vDir = { 0.0f,0.0f };
+		m_state == Monster1State::STATE_Dead;
 	}
 	SetVertexData();
 }
@@ -277,7 +288,7 @@ void TMonster3::Frame()
 		//Shoot();
 	}
 
-	
+
 	m_pProjectile->Frame(m_vPos);
 }
 void TMonster3::Render()

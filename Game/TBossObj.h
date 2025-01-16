@@ -14,7 +14,7 @@ enum class BossState
 	STATE_PAUSE,
 	STATE_Attack3,
 	STATE_Flying,
-	STATE_Return,
+	STATE_Dead,
 };
 
 class TBossObj : public TNpcObj
@@ -31,7 +31,9 @@ public:
 	BossState m_state = BossState::STATE_Create;
 public:
 	TVector2 m_vInitedPos;
+	TVector2 m_vLastPos = { 13800.0f , 650.0f };
 	TVector2 m_vMapCenter = { 13440.0f , 450.0f };
+	TVector2 m_vLeftSide = { 13000.0f, 730.0f };
 	TVector2 m_vDir = { -1.0f, 0.0f };
 	UINT	 m_iLimitedDis = 300.0f;
 	float    m_ftrigger = 0.5f;
@@ -42,10 +44,11 @@ public:
 	bool     m_bHealing = false;
 	float    m_fPhase2CurrentTime = 1.5f;
 	bool     m_bShotting = false;
-	float	 m_fM1Time = 5.0f;
+	float	 m_fM1Time = 10.0f;
 	bool     m_bM2Fire = false;
-	float    m_fM2Time = 5.0f;
+	float    m_fM2Time = 10.0f;
 	float    m_fM2TriggerTime = 1.5;
+	bool     m_bDeadCheck = false;
 	
 	
 	std::vector<TVector2> m_MissleDirList;
@@ -60,7 +63,7 @@ public:
 	{
 		m_HP = m_iPreHP = 200.0f;
 		m_fSpeed = 100.0f;
-		m_vInitedPos = initialPos; // 초기 위치 설정
+		m_vInitedPos = initialPos;
 		m_vPos = initialPos;       // 현재 위치도 초기 위치로 설정
 	}
 public:

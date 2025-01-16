@@ -77,6 +77,7 @@ public:
 	bool m_bKeyinput = true;
 public:
 	void TakeDamage(int damage);
+	bool m_bEnd = false;
 	bool IsInvincible() const	{ return m_bInvincible; }
 public:
 	HeroState m_CurrentState = HeroState::Jump; // 초기 상태는 Jump

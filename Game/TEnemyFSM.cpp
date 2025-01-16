@@ -99,5 +99,5 @@ void TAttackAction::ProcessAction(TObject* pObj)
 
 void TDeadAction::ProcessAction(TObject* pObj)
 {
-	m_pOwner->m_bDead = true;
+	//m_pOwner->m_bDead = true;
 }

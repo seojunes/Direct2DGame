@@ -6,6 +6,7 @@ enum class Monster1State
 	STATE_Move =0,
 	STATE_Attack,
 	STATE_Return,
+	STATE_Dead,
 };
 
 

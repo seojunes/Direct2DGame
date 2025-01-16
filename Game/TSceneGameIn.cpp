@@ -39,8 +39,8 @@ TVector2 TSceneGameIn::GetWorldMousePos()
 
 bool TSceneGameIn::GameDataLoad(W_STR filename)
 {
-	TCHAR pBuffer[256] = { 0 };
-	TCHAR pTemp[256] = { 0 };
+	TCHAR pBuffer[512] = { 0 };
+	TCHAR pTemp[512] = { 0 };
 
 	int iNumSprite = 0;
 	FILE* fp_src;
@@ -939,13 +939,14 @@ void   TSceneGameIn::Frame()
 	// 보스피가 빠지면 보스죽었을때 상태로 이동.
 	if (m_pBoss->m_HP <= 0)
 	{
-		m_pBoss->m_bDead = true;
+		//m_pBoss->m_bDead = true;
 		m_bBossDefeated = true;
 		m_pVictory->Frame();
 	}
 	// 보스죽었을때 1번만 실행
 	if (m_bBossDefeated)
 	{
+		m_pHero->m_bEnd = true;
 		for (auto data : m_DropList)
 		{
 			data->m_bDead = true;
