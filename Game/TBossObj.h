@@ -11,6 +11,7 @@ enum class BossState
 	STATE_PHASE2Create,
 	STATE_PHASE2,
 	STATE_Attack2,
+	STATE_PAUSE,
 	STATE_Attack3,
 	STATE_Return,
 };
@@ -32,23 +33,31 @@ public:
 	TVector2 m_vMapCenter = { 13440.0f , 450.0f };
 	TVector2 m_vDir = { -1.0f, 0.0f };
 	UINT	 m_iLimitedDis = 300.0f;
-	float    m_ftrigger = 0.1f;
+	float    m_ftrigger = 0.5f;
 	float    m_fNextState = 3.0f;
 	float    m_fCreateTime = 2.6f;
 	float	 m_fCurrentTime = 0.0f;
 	float    m_fTransTime = 3.0f;
 	bool     m_bHealing = false;
-	float    m_fPhase2CurrentTime = 3.0f;
+	float    m_fPhase2CurrentTime = 1.5f;
+	bool     m_bShotting = false;
+	float	 m_fM1Time = 5.0f;
+	bool     m_bM2Fire = false;
+	float    m_fM2Time = 5.0f;
+	float    m_fM2TriggerTime = 1.5;
+	
+	
 	std::vector<TVector2> m_MissleDirList;
 public:
 	void GetState(bool state);
 	bool m_bGameState;
 public:
+	INT m_HP;
 	INT m_iPreHP;
 public:
 	TBossObj(const TVector2& initialPos)
 	{
-		TNpcObj::m_HP= m_iPreHP = 200;
+		m_HP = m_iPreHP = 200.0f;
 		m_fSpeed = 100.0f;
 		m_vInitedPos = initialPos; // 초기 위치 설정
 		m_vPos = initialPos;       // 현재 위치도 초기 위치로 설정

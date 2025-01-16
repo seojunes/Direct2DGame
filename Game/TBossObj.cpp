@@ -73,7 +73,7 @@ void TBossObj::SetVertexData()
 		switch (m_iBossTransFrame)
 		{
 		case 0:
-			SetScale({ 100,50});
+			SetScale({ 100,50 });
 			break;
 		case 1:
 			SetScale({ 74, 56.5f });
@@ -111,10 +111,45 @@ void TBossObj::SetVertexData()
 		break;
 		break;
 	case BossState::STATE_Attack2:
-		rt.SetS(400, 283, 60,60);
-		SetScale({ 85.6f,95.2f });
+		rt.SetS(m_rtBossM1Frames[m_iBossM1Frame].left,
+			m_rtBossM1Frames[m_iBossM1Frame].top,
+			m_rtBossM1Frames[m_iBossM1Frame].right,
+			m_rtBossM1Frames[m_iBossM1Frame].bottom); // 현재 프레임의 텍스처 좌표,
+		switch (m_iBoss2PhaseFrame)
+		{
+		case 0:
+			SetScale({ 85.6f,95.2f });
+			break;
+		case 1:
+			SetScale({ 85.6f,95.2f });
+			break;
+		case 2:
+			SetScale({ 85.6f,95.2f });
+			break;
+		default:
+			break;
+		}
 		break;
-	case BossState::STATE_Return:
+	case BossState::STATE_PAUSE:
+		rt.SetS(241, 442, 71, 63);
+		SetScale({ 101.3f, 98.3f });
+		break;
+	case BossState::STATE_Attack3:
+		rt.SetS(m_rtBossM2Frames[m_iBossM2Frame].left,
+			m_rtBossM2Frames[m_iBossM2Frame].top,
+			m_rtBossM2Frames[m_iBossM2Frame].right,
+			m_rtBossM2Frames[m_iBossM2Frame].bottom); // 현재 프레임의 텍스처 좌표,
+		switch (m_iBossM2Frame)
+		{
+		case 0:
+			SetScale({ 101.3f, 98.3f });
+			break;
+		case 1:
+			SetScale({ 78.5f,98.3f });
+			break;
+		default:
+			break;
+		}
 		break;
 	default:
 		break;
@@ -149,7 +184,7 @@ void TBossObj::Init()
 void TBossObj::Frame()
 {
 	if (!m_bGameState)		return;
-	
+
 	SetVertexData();
 
 	if (m_vDir.x > 0)
@@ -233,6 +268,28 @@ void TBossObj::Frame()
 			}
 		}
 	}
+	else if (m_state == BossState::STATE_Attack2)
+	{
+		if (m_bShotting)
+		{
+			m_iBossM1Frame = 1;
+		}
+		else
+		{
+			m_iBossM1Frame = 0;
+		}
+	}
+	else if (m_state == BossState::STATE_Attack3)
+	{
+		if (m_bShotting)
+		{
+			m_iBossM2Frame = 0;
+		}
+		else
+		{
+			m_iBossM2Frame = 1;
+		}
+	}
 
 
 	float fHeroDistance = (m_pHero->m_vPos - m_vPos).Length();
@@ -251,7 +308,7 @@ void TBossObj::Frame()
 	else if (m_state == BossState::STATE_Idle)
 	{
 		m_vDir = { 0.0f,0.0f };
-		if (fHeroDistance < 600.0f )
+		if (fHeroDistance < 600.0f || m_HP != m_iPreHP)
 		{
 			m_state = BossState::STATE_Attack1;
 			m_vDir = { -1.0f,0.0f };
@@ -259,8 +316,8 @@ void TBossObj::Frame()
 	}
 	else if (m_state == BossState::STATE_Attack1)
 	{
-		m_fSpeed = 500.0f;
-		
+		m_fSpeed = 1000.0f;
+
 		if (m_HP < 180.0f)
 		{
 			m_fSpeed = 300.0f;
@@ -271,7 +328,7 @@ void TBossObj::Frame()
 				m_state = BossState::STATE_Transition;
 			}
 		}
-		
+
 		//if (m_rtScreen.v2.y >= 843.5f)
 		//{
 		//	m_vDir = { 0.0f, 0.0f };
@@ -340,10 +397,11 @@ void TBossObj::Frame()
 			m_HP = 200;
 			m_bHealing = false;
 		}
-		if(m_fPhase2CurrentTime<= 0.0f)			m_state = BossState::STATE_Attack2;
+		if (m_fPhase2CurrentTime <= 0.0f)			m_state = BossState::STATE_Attack2;
 	}
 	else if (m_state == BossState::STATE_Attack2)
 	{
+		m_fM1Time -= g_fSPF;
 		if (m_vPos.x < 13900.0f)
 		{
 			m_vDir = { 1.0f,0.0f };
@@ -361,26 +419,47 @@ void TBossObj::Frame()
 		}
 		m_ftrigger -= g_fSPF;
 		TVector2	vHalf = { 25.0f, 25.0f };
-		TVector2	vStart = m_vPos - vHalf;
-		TVector2	vEnd = m_vPos + vHalf;
+		TVector2    vPos;
+		vPos.x = m_vPos.x - m_rtScreen.vh.x;
+		vPos.y = m_vPos.y;
+		TVector2 vStart = vPos - vHalf;
+		TVector2	vEnd = vPos + vHalf;
 		TVector2    dir = { -1.0f, 0.0f };
-		
+
 		if (m_ftrigger < 0.0f)
 		{
-			
-			m_pProjectile->AddEffect(vStart, vEnd, dir, Shooter::OWNER_BOSS1, this);
-			
-			
-			m_ftrigger = 1.0f;
-		}
-		/*if (m_fNextState < 0.0f)
-		{
-			m_state = BossState::STATE_Attack2;
-			m_fNextState = 5.0f;
-		}*/
 
+			m_pProjectile->AddEffect(vStart, vEnd, dir, Shooter::OWNER_BOSS1, this);
+			m_ftrigger = 0.5f;
+			m_bShotting = true;
+		}
+
+		if (m_ftrigger < 0.25f && m_ftrigger>0.0f)
+		{
+			m_bShotting = false;
+		}
+		if (m_fM1Time < 0.0f)
+		{
+			m_state = BossState::STATE_Attack3;
+		}
 	}
-	
+	else if (m_state == BossState::STATE_Attack3)
+	{
+		m_vDir = (m_vMapCenter- m_vPos).Normal();
+		if ((m_vMapCenter - m_vPos).Length() < 2.0f)
+		{
+			m_vDir = { 0.0f, 0.0f };
+		}
+		m_fM2TriggerTime -= g_fSPF;
+		m_fM2Time -= g_fSPF;
+		if (m_fM2TriggerTime <= 0.0f)
+		{
+			m_bM2Fire = true;
+			m_fM2TriggerTime = 1.5f;
+		}
+	}
+
+
 	m_pProjectile->Frame(m_vPos);
 }
 

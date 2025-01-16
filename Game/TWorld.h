@@ -14,6 +14,7 @@
 #include "TVictory.h"
 #include "TRadderObj.h"
 #include "TBossCreate.h"
+#include "TDropObj.h"
 
 
 class TScene;

@@ -98,7 +98,7 @@ public:
 	TVector2 m_vRightDir = { 1.0f, 0.0f };
 	TVector2 m_vLeftDir = { -1.0f, 0.0f };
 public:
-	INT m_HP = 300;
+	INT m_HeroHP = 1000;
 	std::vector <SRect> spriteData;
 	void SetData(vector<vector<RECT>> SpriteList);
 public:

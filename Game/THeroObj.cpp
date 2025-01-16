@@ -68,7 +68,7 @@ void THeroObj::TakeDamage(int damage)
 {
 	if (m_bInvincible == false) // 무적 상태가 아닐 때만 데미지를 받음
 	{
-		m_HP -= damage;
+		m_HeroHP -= damage;
 
 		// 무적 상태 시작
 		m_bInvincible = true;
@@ -84,11 +84,11 @@ void THeroObj::GetGroundH(float height)
 void THeroObj::Frame()
 {
 
-	if (m_HP <= 0)
-	{
-		m_HP = 0;
-		m_bDead = true; // 히어로 사망 처리
-	}
+	//if (m_HeroHP <= 0)
+	//{
+	//	m_HeroHP = 0;
+	//	m_bDead = true; // 히어로 사망 처리
+	//}
 
 	if (m_bInvincible)
 	{

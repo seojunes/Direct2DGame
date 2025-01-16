@@ -10,7 +10,7 @@ TSceneGameIn::~TSceneGameIn() {}
 
 void TSceneGameIn::ProcessAction(TObject* pObj)
 {
-	
+
 	if (m_bNextScene == true)
 	{
 		m_pOwner->m_pAction->Release();
@@ -465,7 +465,7 @@ bool TSceneGameIn::CreateUI()
 
 	auto hero_hp = std::make_shared<TUiHpBar>(HPBAR_OWNER::BAROWNER_HERO);
 	hero_hp->SetHero(m_pHero.get());
-	hero_hp->SetHeroHp(m_pHero->m_HP);
+	hero_hp->SetHeroHp(m_pHero->m_HeroHP);
 	hero_hp->m_pMeshRender = &TGameCore::m_MeshRender;
 	hero_hp->SetFSM(&m_GuiFSM);
 	vStart1 = { 118.37f, 31.0f };
@@ -563,6 +563,49 @@ void   TSceneGameIn::AddEffect(TVector2 tStart, TVector2 tEnd)
 		m_EffectList.emplace_back(pObject3);
 	}
 }
+void TSceneGameIn::AddDrop()
+{
+	DropArea = {
+		{{12900.0f, 100.0f},{13050.0f, 200.0f}},
+		{{13050.0f, 100.0f},{13200.0f, 200.0f}},
+		{{13200.0f, 100.0f},{13350.0f, 200.0f}},
+		{{13350.0f, 100.0f},{13500.0f, 200.0f}},
+		{{13500.0f, 100.0f},{13650.0f, 200.0f}},
+		{{13650.0f, 100.0f},{13800.0f, 200.0f}},
+		{{13800.0f, 100.0f},{13950.0f, 200.0f}},
+	};
+	while (m_iDrop.size() < 4)
+	{
+		int droparea = rand() % 7;
+		m_iDrop.insert(droparea);
+	}
+	std::vector<int> m_iDropv(m_iDrop.begin(), m_iDrop.end());
+	
+	for (int i = 0; i < 4; ++i)
+	{
+		TVector2 tStart = DropArea[m_iDropv[i]].first;
+		TVector2 tEnd = DropArea[m_iDropv[i]].second;
+		auto m_pRect = std::make_shared<TDropObj>();
+		m_pRect->m_pWorld = m_pWorld.get();
+		TLoadResData resData;
+		resData.texPathName = L"../../data/ui/BossM2.png";
+		resData.texShaderName = L"../../data/shader/Default.txt";
+
+		m_pRect->m_pMeshRender = &TGameCore::m_MeshRender;
+
+		//if (m_pWorld)
+		//{ // TWorld 포인터가 유효한지 확인
+		//	m_pWorld->AddCollisionExecute(obj.get(), std::bind(&TProjectile::HitOverlap, this, std::placeholders::_1, std::placeholders::_2));
+		//}
+		if (m_pRect->Create(m_pWorld.get(), resData, tStart, tEnd))
+		{
+			m_pRect->m_iCollisionType = TCollisionType::T_Overlap;
+			m_DropList.emplace_back(m_pRect);
+		}
+	}
+
+}
+
 void   TSceneGameIn::Init()
 {
 	m_vCamera.x = 640.0f;
@@ -582,7 +625,7 @@ void   TSceneGameIn::Init()
 
 	m_pBitmap1Mask = I_Tex.Load(L"../../data/texture/bitmap2.bmp");
 	GameDataLoad(L"SpriteData.txt");
-	
+
 	m_pWorld = std::make_shared<TWorld>(this);
 	CreateMap();
 	CreateBossMap();
@@ -599,8 +642,8 @@ void   TSceneGameIn::Init()
 void   TSceneGameIn::Frame()
 {
 	TVector2 vMouse = GetWorldMousePos();
-	
-	
+	srand(static_cast<unsigned>(time(0)));
+
 	// 디버그 모드 변환 벽충돌 표시, 카메라 수동이동
 	if (g_GameKey.dwPkey == KEY_PUSH)
 	{
@@ -616,7 +659,7 @@ void   TSceneGameIn::Frame()
 	}
 
 	// 영웅 관리, 밖으로 빼야됨
-	if (m_pHero->m_HP <= 0)
+	if (m_pHero->m_HeroHP <= 0)
 	{
 		m_bNextScene = true;
 	}
@@ -747,7 +790,7 @@ void   TSceneGameIn::Frame()
 		if (m_pHero->m_BossMoving == BossRoomMovingState::STATE_UNABLE && g_GameKey.dwSkey == KEY_PUSH)
 		{
 			m_pInGame->Stop();
-			m_pBossSound ->Play();
+			m_pBossSound->Play();
 			m_vCamera.x = 13440.0f;
 			m_vCamera.y = 500.0f;
 			m_pHero->m_vPos = { 13440.0f, 500.0f };
@@ -779,8 +822,8 @@ void   TSceneGameIn::Frame()
 			m_vCamera.y += 5.0f;
 		}
 	}
-	
-	
+
+
 	m_pBossCreate->GetState(m_MapAction == MapAction::STATE_CREATEBOSS);
 	if (m_pBossCreate->m_bCreate == true)
 	{
@@ -798,12 +841,12 @@ void   TSceneGameIn::Frame()
 			TVector2 bb = dd + cc;
 			AddEffect(aa, bb);
 		}
-		m_pBoss->FrameState(m_pHero.get()); 
+		m_pBoss->FrameState(m_pHero.get());
 		m_pBoss->Frame();
 	}
 	m_pBossCreate->Frame();
 
-	
+
 
 
 	// NPC 상태 업데이트
@@ -895,6 +938,7 @@ void   TSceneGameIn::Frame()
 	// 보스피가 빠지면 보스죽었을때 상태로 이동.
 	if (m_pBoss->m_HP <= 0)
 	{
+		m_pBoss->m_bDead = true;
 		m_bBossDefeated = true;
 		m_pVictory->Frame();
 	}
@@ -912,6 +956,20 @@ void   TSceneGameIn::Frame()
 		m_bBossDefeated = false;
 		m_pHero->m_bKeyinput = false;
 	}
+
+	if (m_pBoss->m_bM2Fire == true)
+	{
+		AddDrop();
+		m_pBoss->m_bM2Fire = false;
+	}
+
+	for (auto& drop : m_DropList)
+	{
+		if (!drop->m_bDead)
+		{
+			drop->Frame();
+		}
+	}
 	
 }
 void   TSceneGameIn::Render()
@@ -926,7 +984,7 @@ void   TSceneGameIn::Render()
 		m_pBossCreate->Transform(m_vCamera);
 		m_pBossCreate->Render();
 	}
-	
+
 	TDevice::m_pd3dContext->PSSetSamplers(0, 1, TDxState::m_pPointSS.GetAddressOf());
 	TDevice::m_pd3dContext->PSSetShaderResources(1, 1, &m_pBitmap1Mask->m_pTexSRV);
 
@@ -982,6 +1040,13 @@ void   TSceneGameIn::Render()
 		data->Transform(m_vCamera);
 		data->Render();
 	}
+	for (auto data : m_DropList)
+	{
+		if (data->m_bDead)	continue;
+		data->Transform(m_vCamera);
+		data->Render();
+		m_iDrop.clear();
+	}
 
 	for (int i = 0; i < 2; ++i)
 	{
@@ -1019,6 +1084,11 @@ void   TSceneGameIn::Release()
 	}
 	m_NpcList.clear();
 	for (auto data : m_EffectList)
+	{
+		data->Release();
+		data = nullptr;
+	}
+	for (auto data : m_DropList)
 	{
 		data->Release();
 		data = nullptr;

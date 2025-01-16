@@ -155,6 +155,7 @@
     <ClInclude Include="TCollisionManager.h" />
     <ClInclude Include="TControlGUI.h" />
     <ClInclude Include="TDevice.h" />
+    <ClInclude Include="TDropObj.h" />
     <ClInclude Include="TDxState.h" />
     <ClInclude Include="TDxWrite.h" />
     <ClInclude Include="TEffectObj.h" />
@@ -203,6 +204,7 @@
     <ClCompile Include="TCollisionManager.cpp" />
     <ClCompile Include="TControlGUI.cpp" />
     <ClCompile Include="TDevice.cpp" />
+    <ClCompile Include="TDropObj.cpp" />
     <ClCompile Include="TDxState.cpp" />
     <ClCompile Include="TDxWrite.cpp" />
     <ClCompile Include="TEffectObj.cpp" />

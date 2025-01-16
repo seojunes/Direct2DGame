@@ -128,6 +128,9 @@
     <ClCompile Include="TBossCreate.cpp">
       <Filter>object</Filter>
     </ClCompile>
+    <ClCompile Include="TDropObj.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -261,6 +264,9 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="TBossCreate.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="TDropObj.h">
       <Filter>object</Filter>
     </ClInclude>
   </ItemGroup>

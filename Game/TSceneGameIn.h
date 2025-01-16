@@ -52,6 +52,7 @@ class TSceneGameIn : public TScene
 	using tUI = std::shared_ptr<TControlGUI>;
 	using tCol = std::shared_ptr<TCollisionManager>;
 	using tHP = std::shared_ptr<THpBar>;
+	using tDrop = std::shared_ptr<TDropObj>;
 
 	std::shared_ptr<TMapObj>	m_pMap = nullptr;
 	std::shared_ptr<TMapObj>	m_pBossMap = nullptr;
@@ -61,16 +62,20 @@ class TSceneGameIn : public TScene
 	std::shared_ptr<THeroObj>	m_pHero = nullptr;
 	std::shared_ptr<TBossObj>	m_pBoss = nullptr;
 	std::shared_ptr<TBossCreate>	m_pBossCreate = nullptr;
+	std::vector<tDrop>			m_DropList;
 	std::vector<tCol>			m_ColList;
 	std::vector<tNpc>		    m_NpcList;
 	std::vector< tUI>		    m_UiList;
 	std::vector<tHP>		    m_HPList;
 	std::list<tObject>			m_EffectList;
 	std::vector<std::pair<TVector2, TVector2>> rectArea;
+	std::vector<std::pair<TVector2, TVector2>> DropArea;
 	std::vector<std::pair<TVector2, TVector2>> Mon1Area;
 	std::vector<std::pair<TVector2, TVector2>> Mon2Area;
 	std::vector<std::pair<TVector2, TVector2>> Mon3Area;
 	std::vector<std::pair<TVector2, TVector2>> HPArea;
+	std::set<int>							   m_iDrop;
+	
 
 	UINT						m_Npccount = 4;
 	float						m_offsetdis = 5.0f;
@@ -81,6 +86,7 @@ class TSceneGameIn : public TScene
 	std::vector<T_STR_VECTOR> m_szSpriteList;
 public:
 	void   AddEffect(TVector2 tStart, TVector2 tEnd);
+	void   AddDrop();
 	bool   GameDataLoad(W_STR filename);
 
 	virtual void   Init() override;
@@ -104,6 +110,7 @@ public:
 	bool CreateNPC();
 	//bool CreateEffect();
 	bool CreateUI();
+	
 	TVector2 GetWorldMousePos();
 public:
 	Debug		m_Debug = Debug::Normal;

@@ -44,9 +44,11 @@ public:
 	//void   ApplyOwnerType(const TObjectType& InObjectType);
 	void   Init();
 	void   Frame(TVector2 vPos);
+	//void   Frame() override;
 	void   Render(TVector2 vCamera);
 	void   Release();
 	INT	 m_iDamage = 10;
+	
 
 public:
 	//TProjectile();

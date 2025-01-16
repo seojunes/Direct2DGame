@@ -67,14 +67,18 @@ void TNpcObj::SetData(vector<vector<RECT>> SpriteList)
 	m_rtBossAttack1Frames.resize(SpriteList[14].size());
 	m_rtBossTransFrames.resize(SpriteList[15].size());
 	m_rtBoss2PhaseFrames.resize(SpriteList[16].size());
-	
-	
+	m_rtBossM1Frames.resize(SpriteList[17].size());
+	m_rtBossM2Frames.resize(SpriteList[18].size());
+
+
 	m_rtMon1AttackFrames = SpriteList[8];
 	m_rtBossCreateFrames = SpriteList[12];
 	m_rtBossIdleFrames = SpriteList[13];
 	m_rtBossAttack1Frames = SpriteList[14];
 	m_rtBossTransFrames = SpriteList[15];
 	m_rtBoss2PhaseFrames = SpriteList[16];
+	m_rtBossM1Frames = SpriteList[17];
+	m_rtBossM2Frames = SpriteList[18];
 }
 
 

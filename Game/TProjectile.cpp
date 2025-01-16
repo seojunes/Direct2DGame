@@ -130,7 +130,7 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction
 	else
 	{
 		resData.texPathName = L"../../data/ui/newCShot.png";
-		data.m_iDamage = 15;
+		data.m_iDamage = 1500;
 		obj->m_fSpeed = 500.0f;
 		//obj->m_iDamage = 15;
 	}
@@ -148,11 +148,12 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction
 	}
 	else if (ownertype == Shooter::OWNER_BOSS1)
 	{
-		resData.texPathName = L"../../data/ui/bossMissile1.png";
+		resData.texPathName = L"../../data/ui/BossM1.png";
 		data.m_iDamage = 10;
 		data.m_fLifeTime = 3.0f;
 		obj->SetRotation(T_Pi);
 	}
+	
 	
 	data.m_vDirection = direction;
 	UINT iSprite = rand() % 3;
@@ -196,6 +197,8 @@ void   TProjectile::Init()
 }
 void   TProjectile::Frame(TVector2 vObjPos)
 {
+
+	
 	for (auto iter = std::begin(m_datalist); iter != m_datalist.end();)
 	{
 		TProjectileEffect* pObj = (TProjectileEffect*)iter->get();
