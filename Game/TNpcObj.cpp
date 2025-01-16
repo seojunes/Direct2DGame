@@ -85,10 +85,11 @@ void TNpcObj::SetData(vector<vector<RECT>> SpriteList)
 	m_rtMon1AttackFrames.resize(SpriteList[8].size());
 	m_rtMon2AttackFrames.resize(SpriteList[23].size());
 	m_rtMon2DyingFrames.resize(SpriteList[24].size());
-
+	m_rtMon3AttackFrames.resize(SpriteList[25].size());
 	m_rtMon1AttackFrames = SpriteList[8];
 	m_rtMon2AttackFrames = SpriteList[23];
 	m_rtMon2DyingFrames = SpriteList[24];
+	m_rtMon3AttackFrames = SpriteList[25];
 }
 
 
