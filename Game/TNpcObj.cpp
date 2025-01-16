@@ -61,7 +61,6 @@ TVector2 TNpcObj::Attacked(TVector2 pos)
 }
 void TNpcObj::SetData(vector<vector<RECT>> SpriteList)
 {
-	m_rtMon1AttackFrames.resize(SpriteList[8].size());
 	m_rtBossCreateFrames.resize(SpriteList[12].size());
 	m_rtBossIdleFrames.resize(SpriteList[13].size());
 	m_rtBossAttack1Frames.resize(SpriteList[14].size());
@@ -71,7 +70,7 @@ void TNpcObj::SetData(vector<vector<RECT>> SpriteList)
 	m_rtBossM2Frames.resize(SpriteList[18].size());
 	m_rtBossFlyingFrames.resize(SpriteList[21].size());
 	m_rtBossDyingFrames.resize(SpriteList[22].size());
-	m_rtMon1AttackFrames = SpriteList[8];
+	
 	m_rtBossCreateFrames = SpriteList[12];
 	m_rtBossIdleFrames = SpriteList[13];
 	m_rtBossAttack1Frames = SpriteList[14];
@@ -81,6 +80,15 @@ void TNpcObj::SetData(vector<vector<RECT>> SpriteList)
 	m_rtBossM2Frames = SpriteList[18];
 	m_rtBossFlyingFrames = SpriteList[21];
 	m_rtBossDyingFrames = SpriteList[22];
+
+
+	m_rtMon1AttackFrames.resize(SpriteList[8].size());
+	m_rtMon2AttackFrames.resize(SpriteList[23].size());
+	m_rtMon2DyingFrames.resize(SpriteList[24].size());
+
+	m_rtMon1AttackFrames = SpriteList[8];
+	m_rtMon2AttackFrames = SpriteList[23];
+	m_rtMon2DyingFrames = SpriteList[24];
 }
 
 

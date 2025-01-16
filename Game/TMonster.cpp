@@ -51,19 +51,7 @@ void TMonster1::Frame()
 		m_eCurrentView = HeroView::RightView;
 	}
 
-	m_fCurrentTime += g_fSPF; // 시간 업데이트
-	if (m_fCurrentTime >= m_fMon1AttackFrameTime)
-	{
-		m_fCurrentTime -= m_fMon1AttackFrameTime;
-		m_iMon1AttckFrame++; // 다음 프레임으로 이동
-		if (m_iMon1AttckFrame >= m_rtMon1AttackFrames.size())
-		{
-			if (m_bLoop)
-				m_iMon1AttckFrame = 0; // 반복일 경우 첫 프레임으로 이동
-			else
-				m_iMon1AttckFrame = m_rtMon1AttackFrames.size() - 1; // 마지막 프레임 유지
-		}
-	}
+
 
 
 	TVector2 vMove = m_vPos + m_vDir * (g_fSPF * m_fSpeed);
@@ -106,6 +94,19 @@ void TMonster1::Frame()
 			{
 				m_state = Monster1State::STATE_Return;
 			}*/
+			m_fCurrentTime += g_fSPF; // 시간 업데이트
+			if (m_fCurrentTime >= m_fMon1AttackFrameTime)
+			{
+				m_fCurrentTime -= m_fMon1AttackFrameTime;
+				m_iMon1AttckFrame++; // 다음 프레임으로 이동
+				if (m_iMon1AttckFrame >= m_rtMon1AttackFrames.size())
+				{
+					if (m_bLoop)
+						m_iMon1AttckFrame = 0; // 반복일 경우 첫 프레임으로 이동
+					else
+						m_iMon1AttckFrame = m_rtMon1AttackFrames.size() - 1; // 마지막 프레임 유지
+				}
+			}
 		}
 		else if (m_state == Monster1State::STATE_Return)
 		{
@@ -124,8 +125,17 @@ void TMonster1::Frame()
 	else
 	{
 		m_vDir = { 0.0f,0.0f };
-		m_state == Monster1State::STATE_Dead;
+		m_state = Monster1State::STATE_Dead;
+		m_fDeadTime -= g_fSPF;
+		m_bAbleAttack = false;
+		if (m_fDeadTime < 0.0f)
+		{
+			m_bDead = true;
+		}
+		SetRotation(T_Pi * 0.5f);
 	}
+
+
 	SetVertexData();
 }
 
@@ -136,7 +146,26 @@ void TMonster2::SetVertexData()
 	float xSize = m_pTexture->m_TexDesc.Width;
 	float ySize = m_pTexture->m_TexDesc.Height;
 	TRect rt;
-	rt.SetP(10.0f, 26.0f, 57.0f, 57.0f);
+	switch (m_state)
+	{
+	case Monster2State::STATE_Idle:
+		rt.SetS(10.0f, 26.0f, 46.0f, 31.0f);
+		break;
+	case Monster2State::STATE_Attack:
+		rt.SetS(m_rtMon2AttackFrames[m_iMon2AttckFrame].left,
+			m_rtMon2AttackFrames[m_iMon2AttckFrame].top,
+			m_rtMon2AttackFrames[m_iMon2AttckFrame].right,
+			m_rtMon2AttackFrames[m_iMon2AttckFrame].bottom); // 현재 프레임의 텍스처 좌표,
+		break;
+	case Monster2State::STATE_Dead:
+		rt.SetS(m_rtMon2DyingFrames[m_iMon2DyingFrame].left,
+			m_rtMon2DyingFrames[m_iMon2DyingFrame].top,
+			m_rtMon2DyingFrames[m_iMon2DyingFrame].right,
+			m_rtMon2DyingFrames[m_iMon2DyingFrame].bottom); // 현재 프레임의 텍스처 좌표,
+		break;
+	default:
+		break;
+	}
 	if (m_eCurrentView == HeroView::RightView)
 	{
 		m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
@@ -170,32 +199,66 @@ void TMonster2::Frame()
 	SetVertexData();
 	TNpcObj::Frame();
 	float fHeroDistance = (m_pHero->m_vPos - m_vPos).Length();
-	if (m_state == Monster2State::STATE_Idle)
+	if (m_HP > 0)
 	{
-		if (fHeroDistance < 640.0f)
+		if (m_state == Monster2State::STATE_Idle)
 		{
-			m_state = Monster2State::STATE_Attack;
+			if (fHeroDistance < 640.0f)
+			{
+				m_state = Monster2State::STATE_Attack;
+			}
+		}
+		else if (m_state == Monster2State::STATE_Attack)
+		{
+			m_ftrigger -= g_fSPF;
+			if (fHeroDistance >= 640.0f)
+			{
+				m_state = Monster2State::STATE_Idle;
+			}
+
+			m_fCurrentTime += g_fSPF; // 시간 업데이트
+			if (m_fCurrentTime >= m_fMon2AttackFrameTime)
+			{
+				m_fCurrentTime -= m_fMon2AttackFrameTime;
+				m_iMon2AttckFrame++; // 다음 프레임으로 이동
+				if (m_iMon2AttckFrame >= m_rtMon2AttackFrames.size())
+				{
+					m_iMon2AttckFrame = m_rtMon2AttackFrames.size() -1; 
+				}
+			}
+			TVector2	vHalf = { 30.0f, 30.0f };
+			TVector2	vStart = m_vPos - vHalf;
+			TVector2	vEnd = m_vPos + vHalf;
+			TVector2    dir = (m_pHero->m_vPos - m_vPos).Normal();
+
+			if (m_ftrigger < 0.0f)
+			{
+				m_pProjectile->AddEffect(vStart, vEnd, dir, Shooter::OWNER_MON2, this);
+				m_ftrigger = 1.0f;
+			}
+			//Shoot();
 		}
 	}
-	else if (m_state == Monster2State::STATE_Attack)
+	else
 	{
-		m_ftrigger -= g_fSPF;
-		if (fHeroDistance >= 640.0f)
+		m_vDir = { 0.0f,0.0f };
+		m_state = Monster2State::STATE_Dead;
+		m_fDeadTime -= g_fSPF;
+		m_bAbleAttack = false;
+		if (m_fDeadTime < 0.0f)
 		{
-			m_state = Monster2State::STATE_Idle;
+			m_bDead = true;
 		}
-
-		TVector2	vHalf = { 30.0f, 30.0f };
-		TVector2	vStart = m_vPos - vHalf;
-		TVector2	vEnd = m_vPos + vHalf;
-		TVector2    dir = (m_pHero->m_vPos - m_vPos).Normal();
-
-		if (m_ftrigger < 0.0f)
+		m_fCurrentTime += g_fSPF; // 시간 업데이트
+		if (m_fCurrentTime >= m_fMon2DyingFrameTime)
 		{
-			m_pProjectile->AddEffect(vStart, vEnd, dir, Shooter::OWNER_MON2, this);
-			m_ftrigger = 1.0f;
+			m_fCurrentTime -= m_fMon2DyingFrameTime;
+			m_iMon2DyingFrame++; // 다음 프레임으로 이동
+			if (m_iMon2DyingFrame >= m_rtMon2DyingFrames.size())
+			{
+				m_iMon2DyingFrame = m_rtMon2DyingFrames.size()-1; // 반복일 경우 첫 프레임으로 이동
+			}
 		}
-		//Shoot();
 	}
 
 	m_pProjectile->Frame(m_vPos);

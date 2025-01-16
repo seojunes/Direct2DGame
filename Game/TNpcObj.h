@@ -40,8 +40,7 @@ public:
 	static void CreateActionFSM();
 	void FrameState(TObject* pHero);
 	void SetMap(TMapObj* pMap) { m_pMap = pMap; }
-public:
-	std::vector<RECT> m_rtMon1AttackFrames; 
+public: 
 	std::vector<RECT> m_rtBossCreateFrames;
 	std::vector<RECT> m_rtBossIdleFrames;
 	std::vector<RECT> m_rtBossAttack1Frames;
@@ -51,7 +50,8 @@ public:
 	std::vector<RECT> m_rtBossM2Frames;
 	std::vector<RECT> m_rtBossFlyingFrames;
 	std::vector<RECT> m_rtBossDyingFrames;
-	UINT m_iMon1AttckFrame = 0;            
+	
+	          
 	UINT m_iBossCreateFrame = 0;
 	UINT m_iBossIdleFrame = 0;
 	UINT m_iBossAttack1Frame = 0;
@@ -61,7 +61,7 @@ public:
 	UINT m_iBossM2Frame = 0;
 	UINT m_iBossFlyingFrames = 0;
 	UINT m_iBossDyingFrames = 0;
-	float m_fMon1AttackFrameTime = 0.3f;
+	
 	float m_fBossCreateFrameTime = 0.2f;
 	float m_fBossIdleFrameTime = 0.2f;
 	float m_fBossAttack1FrameTime = 0.2f;
@@ -71,7 +71,19 @@ public:
 	float m_fBossM2FrameTime = 0.5f;
 	float m_fBossFlyingFrameTime = 0.2f;
 	float m_fBossDyingFrameTime = 0.2f;
+public:
+	std::vector<RECT> m_rtMon1AttackFrames;
+	std::vector<RECT> m_rtMon2AttackFrames;
+	std::vector<RECT> m_rtMon2DyingFrames;
+	UINT m_iMon1AttckFrame = 0;
+	UINT m_iMon2AttckFrame = 0;
+	UINT m_iMon2DyingFrame = 0;
+	float m_fMon1AttackFrameTime = 0.3f;
+	float m_fMon2AttackFrameTime = 0.3f;
+	float m_fMon2DyingFrameTime = 0.3f;
 
+public:
+	float    m_fDeadTime = 1.0f;
 	bool m_bAbleAttack = true;
 	bool m_bLoop = true;
 	void SetData(vector<vector<RECT>> SpriteList);

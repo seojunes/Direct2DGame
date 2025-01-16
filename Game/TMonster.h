@@ -24,6 +24,8 @@ public:
 	INT		 m_iPreHP = 0;
 	float    m_fFindTime = 0.5f;
 	float	 m_fCurrentTime = 0.0f;
+	
+	bool     m_fDeadCheck = false;
 public:
 	TMonster1(const TVector2& initialPos)
 	{
@@ -39,6 +41,7 @@ enum class Monster2State
 {
 	STATE_Idle = 0,
 	STATE_Attack,
+	STATE_Dead,
 };
 
 class TMonster2 : public TNpcObj
