@@ -131,6 +131,9 @@
     <ClCompile Include="TDropObj.cpp">
       <Filter>object</Filter>
     </ClCompile>
+    <ClCompile Include="TItem.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -267,6 +270,9 @@
       <Filter>object</Filter>
     </ClInclude>
     <ClInclude Include="TDropObj.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="TItem.h">
       <Filter>object</Filter>
     </ClInclude>
   </ItemGroup>

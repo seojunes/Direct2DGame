@@ -131,7 +131,7 @@ void TMonster1::Frame()
 		m_state = Monster1State::STATE_Dead;
 		m_fDeadTime -= g_fSPF;
 		m_bAbleAttack = false;
-		
+
 		if (m_bCrashCheck)
 		{
 			m_bCrash = true;
@@ -177,24 +177,22 @@ void TMonster2::SetVertexData()
 	default:
 		break;
 	}
-	if (m_HP > 0)
+	if (m_eCurrentView == HeroView::RightView)
 	{
-		if (m_eCurrentView == HeroView::RightView)
-		{
-			m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
-			m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
-		}
-		else
-		{
-			m_vVertexList[0].t = { rt.v2.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[1].t = { rt.v1.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
-			m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
-		}
+		m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
+		m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
 	}
-	
+	else
+	{
+		m_vVertexList[0].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[1].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
+		m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
+	}
+
+
 }
 void TMonster2::Init()
 {
@@ -240,7 +238,7 @@ void TMonster2::Frame()
 				m_iMon2AttckFrame++; // 다음 프레임으로 이동
 				if (m_iMon2AttckFrame >= m_rtMon2AttackFrames.size())
 				{
-					m_iMon2AttckFrame = 0; 
+					m_iMon2AttckFrame = 0;
 				}
 			}
 			TVector2	vHalf = { 20.0f, 20.0f };
@@ -264,7 +262,7 @@ void TMonster2::Frame()
 				vEnd.x += 80.0f;
 				vEnd.y -= 20.f;
 			}
-			
+
 			TVector2    dir = (m_pHero->m_vPos - m_vPos).Normal();
 			//dir = { dir.x,0.0f };
 			if (m_ftrigger < 0.0f)
@@ -283,7 +281,7 @@ void TMonster2::Frame()
 		m_state = Monster2State::STATE_Dead;
 		m_fDeadTime -= g_fSPF;
 		m_bAbleAttack = false;
-		
+
 		if (m_bCrashCheck)
 		{
 			m_bCrash = true;
@@ -300,7 +298,7 @@ void TMonster2::Frame()
 			m_iMon2DyingFrame++; // 다음 프레임으로 이동
 			if (m_iMon2DyingFrame >= m_rtMon2DyingFrames.size())
 			{
-				m_iMon2DyingFrame = m_rtMon2DyingFrames.size()-1; // 반복일 경우 첫 프레임으로 이동
+				m_iMon2DyingFrame = m_rtMon2DyingFrames.size() - 1; // 반복일 경우 첫 프레임으로 이동
 			}
 		}
 	}
@@ -334,7 +332,7 @@ void TMonster3::SetVertexData()
 		rt.SetS(m_rtMon3AttackFrames[m_iMon3AttckFrame].left,
 			m_rtMon3AttackFrames[m_iMon3AttckFrame].top,
 			m_rtMon3AttackFrames[m_iMon3AttckFrame].right,
-			m_rtMon3AttackFrames[m_iMon3AttckFrame].bottom); 
+			m_rtMon3AttackFrames[m_iMon3AttckFrame].bottom);
 		break;
 	case Monster3State::STATE_Dead:
 		rt.SetS(132.0f, 6.0f, 38.0f, 30.0f);
@@ -342,24 +340,23 @@ void TMonster3::SetVertexData()
 	default:
 		break;
 	}
-	if (m_HP > 0)
+
+	if (m_eCurrentView == HeroView::LeftView)
 	{
-		if (m_eCurrentView == HeroView::LeftView)
-		{
-			m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
-			m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
-		}
-		else
-		{
-			m_vVertexList[0].t = { rt.v2.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[1].t = { rt.v1.x / xSize,rt.v1.y / ySize };
-			m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
-			m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
-		}
+		m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
+		m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
 	}
-	
+	else
+	{
+		m_vVertexList[0].t = { rt.v2.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[1].t = { rt.v1.x / xSize,rt.v1.y / ySize };
+		m_vVertexList[2].t = { rt.v2.x / xSize,rt.v2.y / ySize };
+		m_vVertexList[3].t = { rt.v1.x / xSize,rt.v2.y / ySize };
+	}
+
+
 }
 void TMonster3::Init()
 {
@@ -463,7 +460,7 @@ void TMonster3::Frame()
 			m_bDead = true;
 		}
 	}
-	
+
 
 
 	m_pProjectile->Frame(m_vPos);

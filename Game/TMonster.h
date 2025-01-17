@@ -29,7 +29,7 @@ public:
 public:
 	TMonster1(const TVector2& initialPos)
 	{
-		TNpcObj::m_HP = m_iPreHP = 50;
+		TNpcObj::m_HP = m_iPreHP = 40;
 		m_fSpeed = 100.0f;
 		m_vInitedPos = initialPos; // 초기 위치 설정
 		m_vPos = initialPos;       // 현재 위치도 초기 위치로 설정
@@ -63,7 +63,7 @@ public:
 public:
 	TMonster2()
 	{
-		TNpcObj::m_HP = 30;
+		TNpcObj::m_HP = 20;
 		m_fSpeed = 100.0f;
 	}
 };
@@ -91,7 +91,7 @@ public:
 public:
 	TMonster3()
 	{
-		TNpcObj::m_HP = 15;
+		TNpcObj::m_HP = 30;
 		m_fSpeed = 100.0f;
 	}
 };

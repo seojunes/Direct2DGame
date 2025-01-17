@@ -113,5 +113,6 @@ public:
 	bool m_bBoom = false;
 	bool m_bCrash = false;
 	bool m_bCrashCheck = true;
+	TVector2 m_vDropItem;
 };
 

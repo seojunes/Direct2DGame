@@ -163,7 +163,7 @@ bool TSceneGameIn::CreateObject()
 	tStart = { 3760.0f,720.0f };
 	tEnd = { 3780.0f, 850.0f };
 
-
+	m_pRadder->m_fAlpha = 0.0f;
 	//m_pPortal->m_pWorld = m_pWorld.get();
 	resData.texPathName = L"../../data/texture/Radder.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
@@ -564,6 +564,36 @@ void   TSceneGameIn::AddEffect(TVector2 tStart, TVector2 tEnd)
 		m_EffectList.emplace_back(pObject3);
 	}
 }
+
+void   TSceneGameIn::AddItem(TVector2 tStart, TVector2 tEnd)
+{
+	auto pObject3 = std::make_shared<TItem>();
+	pObject3->m_pMeshRender = &TGameCore::m_MeshRender;
+	pObject3->m_vVertexList = pObject3->m_pMeshRender->m_vVertexList;
+	TLoadResData resData;
+	resData.texPathName = L"../../data/Texture/item_H.png";
+	resData.texShaderName = L"../../data/shader/Default.txt";
+	TEffectData data;
+	data.m_bLoop = true;
+	data.m_fLifeTime = 0.5f;
+	UINT iSprite = 0;
+	data.m_iType = 0;// rand() % m_szSpriteList[0].size();
+	if (data.m_iType == 0)
+	{
+		data.m_iNumAnimFrame = m_rtSpriteList[26].size();
+		data.m_rtList = m_rtSpriteList[26];
+	}
+	if (data.m_iType == 1)
+	{
+		data.m_iNumAnimFrame = m_szSpriteList[0].size();
+		data.m_szList = m_szSpriteList[0];
+	}
+	if (pObject3->Create(m_pWorld.get(), resData, tStart, tEnd))
+	{
+		pObject3->m_iCollisionType = TCollisionType::T_Overlap;
+	}
+}
+
 void TSceneGameIn::AddDrop()
 {
 	DropArea = {
@@ -847,6 +877,7 @@ void   TSceneGameIn::Frame()
 		m_pBoss->FrameState(m_pHero.get());
 		m_pBoss->Frame();
 	}
+	
 	m_pBossCreate->Frame();
 
 	if (m_pBoss->m_bBossA2)
@@ -1036,6 +1067,7 @@ void   TSceneGameIn::Render()
 	m_pPortal->Render();
 	m_pRadder->Transform(m_vCamera);
 	m_pRadder->Render();
+	m_pRadder->Fade();
 
 
 	if (m_pBoss->m_HP <= 0)

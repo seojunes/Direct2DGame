@@ -87,6 +87,8 @@ class TSceneGameIn : public TScene
 public:
 	void   AddEffect(TVector2 tStart, TVector2 tEnd);
 	void   AddDrop();
+	void   AddItem(TVector2 tStart, TVector2 tEnd);
+	TVector2 DropItem;
 	bool   GameDataLoad(W_STR filename);
 
 	virtual void   Init() override;

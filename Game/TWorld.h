@@ -15,6 +15,7 @@
 #include "TRadderObj.h"
 #include "TBossCreate.h"
 #include "TDropObj.h"
+#include "TItem.h"
 
 
 class TScene;
