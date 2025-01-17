@@ -52,6 +52,11 @@ void    TInput::Frame()
 	g_GameKey.dwRightbutton = KeyCheck(VK_RIGHT);
 	g_GameKey.dwUpbutton = KeyCheck(VK_UP);
 	g_GameKey.dwDownbutton = KeyCheck(VK_DOWN);
+	g_GameKey.dw1key = KeyCheck(VK_NUMPAD1);
+	g_GameKey.dw2key = KeyCheck(VK_NUMPAD2);
+	g_GameKey.dw3key = KeyCheck(VK_NUMPAD3);
+	g_GameKey.dw4key = KeyCheck(VK_NUMPAD4);
+
 
 
 

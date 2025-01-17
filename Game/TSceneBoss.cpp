@@ -86,7 +86,7 @@ void   TSceneBoss::Init()
 }
 void   TSceneBoss::Frame()
 {
-
+    TScene::Frame();
     for (auto data : m_UiList)
     {
         if (!data->m_bDead)

@@ -91,6 +91,7 @@ void   TSceneIntro::Init()
 }
 void   TSceneIntro::Frame()
 {
+    TScene::Frame();
     for (auto data : m_UiList)
     {
         if (!data->m_bDead)

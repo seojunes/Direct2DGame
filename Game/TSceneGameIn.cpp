@@ -272,11 +272,12 @@ bool TSceneGameIn::CreateNPC()
 		{{6782.5f,1277.0f},{6900.0f,1377.0f}},
 		{{9382.5f,1277.0f},{9500.0f,1377.0f}},
 	};
-	Mon3Area = { {{3356,318.5f},{3456.0f,418.5f}},
-		{{4247.0f,1100.0f},{4347.0f,1200.0f}},
+	Mon3Area = { {{3356,320.0f},{3456.0f,420.0f}},
+		//{{4247.0f,1100.0f},{4347.0f,1200.0f}},
+		//{{8082.0f,1280.0f},{8082.0f,1380.0f}},
 		{{5700.0f,1280.0f},{5800.0f,1380.0f}},
 		{{6200.0f,1158.5f},{6300.0f,1258.5f}},
-		{{9700.0f,1218.5f},{9800.0f,1318.5f}},
+		{{9900.0f,1218.5f},{10000.0f,1318.5f}},
 	};
 	TNpcObj::CreateActionFSM();
 	// npc
@@ -642,6 +643,7 @@ void   TSceneGameIn::Init()
 
 void   TSceneGameIn::Frame()
 {
+	TScene::Frame();
 	TVector2 vMouse = GetWorldMousePos();
 	srand(static_cast<unsigned>(time(0)));
 
@@ -788,7 +790,7 @@ void   TSceneGameIn::Frame()
 			m_vCamera.y = 1300.0f;
 		}
 
-		if (m_pHero->m_BossMoving == BossRoomMovingState::STATE_UNABLE && g_GameKey.dwSkey == KEY_PUSH)
+		if (m_pHero->m_BossMoving == BossRoomMovingState::STATE_ABLE && g_GameKey.dwSkey == KEY_PUSH)
 		{
 			m_pInGame->Stop();
 			m_pBossSound->Play();
@@ -847,7 +849,11 @@ void   TSceneGameIn::Frame()
 	}
 	m_pBossCreate->Frame();
 
-
+	if (m_pBoss->m_bBossA2)
+	{
+		m_pBossA2->PlayEffect();
+		m_pBoss->m_bBossA2 = false;
+	}
 
 
 	// NPC 상태 업데이트
@@ -863,6 +869,22 @@ void   TSceneGameIn::Frame()
 				TVector2 bb = dd + cc;
 				AddEffect(aa, bb);
 			}
+			if (npc->m_bBefired)
+			{
+				m_pMon2M->PlayEffect();
+				npc->m_bBefired = false;
+			}
+			if (npc->m_bBoom)
+			{
+				m_pMon3M->PlayEffect();
+				npc->m_bBoom = false;
+			}
+			if (npc->m_bCrash)
+			{
+				m_pCrashSound->PlayEffect();
+				npc->m_bCrash = false;
+				npc->m_bCrashCheck = false;
+			}
 			npc->FrameState(m_pHero.get()); // Hero와 NPC 상호작용
 			npc->Frame();
 		}
@@ -877,7 +899,11 @@ void   TSceneGameIn::Frame()
 	}
 	// Hero 상태 업데이트
 	m_pHero->Frame();
-
+	if (m_pHero->m_bAttacked)
+	{
+		m_pHurt->PlayEffect();
+		m_pHero->m_bAttacked = false;
+	}
 
 	TSphere s;
 	s.vCenter = vMouse;
@@ -966,6 +992,7 @@ void   TSceneGameIn::Frame()
 	if (m_pBoss->m_bM2Fire == true)
 	{
 		AddDrop();
+		m_pBossDrop->PlayEffect();
 		m_pBoss->m_bM2Fire = false;
 	}
 

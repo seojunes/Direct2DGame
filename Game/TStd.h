@@ -76,6 +76,10 @@ struct TGameKey
     DWORD dwRightbutton;
     DWORD dwDownbutton;
     DWORD dwUpbutton;
+    DWORD dw1key;
+    DWORD dw2key;
+    DWORD dw3key;
+    DWORD dw4key;
 };
 
 enum { KEY_FREE = 0, KEY_PUSH, KEY_HOLD, KEY_UP };

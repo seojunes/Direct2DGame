@@ -44,9 +44,9 @@ public:
 	bool     m_bHealing = false;
 	float    m_fPhase2CurrentTime = 1.5f;
 	bool     m_bShotting = false;
-	float	 m_fM1Time = 10.0f;
+	float	 m_fM1Time = 7.0f;
 	bool     m_bM2Fire = false;
-	float    m_fM2Time = 10.0f;
+	float    m_fM2Time = 7.0f;
 	float    m_fM2TriggerTime = 1.5;
 	bool     m_bDeadCheck = false;
 	
@@ -58,6 +58,7 @@ public:
 public:
 	INT m_HP;
 	INT m_iPreHP;
+	bool m_bBossA2 = false;
 public:
 	TBossObj(const TVector2& initialPos)
 	{

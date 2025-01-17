@@ -126,5 +126,7 @@ public:
 	{
 		m_fSpeed = 500.0f;
 	}
+public:
+	bool m_bAttacked = false;
 };
 

@@ -138,12 +138,13 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction
 	if (ownertype == Shooter::OWNER_MON2)
 	{
 		resData.texPathName = L"../../data/ui/Mon2Shot.png";
-		data.m_iDamage = 30;
+		data.m_iDamage = 20;
+		data.m_fLifeTime = 2.0f;
 	}
 	else if (ownertype == Shooter::OWNER_MON3)
 	{
 		resData.texPathName = L"../../data/ui/bomb.png";
-		data.m_iDamage = 10;
+		data.m_iDamage = 30;
 		data.m_fLifeTime = 30.0f;
 	}
 	else if (ownertype == Shooter::OWNER_BOSS1)

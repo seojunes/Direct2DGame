@@ -94,7 +94,7 @@ void   TSceneLobby::Init()
 }
 void   TSceneLobby::Frame()
 {
-    
+    TScene::Frame();
     for (auto data : m_UiList)
     {
         if (!data->m_bDead)

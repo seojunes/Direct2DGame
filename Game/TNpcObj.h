@@ -109,5 +109,9 @@ public:
 public:
 	TVector2 Attacked(TVector2 pos);
 	bool m_bAttacked = false;
+	bool m_bBefired = false;
+	bool m_bBoom = false;
+	bool m_bCrash = false;
+	bool m_bCrashCheck = true;
 };
 

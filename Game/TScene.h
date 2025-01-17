@@ -40,6 +40,7 @@ public:
 	TScene(TGame* p);
 	TScene();
 	virtual ~TScene();
+	
 public:
 	TSound* m_pIntro = nullptr;
 	TSound* m_pRobby = nullptr;
@@ -50,6 +51,11 @@ public:
 	TSound* m_pCrashSound = nullptr;
 	TSound* m_pBossSound = nullptr;
 	TSound* m_pClearSound = nullptr;
+	TSound* m_pHurt = nullptr;
+	TSound* m_pMon2M = nullptr;
+	TSound* m_pMon3M = nullptr;
+	TSound* m_pBossA2 = nullptr;
+	TSound* m_pBossDrop = nullptr;
 
 	vector<TSound*> m_BGMList;
 	vector<TSound*> m_EffectList;
@@ -59,7 +65,7 @@ public:
 	TGame* m_pOwner = nullptr;
 public:
 	virtual void   Init() = 0;
-	virtual void   Frame() = 0;
+	virtual void   Frame();
 	virtual void   Render() = 0;
 	virtual void   Release() = 0;
 	virtual bool   CreateSound();

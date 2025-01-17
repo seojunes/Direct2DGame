@@ -428,7 +428,7 @@ void TBossObj::Frame()
 			m_fPhase2CurrentTime -= g_fSPF;
 			if (m_bHealing == true)
 			{
-				if (m_HP <= 200) m_HP++;				
+				m_HP = 200;
 				m_bHealing = false;
 			}
 			if (m_fPhase2CurrentTime <= 0.0f)			m_state = BossState::STATE_Attack2;
@@ -465,6 +465,7 @@ void TBossObj::Frame()
 			{
 
 				m_pProjectile->AddEffect(vStart, vEnd, dir, Shooter::OWNER_BOSS1, this);
+				m_bBossA2 = true;
 				m_ftrigger = 0.5f;
 				m_bShotting = true;
 			}
@@ -476,7 +477,7 @@ void TBossObj::Frame()
 			if (m_fM1Time < 0.0f)
 			{
 				m_state = BossState::STATE_Attack3;
-				m_fM1Time = 10.0f;
+				m_fM1Time = 7.0f;
 				m_fM2TriggerTime = 1.5f;
 			}
 		}
@@ -503,7 +504,7 @@ void TBossObj::Frame()
 			{
 				m_state = BossState::STATE_Flying;
 				m_vDir = (m_vLeftSide - m_vPos).Normal();
-				m_fM2Time = 10.0f;
+				m_fM2Time = 7.0f;
 				m_fSpeed = 300.0f;
 			}
 		}

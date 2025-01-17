@@ -58,6 +58,7 @@ public:
 public:
 	float m_ftrigger = 0.5f;
 	float	 m_fCurrentTime = 0.0f;
+	
 	//void shot();
 public:
 	TMonster2()

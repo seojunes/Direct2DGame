@@ -59,6 +59,7 @@ TVector2 TNpcObj::Attacked(TVector2 pos)
 	m_bAttacked = false;
 	return pos;
 }
+
 void TNpcObj::SetData(vector<vector<RECT>> SpriteList)
 {
 	m_rtBossCreateFrames.resize(SpriteList[12].size());

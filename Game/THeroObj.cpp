@@ -74,6 +74,7 @@ void THeroObj::TakeDamage(int damage)
 		// 무적 상태 시작
 		m_bInvincible = true;
 		m_fInvincibleTime = m_fMaxInvincibleTime;
+		m_bAttacked = true;
 	}
 
 }

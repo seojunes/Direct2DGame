@@ -80,6 +80,7 @@ void   TSceneResult::Init()
 }
 void   TSceneResult::Frame()
 {
+    TScene::Frame();
     for (auto data : m_UiList)
     {
         if (!data->m_bDead)

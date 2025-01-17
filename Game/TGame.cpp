@@ -57,6 +57,7 @@ void		TGame::Init() {
 }
 void		TGame::Frame() {
 	m_pAction->Frame();
+
 }
 void		TGame::Render() {
 	m_pAction->Render();
