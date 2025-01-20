@@ -11,6 +11,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetClient", "NetClass\NetCl
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetworkServer", "NetworkServer\NetworkServer.vcxproj", "{B09CD887-5415-4237-A3D4-33DAE04DA465}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2DGame", "2DGame", "{CF5ADE6E-1367-47F5-A953-11F6563FA3D0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Network", "Network", "{2AF0EB61-90CE-41F8-B6EE-12C21ED70220}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -54,6 +58,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{201E7F35-44D0-4FA7-8DE1-230800FF138C} = {CF5ADE6E-1367-47F5-A953-11F6563FA3D0}
+		{401CF65D-F971-40AA-80BD-C9947AD8EEB8} = {CF5ADE6E-1367-47F5-A953-11F6563FA3D0}
+		{5BF2FD08-9A7A-46F2-A119-6DD4471E74D2} = {2AF0EB61-90CE-41F8-B6EE-12C21ED70220}
+		{B09CD887-5415-4237-A3D4-33DAE04DA465} = {2AF0EB61-90CE-41F8-B6EE-12C21ED70220}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {327284FD-6D42-497F-9ABB-00F3CA39CE04}
