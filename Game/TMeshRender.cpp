@@ -74,6 +74,7 @@ void	TMeshRender::PreRender()
 void	TMeshRender::Render()
 {
 	PreRender();
+
 	PostRender();
 }
 void	TMeshRender::PostRender()
