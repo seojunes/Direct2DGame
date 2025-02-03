@@ -119,7 +119,7 @@ void	TObject::Frame()
 void	TObject::Transform(TVector2 vCamera)
 {
 	m_vCamera = vCamera;
-	m_matWorld = m_matScale * m_matRotate * m_matTrans;
+	m_matWorld =  m_matRotate * m_matScale * m_matTrans;
 	for (int i = 0; i < m_vScreenList.size(); i++)
 	{
 		m_vScreenList[i] =

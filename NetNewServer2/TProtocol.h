@@ -17,13 +17,13 @@ typedef struct
 }UPACKET;
 
 typedef struct
-{
+{	
 	int  id;
 	char name[32];
 }JOIN_USER;
 typedef struct
 {
-	char name[32];
+	char name[32];	
 }USER_NAME;
 #pragma pack(pop)
 

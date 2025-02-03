@@ -11,7 +11,7 @@
 #include "TProtocol.h"
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "mswsock.lib")
-enum TResult{
+enum TResult {
 	TNet_FALSE = 0,
 	TNet_EWOULDBLOCK,
 	TNet_TRUE,
@@ -21,7 +21,8 @@ class TNetwork
 public:
 	SOCKET  m_Sock;
 	bool    m_bRun;
-	std::string m_szRecvData;	
+	bool    m_bThreadRun = false;
+	std::string m_szRecvData;
 	int     m_iSendBytes = 0;
 	int     m_iRecvBytes = 0;
 public:
@@ -35,7 +36,7 @@ public:
 	bool	SendWork(std::string SendBuf);
 	TResult	Check(int iCode);
 	int     SendPacket(SOCKET sock,
-						const char* msg,
-						WORD type);
+		const char* msg,
+		WORD type);
 };
 

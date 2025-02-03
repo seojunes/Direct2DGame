@@ -32,7 +32,7 @@ struct THost
     SOCKADDR_IN addr;
     char        m_csName[32];
     char        Recvbuffer[PACKET_MAX_PACKET_SIZE] = { 0, };
-    int         m_iRecvBytes=0;
+    int         m_iRecvBytes = 0;
     bool        bConnect;
     UPACKET     m_tPacket;
     bool        m_bRecvPacket = false;
@@ -41,10 +41,10 @@ struct THost
         ZeroMemory(&m_tPacket, sizeof(m_tPacket));
     }
     bool        Run()
-    {            
-        char* pRecvMsg = (char*)&m_tPacket;        
+    {
+        char* pRecvMsg = (char*)&m_tPacket;
         int iRecvByte = recv(sock, &pRecvMsg[m_iRecvBytes],
-                PACKET_HEADER_SIZE - m_iRecvBytes, 0);
+            PACKET_HEADER_SIZE - m_iRecvBytes, 0);
         TResult ret = CheckSock(iRecvByte);
         if (ret == TResult::TNet_FALSE)
         {
@@ -95,9 +95,9 @@ struct THost
             {
                 m_bRecvPacket = true;
             }
-        }    
+        }
         return true;
-    }      
+    }
 };
 
 
@@ -133,9 +133,7 @@ bool Check(int iCode)
     }
     return false;
 }
-int     SendPacket(SOCKET sock,
-    const char* msg,
-    WORD type)
+int  SendPacket(SOCKET sock, const char* msg, WORD type)
 {
     UINT iMsgSize = 0;
     if (msg != nullptr)
@@ -189,15 +187,15 @@ int main()
     if (iRet == SOCKET_ERROR) return 1;
     iRet = listen(sock, SOMAXCONN);
     if (iRet == SOCKET_ERROR) return 1;
-    
+
     // 넌블록킹 소켓전환
     u_long on = 1;
     ioctlsocket(sock, FIONBIO, &on);
-    
+
     SOCKADDR_IN clientaddr;
     int addlen = sizeof(clientaddr);
 
-    
+
     while (1)
     {
         SOCKET clientSock = accept(sock, (SOCKADDR*)&clientaddr,
@@ -214,32 +212,32 @@ int main()
             userList.push_back(host);
 
             SendPacket(host.sock, nullptr, PACKET_CHAT_NAME_SC_REQ);
-        }       
-    
-        for (auto iter=userList.begin();
-             iter != userList.end();
+        }
+
+        for (auto iter = userList.begin();
+            iter != userList.end();
             iter++)
         {
-            THost& host = *iter; 
+            THost& host = *iter;
             if (host.bConnect == false) continue;
             host.Run();
         }
 
         for (auto recvHost = userList.begin();
-              recvHost != userList.end();           
-               recvHost++)
+            recvHost != userList.end();
+            recvHost++)
         {
             THost& sendUser = *recvHost;
             if (sendUser.bConnect == false) continue;
-            if (sendUser.m_bRecvPacket==false)
-            {         
+            if (sendUser.m_bRecvPacket == false)
+            {
                 continue;
             }
             //서버작업
             if (sendUser.m_tPacket.ph.type == PACKET_CHAT_NAME_CS_ACK)
-            {                
-                memcpy(sendUser.m_csName,sendUser.m_tPacket.msg,
-                    sendUser.m_tPacket.ph.len-PACKET_HEADER_SIZE);
+            {
+                memcpy(sendUser.m_csName, sendUser.m_tPacket.msg,
+                    sendUser.m_tPacket.ph.len - PACKET_HEADER_SIZE);
 
                 /*UPACKET sendpacket;
                 JOIN_USER join;
@@ -248,7 +246,7 @@ int main()
                 ZeroMemory(&sendpacket, sizeof(sendpacket));
                 sendpacket.ph.len = PACKET_HEADER_SIZE + sizeof(join);
                 sendpacket.ph.type = PACKET_JOIN_USER;
-                memcpy(sendpacket.msg, (char*)&join, sizeof(join));                
+                memcpy(sendpacket.msg, (char*)&join, sizeof(join));
                 Broadcasting(sendpacket);*/
                 sendUser.m_bRecvPacket = false;
                 sendUser.m_iRecvBytes = 0;
@@ -256,15 +254,15 @@ int main()
                 continue;
             }
             Broadcasting(sendUser.m_tPacket);
-          
+
             sendUser.m_bRecvPacket = false;
             sendUser.m_iRecvBytes = 0;
             ZeroMemory(&sendUser.m_tPacket, sizeof(sendUser.m_tPacket));
-        } 
-        
+        }
+
         // 종료처리
         for (auto iter = userList.begin();
-            iter != userList.end();  )
+            iter != userList.end(); )
         {
             THost& host = *iter;
             if (host.bConnect == false)
@@ -277,17 +275,17 @@ int main()
                 iter = userList.erase(iter);
             }
             else
-            {         
+            {
 
                 ZeroMemory(host.Recvbuffer, sizeof(char) * 256);
                 iter++;
             }
         }
-    }        
-    
+    }
+
     Sleep(10000);
-    
+
     closesocket(sock);
     WSACleanup();
-    
+
 }
