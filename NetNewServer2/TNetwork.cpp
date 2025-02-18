@@ -14,7 +14,7 @@ bool    TNetwork::Init()
 // TCP 서버 소켓 생성 및 바인딩
 bool    TNetwork::CreateServer(int iPort)
 {
-    m_Sock = socket(AF_INET, SOCK_STREAM, 0);// IPPROTO_TCP);
+    m_Sock = socket(AF_INET, SOCK_STREAM, 0);// IPPROTO_TCP);           // TCP UDP를 구분하는 쪽.
     SOCKADDR_IN sa;
     ZeroMemory(&sa, sizeof(sa));
     sa.sin_family = AF_INET;
