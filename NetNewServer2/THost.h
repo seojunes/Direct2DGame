@@ -5,6 +5,7 @@
 #include <mswsock.h>
 #include <iostream>
 #include <list>
+#include <vector>
 #include "TProtocol.h"
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "mswsock.lib")
@@ -21,10 +22,13 @@ public:
     SOCKADDR_IN addr;
     char        m_csName[32];    
     int         m_iRecvBytes = 0;
-    bool        m_bConnect;
+    bool        m_bConnect = false;
     UPACKET     m_tPacket;
+    WSAEVENT    m_hEvnet;
+public:
     THost();
-    bool        Run(TNetwork& net);
+    bool        RunTCP(TNetwork& net);
+    bool        RunUDP(TNetwork& net);
     TResult     Check(int iCode);
 };
 

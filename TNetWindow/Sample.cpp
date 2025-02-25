@@ -34,7 +34,7 @@ void    Sample::Init()
         m_hInstance, NULL);
 
     m_Net.Init();
-    m_Net.Connect("192.168.0.48", 10000);
+    m_Net.Connect("192.168.0.44", 10000);
 }
 void    Sample::Frame()
 {

@@ -7,7 +7,7 @@ THost::THost()
 }
 
 // 데이터 수신 및 처리
-bool THost::Run(TNetwork& tNet)
+bool THost::RunTCP(TNetwork& tNet)
 {
 	//헤더 수신
 	char* pRecvMsg = (char*)&m_tPacket;
@@ -34,6 +34,13 @@ bool THost::Run(TNetwork& tNet)
 	{
 		while (m_tPacket.ph.len > m_iRecvBytes)//m_iRecvbyte= 4
 		{
+			//    int recv(
+	  //    SOCKET s,       // 연결된 소켓
+	  //    char* buf,      // 데이터를 저장할 버퍼
+	  //    int len,        // 버퍼 크기 (최대 수신할 데이터 크기)
+	  //    int flags       // 동작을 변경하는 플래그 (기본적으로 0)
+	  //    );
+	  //    논블록킹 모드에서는 recv가 즉시 반환되며, 받을 데이터가 없으면 WSAEWOULDBLOCK 오류발생.
 			int iRecvByte = recv(sock,
 				&pRecvMsg[m_iRecvBytes],
 				m_tPacket.ph.len - m_iRecvBytes, 0);
@@ -49,12 +56,16 @@ bool THost::Run(TNetwork& tNet)
 			}
 
 		}
+		/*if (m_tPacket.ph.type == PACKET_DRUP_USER)
+		{
+			m_bConnect = false;
+		}*/
 		if (m_tPacket.ph.type == PACKET_CHAT_NAME_CS_ACK)
 		{
-			USER_NAME* pData = (USER_NAME*)m_tPacket.msg;
-			memcpy(m_csName, pData->name, sizeof(char) * 32);
-			m_tPacket.ph.type = PACKET_JOIN_USER;
-			tNet.m_RecvPool.emplace_back(m_tPacket);
+			USER_NAME* pData = (USER_NAME*)m_tPacket.msg; // 메시지에 담겨있는 유저 네임을 pData에 저장
+			memcpy(m_csName, pData->name, sizeof(char) * 32); // 패킷의 메세지에 담겨있는 유저의 네임을 m_csName에 저장
+			m_tPacket.ph.type = PACKET_JOIN_USER;				// 유저가 접속했다는 패킷으로 변환하는 과정
+			tNet.m_RecvPool.emplace_back(m_tPacket);			// 수신패킷 큐에 패킷을 추가.
 		}
 		else
 		{
@@ -63,11 +74,69 @@ bool THost::Run(TNetwork& tNet)
 
 		{
 			m_iRecvBytes = 0;
-			ZeroMemory(&m_tPacket, sizeof(m_tPacket));				// 패킷 처리 후 초기화.
+			ZeroMemory(&m_tPacket, sizeof(m_tPacket));				// 패킷 처리 후 m_tPacket 초기화.
 		}
 	}
 	return true;
 }
+
+bool THost::RunUDP(TNetwork& tNet)
+{
+	//char* pRecvMsg = (char*)&m_tPacket;
+	//int iRecvByte = recvfrom(sock, &pRecvMsg[m_iRecvBytes],
+	//    PACKET_HEADER_SIZE - m_iRecvBytes, 0);
+	//TResult ret = Check(iRecvByte);
+	//if (ret == TResult::TNet_FALSE)
+	//{
+	//    this->m_bConnect = false;
+	//    return false;
+	//}
+	//if (ret == TResult::TNet_TRUE)
+	//{
+	//    m_iRecvBytes += iRecvByte;
+	//    if (m_iRecvBytes > PACKET_HEADER_SIZE)
+	//    {
+	//        return true;
+	//    }
+	//}
+
+	//if (m_iRecvBytes == PACKET_HEADER_SIZE)
+	//{
+	//    while (m_tPacket.ph.len > m_iRecvBytes)//m_iRecvbyte= 4
+	//    {
+	//        int iRecvByte = recv(sock,
+	//            &pRecvMsg[m_iRecvBytes],
+	//            m_tPacket.ph.len - m_iRecvBytes, 0);
+	//        TResult rRet = Check(iRecvByte);
+	//        if (rRet == TResult::TNet_TRUE)
+	//        {
+	//            m_iRecvBytes += iRecvByte;
+	//        }
+	//        if (rRet == TResult::TNet_FALSE)
+	//        {
+	//            m_bConnect = false;
+	//            return false;
+	//        }
+
+	//    }
+	//    if (m_tPacket.ph.type == PACKET_CHAT_NAME_CS_ACK)
+	//    {
+	//        USER_NAME* pData = (USER_NAME*)m_tPacket.msg;
+	//        memcpy(m_csName, pData->name, sizeof(char) * 32);
+	//        m_tPacket.ph.type = PACKET_JOIN_USER;
+	//        tNet.m_RecvPool.emplace_back(m_tPacket);
+	//    }
+	//    else
+	//    {
+	//        tNet.m_RecvPool.emplace_back(m_tPacket);
+	//    }
+	//    m_iRecvBytes = 0;
+	//    ZeroMemory(&m_tPacket, sizeof(m_tPacket));
+	//}
+	//return true;
+	return true;
+}
+
 
 TResult THost::Check(int iCode)										// 수신 상태 검사.
 {

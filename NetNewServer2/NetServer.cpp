@@ -1,7 +1,9 @@
-﻿#include "TNetwork.h"
+﻿#include "TNetworkUDP.h"
+#include "TNetworkTCP.h"
 int main()
 {
-    TNetwork tNet;
+    //TNetwork tNet;
+    TNetworkTCP tNet(std::make_shared<TEventSelect>());
     tNet.Init();
     tNet.CreateServer(10000);
     tNet.Run();    
