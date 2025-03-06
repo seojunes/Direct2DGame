@@ -1,4 +1,4 @@
-#include "TSceneGameIn.h"
+	#include "TSceneGameIn.h"
 #include "TGameCore.h"
 #include "TGame.h"
 
@@ -716,80 +716,7 @@ void   TSceneGameIn::Frame()
 
 	//기본 바닥높이 설정.
 	//m_pHero->m_fGroundY = 1800;
-	for (auto rectlist : m_ColList)
-	{
-		TRect Herorect = m_pHero->m_rtScreen;
-		TRect Colrect = rectlist->m_rtScreen;
-		if (TCollision::CheckRectToRect(Colrect, Herorect))
-		{
-			if (Herorect.vc.x < Colrect.vc.x)																		// 왼쪽에서 올라올때
-			{
-				if (Herorect.v2.y - 0.1f > Colrect.v1.y)																// 왼쪽아래서 올라올때
-				{
-					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y<Colrect.v1.y && Herorect.v2.x - m_offsetdis > Colrect.v1.x)
-					{
-						m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
-						m_pHero->GetGroundH(Colrect.v1.y - Herorect.vh.y);
-					}
-				}
-				else																								// 왼쪽 위에서 내려갈때
-				{
-					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y<Colrect.v1.y && Herorect.v2.x + m_offsetdis > Colrect.v1.x)
-					{
-						m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
-						m_pHero->GetGroundH(Colrect.v1.y - Herorect.vh.y);
-					}
-				}
-
-			}
-			else																									 // 오른쪽에서 올라올때
-			{
-				if (Herorect.v2.y - 0.1f > Colrect.v1.y)																 // 오른쪽에서 올라올때
-				{
-					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y < Colrect.v1.y && Herorect.v1.x + m_offsetdis < Colrect.v2.x)
-					{
-						m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
-						m_pHero->GetGroundH(Colrect.v1.y - Herorect.vh.y);
-					}
-				}
-				else																								 // 오른쪽 위에서 내려갈때
-				{
-					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y < Colrect.v1.y && Herorect.v1.x - m_offsetdis < Colrect.v2.x)
-					{
-						m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
-						m_pHero->GetGroundH(Colrect.v1.y - Herorect.vh.y);
-					}
-				}
-			}
-
-			if (Herorect.vc.x <Colrect.v2.x && Herorect.vc.x > Colrect.v1.x)									    // 머리 충돌할때
-			{
-				if (Herorect.v1.y > Colrect.vc.y && Herorect.v1.y < Colrect.v2.y)
-				{
-					m_pHero->m_vPos.y = Colrect.v2.y + Herorect.vh.y;
-					m_pHero->m_fGravity = 980;
-					m_pHero->m_fVerticalSpeed = 0;
-				}
-			}
-
-			if (Herorect.v2.x > Colrect.v1.x && Herorect.v2.x - m_offsetdis < Colrect.v1.x && Herorect.v2.y + m_offsetdis >= Colrect.v1.y)		// 오른쪽 벽에 충돌할때
-			{
-				m_pHero->m_vPos.x = Colrect.v1.x - Herorect.vh.x;
-			}
-			if (Herorect.v1.x  < Colrect.v2.x && Herorect.v1.x + m_offsetdis > Colrect.v2.x && Herorect.v2.y + m_offsetdis >= Colrect.v1.y)		// 왼쪽 벽에 충돌할때
-			{
-				m_pHero->m_vPos.x = Colrect.v2.x + Herorect.vh.x;
-			}
-		}
-		else
-		{
-			m_pHero->m_bIsJumping = true;
-			if (m_pHero->m_CurrentState != HeroState::Victory && m_pHero->m_CurrentState != HeroState::Radder)
-			{
-				m_pHero->m_CurrentState = HeroState::Jump;
-			}
-		}
-	}
+	
 
 
 
@@ -1035,6 +962,80 @@ void   TSceneGameIn::Frame()
 		}
 	}
 
+	for (auto rectlist : m_ColList)
+	{
+		TRect Herorect = m_pHero->m_rtScreen;
+		TRect Colrect = rectlist->m_rtScreen;
+		if (TCollision::CheckRectToRect(Colrect, Herorect))
+		{
+			if (Herorect.vc.x < Colrect.vc.x)																		// 왼쪽에서 올라올때
+			{
+				if (Herorect.v2.y - 0.1f > Colrect.v1.y)																// 왼쪽아래서 올라올때
+				{
+					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y<Colrect.v1.y && Herorect.v2.x - m_offsetdis > Colrect.v1.x)
+					{
+						m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
+						m_pHero->GetGroundH(Colrect.v1.y - Herorect.vh.y);
+					}
+				}
+				else																								// 왼쪽 위에서 내려갈때
+				{
+					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y<Colrect.v1.y && Herorect.v2.x + m_offsetdis > Colrect.v1.x)
+					{
+						m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
+						m_pHero->GetGroundH(Colrect.v1.y - Herorect.vh.y);
+					}
+				}
+
+			}
+			else																									 // 오른쪽에서 올라올때
+			{
+				if (Herorect.v2.y - 0.1f > Colrect.v1.y)																 // 오른쪽에서 올라올때
+				{
+					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y < Colrect.v1.y && Herorect.v1.x + m_offsetdis < Colrect.v2.x)
+					{
+						m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
+						m_pHero->GetGroundH(Colrect.v1.y - Herorect.vh.y);
+					}
+				}
+				else																								 // 오른쪽 위에서 내려갈때
+				{
+					if (Herorect.v2.y > Colrect.v1.y && Herorect.v1.y < Colrect.v1.y && Herorect.v1.x - m_offsetdis < Colrect.v2.x)
+					{
+						m_pHero->m_vPos.y = Colrect.v1.y - Herorect.vh.y;
+						m_pHero->GetGroundH(Colrect.v1.y - Herorect.vh.y);
+					}
+				}
+			}
+
+			if (Herorect.vc.x <Colrect.v2.x && Herorect.vc.x > Colrect.v1.x)									    // 머리 충돌할때
+			{
+				if (Herorect.v1.y > Colrect.vc.y && Herorect.v1.y < Colrect.v2.y)
+				{
+					m_pHero->m_vPos.y = Colrect.v2.y + Herorect.vh.y;
+					m_pHero->m_fGravity = 980;
+					m_pHero->m_fVerticalSpeed = 0;
+				}
+			}
+
+			if (Herorect.v2.x > Colrect.v1.x && Herorect.v2.x - m_offsetdis < Colrect.v1.x && Herorect.v2.y + m_offsetdis >= Colrect.v1.y)		// 오른쪽 벽에 충돌할때
+			{
+				m_pHero->m_vPos.x = Colrect.v1.x - Herorect.vh.x;
+			}
+			if (Herorect.v1.x  < Colrect.v2.x && Herorect.v1.x + m_offsetdis > Colrect.v2.x && Herorect.v2.y + m_offsetdis >= Colrect.v1.y)		// 왼쪽 벽에 충돌할때
+			{
+				m_pHero->m_vPos.x = Colrect.v2.x + Herorect.vh.x;
+			}
+		}
+		else
+		{
+			m_pHero->m_bIsJumping = true;
+			if (m_pHero->m_CurrentState != HeroState::Victory && m_pHero->m_CurrentState != HeroState::Radder)
+			{
+				m_pHero->m_CurrentState = HeroState::Jump;
+			}
+		}
+	}
 }
 void   TSceneGameIn::Render()
 {
