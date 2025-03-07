@@ -71,7 +71,7 @@ void  TDxState::Create()
 	D3D11_RASTERIZER_DESC rsDesc;
 	ZeroMemory(&rsDesc, sizeof(rsDesc));
 	rsDesc.FillMode = D3D11_FILL_SOLID;
-	rsDesc.CullMode = D3D11_CULL_NONE;
+	rsDesc.CullMode = D3D11_CULL_BACK;
 	hr = TDevice::m_pd3dDevice->CreateRasterizerState(
 		&rsDesc, m_pRSSolid.GetAddressOf());
 	if (FAILED(hr))

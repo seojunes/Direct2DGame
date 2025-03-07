@@ -154,9 +154,12 @@ copy "..\\..\\output\\Debug\\SEngine.lib" "..\\..\\SEngine\\lib\\TEngine_D.lib"<
     <ClCompile Include="TDxWrite.cpp" />
     <ClCompile Include="SEngine.cpp" />
     <ClCompile Include="TInput.cpp" />
+    <ClCompile Include="TInputLayout.cpp" />
     <ClCompile Include="TMatrix.cpp" />
+    <ClCompile Include="TShader.cpp" />
     <ClCompile Include="TSound.cpp" />
     <ClCompile Include="TSync.cpp" />
+    <ClCompile Include="TTexture.cpp" />
     <ClCompile Include="TTime.cpp" />
     <ClCompile Include="TVector.cpp" />
     <ClCompile Include="TVertex.cpp" />
@@ -168,10 +171,13 @@ copy "..\\..\\output\\Debug\\SEngine.lib" "..\\..\\SEngine\\lib\\TEngine_D.lib"<
     <ClInclude Include="TDxWrite.h" />
     <ClInclude Include="SEngine.h" />
     <ClInclude Include="TInput.h" />
+    <ClInclude Include="TInputLayout.h" />
     <ClInclude Include="TMatrix.h" />
+    <ClInclude Include="TShader.h" />
     <ClInclude Include="TSound.h" />
     <ClInclude Include="TStd.h" />
     <ClInclude Include="TSync.h" />
+    <ClInclude Include="TTexture.h" />
     <ClInclude Include="TTime.h" />
     <ClInclude Include="TVector.h" />
     <ClInclude Include="TVertex.h" />

@@ -88,8 +88,6 @@ bool   TDevice::CreateDevice()
     m_MainVP.TopLeftX = 0;
     m_MainVP.TopLeftY = 0;
 
-    m_pd3dContext->RSSetViewports(1, &m_MainVP);
-    m_pd3dContext->OMSetRenderTargets(1, m_pRTV.GetAddressOf(), NULL);
     return true;
 }
 void   TDevice::Init()
@@ -105,6 +103,9 @@ void   TDevice::Frame()
 }
 void   TDevice::PreRender()
 {
+    m_pd3dContext->RSSetViewports(1, &m_MainVP);
+    m_pd3dContext->OMSetRenderTargets(1, m_pRTV.GetAddressOf(), NULL);
+
     float ClearColor[] = { 0.0f, 0.0f,0.0f, 1.0f };
     m_pd3dContext->ClearRenderTargetView(m_pRTV.Get(), ClearColor);
     m_pd3dContext->PSSetSamplers(0, 1, TDxState::m_pLinearSS.GetAddressOf());

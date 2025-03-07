@@ -4,6 +4,9 @@
 #include "TTime.h"
 #include "TInput.h"
 #include "TDxWrite.h"
+#include "TShader.h"
+#include "TTexture.h"
+#include "TInputLayout.h"
 #include <vector>
 #include <map>
 #include <set>

@@ -13,6 +13,8 @@
     <ClInclude Include="AActor.h" />
     <ClInclude Include="APawn.h" />
     <ClInclude Include="ACharacter.h" />
+    <ClInclude Include="UMaterialInterface.h" />
+    <ClInclude Include="UMaterial.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sample.cpp" />
@@ -27,5 +29,7 @@
     <ClCompile Include="AActor.cpp" />
     <ClCompile Include="APawn.cpp" />
     <ClCompile Include="ACharacter.cpp" />
+    <ClCompile Include="UMaterialInterface.cpp" />
+    <ClCompile Include="UMaterial.cpp" />
   </ItemGroup>
 </Project>
