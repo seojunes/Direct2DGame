@@ -53,7 +53,7 @@ void TCamera::CreateProjMatrix(
 	ret._34 = 1;
 	m_matProj = ret;
 }
-TMatrix TCamera::Update(TVector4 vDirValue)
+TMatrix TCamera::Update(TVector4 vDirValue, bool reset)
 {		
 	TBASIS_EX::TQuaternion* pqRotation = (TBASIS_EX::TQuaternion*)&m_qRotation;
 	TBASIS_EX::TVector3* pPosition = (TBASIS_EX::TVector3*)&m_vPosition;
@@ -62,6 +62,12 @@ TMatrix TCamera::Update(TVector4 vDirValue)
 	m_fYaw += vDirValue.y;
 	m_fPitch += vDirValue.x;
 	m_fRoll += vDirValue.z;
+	if (reset)
+	{
+		m_fYaw = 0;
+		m_fPitch = 0;
+		m_fRoll =0;
+	}
 
 	TBASIS_EX::D3DXQuaternionRotationYawPitchRoll(
 		pqRotation,
@@ -82,6 +88,7 @@ TMatrix TCamera::Update(TVector4 vDirValue)
 
 	return UpdateVector();
 }
+
 
 TMatrix TCamera::UpdateVector()
 {

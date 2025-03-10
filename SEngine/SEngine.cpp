@@ -85,6 +85,7 @@ void   SEngine::CoreFrame()
     if (g_GameKey.dw0key == KEY_PUSH)
     {
         g_pCamera->m_vPosition = { 0.0f,0.0f,-10.0f };
+        m_pSceneCamera->Update(TVector4(0, 0, 0, 0), true);
     }
     
     

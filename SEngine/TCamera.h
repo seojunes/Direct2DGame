@@ -22,7 +22,7 @@ public:
 	float    m_fPitch = 0.0f;
 	float    m_fRoll = 0.0f;
 public:
-	TMatrix Update(TVector4 vDirValue);
+	TMatrix Update(TVector4 vDirValue, bool reset = false);
 	TMatrix UpdateVector();
 	void CreateViewMatrix(
 		TVector3 vCameraPos,    // 카메라 위치
