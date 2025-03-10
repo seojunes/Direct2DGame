@@ -58,14 +58,36 @@ void   SEngine::CoreFrame()
     fPitch = -g_ptDeltaMouse.y * g_fSPF;
 
     float fDistance = 0.0f;
-    if (g_GameKey.dwWkey == KEY_HOLD)
+    if (g_GameKey.dw7key == KEY_HOLD)
     {
-        fDistance += g_fSPF * 10.0f;
+        g_pCamera->m_vPosition -= g_pCamera->m_vLook * g_fSPF * 20.0f;
     }
-    if (g_GameKey.dwSkey == KEY_HOLD)
+    if (g_GameKey.dw9key == KEY_HOLD)
     {
-        fDistance -= g_fSPF * 10.0f;
+        g_pCamera->m_vPosition += g_pCamera->m_vLook * g_fSPF * 20.0f ;
     }
+    if (g_GameKey.dw4key == KEY_HOLD)
+    {
+        g_pCamera->m_vPosition += g_pCamera->m_vRight * g_fSPF * 20.0f;
+    }
+    if (g_GameKey.dw6key == KEY_HOLD)
+    {
+        g_pCamera->m_vPosition -= g_pCamera->m_vRight * g_fSPF * 20.0f;
+    }
+    if (g_GameKey.dw8key == KEY_HOLD)
+    {
+        g_pCamera->m_vPosition += g_pCamera->m_vUp * g_fSPF * 20.0f;
+    }
+    if (g_GameKey.dw5key == KEY_HOLD)
+    {
+        g_pCamera->m_vPosition -= g_pCamera->m_vUp * g_fSPF * 20.0f;
+    }
+    if (g_GameKey.dw0key == KEY_PUSH)
+    {
+        g_pCamera->m_vPosition = { 0.0f,0.0f,-10.0f };
+    }
+    
+    
     if (m_nMouseWheelDelta != 0)
     {
         fDistance = ((m_nMouseWheelDelta) > 0) ? (1.0f) : (-1.0f);

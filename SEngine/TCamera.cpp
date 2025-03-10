@@ -71,6 +71,7 @@ TMatrix TCamera::Update(TVector4 vDirValue)
 
 	m_vPosition += m_vLook * vDirValue.w;
 	m_fRadius += vDirValue.w;
+	
 
 	TBASIS_EX::TMatrix matRotation;
 	TBASIS_EX::D3DXMatrixAffineTransformation(

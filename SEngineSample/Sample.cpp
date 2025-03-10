@@ -7,12 +7,6 @@ UStaticMeshComponent* Sample::Load(std::wstring filename)
 	mesh->m_vVertexList.resize(24);
 	mesh->m_vIndexList.resize(6 * 2 * 3);
 
-	// Back
-	// v5  v6
-	// v4  v7
-	// Front   
-	// v1  v2
-	// v0  v3
 	// ¾Õ¸é
 	mesh->m_vVertexList[0] = PNCT_VERTEX(TVector3(vMin.x, vMin.y, vMin.z), TVector3(0.0f, 0.0f, -1.0f) ,TVector4(1, 0, 0 , 1), TVector2(0.0f, 1.0f));
 	mesh->m_vVertexList[1] = PNCT_VERTEX(TVector3(vMin.x, vMax.y, vMin.z), TVector3(0.0f, 0.0f, -1.0f) ,TVector4(1, 0, 0 , 1), TVector2(0.0f, 0.0f));
@@ -80,7 +74,7 @@ void Sample::Init()
 	//m_pActor->SetMesh(Load("Sphere.fbx"));
 	auto pMaterial = std::make_shared<UMaterial>();
 	pMaterial->Load(L"../../data/shader/pnct.txt",
-		L"../../data/texture/gg.bmp");
+		L"../../data/texture/Newboss.png");
 	m_pActor->GetMesh()->SetMaterial(pMaterial);
 }
 void Sample::Tick() {
