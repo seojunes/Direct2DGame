@@ -9,7 +9,10 @@ public:
 	// 키보드, 마우스
 	DWORD    m_dwKeyState[256];// 모든 키들은 해당 번호가 있다.
 	POINT    m_ptMouse;
+	POINT    m_ptDeltaMouse;
+	POINT    m_ptDragStart;
 	std::wstring	m_szTime;
+	bool	m_bDrag = false;
 	float	m_fTmpTimer = 0.0f;
 public:
 	DWORD    KeyCheck(DWORD dwKey);

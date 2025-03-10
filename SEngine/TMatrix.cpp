@@ -88,14 +88,14 @@ TMatrix TMatrix::operator *(const TMatrix& mat)
 	}
 	return ret;
 }
-TMatrix TMatrix::Transpose()
+void TMatrix::Transpose()
 {
 	TMatrix ret;
 	ret._11 = _11; ret._12 = _21; ret._13 = _31; ret._14 = _41;
 	ret._21 = _12; ret._22 = _22; ret._23 = _32; ret._24 = _42;
 	ret._31 = _13; ret._32 = _23; ret._33 = _33; ret._34 = _43;
 	ret._41 = _14; ret._42 = _24; ret._43 = _34; ret._44 = _44;
-	return ret;
+	*this = ret;
 }
 void TMatrix::Scale(float x, float y, float z)
 {
@@ -155,47 +155,14 @@ TMatrix::TMatrix(TVector3 row1, TVector3 row2, TVector3 row3,
 	_31 = row3.x; _32 = row3.y; _33 = row3.z; _34 = 0.0f;
 	_41 = row4.x; _42 = row4.y; _43 = row4.z; _44 = 1.0f;
 }
-TMatrix TMatrix::CreateViewMatrix(TVector3 vPosition,
-	TVector3 vTarget,
-	TVector3 vUp)
+
+
+TMatrix TMatrix::Transpose(const TMatrix& m)
 {
-	TMatrix m;
-	TVector3 vDirection = vTarget - vPosition;
-	vDirection = vDirection.Normal();
-	float fDot = vUp | vDirection; // 내적
-	TVector3 vC = vDirection * fDot;
-	TVector3 vUpVector = vUp - (vDirection * fDot);
-	vUpVector = vUpVector.Normal();
-	TVector3 vRightVector = vUpVector ^ vDirection; // 외적
-
-	m._11 = vRightVector.x;	m._12 = vUpVector.x; m._13 = vDirection.x;
-	m._21 = vRightVector.y;	m._22 = vUpVector.y; m._23 = vDirection.y;
-	m._31 = vRightVector.z;	m._32 = vUpVector.z; m._33 = vDirection.z;
-
-	m._41 = -(vPosition | vRightVector);
-	m._42 = -(vPosition | vUpVector);
-	m._43 = -(vPosition | vDirection);
-	return m;
-}
-// 원근투영,  직교투영	
-TMatrix TMatrix::CreateProjMatrix(
-	float fFov,		     // 시야각(수평)
-	float fAspect,       // 화면비율(가로/세로)
-	float fNearPlane,    // 근단면 거리
-	float fFarPlane)	 // 원단면 거리
-{
-	float    h, w, Q;
-
-	h = 1 / tan(fFov * 0.5f);
-	w = h / fAspect;
-	Q = fFarPlane / (fFarPlane - fNearPlane);
-
 	TMatrix ret;
-	ZeroMemory(&ret, sizeof(TMatrix));
-	ret._11 = w;
-	ret._22 = h;
-	ret._33 = Q;
-	ret._43 = -Q * fNearPlane;
-	ret._34 = 1;
+	ret._11 = m._11; ret._12 = m._21; ret._13 = m._31; ret._14 = m._41;
+	ret._21 = m._12; ret._22 = m._22; ret._23 = m._32; ret._24 = m._42;
+	ret._31 = m._13; ret._32 = m._23; ret._33 = m._33; ret._34 = m._43;
+	ret._41 = m._14; ret._42 = m._24; ret._43 = m._34; ret._44 = m._44;
 	return ret;
 }

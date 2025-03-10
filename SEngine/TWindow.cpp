@@ -1,8 +1,10 @@
 #include "TWindow.h"
 POINT g_ptClientSize;
 HWND  g_hWnd;
+TWindow* g_pWindow = nullptr;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    g_pWindow->MsgProc(hWnd, message, wParam, lParam);
     switch (message)
     {
     case WM_DESTROY:
@@ -10,6 +12,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
     return  DefWindowProc(hWnd, message, wParam, lParam);
+}
+LRESULT TWindow::MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)
+    {
+    case WM_MOUSEWHEEL:
+    {
+        // +120, -120 단위
+        m_nMouseWheelDelta = (short)HIWORD(wParam);
+        //m_nMouseWheelDelta = GET_WHEEL_DELTA_WPARAM(wParam);     
+    };
+    }
+    return 0;
 }
 // 윈도우클래스 등록
 bool   TWindow::SetWindowClass(HINSTANCE hInstance)
@@ -27,7 +42,7 @@ bool   TWindow::SetWindowClass(HINSTANCE hInstance)
     wcex.hbrBackground = (HBRUSH)CreateSolidBrush(RGB(128, 128, 128));
     // 운영체제에게 이런 윈도우를 사용할거야. (운영체제에세 신고한다.등록)
     WORD hr = RegisterClassExW(&wcex);
-	return true;
+    return true;
 }
 // 윈도우창 생성
 bool   TWindow::SetWindow(
@@ -51,18 +66,18 @@ bool   TWindow::SetWindow(
     {
         return false;
     }
-   
+
     GetWindowRect(hWnd, &m_rtWindow);
     GetClientRect(hWnd, &m_rtClient);
     ShowWindow(hWnd, SW_SHOW);
     m_hWnd = hWnd;
     g_hWnd = hWnd;
-	return true;
+    return true;
 }
 // 메세지 프로시쳐, 처리
 bool   TWindow::MessageProcess()
 {
-    MSG msg;   
+    MSG msg;
     if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
     {
         if (msg.message == WM_QUIT)
@@ -76,7 +91,11 @@ bool   TWindow::MessageProcess()
     }
     return false;
 }
-
+//생성자를 통해서 g_pWindow설정.
+TWindow::TWindow()
+{
+    g_pWindow = this;
+}
 //// 메세지 프로시쳐, 처리
 //bool   TWindow::MessageProcess() 
 //{

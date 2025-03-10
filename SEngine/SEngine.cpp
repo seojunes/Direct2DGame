@@ -1,6 +1,6 @@
 #include "SEngine.h"
 #include "TDxState.h"
-
+TCamera* SEngine::g_pCamera = nullptr;
 void   SEngine::CoreInit()
 {
     m_DxDevice.Init();
@@ -23,6 +23,21 @@ void   SEngine::CoreInit()
     {
         I_InputLayout.Init(I_Shader.g_pDefaultShader->m_pCode.Get());
     }
+
+    m_pSceneCamera = std::make_shared<TCamera>();
+    g_pCamera = m_pSceneCamera.get();
+
+    TVector3 vCameraPos = TVector3(0, 0, -10.0f);
+    TVector3 vCameraTarget = TVector3(0, 0, 0.0f);
+    TVector3 vCameraUp = TVector3(0, 1.0f, 0.0f);
+    m_pSceneCamera->CreateViewMatrix(vCameraPos, vCameraTarget, vCameraUp);
+
+    float fAspect = (float)g_ptClientSize.x / (float)g_ptClientSize.y;
+    float fFovY = (float)T_Pi * 0.25f;
+    float fNearZ = 1.0f;
+    float fFarZ = 1000.0f;
+    m_pSceneCamera->CreateProjMatrix(fFovY, fAspect, fNearZ, fFarZ);
+
     Init();
 }
 void   SEngine::CoreFrame() 
@@ -36,6 +51,27 @@ void   SEngine::CoreFrame()
     {
         TDevice::m_bWireFrame = !TDevice::m_bWireFrame;
     }
+    
+    float fYaw = 0;
+    float fPitch = 0;
+    fYaw = -g_ptDeltaMouse.x * g_fSPF;
+    fPitch = -g_ptDeltaMouse.y * g_fSPF;
+
+    float fDistance = 0.0f;
+    if (g_GameKey.dwWkey == KEY_HOLD)
+    {
+        fDistance += g_fSPF * 10.0f;
+    }
+    if (g_GameKey.dwSkey == KEY_HOLD)
+    {
+        fDistance -= g_fSPF * 10.0f;
+    }
+    if (m_nMouseWheelDelta != 0)
+    {
+        fDistance = ((m_nMouseWheelDelta) > 0) ? (1.0f) : (-1.0f);
+        fDistance = fDistance * g_fSPF * 300.0f;
+    }
+    m_pSceneCamera->Update(TVector4(fPitch, fYaw, 0, fDistance));
 
     Tick();
 }
@@ -83,9 +119,9 @@ bool SEngine::GameRun()
         if(!MessageProcess())
         {
             CoreFrame();
-            CoreRender();           
-        }
-        
+            CoreRender();       
+            m_nMouseWheelDelta = 0;
+        }  
     }	
     CoreRelease();
 	return true;

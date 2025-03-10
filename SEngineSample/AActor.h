@@ -12,10 +12,18 @@ struct cbData
 };
 class AActor : public UObject
 {
-public:
+	TMatrix m_matScale;
+	TMatrix m_matRotation;
+	TMatrix m_matTrans;
+	TMatrix m_matWorld;
 	cbData m_cbData;
 	UStaticMeshComponent* Mesh;
 	ComPtr<ID3D11Buffer> m_pConstantBuffer = nullptr;
+public:
+	TVector3 m_vScale;
+	TVector3 m_vRotation; // pitch yaw roll
+	TVector3 m_vPosition;
+	UStaticMeshComponent* GetMesh() { return Mesh; }
 public:
 	virtual bool CreateConstantBuffer();
 	void SetMesh(UStaticMeshComponent* mesh);

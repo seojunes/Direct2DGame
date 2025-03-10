@@ -149,12 +149,14 @@ copy "..\\..\\output\\Debug\\SEngine.lib" "..\\..\\SEngine\\lib\\TEngine_D.lib"<
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="TCamera.cpp" />
     <ClCompile Include="TDevice.cpp" />
     <ClCompile Include="TDxState.cpp" />
     <ClCompile Include="TDxWrite.cpp" />
     <ClCompile Include="SEngine.cpp" />
     <ClCompile Include="TInput.cpp" />
     <ClCompile Include="TInputLayout.cpp" />
+    <ClCompile Include="TMath.cpp" />
     <ClCompile Include="TMatrix.cpp" />
     <ClCompile Include="TShader.cpp" />
     <ClCompile Include="TSound.cpp" />
@@ -166,12 +168,14 @@ copy "..\\..\\output\\Debug\\SEngine.lib" "..\\..\\SEngine\\lib\\TEngine_D.lib"<
     <ClCompile Include="TWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="TCamera.h" />
     <ClInclude Include="TDevice.h" />
     <ClInclude Include="TDxState.h" />
     <ClInclude Include="TDxWrite.h" />
     <ClInclude Include="SEngine.h" />
     <ClInclude Include="TInput.h" />
     <ClInclude Include="TInputLayout.h" />
+    <ClInclude Include="TMath.h" />
     <ClInclude Include="TMatrix.h" />
     <ClInclude Include="TShader.h" />
     <ClInclude Include="TSound.h" />
@@ -182,6 +186,9 @@ copy "..\\..\\output\\Debug\\SEngine.lib" "..\\..\\SEngine\\lib\\TEngine_D.lib"<
     <ClInclude Include="TVector.h" />
     <ClInclude Include="TVertex.h" />
     <ClInclude Include="TWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

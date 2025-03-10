@@ -1,6 +1,9 @@
 #include "AActor.h"
 #include "TDevice.h"
+#include "SEngine.h"
+
 AActor::AActor() {
+	m_vScale = { 1,1,1 };
 	CreateConstantBuffer();
 };
 AActor::~AActor() {};
@@ -29,57 +32,26 @@ bool	AActor::CreateConstantBuffer()
 	return true;
 }
 void AActor::Init() {
-	TVector3 vCameraPos = TVector3(0, 0, -100.0f);
-	TVector3 vCameraTarget = TVector3(0, 0, 0.0f);
-	TVector3 vCameraUp = TVector3(0, 1.0f, 0.0f);
-	m_cbData.matView = TMatrix::CreateViewMatrix(vCameraPos, vCameraTarget, vCameraUp);
-	float fAspect = (float)g_ptClientSize.x / (float)g_ptClientSize.y;
-	float fFovY = (float)T_Pi * 0.25f;
-	float fNearZ = 1.0f;
-	float fFarZ = 1000.0f;
-	m_cbData.matProj = TMatrix::CreateProjMatrix(fFovY, fAspect, fNearZ, fFarZ);
-	m_cbData.matView.Transpose();
-	m_cbData.matProj.Transpose();
 }
 void AActor::Tick()
 {
 
 	if (Mesh != nullptr) Mesh->Tick();
 }
-void AActor::Render() {
-	static TVector3 vCameraPos = TVector3(0, 0, -10.0f);
-	if (g_GameKey.dwAkey == KEY_HOLD)
-	{
-		vCameraPos.z += 10 * g_fSPF;
-	}
-	if (g_GameKey.dwDkey == KEY_HOLD)
-	{
-		vCameraPos.z -= 10 * g_fSPF;
-	}
-	if (g_GameKey.dwSkey == KEY_HOLD)
-	{
-		vCameraPos.x += 10 * g_fSPF;
-	}
-	if (g_GameKey.dwWkey == KEY_HOLD)
-	{
-		vCameraPos.x -= 10 * g_fSPF;
-	}
-	
-	//vCameraPos.z += cosf(g_fGT) * 100.0f * g_fSPF;
-	TVector3 vCameraTarget = TVector3(0, 0, 0.0f);
-	TVector3 vCameraUp = TVector3(0, 1.0f, 0.0f);
-	m_cbData.matView = TMatrix::CreateViewMatrix(vCameraPos, vCameraTarget, vCameraUp);
-	float fAspect = (float)g_ptClientSize.x / (float)g_ptClientSize.y;
-	float fFovY = (float)T_Pi * 0.25f;
-	float fNearZ = 1.0f;
-	float fFarZ = 1000.0f;
-	m_cbData.matProj = TMatrix::CreateProjMatrix(fFovY, fAspect, fNearZ, fFarZ);
+void AActor::Render()
+{
+	/*m_vScale = { 2,1,1 };
+	m_vRotation = { 0.0f,g_fGT, 0.0f };
+	m_vPosition = { cosf(g_fGT) * 2.0f,sinf(g_fGT) * 2.0f,0 };;*/
 
-	//m_cbData.matWorld.RotateZ(g_fGT);
+	m_matScale.Scale(m_vScale);
+	m_matRotation.RotateY(m_vRotation.y);
+	m_matTrans.Trans(m_vPosition);
+	m_matWorld = m_matScale * m_matRotation * m_matTrans;
 
-	m_cbData.matView = m_cbData.matView.Transpose();
-	m_cbData.matProj = m_cbData.matProj.Transpose();
-	m_cbData.matWorld = m_cbData.matWorld.Transpose();
+	m_cbData.matView = TMatrix::Transpose(SEngine::g_pCamera->m_matView);
+	m_cbData.matProj = TMatrix::Transpose(SEngine::g_pCamera->m_matProj);
+	m_cbData.matWorld = TMatrix::Transpose(m_matWorld);
 
 	TDevice::m_pd3dContext->UpdateSubresource(
 		m_pConstantBuffer.Get(), 0, NULL, &m_cbData, 0, 0);
