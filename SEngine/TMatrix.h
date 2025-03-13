@@ -7,7 +7,6 @@ struct float3x3
 			float _11, _12, _13;
 			float _21, _22, _23;
 			float _31, _32, _33;
-			float _41, _42, _43;
 		};
 		float m[3][3];
 	};

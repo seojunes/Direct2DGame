@@ -35,17 +35,27 @@ void AActor::Init() {
 }
 void AActor::Tick()
 {
-
 	if (Mesh != nullptr) Mesh->Tick();
+	if (g_GameKey.dwAkey == KEY_HOLD)
+	{
+		m_matRotation.RotateZ(0.001f);
+	}
+	if (g_GameKey.dwSkey == KEY_HOLD)
+	{
+		m_matRotation.RotateX(0.001f);
+	}
+	if (g_GameKey.dwDkey == KEY_HOLD)
+	{
+		m_matRotation.RotateY(0.001f);
+	}
 }
 void AActor::Render()
 {
-	/*m_vScale = { 2,1,1 };
-	m_vRotation = { 0.0f,g_fGT, 0.0f };
-	m_vPosition = { cosf(g_fGT) * 2.0f,sinf(g_fGT) * 2.0f,0 };;*/
+	//m_vScale = { 2,1,1 };
+	//m_vRotation = { g_fGT,0.0f, 0.0f };
+	//m_vPosition = { 3, 0, 0 };//cosf(g_fGT) * 2.0f,sinf(g_fGT) * 2.0f,0 };;
 
 	m_matScale.Scale(m_vScale);
-	m_matRotation.RotateY(m_vRotation.y);
 	m_matTrans.Trans(m_vPosition);
 	m_matWorld = m_matScale * m_matRotation * m_matTrans;
 

@@ -32,5 +32,7 @@ public:
 	void   CoreRender();
 	void   CoreRelease();
 	virtual bool   GameRun();
+public:
+	bool	m_bFMode = false;
 };
 

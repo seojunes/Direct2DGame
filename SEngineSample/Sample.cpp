@@ -74,7 +74,7 @@ void Sample::Init()
 	//m_pActor->SetMesh(Load("Sphere.fbx"));
 	auto pMaterial = std::make_shared<UMaterial>();
 	pMaterial->Load(L"../../data/shader/pnct.txt",
-		L"../../data/texture/Newboss.png");
+		L"../../data/texture/restart.png");
 	m_pActor->GetMesh()->SetMaterial(pMaterial);
 }
 void Sample::Tick() {

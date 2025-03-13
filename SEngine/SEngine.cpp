@@ -56,46 +56,52 @@ void   SEngine::CoreFrame()
     float fPitch = 0;
     fYaw = -g_ptDeltaMouse.x * g_fSPF;
     fPitch = -g_ptDeltaMouse.y * g_fSPF;
-
+    //fPitch = cosf(g_fSPF)*g_fSPF;
+    TVector3 vPosition = g_pCamera->m_vPosition;
     float fDistance = 0.0f;
-    if (g_GameKey.dw7key == KEY_HOLD)
-    {
-        g_pCamera->m_vPosition -= g_pCamera->m_vLook * g_fSPF * 20.0f;
-    }
-    if (g_GameKey.dw9key == KEY_HOLD)
-    {
-        g_pCamera->m_vPosition += g_pCamera->m_vLook * g_fSPF * 20.0f ;
-    }
-    if (g_GameKey.dw4key == KEY_HOLD)
-    {
-        g_pCamera->m_vPosition += g_pCamera->m_vRight * g_fSPF * 20.0f;
-    }
-    if (g_GameKey.dw6key == KEY_HOLD)
-    {
-        g_pCamera->m_vPosition -= g_pCamera->m_vRight * g_fSPF * 20.0f;
-    }
-    if (g_GameKey.dw8key == KEY_HOLD)
-    {
-        g_pCamera->m_vPosition += g_pCamera->m_vUp * g_fSPF * 20.0f;
-    }
-    if (g_GameKey.dw5key == KEY_HOLD)
-    {
-        g_pCamera->m_vPosition -= g_pCamera->m_vUp * g_fSPF * 20.0f;
-    }
-    if (g_GameKey.dw0key == KEY_PUSH)
-    {
-        g_pCamera->m_vPosition = { 0.0f,0.0f,-10.0f };
-        m_pSceneCamera->Update(TVector4(0, 0, 0, 0), true);
-    }
-    
-    
-    if (m_nMouseWheelDelta != 0)
-    {
-        fDistance = ((m_nMouseWheelDelta) > 0) ? (1.0f) : (-1.0f);
-        fDistance = fDistance * g_fSPF * 300.0f;
-    }
-    m_pSceneCamera->Update(TVector4(fPitch, fYaw, 0, fDistance));
 
+    if (g_GameKey.dwSpace == KEY_PUSH)
+    {
+        m_bFMode = !m_bFMode;
+    }
+
+    if (m_bFMode)
+    {
+
+    }
+    else
+    {
+        if (g_GameKey.dw7key == KEY_HOLD)     g_pCamera->MoveLook();
+        if (g_GameKey.dw9key == KEY_HOLD)     g_pCamera->BackLook();
+        if (g_GameKey.dw4key == KEY_HOLD)     g_pCamera->MoveRight();
+        if (g_GameKey.dw6key == KEY_HOLD)     g_pCamera->BackRight();
+        if (g_GameKey.dw8key == KEY_HOLD)     g_pCamera->MoveUp();
+        if (g_GameKey.dw5key == KEY_HOLD)     g_pCamera->BackUp();
+        if (g_GameKey.dw0key == KEY_PUSH)
+        {
+            g_pCamera->m_vPosition = { 0.0f,0.0f,-10.0f };
+            m_pSceneCamera->Update(TVector4(0, 0, 0, 0), true);
+        }
+
+        if (m_nMouseWheelDelta != 0)
+        {
+            fDistance = ((m_nMouseWheelDelta) > 0) ? (1.0f) : (-1.0f);
+            fDistance = fDistance * g_fSPF * 300.0f;
+        }
+        //if (fPitch != 0 || fYaw != 0)
+        {
+            m_pSceneCamera->Update(TVector4(fPitch, fYaw, 0, fDistance));
+        }
+        /*  else if( vPosition != g_pCamera->m_vPosition)
+          {
+              m_pSceneCamera->CreateViewMatrix(g_pCamera->m_vPosition,
+                  g_pCamera->m_vTarget,
+                  g_pCamera->m_vUp);
+          }
+          */
+
+    }
+    
     Tick();
 }
 void   SEngine::CoreRender() 

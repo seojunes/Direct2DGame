@@ -107,25 +107,33 @@ void TMatrix::Scale(TVector3 s)
 }
 void TMatrix::RotateZ(float fRadian)
 {
-	SetIdentity();
+	TMatrix mattemp;
+	mattemp.SetIdentity();
 	float fCosTheta = cosf(fRadian);
 	float fSinTheta = sinf(fRadian);
-	_11 = fCosTheta;  _12 = fSinTheta;
-	_21 = -fSinTheta; _22 = fCosTheta;
+	mattemp._11 = fCosTheta;  mattemp._12 = fSinTheta;
+	mattemp._21 = -fSinTheta; mattemp._22 = fCosTheta;
+	*this = *this * mattemp;
 }
 void TMatrix::RotateX(float fRadian)
 {
+	TMatrix mattemp;
+	mattemp.SetIdentity();
 	float fCosTheta = cosf(fRadian);
 	float fSinTheta = sinf(fRadian);
-	_22 = fCosTheta;  _23 = fSinTheta;
-	_32 = -fSinTheta; _33 = fCosTheta;
+	mattemp._22 = fCosTheta;  mattemp._23 = fSinTheta;
+	mattemp._32 = -fSinTheta; mattemp._33 = fCosTheta;
+	*this = *this * mattemp;
 }
 void TMatrix::RotateY(float fRadian)
 {
+	TMatrix mattemp;
+	mattemp.SetIdentity();
 	float fCosTheta = cosf(fRadian);
 	float fSinTheta = sinf(fRadian);
-	_11 = fCosTheta;  _13 = -fSinTheta;
-	_31 = fSinTheta; _33 = fCosTheta;
+	mattemp._11 = fCosTheta; mattemp._13 = -fSinTheta;
+	mattemp._31 = fSinTheta; mattemp._33 = fCosTheta;
+	*this = *this * mattemp;
 }
 void TMatrix::Trans(float x, float y, float z)
 {

@@ -33,4 +33,13 @@ public:
 		float fAspect,			// 화면비율(가로/세로)
 		float fNear,			// 근단면 거리
 		float fFar);		    // 원단면 거리;
+
+public:
+	void MoveLook( );
+	void BackLook();
+	void MoveUp( );
+	void BackUp();
+	void MoveRight( );
+	void BackRight();
+	float m_fMoveSpeed = 0.01f;
 };
