@@ -1,6 +1,7 @@
 #include "TWindow.h"
 POINT g_ptClientSize;
 HWND  g_hWnd;
+short g_nMouseWheelDelta;
 TWindow* g_pWindow = nullptr;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -19,9 +20,10 @@ LRESULT TWindow::MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
     case WM_MOUSEWHEEL:
     {
-        // +120, -120 단위
-        m_nMouseWheelDelta = (short)HIWORD(wParam);
+        // +120, -120 단위 노치
+        m_nMouseWheelDelta += (short)HIWORD(wParam);
         //m_nMouseWheelDelta = GET_WHEEL_DELTA_WPARAM(wParam);     
+        g_nMouseWheelDelta = m_nMouseWheelDelta;
     };
     }
     return 0;
@@ -78,6 +80,7 @@ bool   TWindow::SetWindow(
 bool   TWindow::MessageProcess()
 {
     MSG msg;
+    //PM_REMOVE를 통해서 메시지를 가져옴과 동시에 삭제한다.
     if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
     {
         if (msg.message == WM_QUIT)
@@ -96,56 +99,4 @@ TWindow::TWindow()
 {
     g_pWindow = this;
 }
-//// 메세지 프로시쳐, 처리
-//bool   TWindow::MessageProcess() 
-//{
-//    MSG msg;
-//    std::clock_t tick = std::clock();
-//    std::clock_t m_StartClock = std::clock();
-//    std::clock_t m_EndClock = std::clock();
-//    double m_fGameTimer = 0.0;
-//    double m_fTmpTimer = 0.0f;
-//    double m_fSecondPerFrame = 0.0f;
-//    UINT m_iGameFrame = 0;
-//    while (m_bRun)
-//    {
-//        if(PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-//        {
-//            TranslateMessage(&msg); // 키를 번역한다.
-//            DispatchMessage(&msg);  // 프로시져로 전송한다.
-//        }
-//        else
-//        {
-//            
-//            m_EndClock = std::clock();
-//            std::clock_t t1 = m_EndClock - tick; // 1000단위
-//            
-//            m_fSecondPerFrame = (m_EndClock - m_StartClock) / (double)CLOCKS_PER_SEC;
-//            m_fGameTimer += m_fSecondPerFrame;
-//            m_fTmpTimer += m_fSecondPerFrame;
-//            if (m_fTmpTimer > 1.0)
-//            {
-//                std::wstring m_szTime = std::to_wstring(m_fGameTimer);
-//                m_szTime += L" ";
-//                m_szTime += std::to_wstring(m_fSecondPerFrame);
-//                m_szTime += L" ";
-//                m_szTime += std::to_wstring(m_iGameFrame);
-//                m_szTime += L"\n";
-//                OutputDebugString(m_szTime.c_str());
-//                m_fTmpTimer -= 1.0;
-//                m_iGameFrame = 0;
-//            }
-//            
-//            /*if (t1 >= 10)
-//            {*/
-//                m_iGameFrame++;
-//                // 게임로직
-//                GameRun();       
-//              /*  tick = m_EndClock;
-//            }*/
-//            m_StartClock = m_EndClock;
-//        }
-//    }
-//	return true;
-//}
 

@@ -17,11 +17,11 @@
 #pragma comment(lib,"d3dcompiler.lib") // 加己 眠啊辆加己 
 
 #ifndef _DEBUG
-    #pragma comment(lib, "DirectXTK_R.lib")
-    #pragma comment(lib,"TEngine_R.lib")
+#pragma comment(lib, "DirectXTK_R.lib")
+#pragma comment(lib,"TEngine_R.lib")
 #else
-    #pragma comment(lib, "DirectXTK_d.lib")
-    #pragma comment(lib,"TEngine_d.lib")
+#pragma comment(lib, "DirectXTK_d.lib")
+#pragma comment(lib,"TEngine_d.lib")
 #endif
 
 
@@ -61,27 +61,17 @@ static std::string to_wm(const std::wstring& _src)
 };
 struct TGameKey
 {
-	//DWORD frontMove;// w or VK_UP
-	//DWORD Attack;// Lbutton or VK_ENTER
-	DWORD dwWkey;
-	DWORD dwSkey;
-	DWORD dwAkey;
-	DWORD dwDkey;
-    DWORD dw0key;
-    DWORD dw1key;
-    DWORD dw2key;
-    DWORD dw3key;
-    DWORD dw4key;
-    DWORD dw5key;
-    DWORD dw6key;
-    DWORD dw7key;
-    DWORD dw8key;
-    DWORD dw9key;
-	DWORD dwLeftClick;
-	DWORD dwRightClick;
-	DWORD dwMiddleClick;
-	DWORD dwExit;
-	DWORD dwSpace;
+    //DWORD frontMove;// w or VK_UP
+    //DWORD Attack;// Lbutton or VK_ENTER
+    DWORD dwWkey;
+    DWORD dwSkey;
+    DWORD dwAkey;
+    DWORD dwDkey;
+    DWORD dwLeftClick;
+    DWORD dwRightClick;
+    DWORD dwMiddleClick;
+    DWORD dwExit;
+    DWORD dwSpace;
 };
 
 enum { KEY_FREE = 0, KEY_PUSH, KEY_HOLD, KEY_UP };
@@ -90,10 +80,10 @@ extern POINT g_ptClientSize;
 extern POINT g_ptMouse;
 extern HWND  g_hWnd;
 extern TGameKey g_GameKey;
-extern float   g_fSPF;
-extern float   g_fGT;
+extern float    g_fSPF;
+extern float    g_fGT;
 extern POINT    g_ptDeltaMouse;
-
+extern short    g_nMouseWheelDelta;
 static void DX_CHECK(HRESULT hr, const TCHAR* function)
 {
     if (FAILED(hr))
