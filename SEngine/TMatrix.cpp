@@ -1,5 +1,9 @@
 #include "TMatrix.h"
-
+TMatrix TMatrix::m_matIdentity;
+TMatrix TMatrix::Identity()
+{
+	return m_matIdentity;
+}
 TMatrix3 TMatrix3::operator *(const TMatrix3& mat)
 {
 	TMatrix3 ret;
@@ -174,3 +178,4 @@ TMatrix TMatrix::Transpose(const TMatrix& m)
 	ret._41 = m._14; ret._42 = m._24; ret._43 = m._34; ret._44 = m._44;
 	return ret;
 }
+

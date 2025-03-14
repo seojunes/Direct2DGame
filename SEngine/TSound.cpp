@@ -208,10 +208,10 @@ TSound* TSoundManager::GetPtr(std::wstring key)
 
 TSoundManager::~TSoundManager()
 {
-	for (auto sound : maplist)
+	for (auto data : maplist)
 	{
-		sound.second->Release();
-		delete sound.second;
+		data.second->Release();
+		delete data.second;
 	}
 	maplist.clear();
 	if (m_pSystem)

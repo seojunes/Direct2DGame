@@ -40,9 +40,7 @@ void    TInput::Frame()
 	GetCursorPos(&m_ptMouse);			// 화면좌표
 	ScreenToClient(g_hWnd, &m_ptMouse); // 클라이언트좌표
 	POINT ptDeltaMouse;
-	ptDeltaMouse.x = g_ptMouse.x - m_ptMouse.x;
-	ptDeltaMouse.y = g_ptMouse.y - m_ptMouse.y;
-	g_ptMouse = m_ptMouse;
+	
 	// 키 매핑
 	g_GameKey.dwWkey = KeyCheck('W');
 	g_GameKey.dwSkey = KeyCheck('S');
@@ -63,6 +61,7 @@ void    TInput::Frame()
 	g_GameKey.dwMiddleClick = KeyCheck(VK_MBUTTON);
 	g_GameKey.dwExit = KeyCheck(VK_ESCAPE);
 	g_GameKey.dwSpace = KeyCheck(VK_SPACE);
+	// 마우스 드래그 설정 및 변화위치 감지.
 	if (g_GameKey.dwLeftClick == KEY_PUSH)
 	{
 		m_ptDragStart = m_ptMouse;
@@ -76,33 +75,27 @@ void    TInput::Frame()
 	}
 	if (m_bDrag)
 	{
-		//g_ptDeltaMouse.x = m_ptDragStart.x - m_ptMouse.x;
-		//g_ptDeltaMouse.y = m_ptDragStart.y - m_ptMouse.y;
-		g_ptDeltaMouse.x = ptDeltaMouse.x;
-		g_ptDeltaMouse.y = ptDeltaMouse.y;
+		g_ptDeltaMouse.x = m_ptMouse.x - g_ptMouse.x;
+		g_ptDeltaMouse.y = m_ptMouse.y - g_ptMouse.y;
 	}
+	g_ptMouse = m_ptMouse;
 
-	//#ifdef _DEBUG
-	//		m_szTime = std::to_wstring(g_ptDeltaMouse.x);
-	//		m_szTime += L" ";
-	//		m_szTime += std::to_wstring(g_ptDeltaMouse.y);
-	//		m_szTime += L"\n";
-	//#endif
-}
-void    TInput::Render()
-{
-	m_fTmpTimer += g_fSPF;
-	//if (m_fTmpTimer > 1.0)
-	{
+	/*m_fTmpTimer += g_fSPF;
+	if (m_fTmpTimer > 1.0)
+	{*/
 #ifdef _DEBUG
-		m_szTime = std::to_wstring(g_ptDeltaMouse.x);
+		m_szTime = std::to_wstring(g_ptMouse.x);
 		m_szTime += L" ";
-		m_szTime += std::to_wstring(g_ptDeltaMouse.y);
+		m_szTime += std::to_wstring(g_ptMouse.y);
 		m_szTime += L"\n";
 #endif
 		m_fTmpTimer -= 1.0;
-		OutputDebugString(m_szTime.c_str());
-	}
+		//OutputDebugString(m_szTime.c_str());
+	//}
+}
+void    TInput::Render()
+{
+	
 }
 void    TInput::Release() {
 

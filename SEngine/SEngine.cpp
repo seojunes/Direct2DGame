@@ -1,6 +1,15 @@
 #include "SEngine.h"
 #include "TDxState.h"
 TCamera* SEngine::g_pCamera = nullptr;
+void SEngine::SetCamera(TCamera* pCamera)
+{
+    if (pCamera == nullptr)
+    {
+        g_pCamera = m_pSceneCamera.get();
+        return;
+    }
+    g_pCamera = pCamera;
+}
 void   SEngine::CoreInit()
 {
     m_DxDevice.Init();
@@ -9,9 +18,8 @@ void   SEngine::CoreInit()
     m_DxWrite.Init();
     // 3d(RT) : 2d(RT) ¿¬µ¿
     IDXGISurface* pBackBuffer;
-    HRESULT hr = m_DxDevice.m_pSwapChain->GetBuffer(
-        0, __uuidof(IDXGISurface), (LPVOID*)&pBackBuffer);
-    if (SUCCEEDED(m_DxWrite.Create(pBackBuffer)))
+    HRESULT hr = m_DxDevice.m_pSwapChain->GetBuffer(0, __uuidof(IDXGISurface), (LPVOID*)&pBackBuffer);
+    if ( SUCCEEDED(m_DxWrite.Create(pBackBuffer)))
     {
         pBackBuffer->Release();
     }
@@ -25,7 +33,7 @@ void   SEngine::CoreInit()
     }
 
     m_pSceneCamera = std::make_shared<TCamera>();
-    g_pCamera = m_pSceneCamera.get();
+    SetCamera(m_pSceneCamera.get());
 
     TVector3 vCameraPos = TVector3(0, 0, -10.0f);
     TVector3 vCameraTarget = TVector3(0, 0, 0.0f);
@@ -51,56 +59,13 @@ void   SEngine::CoreFrame()
     {
         TDevice::m_bWireFrame = !TDevice::m_bWireFrame;
     }
+    if (m_Input.KeyCheck('B') == KEY_PUSH)
+    {
+        TDevice::m_DepthEnable = !TDevice::m_DepthEnable;
+    }
+
+    g_pCamera->Tick();
     
-    float fYaw = 0;
-    float fPitch = 0;
-    fYaw = -g_ptDeltaMouse.x * g_fSPF;
-    fPitch = -g_ptDeltaMouse.y * g_fSPF;
-    //fPitch = cosf(g_fSPF)*g_fSPF;
-    TVector3 vPosition = g_pCamera->m_vPosition;
-    float fDistance = 0.0f;
-
-    if (g_GameKey.dwSpace == KEY_PUSH)
-    {
-        m_bFMode = !m_bFMode;
-    }
-
-    if (m_bFMode)
-    {
-
-    }
-    else
-    {
-        if (g_GameKey.dw7key == KEY_HOLD)     g_pCamera->MoveLook();
-        if (g_GameKey.dw9key == KEY_HOLD)     g_pCamera->BackLook();
-        if (g_GameKey.dw4key == KEY_HOLD)     g_pCamera->MoveRight();
-        if (g_GameKey.dw6key == KEY_HOLD)     g_pCamera->BackRight();
-        if (g_GameKey.dw8key == KEY_HOLD)     g_pCamera->MoveUp();
-        if (g_GameKey.dw5key == KEY_HOLD)     g_pCamera->BackUp();
-        if (g_GameKey.dw0key == KEY_PUSH)
-        {
-            g_pCamera->m_vPosition = { 0.0f,0.0f,-10.0f };
-            m_pSceneCamera->Update(TVector4(0, 0, 0, 0), true);
-        }
-
-        if (m_nMouseWheelDelta != 0)
-        {
-            fDistance = ((m_nMouseWheelDelta) > 0) ? (1.0f) : (-1.0f);
-            fDistance = fDistance * g_fSPF * 300.0f;
-        }
-        //if (fPitch != 0 || fYaw != 0)
-        {
-            m_pSceneCamera->Update(TVector4(fPitch, fYaw, 0, fDistance));
-        }
-        /*  else if( vPosition != g_pCamera->m_vPosition)
-          {
-              m_pSceneCamera->CreateViewMatrix(g_pCamera->m_vPosition,
-                  g_pCamera->m_vTarget,
-                  g_pCamera->m_vUp);
-          }
-          */
-
-    }
     
     Tick();
 }
@@ -115,11 +80,8 @@ void   SEngine::CoreRender()
                 D2D1_RECT_F rt = { 0.0f, 0.0f, 800.0f, 600.0f };
                 m_DxWrite.Draw(rt, m_GameTimer.m_szTime);
                 rt.top += 25.0f;
-                m_DxWrite.Draw(rt, m_Input.m_szTime, 
-                                    D2D1::ColorF(1, 0, 0,1));
-            
+                m_DxWrite.Draw(rt, m_Input.m_szTime, D2D1::ColorF(1, 0, 0,1));
             }
-
             m_DxWrite.Render();
         m_DxWrite.PostRender();
     }

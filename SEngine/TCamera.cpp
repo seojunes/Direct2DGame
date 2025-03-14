@@ -80,7 +80,40 @@ void TCamera::BackRight()
 {
 	m_vPosition -= m_vRight * m_fMoveSpeed;
 }
-TMatrix TCamera::Update(TVector4 vDirValue, bool reset)
+void TCamera::Tick()
+{
+	float fYaw = 0;
+	float fPitch = 0;
+	fYaw = -g_ptDeltaMouse.x * g_fSPF;
+	fPitch = -g_ptDeltaMouse.y * g_fSPF;
+	
+	float fDistance = 0.0f;
+	if (g_GameKey.dw7key == KEY_HOLD)     MoveLook();
+	if (g_GameKey.dw9key == KEY_HOLD)     BackLook();
+	if (g_GameKey.dw4key == KEY_HOLD)     MoveRight();
+	if (g_GameKey.dw6key == KEY_HOLD)     BackRight();
+	if (g_GameKey.dw8key == KEY_HOLD)     MoveUp();
+	if (g_GameKey.dw5key == KEY_HOLD)     BackUp();
+
+	if (g_nMouseWheelDelta != 0)
+	{
+		fDistance = ((g_nMouseWheelDelta) > 0) ? (1.0f) : (-1.0f);
+		fDistance = fDistance * g_fSPF * 300.0f;
+		g_nMouseWheelDelta = 0;
+	}
+	//if (fPitch != 0 || fYaw != 0)
+	{
+		Update(TVector4(fPitch, fYaw, 0, fDistance));
+	}
+	/*  else if( vPosition != g_pCamera->m_vPosition)
+	  {
+		  m_pSceneCamera->CreateViewMatrix(g_pCamera->m_vPosition,
+			  g_pCamera->m_vTarget,
+			  g_pCamera->m_vUp);
+	  }
+	  */
+}
+TMatrix TCamera::Update(TVector4 vDirValue)
 {		
 	TBASIS_EX::TQuaternion* pqRotation = (TBASIS_EX::TQuaternion*)&m_qRotation;
 	TBASIS_EX::TVector3* pPosition = (TBASIS_EX::TVector3*)&m_vPosition;
@@ -89,12 +122,12 @@ TMatrix TCamera::Update(TVector4 vDirValue, bool reset)
 	m_fYaw += vDirValue.y;
 	m_fPitch += vDirValue.x;
 	m_fRoll += vDirValue.z;
-	if (reset)
-	{
-		m_fYaw = 0;
-		m_fPitch = 0;
-		m_fRoll =0;
-	}
+	//if (reset)
+	//{
+	//	m_fYaw = 0;
+	//	m_fPitch = 0;
+	//	m_fRoll =0;
+	//}
 
 	TBASIS_EX::D3DXQuaternionRotationYawPitchRoll(
 		pqRotation,

@@ -26,13 +26,12 @@ public:
 	virtual void   Tick() {};
 	virtual void   Render() {};
 	virtual void   Destroy() {};
+	virtual void   SetCamera(TCamera* pCamera = nullptr);
 public:
 	void   CoreInit();
 	void   CoreFrame();
 	void   CoreRender();
 	void   CoreRelease();
 	virtual bool   GameRun();
-public:
-	bool	m_bFMode = false;
 };
 

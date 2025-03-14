@@ -10,6 +10,9 @@ public:
 	TInputLayout* m_pInputLayout = nullptr;
 public:
 	UMaterial() {}
+	UMaterial(std::wstring hlsl, std::wstring texname) {
+		Load(hlsl, texname);
+	}
 	virtual ~UMaterial() {}
 public:
 	virtual void Load(std::wstring shaderfilename,

@@ -49,6 +49,7 @@ bool		TShader::LoadPixelShader(std::wstring filename)
 	}	
 	return true;
 }
+
 bool		TShader::LoadVertexShader(std::wstring filename)
 {
 	// hlsl  ÄÄÆÄÀÏ
@@ -91,8 +92,7 @@ void TShader::Release()
 }
 void     TShaderManager::Init()
 {
-	g_pDefaultShader = Load(
-		L"../../data/shader/pnct.txt");	
+	g_pDefaultShader = Load(L"../../data/shader/pnct.txt");	
 }
 TShader* TShaderManager::Load(std::wstring filename)
 {
@@ -141,10 +141,10 @@ TShader* TShaderManager::GetPtr(std::wstring key)
 
 TShaderManager::~TShaderManager()
 {
-	for (auto sound : maplist)
+	for (auto data : maplist)
 	{
-		sound.second->Release();
-		delete sound.second;
+		data.second->Release();
+		delete data.second;
 	}	
 	maplist.clear();
 }

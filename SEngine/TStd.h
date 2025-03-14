@@ -72,6 +72,16 @@ struct TGameKey
     DWORD dwMiddleClick;
     DWORD dwExit;
     DWORD dwSpace;
+    DWORD dw0key;
+    DWORD dw1key;
+    DWORD dw2key;
+    DWORD dw3key;
+    DWORD dw4key;
+    DWORD dw5key;
+    DWORD dw6key;
+    DWORD dw7key;
+    DWORD dw8key;
+    DWORD dw9key;
 };
 
 enum { KEY_FREE = 0, KEY_PUSH, KEY_HOLD, KEY_UP };

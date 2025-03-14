@@ -23,8 +23,7 @@ bool	AActor::CreateConstantBuffer()
 	D3D11_SUBRESOURCE_DATA sd;
 	ZeroMemory(&sd, sizeof(sd));
 	sd.pSysMem = &m_cbData;
-	HRESULT hr = TDevice::m_pd3dDevice->CreateBuffer(
-		&bd, &sd, m_pConstantBuffer.GetAddressOf());
+	HRESULT hr = TDevice::m_pd3dDevice->CreateBuffer(&bd, &sd, m_pConstantBuffer.GetAddressOf());
 	if (FAILED(hr))
 	{
 		return false;
@@ -35,29 +34,34 @@ void AActor::Init() {
 }
 void AActor::Tick()
 {
+
 	if (Mesh != nullptr) Mesh->Tick();
-	if (g_GameKey.dwAkey == KEY_HOLD)
-	{
-		m_matRotation.RotateZ(0.001f);
-	}
-	if (g_GameKey.dwSkey == KEY_HOLD)
-	{
-		m_matRotation.RotateX(0.001f);
-	}
-	if (g_GameKey.dwDkey == KEY_HOLD)
-	{
-		m_matRotation.RotateY(0.001f);
-	}
 }
 void AActor::Render()
 {
-	//m_vScale = { 2,1,1 };
-	//m_vRotation = { g_fGT,0.0f, 0.0f };
-	//m_vPosition = { 3, 0, 0 };//cosf(g_fGT) * 2.0f,sinf(g_fGT) * 2.0f,0 };;
-
 	m_matScale.Scale(m_vScale);
+	TMatrix matX, matY, matZ;
+	matX.RotateX(m_vRotation.x);
+	matY.RotateY(m_vRotation.y);
+	matZ.RotateZ(m_vRotation.z);
+	m_matRotation = matZ * matX * matY;
+
 	m_matTrans.Trans(m_vPosition);
-	m_matWorld = m_matScale * m_matRotation * m_matTrans;
+	m_matWorld =
+		m_matOffset *
+		m_matScale *
+		m_matRotation *
+		m_matTrans *
+		m_matParent;
+
+	m_vLook.x = m_matWorld._31;
+	m_vLook.y = m_matWorld._32;
+	m_vLook.z = m_matWorld._33;
+	m_vLook.Normalize();
+	m_vRight.x = m_matWorld._11;
+	m_vRight.y = m_matWorld._12;
+	m_vRight.z = m_matWorld._13;
+	m_vRight.Normalize();
 
 	m_cbData.matView = TMatrix::Transpose(SEngine::g_pCamera->m_matView);
 	m_cbData.matProj = TMatrix::Transpose(SEngine::g_pCamera->m_matProj);

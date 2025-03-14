@@ -9,12 +9,11 @@ bool	UPrimitiveComponent::CreateVertexBuffer()
 	// 읽고쓰기권한 설정(CPU X,X, GPU 0,0)
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-
+	
 	D3D11_SUBRESOURCE_DATA sd;
 	ZeroMemory(&sd, sizeof(sd));
 	sd.pSysMem = &m_vVertexList.at(0);
-	HRESULT hr = TDevice::m_pd3dDevice->CreateBuffer(
-		&bd, &sd, m_pVertexBuffer.GetAddressOf());
+	HRESULT hr = TDevice::m_pd3dDevice->CreateBuffer(&bd, &sd, m_pVertexBuffer.GetAddressOf());
 	if (FAILED(hr))
 	{
 		return false;
@@ -34,8 +33,7 @@ bool	UPrimitiveComponent::CreateIndexBuffer()
 	D3D11_SUBRESOURCE_DATA sd;
 	ZeroMemory(&sd, sizeof(sd));
 	sd.pSysMem = &m_vIndexList.at(0);
-	HRESULT hr = TDevice::m_pd3dDevice->CreateBuffer(
-		&bd, &sd, m_pIndexBuffer.GetAddressOf());
+	HRESULT hr = TDevice::m_pd3dDevice->CreateBuffer(&bd, &sd, m_pIndexBuffer.GetAddressOf());
 	if (FAILED(hr))
 	{
 		return false;

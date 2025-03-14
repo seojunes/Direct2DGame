@@ -1,18 +1,19 @@
 #include "TDxState.h"
 #include "TDevice.h"
-ComPtr<ID3D11SamplerState> TDxState::m_pLinearSS = nullptr;
-ComPtr<ID3D11SamplerState> TDxState::m_pPointSS = nullptr;
-ComPtr<ID3D11BlendState> TDxState::m_pAlphaBlend = nullptr;
-ComPtr<ID3D11RasterizerState> TDxState::m_pRSSolid = nullptr;
-ComPtr<ID3D11RasterizerState> TDxState::m_pRSWireFrame = nullptr;
-
+ComPtr<ID3D11SamplerState>		TDxState::m_pLinearSS = nullptr;
+ComPtr<ID3D11SamplerState>		TDxState::m_pPointSS = nullptr;
+ComPtr<ID3D11BlendState>		TDxState::m_pAlphaBlend = nullptr;
+ComPtr<ID3D11RasterizerState>	TDxState::m_pRSSolid = nullptr;
+ComPtr<ID3D11RasterizerState>	TDxState::m_pRSWireFrame = nullptr;
+ComPtr<ID3D11DepthStencilState> TDxState::m_pDSSDepthEnable = nullptr;
+ComPtr<ID3D11DepthStencilState> TDxState::m_pDSSDepthDisable = nullptr;
 void  TDxState::Create()
 {
 	D3D11_BLEND_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 	bd.AlphaToCoverageEnable = FALSE;
 	bd.IndependentBlendEnable = TRUE;
-	bd.RenderTarget[0].BlendEnable  =TRUE;
+	bd.RenderTarget[0].BlendEnable = TRUE;
 
 	// rgb 혼합연산( 알파블랜딩 공식 )
 	// 컬러(rgb)결과 = SRC * 소스알파값 + DEST * 1-소스알파값
@@ -32,10 +33,10 @@ void  TDxState::Create()
 	// A 알파값 연산
 	//  Final A = SRC.a * 1 + DEST.a * 0
 	bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-	bd.RenderTarget[0].DestBlendAlpha= D3D11_BLEND_ZERO;
+	bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
 	bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 
-	bd.RenderTarget[0].RenderTargetWriteMask = 
+	bd.RenderTarget[0].RenderTargetWriteMask =
 		D3D11_COLOR_WRITE_ENABLE_ALL;
 
 	HRESULT hr = TDevice::m_pd3dDevice->CreateBlendState(&bd,
@@ -48,19 +49,19 @@ void  TDxState::Create()
 	/// 샘플러 상태
 	/// </summary>
 	D3D11_SAMPLER_DESC sd;
-    ZeroMemory(&sd, sizeof(sd));
-    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-    sd.AddressU= D3D11_TEXTURE_ADDRESS_WRAP;
-    sd.AddressV= D3D11_TEXTURE_ADDRESS_WRAP;
-    sd.AddressW= D3D11_TEXTURE_ADDRESS_WRAP;    
-	 hr = TDevice::m_pd3dDevice->CreateSamplerState(&sd, 
-		 m_pLinearSS.GetAddressOf());
+	ZeroMemory(&sd, sizeof(sd));
+	sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sd.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	sd.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	hr = TDevice::m_pd3dDevice->CreateSamplerState(&sd,
+		m_pLinearSS.GetAddressOf());
 	if (FAILED(hr))
 	{
 
 	}
 	sd.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
-	hr = TDevice::m_pd3dDevice->CreateSamplerState(&sd, 
+	hr = TDevice::m_pd3dDevice->CreateSamplerState(&sd,
 		m_pPointSS.GetAddressOf());
 	if (FAILED(hr))
 	{
@@ -84,6 +85,26 @@ void  TDxState::Create()
 	if (FAILED(hr))
 	{
 
+	}
+
+
+	// 깊이/스텐실 상태
+	D3D11_DEPTH_STENCIL_DESC dsDesc;
+	ZeroMemory(&dsDesc, sizeof(dsDesc));
+	dsDesc.DepthEnable = TRUE;
+	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	dsDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+	dsDesc.StencilEnable = FALSE;
+	hr = TDevice::m_pd3dDevice->CreateDepthStencilState(
+		&dsDesc, m_pDSSDepthEnable.GetAddressOf());
+	if (FAILED(hr))
+	{
+	}
+	dsDesc.DepthEnable = FALSE;
+	hr = TDevice::m_pd3dDevice->CreateDepthStencilState(
+		&dsDesc, m_pDSSDepthDisable.GetAddressOf());
+	if (FAILED(hr))
+	{
 	}
 }
 

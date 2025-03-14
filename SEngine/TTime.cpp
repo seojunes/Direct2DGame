@@ -36,7 +36,7 @@ void    TTime::Frame()
 void    TTime::Render()
 {
 #ifdef _DEBUG
-    //OutputDebugString(m_szTime.c_str());
+    OutputDebugString(m_szTime.c_str());
 #endif
 }
 void    TTime::Release()

@@ -42,6 +42,7 @@ public:
 
 class TMatrix : public float4x4
 {
+	static TMatrix m_matIdentity;
 public:
 	void SetIdentity(); // 단위행렬
 	void Scale(float x, float y, float z);
@@ -56,12 +57,13 @@ public:
 	TMatrix operator *(const TMatrix& m);
 public:
 	static TMatrix Transpose(const TMatrix& m);
+	static TMatrix Identity();
 
 public:
 	TMatrix();
 	TMatrix(TVector3 row1, TVector3 row2, TVector3 row3, TVector3 row4);
 };
-// 사원수
+// 쿼터니안
 class TQuaternion
 {
 public:
