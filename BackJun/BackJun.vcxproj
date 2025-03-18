@@ -21,32 +21,32 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{b3900050-8cd0-4899-8ab2-92549639fbd0}</ProjectGuid>
-    <RootNamespace>SEngine</RootNamespace>
+    <ProjectGuid>{67b2aff5-7073-4d0a-983f-f61aae88766a}</ProjectGuid>
+    <RootNamespace>BackJun</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -70,20 +70,15 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>../../output/Debug/</OutDir>
-    <IntDir>../../output/Debug/SEngine</IntDir>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>
-      </SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -93,12 +88,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>
-      </SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -108,28 +102,13 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../DxTk/Inc;../../Fmod/Inc;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>
-      </SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <Lib>
-      <AdditionalLibraryDirectories>../../DxTk/lib;../../Fmod/lib;</AdditionalLibraryDirectories>
-    </Lib>
-    <PreBuildEvent>
-      <Command>rmdir /s/q "../../SEngine/Inc"
-md "../../SEngine/Inc
-rmdir /s/q "../../SEngine/lib"
-md "../../SEngine/lib</Command>
-    </PreBuildEvent>
-    <PostBuildEvent>
-      <Command>copy "*.h" "..\\..\\SEngine\\Inc"
-copy "..\\..\\output\\Debug\\SEngine.lib" "..\\..\\SEngine\\lib\\TEngine_D.lib"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -137,86 +116,18 @@ copy "..\\..\\output\\Debug\\SEngine.lib" "..\\..\\SEngine\\lib\\TEngine_D.lib"<
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>
-      </SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AActor.cpp" />
-    <ClCompile Include="ACharacter.cpp" />
-    <ClCompile Include="APawn.cpp" />
-    <ClCompile Include="SSkyObject.cpp" />
-    <ClCompile Include="TCamera.cpp" />
-    <ClCompile Include="TDevice.cpp" />
-    <ClCompile Include="TDxState.cpp" />
-    <ClCompile Include="TDxWrite.cpp" />
-    <ClCompile Include="SEngine.cpp" />
-    <ClCompile Include="TInput.cpp" />
-    <ClCompile Include="TInputLayout.cpp" />
-    <ClCompile Include="TMath.cpp" />
-    <ClCompile Include="TMatrix.cpp" />
-    <ClCompile Include="TShader.cpp" />
-    <ClCompile Include="TSound.cpp" />
-    <ClCompile Include="TSync.cpp" />
-    <ClCompile Include="TTexture.cpp" />
-    <ClCompile Include="TTime.cpp" />
-    <ClCompile Include="TVector.cpp" />
-    <ClCompile Include="TVertex.cpp" />
-    <ClCompile Include="TWindow.cpp" />
-    <ClCompile Include="UActorComponent.cpp" />
-    <ClCompile Include="UMaterial.cpp" />
-    <ClCompile Include="UMaterialInterface.cpp" />
-    <ClCompile Include="UMeshComponent.cpp" />
-    <ClCompile Include="UObject.cpp" />
-    <ClCompile Include="UPrimitiveComponent.cpp" />
-    <ClCompile Include="USceneComponent.cpp" />
-    <ClCompile Include="USkinnedMeshComponent.cpp" />
-    <ClCompile Include="UStaticMeshComponent.cpp" />
-    <ClCompile Include="UWidgetComponent.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="AActor.h" />
-    <ClInclude Include="ACharacter.h" />
-    <ClInclude Include="APawn.h" />
-    <ClInclude Include="SSkyObject.h" />
-    <ClInclude Include="TCamera.h" />
-    <ClInclude Include="TDevice.h" />
-    <ClInclude Include="TDxState.h" />
-    <ClInclude Include="TDxWrite.h" />
-    <ClInclude Include="SEngine.h" />
-    <ClInclude Include="TInput.h" />
-    <ClInclude Include="TInputLayout.h" />
-    <ClInclude Include="TMath.h" />
-    <ClInclude Include="TMatrix.h" />
-    <ClInclude Include="TShader.h" />
-    <ClInclude Include="TSound.h" />
-    <ClInclude Include="TStd.h" />
-    <ClInclude Include="TSync.h" />
-    <ClInclude Include="TTexture.h" />
-    <ClInclude Include="TTime.h" />
-    <ClInclude Include="TVector.h" />
-    <ClInclude Include="TVertex.h" />
-    <ClInclude Include="TWindow.h" />
-    <ClInclude Include="UActorComponent.h" />
-    <ClInclude Include="UMaterial.h" />
-    <ClInclude Include="UMaterialInterface.h" />
-    <ClInclude Include="UMeshComponent.h" />
-    <ClInclude Include="UObject.h" />
-    <ClInclude Include="UPrimitiveComponent.h" />
-    <ClInclude Include="USceneComponent.h" />
-    <ClInclude Include="USkinnedMeshComponent.h" />
-    <ClInclude Include="UStaticMeshComponent.h" />
-    <ClInclude Include="UWidgetComponent.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <ClCompile Include="소스.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

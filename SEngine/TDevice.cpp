@@ -156,25 +156,32 @@ void   TDevice::PreRender()
     m_pd3dContext->ClearRenderTargetView(m_pRTV.Get(), ClearColor);
     m_pd3dContext->ClearDepthStencilView(m_pDSV.Get(),
         D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
-    m_pd3dContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
+    m_pd3dContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); 
+}
+void TDevice::SetDefaultState()
+{
     m_pd3dContext->PSSetSamplers(0, 1, TDxState::m_pLinearSS.GetAddressOf());
     m_pd3dContext->OMSetBlendState(TDxState::m_pAlphaBlend.Get(), 0, -1);
-    if (!m_bWireFrame)
-    {
-        m_pd3dContext->RSSetState(TDxState::m_pRSSolid.Get());
+    {// 와이어프레임 설정
+        if (!m_bWireFrame)
+        {
+            m_pd3dContext->RSSetState(TDxState::m_pRSSolid.Get());
+        }
+        else
+        {
+            m_pd3dContext->RSSetState(TDxState::m_pRSWireFrame.Get());
+        }
     }
-    else
-    {
-        m_pd3dContext->RSSetState(TDxState::m_pRSWireFrame.Get());
-    }
-    if (m_DepthEnable)
-    {
-        m_pd3dContext->OMSetDepthStencilState(TDxState::m_pDSSDepthEnable.Get(), 0);
-    }
-    else
-    {
-        m_pd3dContext->OMSetDepthStencilState(TDxState::m_pDSSDepthDisable.Get(), 0);
+    
+    {// Depth(Z버퍼) 설정
+        if (m_DepthEnable)
+        {
+            m_pd3dContext->OMSetDepthStencilState(TDxState::m_pDSSDepthEnable.Get(), 0);
+        }
+        else
+        {
+            m_pd3dContext->OMSetDepthStencilState(TDxState::m_pDSSDepthDisable.Get(), 0);
+        }
     }
 }
 void   TDevice::Render()

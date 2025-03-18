@@ -4,8 +4,11 @@ ComPtr<ID3D11SamplerState>		TDxState::m_pLinearSS = nullptr;
 ComPtr<ID3D11SamplerState>		TDxState::m_pPointSS = nullptr;
 ComPtr<ID3D11BlendState>		TDxState::m_pAlphaBlend = nullptr;
 ComPtr<ID3D11RasterizerState>	TDxState::m_pRSSolid = nullptr;
+ComPtr<ID3D11RasterizerState>	TDxState::m_pRSSolidNone = nullptr;
 ComPtr<ID3D11RasterizerState>	TDxState::m_pRSWireFrame = nullptr;
 ComPtr<ID3D11DepthStencilState> TDxState::m_pDSSDepthEnable = nullptr;
+ComPtr<ID3D11DepthStencilState> TDxState::m_pDSSDepthEnableZero = nullptr;
+ComPtr<ID3D11DepthStencilState> TDxState::m_pDSSDepthDisableZero = nullptr;
 ComPtr<ID3D11DepthStencilState> TDxState::m_pDSSDepthDisable = nullptr;
 void  TDxState::Create()
 {
@@ -73,8 +76,18 @@ void  TDxState::Create()
 	ZeroMemory(&rsDesc, sizeof(rsDesc));
 	rsDesc.FillMode = D3D11_FILL_SOLID;
 	rsDesc.CullMode = D3D11_CULL_BACK;
+	//far near 지워주는 옵션.
+	rsDesc.DepthClipEnable = true;
 	hr = TDevice::m_pd3dDevice->CreateRasterizerState(
 		&rsDesc, m_pRSSolid.GetAddressOf());
+	if (FAILED(hr))
+	{
+
+	}
+	// CullMode를 주면 SkyObj에서 뒷면(안쪽면)을 볼 수 없기 때문에 NONE으로 설정.
+	rsDesc.CullMode = D3D11_CULL_NONE;
+	hr = TDevice::m_pd3dDevice->CreateRasterizerState(
+		&rsDesc, m_pRSSolidNone.GetAddressOf());
 	if (FAILED(hr))
 	{
 
@@ -103,6 +116,25 @@ void  TDxState::Create()
 	dsDesc.DepthEnable = FALSE;
 	hr = TDevice::m_pd3dDevice->CreateDepthStencilState(
 		&dsDesc, m_pDSSDepthDisable.GetAddressOf());
+	if (FAILED(hr))
+	{
+	}
+
+	// Z버퍼(깊이)를 비교하지 않고, 기록도 하지 않음.
+	dsDesc.DepthEnable = FALSE;
+	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	hr = TDevice::m_pd3dDevice->CreateDepthStencilState(
+		&dsDesc, m_pDSSDepthDisableZero.GetAddressOf());
+	if (FAILED(hr))
+	{
+	}
+
+	// Z버퍼(깊이)를 비교하기는 하지만, 기록은 하지 않음.
+	// SkyObj의 경우에는 어짜피 제일 먼저 뿌려질예정이므로, 비교의 유무는 상관이 없음.
+	dsDesc.DepthEnable = TRUE;
+	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	hr = TDevice::m_pd3dDevice->CreateDepthStencilState(
+		&dsDesc, m_pDSSDepthEnableZero.GetAddressOf());
 	if (FAILED(hr))
 	{
 	}

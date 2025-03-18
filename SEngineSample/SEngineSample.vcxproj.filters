@@ -2,35 +2,9 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="Sample.h" />
-    <ClInclude Include="UActorComponent.h" />
-    <ClInclude Include="USceneComponent.h" />
-    <ClInclude Include="UPrimitiveComponent.h" />
-    <ClInclude Include="UObject.h" />
-    <ClInclude Include="UMeshComponent.h" />
-    <ClInclude Include="USkinnedMeshComponent.h" />
-    <ClInclude Include="UStaticMeshComponent.h" />
-    <ClInclude Include="UWidgetComponent.h" />
-    <ClInclude Include="AActor.h" />
-    <ClInclude Include="APawn.h" />
-    <ClInclude Include="ACharacter.h" />
-    <ClInclude Include="UMaterialInterface.h" />
-    <ClInclude Include="UMaterial.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sample.cpp" />
-    <ClCompile Include="UActorComponent.cpp" />
-    <ClCompile Include="USceneComponent.cpp" />
-    <ClCompile Include="UPrimitiveComponent.cpp" />
-    <ClCompile Include="UObject.cpp" />
-    <ClCompile Include="UMeshComponent.cpp" />
-    <ClCompile Include="USkinnedMeshComponent.cpp" />
-    <ClCompile Include="UStaticMeshComponent.cpp" />
-    <ClCompile Include="UWidgetComponent.cpp" />
-    <ClCompile Include="AActor.cpp" />
-    <ClCompile Include="APawn.cpp" />
-    <ClCompile Include="ACharacter.cpp" />
-    <ClCompile Include="UMaterialInterface.cpp" />
-    <ClCompile Include="UMaterial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

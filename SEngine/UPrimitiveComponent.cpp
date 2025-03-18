@@ -2,6 +2,7 @@
 #include "TDevice.h"
 bool	UPrimitiveComponent::CreateVertexBuffer()
 {
+	if (m_vVertexList.size() == 0)  return true;
 	// 화면좌표계  <-> 변환  <-> 직각좌표계
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
@@ -23,6 +24,7 @@ bool	UPrimitiveComponent::CreateVertexBuffer()
 
 bool	UPrimitiveComponent::CreateIndexBuffer()
 {
+	if (m_vIndexList.size() == 0)  return true;
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 	bd.ByteWidth = sizeof(DWORD) * m_vIndexList.size();

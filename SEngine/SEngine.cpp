@@ -1,6 +1,7 @@
 #include "SEngine.h"
 #include "TDxState.h"
 TCamera* SEngine::g_pCamera = nullptr;
+
 void SEngine::SetCamera(TCamera* pCamera)
 {
     if (pCamera == nullptr)
@@ -31,6 +32,13 @@ void   SEngine::CoreInit()
     {
         I_InputLayout.Init(I_Shader.g_pDefaultShader->m_pCode.Get());
     }
+
+    CreateDefaultShapes();
+    auto pMaterial = std::make_shared<UMaterial>();
+    pMaterial->Load(L"../../data/shader/pnct.txt",   L"../../data/texture/kgca08.bmp");
+    m_SkyObj = std::make_shared<SSkyObject>();
+    m_SkyObj->Load(GetShape(L"box"));
+    m_SkyObj->GetMesh()->SetMaterial(pMaterial);
 
     m_pSceneCamera = std::make_shared<TCamera>();
     SetCamera(m_pSceneCamera.get());
@@ -64,14 +72,43 @@ void   SEngine::CoreFrame()
         TDevice::m_DepthEnable = !TDevice::m_DepthEnable;
     }
 
-    g_pCamera->Tick();
-    
+    if (g_pCamera == m_pSceneCamera.get())
+    {
+        float fYaw = 0;
+        float fPitch = 0;
+        fYaw = g_ptDeltaMouse.x * g_fSPF * 10.0f;
+        fPitch = g_ptDeltaMouse.y * g_fSPF * 10.0f;
+
+        float fDistance = 0.0f;
+        if (g_GameKey.dwWkey == KEY_HOLD)
+        {
+            fDistance += g_fSPF * 1000.0f;
+        }
+        if (g_GameKey.dwSkey == KEY_HOLD)
+        {
+            fDistance -= g_fSPF * 1000.0f;
+        }
+        if (m_nMouseWheelDelta != 0)
+        {
+            fDistance = ((m_nMouseWheelDelta) > 0) ? (1.0f) : (-1.0f);
+            fDistance = fDistance * g_fSPF * 300.0f;
+            m_nMouseWheelDelta = 0;
+        }
+        m_pSceneCamera->Update(TVector4(fPitch, fYaw, 0, fDistance));
+    }
     
     Tick();
 }
 void   SEngine::CoreRender() 
 {
     m_DxDevice.PreRender();  
+    m_SkyObj->m_matOffset = TMatrix::Identity();
+    m_SkyObj->m_vScale = { 10,10,10 };
+    m_SkyObj->m_vRotation = { 0, 0, 0.0f };
+    m_SkyObj->m_vPosition = { 0,0,0 };
+    m_SkyObj->Render();
+
+    m_DxDevice.SetDefaultState();
     {
         Render();        
 
@@ -94,6 +131,11 @@ void   SEngine::CoreRender()
 }
 void   SEngine::CoreRelease()
 {
+    for (auto shape : m_Shapes)
+    {
+        shape.second->Destroy();
+    }
+    m_SkyObj->Destroy();
     m_GameTimer.Release();
     m_DxDevice.Release();
     m_Input.Release();
@@ -111,9 +153,131 @@ bool SEngine::GameRun()
         {
             CoreFrame();
             CoreRender();       
-            m_nMouseWheelDelta = 0;
+            g_nMouseWheelDelta = 0;
         }  
     }	
     CoreRelease();
 	return true;
+}
+
+std::shared_ptr<UStaticMeshComponent> SEngine::GetShape(std::wstring name)
+{
+    auto shape = m_Shapes.find(name);
+    if (shape != m_Shapes.end())
+    {
+        return shape->second;
+    }
+    return nullptr;
+}
+void SEngine::CreateDefaultShapes()
+{
+    CreateBoxShapes();
+    CreatePlaneShapes();
+    CreateLineShapes();
+}
+void SEngine::CreateBoxShapes()
+{
+    // box
+    auto mesh = std::make_shared<UStaticMeshComponent>();
+    TVector3 vMin = TVector3(-1, -1, -1.0f);
+    TVector3 vMax = TVector3(+1, +1, 1.0f);
+    mesh->m_vVertexList.resize(24);
+    mesh->m_vIndexList.resize(36);
+
+    mesh->m_vVertexList[0] = PNCT_VERTEX(TVector3(-1.0f, 1.0f, -1.0f), TVector3(0.0f, 0.0f, -1.0f), TVector4(1.0f, 0.0f, 0.0f, 1.0f), TVector2(0.0f, 0.0f));
+    mesh->m_vVertexList[1] = PNCT_VERTEX(TVector3(1.0f, 1.0f, -1.0f), TVector3(0.0f, 0.0f, -1.0f), TVector4(1.0f, 0.0f, 0.0f, 1.0f), TVector2(1.0f, 0.0f));
+    mesh->m_vVertexList[2] = PNCT_VERTEX(TVector3(1.0f, -1.0f, -1.0f), TVector3(0.0f, 0.0f, -1.0f), TVector4(1.0f, 0.0f, 0.0f, 1.0f), TVector2(1.0f, 1.0f));
+    mesh->m_vVertexList[3] = PNCT_VERTEX(TVector3(-1.0f, -1.0f, -1.0f), TVector3(0.0f, 0.0f, -1.0f), TVector4(1.0f, 0.0f, 0.0f, 1.0f), TVector2(0.0f, 1.0f));
+    // µÞ¸é
+    mesh->m_vVertexList[4] = PNCT_VERTEX(TVector3(1.0f, 1.0f, 1.0f), TVector3(0.0f, 0.0f, 1.0f), TVector4(0.0f, 0.0f, 0.0f, 1.0f), TVector2(0.0f, 0.0f));
+    mesh->m_vVertexList[5] = PNCT_VERTEX(TVector3(-1.0f, 1.0f, 1.0f), TVector3(0.0f, 0.0f, 1.0f), TVector4(0.0f, 1.0f, 0.0f, 1.0f), TVector2(1.0f, 0.0f));
+    mesh->m_vVertexList[6] = PNCT_VERTEX(TVector3(-1.0f, -1.0f, 1.0f), TVector3(0.0f, 0.0f, 1.0f), TVector4(0.0f, 1.0f, 0.0f, 1.0f), TVector2(1.0f, 1.0f));
+    mesh->m_vVertexList[7] = PNCT_VERTEX(TVector3(1.0f, -1.0f, 1.0f), TVector3(0.0f, 0.0f, 1.0f), TVector4(0.0f, 1.0f, 0.0f, 1.0f), TVector2(0.0f, 1.0f));
+
+    // ¿À¸¥ÂÊ
+    mesh->m_vVertexList[8] = PNCT_VERTEX(TVector3(1.0f, 1.0f, -1.0f), TVector3(1.0f, 0.0f, 0.0f), TVector4(0.0f, 0.0f, 1.0f, 1.0f), TVector2(0.0f, 0.0f));
+    mesh->m_vVertexList[9] = PNCT_VERTEX(TVector3(1.0f, 1.0f, 1.0f), TVector3(1.0f, 0.0f, 0.0f), TVector4(0.0f, 0.0f, 1.0f, 1.0f), TVector2(1.0f, 0.0f));
+    mesh->m_vVertexList[10] = PNCT_VERTEX(TVector3(1.0f, -1.0f, 1.0f), TVector3(1.0f, 0.0f, 0.0f), TVector4(0.0f, 0.0f, 1.0f, 1.0f), TVector2(1.0f, 1.0f));
+    mesh->m_vVertexList[11] = PNCT_VERTEX(TVector3(1.0f, -1.0f, -1.0f), TVector3(1.0f, 0.0f, 0.0f), TVector4(0.0f, 0.0f, 1.0f, 1.0f), TVector2(0.0f, 1.0f));
+
+    // ¿ÞÂÊ
+    mesh->m_vVertexList[12] = PNCT_VERTEX(TVector3(-1.0f, 1.0f, 1.0f), TVector3(-1.0f, 0.0f, 0.0f), TVector4(1.0f, 1.0f, 0.0f, 1.0f), TVector2(0.0f, 0.0f));
+    mesh->m_vVertexList[13] = PNCT_VERTEX(TVector3(-1.0f, 1.0f, -1.0f), TVector3(-1.0f, 0.0f, 0.0f), TVector4(1.0f, 1.0f, 0.0f, 1.0f), TVector2(1.0f, 0.0f));
+    mesh->m_vVertexList[14] = PNCT_VERTEX(TVector3(-1.0f, -1.0f, -1.0f), TVector3(-1.0f, 0.0f, 0.0f), TVector4(1.0f, 1.0f, 0.0f, 1.0f), TVector2(1.0f, 1.0f));
+    mesh->m_vVertexList[15] = PNCT_VERTEX(TVector3(-1.0f, -1.0f, 1.0f), TVector3(-1.0f, 0.0f, 0.0f), TVector4(1.0f, 1.0f, 0.0f, 1.0f), TVector2(0.0f, 1.0f));
+
+    // À­¸é
+    mesh->m_vVertexList[16] = PNCT_VERTEX(TVector3(-1.0f, 1.0f, 1.0f), TVector3(0.0f, 1.0f, 0.0f), TVector4(1.0f, 0.5f, 1.0f, 1.0f), TVector2(0.0f, 0.0f));
+    mesh->m_vVertexList[17] = PNCT_VERTEX(TVector3(1.0f, 1.0f, 1.0f), TVector3(0.0f, 1.0f, 0.0f), TVector4(1.0f, 0.5f, 1.0f, 1.0f), TVector2(1.0f, 0.0f));
+    mesh->m_vVertexList[18] = PNCT_VERTEX(TVector3(1.0f, 1.0f, -1.0f), TVector3(0.0f, 1.0f, 0.0f), TVector4(1.0f, 0.5f, 1.0f, 1.0f), TVector2(1.0f, 1.0f));
+    mesh->m_vVertexList[19] = PNCT_VERTEX(TVector3(-1.0f, 1.0f, -1.0f), TVector3(0.0f, 1.0f, 0.0f), TVector4(1.0f, 0.5f, 1.0f, 1.0f), TVector2(0.0f, 1.0f));
+
+    // ¾Æ·§¸é
+    mesh->m_vVertexList[20] = PNCT_VERTEX(TVector3(-1.0f, -1.0f, -1.0f), TVector3(0.0f, -1.0f, 0.0f), TVector4(0.0f, 1.0f, 1.0f, 1.0f), TVector2(0.0f, 0.0f));
+    mesh->m_vVertexList[21] = PNCT_VERTEX(TVector3(1.0f, -1.0f, -1.0f), TVector3(0.0f, -1.0f, 0.0f), TVector4(0.0f, 1.0f, 1.0f, 1.0f), TVector2(1.0f, 0.0f));
+    mesh->m_vVertexList[22] = PNCT_VERTEX(TVector3(1.0f, -1.0f, 1.0f), TVector3(0.0f, -1.0f, 0.0f), TVector4(0.0f, 1.0f, 1.0f, 1.0f), TVector2(1.0f, 1.0f));
+    mesh->m_vVertexList[23] = PNCT_VERTEX(TVector3(-1.0f, -1.0f, 1.0f), TVector3(0.0f, -1.0f, 0.0f), TVector4(0.0f, 1.0f, 1.0f, 1.0f), TVector2(0.0f, 1.0f));
+
+    UINT iIndex = 0;
+    mesh->m_vIndexList[iIndex++] = 0; 	mesh->m_vIndexList[iIndex++] = 1; 	mesh->m_vIndexList[iIndex++] = 2;
+    mesh->m_vIndexList[iIndex++] = 0;	mesh->m_vIndexList[iIndex++] = 2; 	mesh->m_vIndexList[iIndex++] = 3;
+    mesh->m_vIndexList[iIndex++] = 4; 	mesh->m_vIndexList[iIndex++] = 5; 	mesh->m_vIndexList[iIndex++] = 6;
+    mesh->m_vIndexList[iIndex++] = 4;	mesh->m_vIndexList[iIndex++] = 6; 	mesh->m_vIndexList[iIndex++] = 7;
+    mesh->m_vIndexList[iIndex++] = 8; 	mesh->m_vIndexList[iIndex++] = 9; 	mesh->m_vIndexList[iIndex++] = 10;
+    mesh->m_vIndexList[iIndex++] = 8;	mesh->m_vIndexList[iIndex++] = 10;  mesh->m_vIndexList[iIndex++] = 11;
+    mesh->m_vIndexList[iIndex++] = 12;  mesh->m_vIndexList[iIndex++] = 13;  mesh->m_vIndexList[iIndex++] = 14;
+    mesh->m_vIndexList[iIndex++] = 12;	mesh->m_vIndexList[iIndex++] = 14;  mesh->m_vIndexList[iIndex++] = 15;
+    mesh->m_vIndexList[iIndex++] = 16;  mesh->m_vIndexList[iIndex++] = 17;  mesh->m_vIndexList[iIndex++] = 18;
+    mesh->m_vIndexList[iIndex++] = 16;	mesh->m_vIndexList[iIndex++] = 18;  mesh->m_vIndexList[iIndex++] = 19;
+    mesh->m_vIndexList[iIndex++] = 20;  mesh->m_vIndexList[iIndex++] = 21;  mesh->m_vIndexList[iIndex++] = 22;
+    mesh->m_vIndexList[iIndex++] = 20;	mesh->m_vIndexList[iIndex++] = 22;  mesh->m_vIndexList[iIndex++] = 23;
+
+    mesh->CreateVertexBuffer();
+    mesh->CreateIndexBuffer();
+
+    m_Shapes.insert(std::make_pair(L"box", mesh));
+}
+
+void SEngine::CreatePlaneShapes()
+{
+    // box
+    auto mesh = std::make_shared<UStaticMeshComponent>();
+    mesh->m_vVertexList.resize(4);
+    mesh->m_vIndexList.resize(6);
+
+    mesh->m_vVertexList[0] = PNCT_VERTEX(TVector3(-1.0f, 1.0f, 0.0f), TVector3(0.0f, 0.0f, -1.0f), TVector4(1.0f, 0.0f, 0.0f, 1.0f), TVector2(0.0f, 0.0f));
+    mesh->m_vVertexList[1] = PNCT_VERTEX(TVector3(1.0f, 1.0f, 0.0f), TVector3(0.0f, 0.0f, -1.0f), TVector4(1.0f, 0.0f, 0.0f, 1.0f), TVector2(1.0f, 0.0f));
+    mesh->m_vVertexList[2] = PNCT_VERTEX(TVector3(1.0f, -1.0f, 0.0f), TVector3(0.0f, 0.0f, -1.0f), TVector4(1.0f, 0.0f, 0.0f, 1.0f), TVector2(1.0f, 1.0f));
+    mesh->m_vVertexList[3] = PNCT_VERTEX(TVector3(-1.0f, -1.0f, 0.0f), TVector3(0.0f, 0.0f, -1.0f), TVector4(1.0f, 0.0f, 0.0f, 1.0f), TVector2(0.0f, 1.0f));
+
+    UINT iIndex = 0;
+    mesh->m_vIndexList[iIndex++] = 0; 	mesh->m_vIndexList[iIndex++] = 1; 	mesh->m_vIndexList[iIndex++] = 2;
+    mesh->m_vIndexList[iIndex++] = 0;	mesh->m_vIndexList[iIndex++] = 2; 	mesh->m_vIndexList[iIndex++] = 3;
+
+    mesh->CreateVertexBuffer();
+    mesh->CreateIndexBuffer();
+
+    m_Shapes.insert(std::make_pair(L"plane", mesh));
+}
+
+void SEngine::CreateLineShapes()
+{
+    // box
+    auto mesh = std::make_shared<UStaticMeshComponent>();
+    TVector3 vMin = TVector3(0, 0, 0.0f);
+    TVector3 vMax = TVector3(+1, 1, 1.0f);
+    mesh->m_vVertexList.resize(2);
+    mesh->m_vIndexList.resize(2);
+
+    mesh->m_vVertexList[0] = PNCT_VERTEX(vMin, TVector3(0.0f, 0.0f, -1.0f), TVector4(1.0f, 0.0f, 0.0f, 1.0f), TVector2(0.0f, 0.0f));
+    mesh->m_vVertexList[1] = PNCT_VERTEX(vMax, TVector3(0.0f, 0.0f, -1.0f), TVector4(1.0f, 0.0f, 0.0f, 1.0f), TVector2(1.0f, 0.0f));
+
+    UINT iIndex = 0;
+    mesh->m_vIndexList[iIndex++] = 0;
+    mesh->m_vIndexList[iIndex++] = 1;
+
+    mesh->CreateVertexBuffer();
+    mesh->CreateIndexBuffer();
+
+    m_Shapes.insert(std::make_pair(L"line", mesh));
 }

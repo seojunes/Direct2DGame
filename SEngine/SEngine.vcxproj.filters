@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="UE">
+      <UniqueIdentifier>{c8e1359c-96cf-48f8-8445-044f2319edaf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TDevice.cpp">
@@ -64,6 +67,48 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="TMath.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="AActor.cpp">
+      <Filter>UE</Filter>
+    </ClCompile>
+    <ClCompile Include="ACharacter.cpp">
+      <Filter>UE</Filter>
+    </ClCompile>
+    <ClCompile Include="APawn.cpp">
+      <Filter>UE</Filter>
+    </ClCompile>
+    <ClCompile Include="UActorComponent.cpp">
+      <Filter>UE</Filter>
+    </ClCompile>
+    <ClCompile Include="UMaterial.cpp">
+      <Filter>UE</Filter>
+    </ClCompile>
+    <ClCompile Include="UMaterialInterface.cpp">
+      <Filter>UE</Filter>
+    </ClCompile>
+    <ClCompile Include="UMeshComponent.cpp">
+      <Filter>UE</Filter>
+    </ClCompile>
+    <ClCompile Include="UObject.cpp">
+      <Filter>UE</Filter>
+    </ClCompile>
+    <ClCompile Include="UPrimitiveComponent.cpp">
+      <Filter>UE</Filter>
+    </ClCompile>
+    <ClCompile Include="USceneComponent.cpp">
+      <Filter>UE</Filter>
+    </ClCompile>
+    <ClCompile Include="USkinnedMeshComponent.cpp">
+      <Filter>UE</Filter>
+    </ClCompile>
+    <ClCompile Include="UStaticMeshComponent.cpp">
+      <Filter>UE</Filter>
+    </ClCompile>
+    <ClCompile Include="UWidgetComponent.cpp">
+      <Filter>UE</Filter>
+    </ClCompile>
+    <ClCompile Include="SSkyObject.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -120,6 +165,48 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="TMath.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="AActor.h">
+      <Filter>UE</Filter>
+    </ClInclude>
+    <ClInclude Include="ACharacter.h">
+      <Filter>UE</Filter>
+    </ClInclude>
+    <ClInclude Include="APawn.h">
+      <Filter>UE</Filter>
+    </ClInclude>
+    <ClInclude Include="UActorComponent.h">
+      <Filter>UE</Filter>
+    </ClInclude>
+    <ClInclude Include="UMaterial.h">
+      <Filter>UE</Filter>
+    </ClInclude>
+    <ClInclude Include="UMaterialInterface.h">
+      <Filter>UE</Filter>
+    </ClInclude>
+    <ClInclude Include="UMeshComponent.h">
+      <Filter>UE</Filter>
+    </ClInclude>
+    <ClInclude Include="UObject.h">
+      <Filter>UE</Filter>
+    </ClInclude>
+    <ClInclude Include="UPrimitiveComponent.h">
+      <Filter>UE</Filter>
+    </ClInclude>
+    <ClInclude Include="USceneComponent.h">
+      <Filter>UE</Filter>
+    </ClInclude>
+    <ClInclude Include="USkinnedMeshComponent.h">
+      <Filter>UE</Filter>
+    </ClInclude>
+    <ClInclude Include="UStaticMeshComponent.h">
+      <Filter>UE</Filter>
+    </ClInclude>
+    <ClInclude Include="UWidgetComponent.h">
+      <Filter>UE</Filter>
+    </ClInclude>
+    <ClInclude Include="SSkyObject.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

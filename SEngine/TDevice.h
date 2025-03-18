@@ -19,6 +19,7 @@ public:
     void   Init();
     void   Frame();
     void   PreRender();
+    void   SetDefaultState();
     void   Render();
     void   PostRender();
     void   Release();

@@ -19,36 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AActor.h" />
-    <ClInclude Include="ACharacter.h" />
-    <ClInclude Include="APawn.h" />
-    <ClInclude Include="UMaterialInterface.h" />
     <ClInclude Include="Sample.h" />
-    <ClInclude Include="UActorComponent.h" />
-    <ClInclude Include="UMaterial.h" />
-    <ClInclude Include="UMeshComponent.h" />
-    <ClInclude Include="UObject.h" />
-    <ClInclude Include="UPrimitiveComponent.h" />
-    <ClInclude Include="USceneComponent.h" />
-    <ClInclude Include="USkinnedMeshComponent.h" />
-    <ClInclude Include="UStaticMeshComponent.h" />
-    <ClInclude Include="UWidgetComponent.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AActor.cpp" />
-    <ClCompile Include="ACharacter.cpp" />
-    <ClCompile Include="APawn.cpp" />
-    <ClCompile Include="UMaterialInterface.cpp" />
     <ClCompile Include="Sample.cpp" />
-    <ClCompile Include="UActorComponent.cpp" />
-    <ClCompile Include="UMaterial.cpp" />
-    <ClCompile Include="UMeshComponent.cpp" />
-    <ClCompile Include="UObject.cpp" />
-    <ClCompile Include="UPrimitiveComponent.cpp" />
-    <ClCompile Include="USceneComponent.cpp" />
-    <ClCompile Include="USkinnedMeshComponent.cpp" />
-    <ClCompile Include="UStaticMeshComponent.cpp" />
-    <ClCompile Include="UWidgetComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SEngine\SEngine.vcxproj">
