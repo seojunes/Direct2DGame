@@ -3,15 +3,12 @@
 #include "UMaterial.h"
 class UStaticMeshComponent : public UMeshComponent
 {
-	std::shared_ptr<UMaterial> m_pMaterial;
 public:
-	virtual void  SetMaterial(std::shared_ptr<UMaterial> pMaterial);
+	std::vector<std::shared_ptr<UPrimitiveComponent>>    m_Childs;
 public:
 	virtual void   Init();
 	virtual void   Tick();
-	virtual void   PreRender();
 	virtual void   Render();
-	virtual void   PostRender();
 	virtual void   Destroy();
 };
 

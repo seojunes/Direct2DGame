@@ -2,10 +2,13 @@
 #include "TDevice.h"
 #include "SEngine.h"
 
-AActor::AActor() {
-	m_vScale = { 1,1,1 };
+AActor::AActor() : m_vScale(1, 1, 1)
+{
+	//CreateConstantBuffer();
 };
+
 AActor::~AActor() {};
+
 void AActor::SetMesh(std::shared_ptr<UStaticMeshComponent> mesh)
 {
 	Mesh = mesh;
@@ -40,29 +43,7 @@ void AActor::Tick()
 }
 void AActor::PreRender()
 {
-	m_matScale.Scale(m_vScale);
-	TMatrix matX, matY, matZ;
-	matX.RotateX(m_vRotation.x);
-	matY.RotateY(m_vRotation.y);
-	matZ.RotateZ(m_vRotation.z);
-	m_matRotation = matZ * matX * matY;
-
-	m_matTrans.Trans(m_vPosition);
-	m_matWorld =
-		m_matOffset *
-		m_matScale *
-		m_matRotation *
-		m_matTrans *
-		m_matParent;
-
-	m_vLook.x = m_matWorld._31;
-	m_vLook.y = m_matWorld._32;
-	m_vLook.z = m_matWorld._33;
-	m_vLook.Normalize();
-	m_vRight.x = m_matWorld._11;
-	m_vRight.y = m_matWorld._12;
-	m_vRight.z = m_matWorld._13;
-	m_vRight.Normalize();
+	//UpdateVector();
 
 	m_cbData.matView = TMatrix::Transpose(SEngine::g_pCamera->m_matView);
 	m_cbData.matProj = TMatrix::Transpose(SEngine::g_pCamera->m_matProj);

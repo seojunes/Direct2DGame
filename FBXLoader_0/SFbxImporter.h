@@ -31,13 +31,17 @@ public:
 	FbxScene* m_pScene;
 	FbxNode* m_pRootNode;
 	std::vector<FbxMesh*>  m_FbxMeshs;
+	std::vector<FbxNode*>  m_FbxNodes;
 public:
 	bool  Load(std::string loadfile, AActor* actor);
 	void  PreProcess(FbxNode* pNode);
-	void  ParseMesh(
-		FbxMesh* fbxmesh, AActor* actor);
-	void ReadTextureCoord(FbxMesh* pFbxMesh, FbxLayerElementUV* pUVSet,
-		int vertexIndex, int uvIndex, FbxVector2& uv);
+	void  ParseMesh(FbxMesh* fbxmesh, UPrimitiveComponent* actor);
+	void ReadTextureCoord(FbxMesh* pFbxMesh, FbxLayerElementUV* pUVSet,	int vertexIndex, int uvIndex, FbxVector2& uv);
+	FbxColor ReadColor(FbxMesh* mesh, DWORD dwVertexColorCount,
+		FbxLayerElementVertexColor* pVertexColorSet,
+		DWORD dwDCCIndex, DWORD dwVertexIndex);
+	FbxVector4 ReadNormal(const FbxMesh* mesh, DWORD dwVertexNormalCount, FbxLayerElementNormal* VertexNormalSets,
+		int controlPointIndex, int iVertexIndex);
 	void  Destroy();
 };
 

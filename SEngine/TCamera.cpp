@@ -84,23 +84,42 @@ void TCamera::Tick()
 {
 	float fYaw = 0;
 	float fPitch = 0;
-	fYaw = -g_ptDeltaMouse.x * g_fSPF;
-	fPitch = -g_ptDeltaMouse.y * g_fSPF;
-	
-	float fDistance = 0.0f;
-	if (g_GameKey.dw7key == KEY_HOLD)     MoveLook();
-	if (g_GameKey.dw9key == KEY_HOLD)     BackLook();
-	if (g_GameKey.dw4key == KEY_HOLD)     MoveRight();
-	if (g_GameKey.dw6key == KEY_HOLD)     BackRight();
-	if (g_GameKey.dw8key == KEY_HOLD)     MoveUp();
-	if (g_GameKey.dw5key == KEY_HOLD)     BackUp();
+	fYaw = g_ptDeltaMouse.x * g_fSPF * 10.0f;
+	fPitch = g_ptDeltaMouse.y * g_fSPF * 10.0f;
 
+	float fDistance = 0.0f;
+	if (g_GameKey.dwWkey == KEY_HOLD)
+	{
+		fDistance += g_fSPF * 10.0f;
+	}
+	if (g_GameKey.dwSkey == KEY_HOLD)
+	{
+		fDistance -= g_fSPF * 10.0f;
+	}
+	if (g_GameKey.dw7key == KEY_HOLD)      MoveLook();
+	if (g_GameKey.dw9key == KEY_HOLD)      BackLook();
+	if (g_GameKey.dw4key == KEY_HOLD)      MoveRight();
+	if (g_GameKey.dw6key == KEY_HOLD)      BackRight();
+	if (g_GameKey.dw8key == KEY_HOLD)      MoveUp();
+	if (g_GameKey.dw5key == KEY_HOLD)      BackUp();
 	if (g_nMouseWheelDelta != 0)
 	{
 		fDistance = ((g_nMouseWheelDelta) > 0) ? (1.0f) : (-1.0f);
 		fDistance = fDistance * g_fSPF * 300.0f;
-		g_nMouseWheelDelta = 0;
 	}
+	Update(TVector4(fPitch, fYaw, 0, fDistance));
+
+	
+	if (g_GameKey.dwSpace == KEY_HOLD)
+	{
+		m_fSpeed += g_fSPF * 500.0f;
+	}
+	else
+	{
+		m_fSpeed -= g_fSPF * 500.0f;
+	}
+	if (m_fSpeed < 10.0f) m_fSpeed = 10.0f;
+	
 	//if (fPitch != 0 || fYaw != 0)
 	{
 		Update(TVector4(fPitch, fYaw, 0, fDistance));
@@ -112,6 +131,8 @@ void TCamera::Tick()
 			  g_pCamera->m_vUp);
 	  }
 	  */
+
+
 }
 TMatrix TCamera::Update(TVector4 vDirValue)
 {		
@@ -135,7 +156,7 @@ TMatrix TCamera::Update(TVector4 vDirValue)
 		m_fPitch,
 		m_fRoll);
 
-	m_vPosition += m_vLook * vDirValue.w;
+	m_vPosition += m_vLook * vDirValue.w * m_fSpeed;
 	m_fRadius += vDirValue.w;
 	
 
@@ -164,4 +185,9 @@ TMatrix TCamera::UpdateVector()
 	m_vUp.Normalize();
 	//D3DXVec3Normalize(&m_vLookVector, &m_vLookVector);
 	return m_matView;
+}
+
+void SBackViewCamera::Tick()
+{
+
 }

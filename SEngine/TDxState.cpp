@@ -78,16 +78,15 @@ void  TDxState::Create()
 	rsDesc.CullMode = D3D11_CULL_BACK;
 	//far near 지워주는 옵션.
 	rsDesc.DepthClipEnable = true;
-	hr = TDevice::m_pd3dDevice->CreateRasterizerState(
-		&rsDesc, m_pRSSolid.GetAddressOf());
+	hr = TDevice::m_pd3dDevice->CreateRasterizerState(&rsDesc, m_pRSSolid.GetAddressOf());
 	if (FAILED(hr))
 	{
 
 	}
 	// CullMode를 주면 SkyObj에서 뒷면(안쪽면)을 볼 수 없기 때문에 NONE으로 설정.
 	rsDesc.CullMode = D3D11_CULL_NONE;
-	hr = TDevice::m_pd3dDevice->CreateRasterizerState(
-		&rsDesc, m_pRSSolidNone.GetAddressOf());
+	rsDesc.DepthClipEnable = false;
+	hr = TDevice::m_pd3dDevice->CreateRasterizerState(&rsDesc, m_pRSSolidNone.GetAddressOf());
 	if (FAILED(hr))
 	{
 

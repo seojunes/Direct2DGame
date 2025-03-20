@@ -18,6 +18,8 @@ public:
 	TVector3 m_vUp;
 	TVector3 m_vRight;
 
+	float	 m_fSpeed = 10.0f;
+
 	float    m_fYaw = 0.0f;
 	float    m_fPitch = 0.0f;
 	float    m_fRoll = 0.0f;
@@ -42,11 +44,12 @@ public:
 	void BackUp();
 	void MoveRight( );
 	void BackRight();
-	float m_fMoveSpeed = 0.01f;
+	float m_fMoveSpeed =1.0f;
 };
 
 class SBackViewCamera : public TCamera
 {
 public:
+	void Tick();
 	TMatrix Update(TVector4 vDirValue) { return TMatrix::Identity(); }
 };

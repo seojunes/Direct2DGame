@@ -51,7 +51,7 @@ void   SEngine::CoreInit()
     float fAspect = (float)g_ptClientSize.x / (float)g_ptClientSize.y;
     float fFovY = (float)T_Pi * 0.25f;
     float fNearZ = 1.0f;
-    float fFarZ = 1000.0f;
+    float fFarZ = 100000000.0f;
     m_pSceneCamera->CreateProjMatrix(fFovY, fAspect, fNearZ, fFarZ);
 
     Init();
@@ -74,7 +74,8 @@ void   SEngine::CoreFrame()
 
     if (g_pCamera == m_pSceneCamera.get())
     {
-        float fYaw = 0;
+        g_pCamera->Tick();
+        /*float fYaw = 0;
         float fPitch = 0;
         fYaw = g_ptDeltaMouse.x * g_fSPF * 10.0f;
         fPitch = g_ptDeltaMouse.y * g_fSPF * 10.0f;
@@ -82,19 +83,25 @@ void   SEngine::CoreFrame()
         float fDistance = 0.0f;
         if (g_GameKey.dwWkey == KEY_HOLD)
         {
-            fDistance += g_fSPF * 1000.0f;
+            fDistance += g_fSPF * 10.0f;
         }
         if (g_GameKey.dwSkey == KEY_HOLD)
         {
-            fDistance -= g_fSPF * 1000.0f;
+            fDistance -= g_fSPF * 10.0f;
         }
+        if (g_GameKey.dw7key == KEY_HOLD)     g_pCamera->MoveLook();
+        if (g_GameKey.dw9key == KEY_HOLD)     g_pCamera->BackLook();
+        if (g_GameKey.dw4key == KEY_HOLD)     g_pCamera->MoveRight();
+        if (g_GameKey.dw6key == KEY_HOLD)     g_pCamera->BackRight();
+        if (g_GameKey.dw8key == KEY_HOLD)     g_pCamera->MoveUp();
+        if (g_GameKey.dw5key == KEY_HOLD)     g_pCamera->BackUp();
         if (m_nMouseWheelDelta != 0)
         {
             fDistance = ((m_nMouseWheelDelta) > 0) ? (1.0f) : (-1.0f);
             fDistance = fDistance * g_fSPF * 300.0f;
             m_nMouseWheelDelta = 0;
         }
-        m_pSceneCamera->Update(TVector4(fPitch, fYaw, 0, fDistance));
+        m_pSceneCamera->Update(TVector4(fPitch, fYaw, 0, fDistance));*/
     }
     
     Tick();
@@ -110,6 +117,7 @@ void   SEngine::CoreRender()
 
     m_DxDevice.SetDefaultState();
     {
+        //현재 비어있음.
         Render();        
 
         m_DxWrite.PreRender();
@@ -169,6 +177,7 @@ std::shared_ptr<UStaticMeshComponent> SEngine::GetShape(std::wstring name)
     }
     return nullptr;
 }
+
 void SEngine::CreateDefaultShapes()
 {
     CreateBoxShapes();
@@ -235,9 +244,12 @@ void SEngine::CreateBoxShapes()
     mesh->CreateVertexBuffer();
     mesh->CreateIndexBuffer();
 
+    //insert의 경우 이미 있는 객체를 넣고, emplace같은경우에는 자체 생성해서 넣어줌. 
+    // 간단한 경우에는 emplace로 하고, 생성자가 복잡한 경우에는 insert로 한다 
+    // emplace를 사용하는 경우에는 오류가 날 가능성이 있음.
     m_Shapes.insert(std::make_pair(L"box", mesh));
+    //m_Shapes.emplace(L"box", mesh);
 }
-
 void SEngine::CreatePlaneShapes()
 {
     // box
@@ -259,7 +271,6 @@ void SEngine::CreatePlaneShapes()
 
     m_Shapes.insert(std::make_pair(L"plane", mesh));
 }
-
 void SEngine::CreateLineShapes()
 {
     // box
