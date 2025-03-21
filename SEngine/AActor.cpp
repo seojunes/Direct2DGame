@@ -38,12 +38,12 @@ void AActor::Init()
 }
 void AActor::Tick()
 {
-	UpdateVector();
+	//UpdateVector();
 	if (Mesh != nullptr) Mesh->Tick();
 }
 void AActor::PreRender()
 {
-	//UpdateVector();
+	UpdateVector();
 
 	m_cbData.matView = TMatrix::Transpose(SEngine::g_pCamera->m_matView);
 	m_cbData.matProj = TMatrix::Transpose(SEngine::g_pCamera->m_matProj);

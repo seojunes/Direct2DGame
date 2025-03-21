@@ -15,7 +15,7 @@ class AActor : public UObject
 public:
 	USceneComponent* RootComponent;
 	//UInputComponent* InputComponent;
-	std::list<UActorComponent*> m_pReplicatedComponents;
+	//std::list<UActorComponent*> m_pReplicatedComponents;
 public:
 	TVector3 m_vLook = { 0, 0, 1 };
 	TVector3 m_vRight = { 1, 0, 0 };

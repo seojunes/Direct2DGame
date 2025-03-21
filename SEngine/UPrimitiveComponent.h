@@ -4,7 +4,11 @@
 class UPrimitiveComponent : public USceneComponent
 {
 public:
-	std::shared_ptr<UMaterial>							 m_pMaterial;
+	//m_SubChilds == 0 -> submaterial ºñ»ç¿ë
+	std::vector<std::shared_ptr<UPrimitiveComponent>>    m_SubChilds;
+
+	std::vector<std::wstring>		m_csTextures;
+	std::shared_ptr<UMaterial>		m_pMaterial;
 public:
 	virtual void  SetMaterial(std::shared_ptr<UMaterial> pMaterial);
 public:

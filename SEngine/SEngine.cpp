@@ -40,6 +40,14 @@ void   SEngine::CoreInit()
     m_SkyObj->Load(GetShape(L"box"));
     m_SkyObj->GetMesh()->SetMaterial(pMaterial);
 
+    m_SMLine = std::make_shared<AActor>();
+    m_SMLine->Init();
+    m_SMLine->SetMesh(GetShape(L"line"));
+    auto lineMaterial = std::make_shared<UMaterial>();
+    lineMaterial->Load(L"../../data/shader/pnct.txt", L"../../data/texture/kgca08.bmp");
+    m_SMLine->GetMesh()->SetMaterial(lineMaterial);
+
+
     m_pSceneCamera = std::make_shared<TCamera>();
     SetCamera(m_pSceneCamera.get());
 
@@ -62,6 +70,7 @@ void   SEngine::CoreFrame()
     m_Input.Frame();
     m_DxWrite.Frame();
     m_DxDevice.Frame();
+    m_SkyObj->Tick();
 
     if (m_Input.KeyCheck('V') == KEY_PUSH)
     {
@@ -110,7 +119,7 @@ void   SEngine::CoreRender()
 {
     m_DxDevice.PreRender();  
     m_SkyObj->m_matOffset = TMatrix::Identity();
-    m_SkyObj->m_vScale = { 10,10,10 };
+    m_SkyObj->m_vScale = { 100,100,100 };
     m_SkyObj->m_vRotation = { 0, 0, 0.0f };
     m_SkyObj->m_vPosition = { 0,0,0 };
     m_SkyObj->Render();
@@ -119,6 +128,18 @@ void   SEngine::CoreRender()
     {
         //현재 비어있음.
         Render();        
+
+        TDevice::m_pd3dContext->IASetPrimitiveTopology(
+            D3D_PRIMITIVE_TOPOLOGY_LINELIST);
+        m_SMLine->m_vScale = { 1000,1,1 };
+        //m_SMLine->UpdateVector();
+        m_SMLine->Render();
+        m_SMLine->m_vScale = { 1,1000,1 };
+        //m_SMLine->UpdateVector();
+        m_SMLine->Render();
+        m_SMLine->m_vScale = { 1,1,1000 };
+        //m_SMLine->UpdateVector();
+        m_SMLine->Render();
 
         m_DxWrite.PreRender();
             {
@@ -143,6 +164,7 @@ void   SEngine::CoreRelease()
     {
         shape.second->Destroy();
     }
+    m_SMLine->Destroy();
     m_SkyObj->Destroy();
     m_GameTimer.Release();
     m_DxDevice.Release();

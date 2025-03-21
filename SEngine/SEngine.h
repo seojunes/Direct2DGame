@@ -20,6 +20,8 @@ public:
 	std::shared_ptr<SSkyObject> m_SkyObj;
 	static TCamera* g_pCamera;
 	shared_ptr<TCamera> m_pSceneCamera;
+	std::shared_ptr<AActor>  m_SMLine;
+
 	TTime		m_GameTimer;
 	TInput		m_Input;
 	TDevice		m_DxDevice;

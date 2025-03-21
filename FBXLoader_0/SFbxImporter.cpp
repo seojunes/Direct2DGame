@@ -2,8 +2,9 @@
 bool  SFbxImporter::Load(std::string loadfile, AActor* actor)
 {
 	m_pManager = FbxManager::Create();					//FBX SDK의 전역관리자 (FBX 시스템 초기화)
-	FbxIOSettings* ios = FbxIOSettings::Create(m_pManager, IOSROOT);		// 파일 입출력 관리 
-	m_pManager->SetIOSettings(ios);
+	//FbxIOSettings* ios = FbxIOSettings::Create(m_pManager, IOSROOT);		// 파일 입출력 관리 
+	//m_pManager->SetIOSettings(ios);
+
 	m_pImporter = FbxImporter::Create(m_pManager, "");	// FBX파일을 로드하는 객체
 	m_pScene = FbxScene::Create(m_pManager, "");		// 로드된 FBX파일의 장면(Scene) 정보를 저장하는 객체
 
@@ -20,14 +21,14 @@ bool  SFbxImporter::Load(std::string loadfile, AActor* actor)
 		return false;
 	}
 
-	FbxAxisSystem	 m_SceneAxisSystem = m_pScene->GetGlobalSettings().GetAxisSystem();
+	//FbxAxisSystem	 m_SceneAxisSystem = m_pScene->GetGlobalSettings().GetAxisSystem();
 	FbxAxisSystem::MayaZUp.ConvertScene(m_pScene);
-	FbxSystemUnit	m_SceneSystemUnit = m_pScene->GetGlobalSettings().GetSystemUnit();
+	//FbxSystemUnit	m_SceneSystemUnit = m_pScene->GetGlobalSettings().GetSystemUnit();
 
-	if (m_SceneSystemUnit.GetScaleFactor() != 1)	//if (m_SceneSystemUnit != FbxSystemUnit::cm)
-	{
-		FbxSystemUnit::cm.ConvertScene(m_pScene);
-	}
+	//if (m_SceneSystemUnit.GetScaleFactor() != 1)	//if (m_SceneSystemUnit != FbxSystemUnit::cm)
+	//{
+	//	FbxSystemUnit::cm.ConvertScene(m_pScene);
+	//}
 
 	// vb, ib, texture, animation
 	m_pRootNode = m_pScene->GetRootNode();			// 이 단계에서 모델을 가져옴
@@ -56,13 +57,14 @@ void SFbxImporter::ParseMesh(FbxMesh* fbxmesh, UPrimitiveComponent* actor)
 	geom.SetR(rot);
 	geom.SetS(scale);
 
-	FbxAMatrix matGlobal = pNode->EvaluateGlobalTransform(0);
-	if (matGlobal.IsIdentity() == false)
+	/*FbxAMatrix matGlobal = pNode->EvaluateGlobalTransform(0);
+	if (matGlobal.IsIdentity()==false)
 	{
-		geom = matGlobal * geom;
-	}
+		geom = matGlobal *geom;
+	}*/
 
 	FbxAMatrix normalMatrix = geom;
+
 	normalMatrix = normalMatrix.Inverse();
 	normalMatrix = normalMatrix.Transpose();
 
@@ -73,7 +75,6 @@ void SFbxImporter::ParseMesh(FbxMesh* fbxmesh, UPrimitiveComponent* actor)
 	std::vector<FbxLayerElementMaterial*>		MaterialSet;
 	std::vector<FbxLayerElementNormal*>			VertexNormalSets;
 	int iLayerCount = fbxmesh->GetLayerCount();
-	// 우리는 iLayerCount를 1로 보고 작업하면 된다.
 	for (int iLayer = 0; iLayer < iLayerCount; iLayer++)
 	{
 		FbxLayer* pFbxLayer = fbxmesh->GetLayer(iLayer);
@@ -89,6 +90,30 @@ void SFbxImporter::ParseMesh(FbxMesh* fbxmesh, UPrimitiveComponent* actor)
 		{
 			VertexNormalSets.push_back(pFbxLayer->GetNormals());
 		}
+		if (pFbxLayer->GetMaterials() != nullptr)
+		{
+			MaterialSet.push_back(pFbxLayer->GetMaterials());
+		}
+	}
+
+	/// texture filename
+	int iNumMtl = pNode->GetMaterialCount();
+	if (iNumMtl > 1)
+	{
+		actor->m_SubChilds.resize(iNumMtl);
+		for (int iMtrl = 0; iMtrl < iNumMtl; iMtrl++)
+		{
+			actor->m_SubChilds[iMtrl] = std::make_shared<UPrimitiveComponent>();
+		}
+	}
+	for (int iMtrl = 0; iMtrl < iNumMtl; iMtrl++)
+	{
+		FbxSurfaceMaterial* pSurface = pNode->GetMaterial(iMtrl);
+		if (pSurface)
+		{
+			std::string texName = ParseMaterial(pSurface);
+			actor->m_csTextures.emplace_back(to_mw(texName));
+		}
 	}
 
 	int iNumPolyCount = fbxmesh->GetPolygonCount();
@@ -97,7 +122,7 @@ void SFbxImporter::ParseMesh(FbxMesh* fbxmesh, UPrimitiveComponent* actor)
 	for (int iPoly = 0; iPoly < iNumPolyCount; iPoly++)
 	{
 		int iPolySize = fbxmesh->GetPolygonSize(iPoly);
-		// 폴리곤 3(삼각형 기반) or 4(사각형 기반) 
+		// 폴리곤 3 or 4 
 		int iNumFace = iPolySize - 2;
 		for (int iFace = 0; iFace < iNumFace; iFace++)
 		{
@@ -174,11 +199,21 @@ void SFbxImporter::ParseMesh(FbxMesh* fbxmesh, UPrimitiveComponent* actor)
 					v.t.y = 1.0f - uv.mData[1];
 				}
 
-				actor->m_vVertexList.emplace_back(v);
+				int iSubMateriaIndex = 0;
+				if (MaterialSet.size() > 0)
+				{
+					iSubMateriaIndex = GetSubMaterialIndex(iPoly, MaterialSet[0]);
+				}
+				if (actor->m_SubChilds.size() <= 0)
+					actor->m_vVertexList.emplace_back(v);
+				else
+					actor->m_SubChilds[iSubMateriaIndex]->m_vVertexList.emplace_back(v);
 			}
 		}
+
+
 		iBasePolyIndex += iPolySize;
-	}
+	}	
 }
 // 재귀함수로 모든 MESH를 찾아서 FbxMeshs에 저장함.
 void  SFbxImporter::PreProcess(FbxNode* pNode)
@@ -206,6 +241,9 @@ void SFbxImporter::Destroy()
 	m_pScene = nullptr;
 	m_pImporter = nullptr;
 	m_pManager = nullptr;
+
+	m_FbxMeshs.clear();
+	m_FbxNodes.clear();
 }
 // FBX Mesh 객체에서 텍스처좌표 (UV정보)를 추출하는 함수
 void SFbxImporter::ReadTextureCoord(FbxMesh* pFbxMesh, FbxLayerElementUV* pUVSet,
@@ -367,4 +405,68 @@ FbxVector4 SFbxImporter::ReadNormal(const FbxMesh* mesh,
 	}break;
 	}
 	return result;
+}
+
+
+std::string SFbxImporter::ParseMaterial(FbxSurfaceMaterial* pSurface)
+{
+	auto property = pSurface->FindProperty(FbxSurfaceMaterial::sDiffuse);
+	if (property.IsValid())
+	{
+		//std::string texName;
+		FbxFileTexture* texfile =
+			property.GetSrcObject<FbxFileTexture>(0);
+		if (texfile)
+		{
+			const char* szTexPath = texfile->GetFileName();
+			CHAR Drive[MAX_PATH];
+			CHAR Dir[MAX_PATH];
+			CHAR FName[MAX_PATH];
+			CHAR Ext[MAX_PATH];
+			_splitpath_s(szTexPath, Drive, Dir, FName, Ext);
+			std::string texName = FName;
+			std::string ext = Ext;
+			if (ext == ".tga" || ext == ".TGA")
+			{
+				ext.clear();
+				ext = ".dds";
+			}
+			texName += ext;
+			return texName;
+		}
+	}
+
+	return std::string();
+}
+
+int SFbxImporter::GetSubMaterialIndex(
+	int iPoly, FbxLayerElementMaterial* pMaterialSetList)
+{
+	int iSubMtrl = 0;
+	if (pMaterialSetList != nullptr)
+	{
+		switch (pMaterialSetList->GetMappingMode())
+		{
+		case FbxLayerElement::eByPolygon:
+		{
+			// 매핑 정보가 배열에 저장되는 방식
+			switch (pMaterialSetList->GetReferenceMode())
+			{
+			case FbxLayerElement::eIndex:
+			{
+				iSubMtrl = iPoly;
+			}break;
+			case FbxLayerElement::eIndexToDirect:
+			{
+				iSubMtrl = pMaterialSetList->GetIndexArray().GetAt(iPoly);
+			}break;
+			}
+		}
+		default:
+		{
+			break;
+		}
+		}
+	}
+	return iSubMtrl;
 }

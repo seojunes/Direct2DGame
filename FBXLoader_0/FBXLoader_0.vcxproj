@@ -31,6 +31,11 @@
       <Project>{b3900050-8cd0-4899-8ab2-92549639fbd0}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\data\Shader\object.txt" />
+    <Text Include="..\..\data\Shader\pnct.txt" />
+    <Text Include="..\..\data\Shader\sky.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

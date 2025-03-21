@@ -4,7 +4,7 @@
 class Sample : public SEngine
 {
 	SFbxImporter	m_FbxImporter;
-	AActor			m_FbxBox;
+	std::vector<std::shared_ptr<AActor>>   m_FbxObjs;
 public:
 	void Init() override;
 	void Tick() override;

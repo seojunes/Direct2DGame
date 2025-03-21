@@ -43,5 +43,8 @@ public:
 	FbxVector4 ReadNormal(const FbxMesh* mesh, DWORD dwVertexNormalCount, FbxLayerElementNormal* VertexNormalSets,
 		int controlPointIndex, int iVertexIndex);
 	void  Destroy();
+
+	std::string ParseMaterial(FbxSurfaceMaterial* pSurface);
+	int GetSubMaterialIndex(int iPoly, FbxLayerElementMaterial*);
 };
 

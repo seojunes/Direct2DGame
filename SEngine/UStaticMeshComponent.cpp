@@ -18,7 +18,6 @@ void	UStaticMeshComponent::Render()
 	PostRender();
 	for (auto child : m_Childs)
 	{
-		child->PreRender();
-		child->PostRender();
+		child->Render();
 	}
 }
