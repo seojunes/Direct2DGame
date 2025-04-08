@@ -107,4 +107,5 @@ void	UPrimitiveComponent::PostRender()
 }
 void   UPrimitiveComponent::Destroy()
 {
+
 }

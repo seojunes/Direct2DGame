@@ -5,11 +5,13 @@ void Sample::Init()
 {
 	std::vector<std::string> list =
 	{
-		{"../../data/fbx/box.fbx"},
+		//{"../../data/fbx/MultiCamera/MultiCameras.fbx"},
+		{"../../data/fbx/Turret_Deploy1.fbx"},
+		/*{"../../data/fbx/box.fbx"},
 		{"../../data/fbx/SM_Barrel.fbx"},
 		{"../../data/fbx/sphereBox.fbx"},
 		{"../../data/fbx/MultiCamera/MultiCameras.fbx"},
-		{"../../data/fbx/ship/ship.fbx"},
+		{"../../data/fbx/ship/ship.fbx"},*/
 	};
 
 	m_FbxObjs.resize(list.size());
@@ -57,9 +59,12 @@ void Sample::Init()
 
 						auto pMaterialPlane = std::make_shared<UMaterial>();
 						std::wstring texPath = L"../../data/fbx/";
-						texPath += child->m_csTextures[iSubMaterial];
-						pMaterialPlane->Load(L"../../data/shader/object.txt", texPath);
-						sub->SetMaterial(pMaterialPlane);
+						if (child->m_csTextures[iSubMaterial].empty() == false)
+						{
+							texPath += child->m_csTextures[iSubMaterial];
+							pMaterialPlane->Load(L"../../data/shader/object.txt", texPath);
+							sub->SetMaterial(pMaterialPlane);
+						}
 					}
 				}
 			}
@@ -78,7 +83,9 @@ void Sample::Tick()
 	int index = 0;
 	for (auto obj : m_FbxObjs)
 	{
-		obj->m_vPosition = { -200.0f + 100.0f * index++,0,0 };
+		//obj->m_vPosition = { -200.0f + 100.0f * index++,0,0 };
+		obj->m_vPosition = { 10 , 10 , 10 };
+		obj->m_vRotation.y = g_fGT;
 		obj->Tick();
 	}
 }
@@ -88,6 +95,7 @@ void Sample::Render() {
 	{
 		obj->Render();
 	}
+
 }
 void Sample::Destroy()
 {

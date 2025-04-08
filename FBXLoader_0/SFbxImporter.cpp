@@ -1,4 +1,28 @@
 #include "SFbxImporter.h"
+
+TMatrix     SFbxImporter::DxConvertMatrix(TMatrix m)
+{
+	TMatrix mat;
+	mat._11 = m._11; mat._12 = m._13; mat._13 = m._12;
+	mat._21 = m._31; mat._22 = m._33; mat._23 = m._32;
+	mat._31 = m._21; mat._32 = m._23; mat._33 = m._22;
+	mat._41 = m._41; mat._42 = m._43; mat._43 = m._42;
+	mat._14 = mat._24 = mat._34 = 0.0f;
+	mat._44 = 1.0f;
+	return mat;
+}
+TMatrix     SFbxImporter::ConvertAMatrix(FbxAMatrix& m)
+{
+	TMatrix mat;
+	float* pMatArray = reinterpret_cast<float*>(&mat);
+	double* pSrcArray = reinterpret_cast<double*>(&m);
+	for (int i = 0; i < 16; i++)
+	{
+		pMatArray[i] = pSrcArray[i];
+	}
+	return mat;
+}
+
 bool  SFbxImporter::Load(std::string loadfile, AActor* actor)
 {
 	m_pManager = FbxManager::Create();					//FBX SDK의 전역관리자 (FBX 시스템 초기화)
@@ -57,12 +81,35 @@ void SFbxImporter::ParseMesh(FbxMesh* fbxmesh, UPrimitiveComponent* actor)
 	geom.SetR(rot);
 	geom.SetS(scale);
 
-	/*FbxAMatrix matGlobal = pNode->EvaluateGlobalTransform(0);
+	FbxTime::SetGlobalTimeMode(FbxTime::eFrames30);
+	FbxAnimStack* stack = m_pScene->GetSrcObject<FbxAnimStack>(0);
+	if (stack == nullptr) return;
+
+	FbxString TakeName = stack->GetName();
+	FbxTakeInfo* TakeInfo = m_pScene->GetTakeInfo(TakeName);
+	FbxTimeSpan LocalTimeSpan = TakeInfo->mLocalTimeSpan;
+	FbxTime start = LocalTimeSpan.GetStart();
+	FbxTime end = LocalTimeSpan.GetStop();
+	FbxTime Duration = LocalTimeSpan.GetDuration();
+
+	FbxTime::EMode TimeMode = FbxTime::GetGlobalTimeMode();
+	FbxLongLong s = start.GetFrameCount(TimeMode);
+	FbxLongLong n = end.GetFrameCount(TimeMode);
+	FbxTime time;
+	for (FbxLongLong t = s; t <= n; t++)
+	{
+		time.SetFrame(t, TimeMode);
+		FbxAMatrix matGlobal = pNode->EvaluateGlobalTransform(time);
+		TMatrix mat = DxConvertMatrix(ConvertAMatrix(matGlobal));;
+		actor->m_AnimList.push_back(mat);
+	}
+	/*FbxLongLong t = 0;
+	time.SetFrame(t, TimeMode);
+	FbxAMatrix matGlobal = pNode->EvaluateGlobalTransform(time);
 	if (matGlobal.IsIdentity()==false)
 	{
 		geom = matGlobal *geom;
 	}*/
-
 	FbxAMatrix normalMatrix = geom;
 
 	normalMatrix = normalMatrix.Inverse();
@@ -106,6 +153,7 @@ void SFbxImporter::ParseMesh(FbxMesh* fbxmesh, UPrimitiveComponent* actor)
 			actor->m_SubChilds[iMtrl] = std::make_shared<UPrimitiveComponent>();
 		}
 	}
+
 	for (int iMtrl = 0; iMtrl < iNumMtl; iMtrl++)
 	{
 		FbxSurfaceMaterial* pSurface = pNode->GetMaterial(iMtrl);
@@ -438,7 +486,7 @@ std::string SFbxImporter::ParseMaterial(FbxSurfaceMaterial* pSurface)
 
 	return std::string();
 }
-
+//sub
 int SFbxImporter::GetSubMaterialIndex(
 	int iPoly, FbxLayerElementMaterial* pMaterialSetList)
 {

@@ -8,9 +8,9 @@ TSceneGameIn::TSceneGameIn(TGame* p)
 }
 TSceneGameIn::~TSceneGameIn() {}
 
+// 게임 씬 변환부분.
 void TSceneGameIn::ProcessAction(TObject* pObj)
 {
-
 	if (m_bNextScene == true)
 	{
 		m_pOwner->m_pAction->Release();
@@ -28,7 +28,7 @@ void TSceneGameIn::ProcessAction(TObject* pObj)
 		return;
 	}
 }
-
+// 마우스의 위치를 받아서 반환
 TVector2 TSceneGameIn::GetWorldMousePos()
 {
 	TVector2 vPos = { (float)g_ptMouse.x, (float)g_ptMouse.y };
@@ -60,7 +60,7 @@ bool TSceneGameIn::GameDataLoad(W_STR filename)
 		_stscanf_s(pBuffer, _T("%s %d %d %f"), pTemp,
 			(unsigned int)_countof(pTemp), &iNumFrame, &iType, &fLife);
 		//m_rtSpriteList[iCnt].resize(iNumFrame);
-
+		// UV texture
 		if (iType == 0)
 		{
 			RECT rt;
@@ -72,7 +72,7 @@ bool TSceneGameIn::GameDataLoad(W_STR filename)
 				m_rtSpriteList[iCnt].push_back(rt);
 			}
 		}
-		if (iType == 1)
+		if (iType == 1)			// 여러개의 이미지가 한개의 스프라이트
 		{
 			TCHAR pTexFileName[256] = { 0 };
 			T_STR_VECTOR strVector;
@@ -92,6 +92,7 @@ bool TSceneGameIn::GameDataLoad(W_STR filename)
 	fclose(fp_src);
 	return true;
 }
+// 맵생성 부분.
 bool TSceneGameIn::CreateMap()
 {
 	TRect rt;
@@ -105,6 +106,7 @@ bool TSceneGameIn::CreateMap()
 	return true;
 }
 
+// 보스맵 생성 부분
 bool TSceneGameIn::CreateBossMap()
 {
 	TRect rt;
@@ -117,12 +119,13 @@ bool TSceneGameIn::CreateBossMap()
 	}
 	return true;
 }
+
 bool TSceneGameIn::CreateObject()
 {
 	TLoadResData resData;
 	TVector2 tStart;
 	TVector2 tEnd;
-
+	//보스 생성시 이미지 
 	m_pBossCreate = std::make_shared<TBossCreate>();
 	tStart = { 13800.0f, 100.0f };
 	tEnd = { 13830.0f , 280.0f };
@@ -134,6 +137,7 @@ bool TSceneGameIn::CreateObject()
 		m_pBossCreate->m_iCollisionType = TCollisionType::T_Overlap;
 	}
 
+	// 보스룸으로 이동하는 portal
 	m_pPortal = std::make_shared<TPortal>();
 	m_pPortal->SetData(m_rtSpriteList);
 	tStart = { 11272.0f,1023.0f };
@@ -147,6 +151,7 @@ bool TSceneGameIn::CreateObject()
 		m_pPortal->m_iCollisionType = TCollisionType::T_Overlap;
 	}
 
+	// 엔딩 이미지
 	m_pVictory = std::make_shared<TVictory>();
 	tStart = { 13100.0f,-300.0f };
 	tEnd = { 13780.0f, 0.0f };
@@ -159,10 +164,10 @@ bool TSceneGameIn::CreateObject()
 		m_pVictory->m_iCollisionType = TCollisionType::T_Overlap;
 	}
 
+	// 사다리 생성 생성시 Alpha값 0으로 투명
 	m_pRadder = std::make_shared<TRadderObj>();
 	tStart = { 3760.0f,720.0f };
 	tEnd = { 3780.0f, 850.0f };
-
 	m_pRadder->m_fAlpha = 0.0f;
 	//m_pPortal->m_pWorld = m_pWorld.get();
 	resData.texPathName = L"../../data/texture/Radder.png";
@@ -174,6 +179,7 @@ bool TSceneGameIn::CreateObject()
 	}
 	return true;
 }
+// Character생성단
 bool TSceneGameIn::CreateHero()
 {
 	m_pHero = std::make_shared<THeroObj>();
@@ -193,6 +199,7 @@ bool TSceneGameIn::CreateHero()
 	}
 	return true;
 }
+// 바닥과의 충돌을 계산하는 rect생성. 
 bool TSceneGameIn::CreateRect()
 {
 	rectArea = {
@@ -230,7 +237,6 @@ bool TSceneGameIn::CreateRect()
 	};
 	for (auto area : rectArea)
 	{
-
 		TVector2 tStart = area.first;
 		TVector2 tEnd = area.second;
 		auto m_pRect = std::make_shared<TCollisionManager>();

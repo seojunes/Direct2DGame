@@ -61,6 +61,26 @@ void AActor::PostRender()
 	TDevice::m_pd3dContext->VSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
 	if (Mesh != nullptr)
 	{
+		m_fFrame += g_fSPF * 30;
+		if (m_fFrame >= 50) m_fFrame = 0;
+		for (auto child : Mesh->m_Childs)
+		{
+			auto mesh = child;
+			if (mesh != nullptr && mesh->m_AnimList.size() > 0)
+			{
+				TMatrix world =
+					mesh->m_AnimList[(int)m_fFrame] * m_matWorld;
+				m_cbData.matWorld =
+					TMatrix::Transpose(world);
+
+				TDevice::m_pd3dContext->UpdateSubresource(
+					m_pConstantBuffer.Get(), 0, NULL, &m_cbData, 0, 0);
+				// 0번 레지스터에 셰이더상수 m_pConstantBuffer를 연결
+				TDevice::m_pd3dContext->VSSetConstantBuffers(
+					0, 1, m_pConstantBuffer.GetAddressOf());
+			}
+			child->Render();
+		}
 		Mesh->Render();
 	}
 }
