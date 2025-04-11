@@ -96,12 +96,12 @@ void TCamera::Tick()
 	{
 		fDistance -= g_fSPF * 10.0f;
 	}
-	if (g_GameKey.dw7key == KEY_HOLD)      MoveLook();
-	if (g_GameKey.dw9key == KEY_HOLD)      BackLook();
-	if (g_GameKey.dw4key == KEY_HOLD)      MoveRight();
-	if (g_GameKey.dw6key == KEY_HOLD)      BackRight();
-	if (g_GameKey.dw8key == KEY_HOLD)      MoveUp();
-	if (g_GameKey.dw5key == KEY_HOLD)      BackUp();
+	//if (g_GameKey.dw7key == KEY_HOLD)      MoveLook();
+	//if (g_GameKey.dw9key == KEY_HOLD)      BackLook();
+	//if (g_GameKey.dw4key == KEY_HOLD)      MoveRight();
+	//if (g_GameKey.dw6key == KEY_HOLD)      BackRight();
+	//if (g_GameKey.dw8key == KEY_HOLD)      MoveUp();
+	//if (g_GameKey.dw5key == KEY_HOLD)      BackUp();
 	if (g_nMouseWheelDelta != 0)
 	{
 		fDistance = ((g_nMouseWheelDelta) > 0) ? (1.0f) : (-1.0f);
@@ -136,9 +136,9 @@ void TCamera::Tick()
 }
 TMatrix TCamera::Update(TVector4 vDirValue)
 {		
-	TBASIS_EX::TQuaternion* pqRotation = (TBASIS_EX::TQuaternion*)&m_qRotation;
-	TBASIS_EX::TVector3* pPosition = (TBASIS_EX::TVector3*)&m_vPosition;
-	TBASIS_EX::TMatrix* pMatView = (TBASIS_EX::TMatrix*)&m_matView;
+	T::TQuaternion* pqRotation = (T::TQuaternion*)&m_qRotation;
+	T::TVector3* pPosition = (T::TVector3*)&m_vPosition;
+	T::TMatrix* pMatView = (T::TMatrix*)&m_matView;
 
 	m_fYaw += vDirValue.y;
 	m_fPitch += vDirValue.x;
@@ -150,7 +150,7 @@ TMatrix TCamera::Update(TVector4 vDirValue)
 	//	m_fRoll =0;
 	//}
 
-	TBASIS_EX::D3DXQuaternionRotationYawPitchRoll(
+	T::D3DXQuaternionRotationYawPitchRoll(
 		pqRotation,
 		m_fYaw,
 		m_fPitch,
@@ -160,9 +160,9 @@ TMatrix TCamera::Update(TVector4 vDirValue)
 	m_fRadius += vDirValue.w;
 	
 
-	TBASIS_EX::TMatrix matRotation;
-	TBASIS_EX::D3DXMatrixAffineTransformation(&matRotation, 1.0f, NULL, pqRotation, pPosition);
-	TBASIS_EX::D3DXMatrixInverse(pMatView, NULL, &matRotation);
+	T::TMatrix matRotation;
+	T::D3DXMatrixAffineTransformation(&matRotation, 1.0f, NULL, pqRotation, pPosition);
+	T::D3DXMatrixInverse(pMatView, NULL, &matRotation);
 
 	return UpdateVector();
 }

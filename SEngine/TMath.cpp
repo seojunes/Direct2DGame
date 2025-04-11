@@ -1,6 +1,6 @@
 #include "TMath.h"
 //https://docs.microsoft.com/en-us/windows/win32/dxmath/pg-xnamath-migration-d3dx
-namespace TBASIS_EX
+namespace T
 {
 		const TVector2 TVector2::Zero = { 0.f, 0.f };
 		const TVector2 TVector2::One = { 1.f, 1.f };

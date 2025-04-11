@@ -48,33 +48,51 @@ HRESULT   TDxWrite::Create(IDXGISurface* pBackBuffer)
 	hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED,
 		__uuidof(IDWriteFactory),
 		(IUnknown**)&m_pDxWrite);
+
+
 	if (SUCCEEDED(hr))
 	{
+		//IDWriteFontFile* m_pFontFile = nullptr;
+		//IDWriteFontFace* pFontFace = nullptr;
+		//HRESULT hr = m_pDxWrite->CreateFontFileReference(
+		//	L"font3.ttf", // 실행 파일 기준 경로
+		//	nullptr,
+		//	&m_pFontFile); // IDWriteFontFile* m_pFontFile
+
+		//if (FAILED(hr))
+		//{
+		//	DX_CHECK(hr, _T(__FUNCTION__));
+		//	return hr;
+		//}
+
+
+		//hr = m_pDxWrite->CreateFontFace(
+		//	DWRITE_FONT_FACE_TYPE_TRUETYPE,
+		//	1,
+		//	&m_pFontFile, // 배열처럼 넘기기
+		//	0,            // face index
+		//	DWRITE_FONT_SIMULATIONS_NONE,
+		//	&pFontFace);
+
+		//if (FAILED(hr))
+		//{
+		//	DX_CHECK(hr, _T(__FUNCTION__));
+		//	return hr;
+		//}
 		hr = m_pDxWrite->CreateTextFormat(
-			L"궁서", NULL,
-			DWRITE_FONT_WEIGHT_THIN,
+			//L"GyeonggiBatang Bold",
+			L"소야뜰9",
+			nullptr,
+			DWRITE_FONT_WEIGHT_BOLD,
 			DWRITE_FONT_STYLE_NORMAL,
 			DWRITE_FONT_STRETCH_NORMAL,
-			20, L"ko-kr", // "en-us"
+			24.0f,
+			L"ko-kr",
 			&m_pTextFormat20);
 
 		if (FAILED(hr))
 		{
 			DX_CHECK(hr, _T(__FUNCTION__));
-			return hr;
-		}
-		hr = m_pDxWrite->CreateTextFormat(
-			L"궁서", NULL,
-			DWRITE_FONT_WEIGHT_THIN,
-			DWRITE_FONT_STYLE_NORMAL,
-			DWRITE_FONT_STRETCH_NORMAL,
-			50, L"ko-kr", // "en-us"
-			&m_pTextFormat50);
-
-		if (FAILED(hr))
-		{
-			DX_CHECK(hr, _T(__FUNCTION__));
-			return hr;
 		}
 	}
 
@@ -83,6 +101,7 @@ HRESULT   TDxWrite::Create(IDXGISurface* pBackBuffer)
 }
 void   TDxWrite::Init()
 {
+	
 
 }
 void   TDxWrite::Frame()
@@ -119,7 +138,7 @@ void   TDxWrite::PreRender()
 }
 void   TDxWrite::PostRender()
 {
-	D2D1_RECT_F rt = { 300.0f, 0.0f, 
+	D2D1_RECT_F rt = { 300.0f, 0.0f,
 		.0f, 600.0f };
 	for (auto data : m_msgList)
 	{

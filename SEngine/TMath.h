@@ -24,7 +24,7 @@
 using namespace DirectX;
 using namespace DirectX::PackedVector;
 
-namespace TBASIS_EX
+namespace T
 {
 	struct TVector2;
 	struct TVector3;

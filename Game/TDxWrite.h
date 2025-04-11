@@ -16,6 +16,8 @@ public:
 	IDWriteTextFormat* m_pTextFormat20 = nullptr;
 	IDWriteTextFormat* m_pTextFormat50 = nullptr;
 	ID2D1SolidColorBrush* m_pColorBrush = nullptr;
+
+	
 	std::list<std::wstring>	m_msgList;
 	int		Add(std::wstring msg);
 public:
@@ -31,5 +33,7 @@ public:
 		D2D1::ColorF Color = D2D1::ColorF(1, 1, 1, 1));
 	virtual void   PostRender();
 	virtual void   Release();
+
+
 };
 

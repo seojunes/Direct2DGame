@@ -323,4 +323,7 @@
       <UniqueIdentifier>{d9a4090e-8b4d-4b87-8483-017815d9bc63}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
 </Project>

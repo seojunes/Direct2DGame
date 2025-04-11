@@ -78,8 +78,6 @@ void   TWorld::Frame()
 				if (pSrcObj->GetType() == pDestObj->GetType()) continue;
 				if (pDestObj->GetType() == TObjectType::Projectile)
 				{
-					int temp = 0;
-					temp = 123;
 				}
 				auto iter = m_fnCollisionExecute.find(pSrcObj->m_iCollisionID);
 				if (iter != m_fnCollisionExecute.end())

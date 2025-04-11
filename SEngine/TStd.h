@@ -13,6 +13,7 @@
 #include <atlconv.h>  // A2W
 #include <wrl.h> // windows runtime c++ template library
 #include "TVertex.h"
+#include "TMath.h"
 #pragma comment(lib,"d3d11.lib") // 加己 眠啊辆加己 
 #pragma comment(lib,"d3dcompiler.lib") // 加己 眠啊辆加己 
 
@@ -72,16 +73,6 @@ struct TGameKey
     DWORD dwMiddleClick;
     DWORD dwExit;
     DWORD dwSpace;
-    DWORD dw0key;
-    DWORD dw1key;
-    DWORD dw2key;
-    DWORD dw3key;
-    DWORD dw4key;
-    DWORD dw5key;
-    DWORD dw6key;
-    DWORD dw7key;
-    DWORD dw8key;
-    DWORD dw9key;
 };
 
 enum { KEY_FREE = 0, KEY_PUSH, KEY_HOLD, KEY_UP };
