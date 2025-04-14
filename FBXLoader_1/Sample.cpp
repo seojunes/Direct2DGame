@@ -13,7 +13,7 @@ void Sample::Init()
 {
 	std::vector<std::string> list =
 	{
-		//{"../../data/fbx/SKM_Manny.fbx"},
+		{"../../data/fbx/SKM_Manny.fbx"},
 		//{"../../data/fbx/MultiCamera/MultiCameras.fbx"},
 		{"../../data/fbx/Turret_Deploy1.fbx"},
 		/*{"../../data/fbx/box.fbx"},
@@ -22,6 +22,19 @@ void Sample::Init()
 		{"../../data/fbx/MultiCamera/MultiCameras.fbx"},
 		{"../../data/fbx/ship/ship.fbx"},*/
 	};
+
+	D3D11_INPUT_ELEMENT_DESC layoutiw[] =
+	{
+		// 0~8
+		{ "POS",  0, DXGI_FORMAT_R32G32B32_FLOAT,		0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL",0, DXGI_FORMAT_R32G32B32_FLOAT,		0, 12,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR",0, DXGI_FORMAT_R32G32B32A32_FLOAT,	0, 24,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEX",  0, DXGI_FORMAT_R32G32_FLOAT,			0, 40,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
+		{ "INDEX", 0, DXGI_FORMAT_R32G32B32A32_FLOAT,	1, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "WEIGHT",0, DXGI_FORMAT_R32G32B32A32_FLOAT,	1, 16,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	};
+	UINT iNumCnt = sizeof(layoutiw) / sizeof(layoutiw[0]);
 
 	m_FbxObjs.resize(list.size());
 	for (int iObj = 0; iObj < list.size(); iObj++)
@@ -39,48 +52,71 @@ void Sample::Init()
 			{
 				m_FbxObjs[iObj]->m_CurrentAnimMatrix.resize(m_FbxObjs[iObj]->GetMesh()->m_Childs.size());
 				auto child = m_FbxObjs[iObj]->GetMesh()->m_Childs[iMesh];
-				if (child->m_SubChilds.size() == 0)
+				if (child->m_bRenderMesh)
 				{
-					auto pMaterialPlane = std::make_shared<UMaterial>();
-					std::wstring texPath = L"../../data/fbx/";
-					if (child->m_csTextures.size() == 0)
+					if (child->m_SubChilds.size() == 0)
 					{
-						texPath += L"kgca08.bmp";
+						if (child->m_vVertexList.size())
+						{
+							auto pMaterial = std::make_shared<UMaterial>();
+							std::wstring texPath = L"../../data/fbx/";
+							if (child->m_csTextures.size() == 0)
+							{
+								texPath += L"kgca08.bmp";
+							}
+							else
+							{
+								texPath += child->m_csTextures[0]; // FBX에 정의된 텍스쳐.
+							}
+
+							pMaterial->Load(L"../../data/shader/Character.txt", texPath);
+							child->SetMaterial(pMaterial);
+							child->CreateVertexBuffer();
+							child->CreateIndexBuffer();
+
+							if (pMaterial->m_pShader)
+							{
+								pMaterial->SetInputLayout(I_InputLayout.Load(pMaterial->m_pShader->m_pCode.Get(), layoutiw, iNumCnt, L"PNCT_IW"));
+							}
+						}
 					}
 					else
 					{
-						texPath += child->m_csTextures[0]; // FBX에 정의된 텍스쳐.
-					}
-
-					pMaterialPlane->Load(L"../../data/shader/object.txt", texPath);
-					child->SetMaterial(pMaterialPlane);
-
-					for (int i = 0; i < child->m_vVertexList.size(); i++)
-					{
-						child->m_vIWList[i].i[0] = iMesh;
-						child->m_vIWList[i].w[0] = 1.0f;
-					}
-
-					child->CreateVertexBuffer();
-					child->CreateIndexBuffer();
-				}
-				else
-				{
-					for (int iSubMaterial = 0; iSubMaterial < child->m_SubChilds.size(); iSubMaterial++)
-					{
-						auto sub = child->m_SubChilds[iSubMaterial];
-						sub->CreateVertexBuffer();
-						sub->CreateIndexBuffer();
-
-						auto pMaterialPlane = std::make_shared<UMaterial>();
-						std::wstring texPath = L"../../data/fbx/";
-						if (child->m_csTextures[iSubMaterial].empty() == false)
+						for (int iSubMaterial = 0; iSubMaterial < child->m_SubChilds.size(); iSubMaterial++)
 						{
-							texPath += child->m_csTextures[iSubMaterial];
-							pMaterialPlane->Load(L"../../data/shader/Character.txt", texPath);
-							sub->SetMaterial(pMaterialPlane);
+							auto sub = child->m_SubChilds[iSubMaterial];
+							if (sub->m_vVertexList.size() == 0)
+							{
+								sub->m_bRenderMesh = false;
+								continue;
+							}
+
+							sub->m_vIWList.resize(sub->m_vVertexList.size());
+							for (int i = 0; i < sub->m_vVertexList.size(); i++)
+							{
+								sub->m_vIWList[i].i[0] = iMesh;
+								sub->m_vIWList[i].w[0] = 1.0f;
+							}
+							sub->CreateVertexBuffer();
+							sub->CreateIndexBuffer();
+
+							auto pMaterial = std::make_shared<UMaterial>();
+							std::wstring texPath = L"../../data/fbx/";
+							//if (child->m_csTextures[iSubMaterial].empty() == false)
+							{
+								texPath += child->m_csTextures[iSubMaterial];
+								pMaterial->Load(L"../../data/shader/Character.txt", texPath);
+
+							}
+							if (pMaterial->m_pShader)
+							{
+								pMaterial->SetInputLayout(I_InputLayout.Load(
+									pMaterial->m_pShader->m_pCode.Get(), layoutiw, iNumCnt, L"PNCT_IW"));
+							}
+							sub->SetMaterial(pMaterial);
 						}
 					}
+
 				}
 			}
 		}
@@ -131,3 +167,4 @@ int WINAPI wWinMain(
 	sample.SetWindow(L"test", 800, 600);
 	sample.GameRun();
 }
+

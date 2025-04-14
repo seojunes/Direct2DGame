@@ -11,8 +11,21 @@
 class SFbxNodeTree;
 using sFbxTree = std::shared_ptr<SFbxNodeTree>;
 
+struct TVertexWeight
+{
+	std::vector<UINT>		m_iIndex;
+	std::vector<float>		m_fWeight;
+	int Insert(UINT iIndex, float fWeight)
+	{
+		m_iIndex.emplace_back(iIndex);
+		m_fWeight.emplace_back(fWeight);
+		return m_iIndex.size();
+	};
+};
+
 struct SFbxNodeTree
 {
+	UINT						 m_iIndex;
 	bool						 m_bMesh;
 	std::wstring                 m_szName;
 	std::wstring                 m_szParentName;
@@ -31,6 +44,8 @@ public:
 	FbxNode* m_pRootNode;
 	std::vector<FbxMesh*>  m_FbxMeshs;
 	std::vector<sFbxTree>  m_FbxNodes;
+	std::map<std::wstring, UINT>  m_FbxNodeNames;
+	//std::map<FbxNode*, UINT>  m_FbxNodes;
 
 	TMatrix     DxConvertMatrix(TMatrix m);
 	TMatrix     ConvertAMatrix(FbxAMatrix& m);
@@ -49,6 +64,13 @@ public:
 	std::string ParseMaterial(FbxSurfaceMaterial* pSurface);
 	int GetSubMaterialIndex(int iPoly, FbxLayerElementMaterial*);
 
-	void    GetAnimation(FbxNode* node, UPrimitiveComponent* actor);
+public:
+	FbxLongLong m_iStartFrame = 0;
+	FbxLongLong m_iEndFrame = 0;
+	std::vector< TVertexWeight>  m_VertexWeights;
+	int m_iMaxWeightCount = 0;
+	void    GetAnimation();
+	void    GetNodeAnimation(FbxNode* node, UPrimitiveComponent* actor);
+	bool    ParseMeshSkinning(FbxMesh* fbxmesh, UPrimitiveComponent* actor);
 };
 

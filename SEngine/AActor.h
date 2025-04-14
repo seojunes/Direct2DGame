@@ -35,6 +35,8 @@ public:
 	TMatrix m_matWorld;
 	cbData  m_cbData;
 	cbAnimData m_cbAnimData;
+	UINT    m_iStartFrame;
+	UINT    m_iEndFrame;
 	float   m_fFrame = 0.0f;				// 시간계산을 해주기 위해서 실수값으로 초기화 
 	bool    m_bInc = true;
 	shared_ptr<UStaticMeshComponent> Mesh;

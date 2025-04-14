@@ -15,9 +15,8 @@ public:
 	}
 	virtual ~UMaterial() {}
 public:
-	virtual void Load(std::wstring shaderfilename,
-		std::wstring texturefilename);
+	virtual void Load(std::wstring shaderfilename, std::wstring texturefilename);
 	virtual void SetShader(TShader* pShader = nullptr);
 	virtual void SetTexture(TTexture* pTexture = nullptr);
+	virtual void SetInputLayout(TInputLayout* pInputLayout = nullptr);
 };
-

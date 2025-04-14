@@ -1,5 +1,49 @@
 #include "SFbxImporter.h"
 
+bool    SFbxImporter::ParseMeshSkinning(FbxMesh* fbxmesh, UPrimitiveComponent* actor)
+{
+	m_VertexWeights.clear();
+	int iDeformerCount = fbxmesh->GetDeformerCount(FbxDeformer::eSkin);
+	if (iDeformerCount <= 0) return false;
+	// 중요 : 메쉬에 정점 개수와 iVretexCount는 같다.
+	int iVertexCount = fbxmesh->GetControlPointsCount();
+	m_VertexWeights.resize(iVertexCount);
+
+	for (int iDeformer = 0; iDeformer < iDeformerCount; iDeformer++)
+	{
+		FbxSkin* pSkin = (FbxSkin*)fbxmesh->GetDeformer(iDeformer, FbxDeformer::eSkin);
+		if (pSkin == nullptr) continue;
+		int iClusterCount = pSkin->GetClusterCount();
+		for (int iCluster = 0; iCluster < iClusterCount; iCluster++)
+		{
+			FbxCluster* pCluster = pSkin->GetCluster(iCluster);
+			if (pCluster == nullptr) continue;
+			FbxNode* pLinkNode = pCluster->GetLink();
+			if (pLinkNode == nullptr) continue;
+			auto iter = m_FbxNodeNames.find(to_mw(pLinkNode->GetName()));
+			UINT iWeightIndex = 0;
+			if (iter != m_FbxNodeNames.end())
+			{
+				iWeightIndex = iter->second;
+			}
+			int iClusterSize = pCluster->GetControlPointIndicesCount();
+			int* pFbxNodeIndex = pCluster->GetControlPointIndices();
+			double* pFbxNodeWegiht = pCluster->GetControlPointWeights();
+			for (int v = 0; v < iClusterSize; v++)
+			{
+				int iIndex = pFbxNodeIndex[v];
+				float fWeight = pFbxNodeWegiht[v];
+				int iMaxCnt = m_VertexWeights[iIndex].Insert(iWeightIndex, fWeight);
+				if (m_iMaxWeightCount < iMaxCnt)
+				{
+					m_iMaxWeightCount = iMaxCnt;
+				}
+			}
+		}
+	}
+	return true;
+}
+
 //FBX는 기본적으로, Y-up, Right-handed 좌표계인데
 //DX는 Y-up , Left-handed좌표계를 이용하므로 좌표계 변환.
 TMatrix     SFbxImporter::DxConvertMatrix(TMatrix m)
@@ -35,8 +79,6 @@ bool  SFbxImporter::Load(std::string loadfile, AActor* actor)
 {
 	// FBX SDK 기본 객체 초기화
 	m_pManager = FbxManager::Create();						//FBX라이브러리 전체 관리 객체
-	/*FbxIOSettings* ios = FbxIOSettings::Create(m_pManager, IOSROOT);
-	m_pManager->SetIOSettings(ios);*/
 	m_pImporter = FbxImporter::Create(m_pManager, "");		//파일로더
 	m_pScene = FbxScene::Create(m_pManager, "");			//씬 그래프 (노드 트리 구조)
 
@@ -51,22 +93,16 @@ bool  SFbxImporter::Load(std::string loadfile, AActor* actor)
 		return false;
 	}
 
-	//FbxAxisSystem	 m_SceneAxisSystem = m_pScene->GetGlobalSettings().GetAxisSystem();
 	//좌표계 보정 Maya Z-Up 좌표계로 변환.
 	FbxAxisSystem::MayaZUp.ConvertScene(m_pScene);
-	//FbxSystemUnit	m_SceneSystemUnit = m_pScene->GetGlobalSettings().GetSystemUnit();
-
-	//if (m_SceneSystemUnit.GetScaleFactor() != 1)	//if (m_SceneSystemUnit != FbxSystemUnit::cm)
-	//{
-	//	FbxSystemUnit::cm.ConvertScene(m_pScene);
-	//}
-
-	// vb, ib, texture, animation
 	// Scene의 루트를 받아서
 	m_pRootNode = m_pScene->GetRootNode();
 	auto sFbxNodeRoot = std::make_shared<SFbxNodeTree>(m_pRootNode);
 	PreProcess(sFbxNodeRoot);
 
+	GetAnimation();
+	actor->m_iStartFrame = m_iStartFrame;
+	actor->m_iEndFrame = m_iEndFrame;
 	//UStaticMeshComponent : fbxfile
 	//nodes[10] UPrimitiveComponent
 
@@ -80,10 +116,11 @@ bool  SFbxImporter::Load(std::string loadfile, AActor* actor)
 	actor->SetMesh(mesh);*/
 	//메시 및 애니메이션 파싱
 	auto mesh = std::make_shared<UStaticMeshComponent>();
-	for (auto node : m_FbxNodes)
+	for (int iNode = 0; iNode < m_FbxNodes.size(); iNode++)
 	{
-		//UPrimitiveComponent 렌더링 가능한 단위 컴포넌트.
+		auto node = m_FbxNodes[iNode];
 		auto child = std::make_shared<UPrimitiveComponent>();
+		node->m_iIndex = child->m_iIndex = iNode;
 		child->m_bRenderMesh = false;
 		if (node->m_bMesh)
 		{
@@ -91,7 +128,7 @@ bool  SFbxImporter::Load(std::string loadfile, AActor* actor)
 			auto mesh = node->m_pFbxNode->GetMesh();
 			ParseMesh(mesh, child.get());
 		}
-		GetAnimation(node->m_pFbxNode, child.get());
+		GetNodeAnimation(node->m_pFbxNode, child.get());
 		mesh->m_Childs.emplace_back(child);
 	}
 	actor->SetMesh(mesh);
@@ -112,6 +149,7 @@ bool  SFbxImporter::Load(std::string loadfile, AActor* actor)
 /// </summary>
 void SFbxImporter::ParseMesh(FbxMesh* fbxmesh, UPrimitiveComponent* actor)
 {
+	bool bSkinned = ParseMeshSkinning(fbxmesh, actor);
 	/// 기하행렬(초기 정점 위치를 변환 할 때 사용)
 	FbxNode* pNode = fbxmesh->GetNode();
 	FbxAMatrix geom;
@@ -269,10 +307,29 @@ void SFbxImporter::ParseMesh(FbxMesh* fbxmesh, UPrimitiveComponent* actor)
 				{
 					iSubMateriaIndex = GetSubMaterialIndex(iPoly, MaterialSet[0]);
 				}
+				IW_VERTEX iw;
+				iw.i[0] = actor->m_iIndex;
+				iw.w[0] = 1.0f;
+				if (bSkinned)
+				{
+					TVertexWeight& weight = m_VertexWeights[CornerIndex[index]];
+					for (int i = 0; i < weight.m_iIndex.size(); i++)
+					{
+						if (i >= 4) break;
+						iw.i[i] = weight.m_iIndex[i];
+						iw.w[i] = weight.m_fWeight[i];
+					}
+				}
 				if (actor->m_SubChilds.size() <= 0)
+				{
 					actor->m_vVertexList.emplace_back(v);
+					actor->m_vIWList.emplace_back(iw);
+				}
 				else
+				{
 					actor->m_SubChilds[iSubMateriaIndex]->m_vVertexList.emplace_back(v);
+					actor->m_SubChilds[iSubMateriaIndex]->m_vIWList.emplace_back(iw);
+				}
 			}
 		}
 
@@ -294,6 +351,8 @@ void  SFbxImporter::PreProcess(sFbxTree& pParentNode)
 		pParentNode->m_bMesh = true;
 	}
 	m_FbxNodes.emplace_back(pParentNode);
+	m_FbxNodeNames.insert(std::make_pair(to_mw(node->GetName()),
+		m_FbxNodeNames.size()));
 
 	int iNumChild = node->GetChildCount();
 	for (int iNode = 0; iNode < iNumChild; iNode++)
@@ -551,7 +610,7 @@ int SFbxImporter::GetSubMaterialIndex(int iPoly, FbxLayerElementMaterial* pMater
 
 // FBX에서 노드의 애니메이션 트랜스폼 행렬을 추출해서 UPrimitiveComponent에 저장해주는 함수.
 // 노드의 각 프레임별 트랜스폼 행렬을 계싼해서 actor->m_AnimList에 프레임별 행렬을 순서대로 저장
-void SFbxImporter::GetAnimation(FbxNode* node, UPrimitiveComponent* actor)
+void        SFbxImporter::GetAnimation()
 {
 	FbxTime::SetGlobalTimeMode(FbxTime::eFrames30);
 	FbxAnimStack* stack = m_pScene->GetSrcObject<FbxAnimStack>(0);
@@ -565,10 +624,16 @@ void SFbxImporter::GetAnimation(FbxNode* node, UPrimitiveComponent* actor)
 	FbxTime Duration = LocalTimeSpan.GetDuration();
 
 	FbxTime::EMode TimeMode = FbxTime::GetGlobalTimeMode();
-	FbxLongLong s = start.GetFrameCount(TimeMode);
-	FbxLongLong n = end.GetFrameCount(TimeMode);
+	m_iStartFrame = start.GetFrameCount(TimeMode);
+	m_iEndFrame = end.GetFrameCount(TimeMode);
+}
+void        SFbxImporter::GetNodeAnimation(
+	FbxNode* node,
+	UPrimitiveComponent* actor)
+{
+	FbxTime::EMode TimeMode = FbxTime::GetGlobalTimeMode();
 	FbxTime time;
-	for (FbxLongLong t = s; t <= n; t++)
+	for (FbxLongLong t = m_iStartFrame; t <= m_iEndFrame; t++)
 	{
 		time.SetFrame(t, TimeMode);
 		FbxAMatrix matGlobal = node->EvaluateGlobalTransform(time);

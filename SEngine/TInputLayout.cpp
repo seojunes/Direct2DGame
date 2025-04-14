@@ -45,19 +45,6 @@ void     TTInputLayoutManager::Init(ID3DBlob* pCode)
 	UINT  iNumCnt = sizeof(layout) / sizeof(layout[0]);
 	g_pInputLayout = Load(pCode, layout, iNumCnt, L"PNCT");
 
-	D3D11_INPUT_ELEMENT_DESC layoutiw[] =
-	{
-		// 0~8
-		{ "POS",  0, DXGI_FORMAT_R32G32B32_FLOAT,		0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "NORMAL",0, DXGI_FORMAT_R32G32B32_FLOAT,		0, 12,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "COLOR",0, DXGI_FORMAT_R32G32B32A32_FLOAT,	0, 24,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEX",  0, DXGI_FORMAT_R32G32_FLOAT,			0, 40,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-
-		{ "INDEX",0, DXGI_FORMAT_R32G32B32A32_FLOAT,	1, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "WEIGHT",0, DXGI_FORMAT_R32G32B32A32_FLOAT,	1, 16,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	};
-	iNumCnt = sizeof(layoutiw) / sizeof(layoutiw[0]);
-	g_pInputLayoutIW = Load(pCode, layoutiw, iNumCnt, L"PNCT_IW");
 }
 TInputLayout* TTInputLayoutManager::Load(ID3DBlob* pCode, 
 									D3D11_INPUT_ELEMENT_DESC layout[],

@@ -54,7 +54,7 @@ void AActor::Tick()
 	{
 		/*m_fFrame += g_fSPF * 30 * 1.0f;
 		if (m_fFrame >= 50) m_fFrame = 0;*/
-		/*if (m_bInc)
+		if (m_bInc)
 		{
 			m_fFrame += g_fSPF * 30 * 1.0f;
 		}
@@ -63,15 +63,15 @@ void AActor::Tick()
 			m_fFrame -= g_fSPF * 30 * 1.0f;
 		}
 
-		if (m_fFrame >= 50)
+		if (m_fFrame >= m_iEndFrame)
 		{
 			m_bInc = false;
 		}
-		else if (m_fFrame <= 0)
+		else if (m_fFrame <= m_iStartFrame)
 		{
 			m_bInc = true;
-		}*/
-		float fSpeed = g_fSPF * 30.0f;
+		}
+		/*float fSpeed = g_fSPF * 30.0f;
 		if (m_bInc)
 		{
 			m_fFrame += fSpeed;
@@ -89,7 +89,7 @@ void AActor::Tick()
 				m_fFrame = 0.0f;
 				m_bInc = true;
 			}
-		}
+		}*/
 		for (int iChild = 0; iChild < Mesh->m_Childs.size(); iChild++)
 		{
 			m_CurrentAnimMatrix[iChild] = Mesh->m_Childs[iChild]->m_AnimList[(int)m_fFrame];

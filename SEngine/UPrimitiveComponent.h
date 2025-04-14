@@ -4,6 +4,7 @@
 class UPrimitiveComponent : public USceneComponent
 {
 public:
+	int			m_iIndex = 0;
 	bool 		m_bRenderMesh = true;
 	//m_SubChilds == 0 -> submaterial ºñ»ç¿ë
 	std::vector<std::shared_ptr<UPrimitiveComponent>>    m_SubChilds;
@@ -15,7 +16,7 @@ public:
 public:
 	ComPtr<ID3D11Buffer>		m_pVertexBuffer = nullptr;
 	std::vector<PNCT_VERTEX>	m_vVertexList;
-	ComPtr<ID3D11Buffer>		m_pVertexIWBubber = nullptr;
+	ComPtr<ID3D11Buffer>		m_pVertexIWBuffer = nullptr;
 	std::vector<IW_VERTEX>		m_vIWList;
 
 	ComPtr<ID3D11Buffer>		m_pIndexBuffer = nullptr;

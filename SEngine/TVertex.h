@@ -33,8 +33,9 @@ struct PNCT_VERTEX
 };
 struct IW_VERTEX
 {
-	float	w[4];// W0, fW1, fW2, fNumWeight;
 	float	i[4];// I0, I1, I2, I3
+	float	w[4];// W0, fW1, fW2, fNumWeight;
+
 	IW_VERTEX()
 	{
 		i[3] = i[2] = i[1] = i[0] = 0.0f;

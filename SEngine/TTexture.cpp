@@ -17,7 +17,7 @@ bool		TTexture::Load(std::wstring filename)
 		if (FAILED(hr))
 		{
 			//tga format    directx tk -> directx tex 
-			DX_CHECK(hr, _T(__FUNCTION__));
+			//DX_CHECK(hr, _T(__FUNCTION__));
 			return false;
 		}		
 	}	
