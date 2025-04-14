@@ -20,6 +20,7 @@ class TTInputLayoutManager
 {
 public:
 	static TInputLayout* g_pInputLayout;
+	static TInputLayout* g_pInputLayoutIW;
 	// ΩÃ±€≈Ê ∆–≈œ
 	static TTInputLayoutManager& GetInstance()
 	{

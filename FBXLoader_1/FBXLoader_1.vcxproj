@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\data\Shader\stdShader.h" />
     <ClInclude Include="Sample.h" />
     <ClInclude Include="SFbxImporter.h" />
   </ItemGroup>
@@ -32,6 +33,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\..\data\Shader\Character.txt" />
     <Text Include="..\..\data\Shader\object.txt" />
     <Text Include="..\..\data\Shader\pnct.txt" />
     <Text Include="..\..\data\Shader\sky.txt" />

@@ -37,6 +37,7 @@ void Sample::Init()
 			// 몇개의 오브젝트가 있느냐? 하나의 FBX파일에 여러개의 MESH가 있을수 있으므로 설정.
 			for (int iMesh = 0; iMesh < m_FbxObjs[iObj]->GetMesh()->m_Childs.size(); iMesh++)
 			{
+				m_FbxObjs[iObj]->m_CurrentAnimMatrix.resize(m_FbxObjs[iObj]->GetMesh()->m_Childs.size());
 				auto child = m_FbxObjs[iObj]->GetMesh()->m_Childs[iMesh];
 				if (child->m_SubChilds.size() == 0)
 				{
@@ -76,7 +77,7 @@ void Sample::Init()
 						if (child->m_csTextures[iSubMaterial].empty() == false)
 						{
 							texPath += child->m_csTextures[iSubMaterial];
-							pMaterialPlane->Load(L"../../data/shader/object.txt", texPath);
+							pMaterialPlane->Load(L"../../data/shader/Character.txt", texPath);
 							sub->SetMaterial(pMaterialPlane);
 						}
 					}

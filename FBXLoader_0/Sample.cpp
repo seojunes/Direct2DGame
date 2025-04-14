@@ -26,6 +26,7 @@ void Sample::Init()
 			// 몇개의 오브젝트가 있느냐?
 			for (int iMesh = 0; iMesh < m_FbxObjs[iObj]->GetMesh()->m_Childs.size(); iMesh++)
 			{
+				m_FbxObjs[iObj]->m_CurrentAnimMatrix.resize(m_FbxObjs[iObj]->GetMesh()->m_Childs.size());
 				auto child = m_FbxObjs[iObj]->GetMesh()->m_Childs[iMesh];
 				if (child->m_SubChilds.size() == 0)
 				{
@@ -85,7 +86,7 @@ void Sample::Tick()
 	{
 		//obj->m_vPosition = { -200.0f + 100.0f * index++,0,0 };
 		obj->m_vPosition = { 10 , 10 , 10 };
-		obj->m_vRotation.y = g_fGT;
+		//obj->m_vRotation.y = g_fGT;
 		obj->Tick();
 	}
 }

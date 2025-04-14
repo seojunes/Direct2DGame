@@ -1807,9 +1807,9 @@ namespace T
 // Support for TMath and Standard C++ Library containers
 namespace std
 {
-	template<> struct less<TBASIS_EX::TRectangle>
+	template<> struct less<T::TRectangle>
 	{
-		bool operator()(const TBASIS_EX::TRectangle& r1, const TBASIS_EX::TRectangle& r2) const
+		bool operator()(const T::TRectangle& r1, const T::TRectangle& r2) const
 		{
 			return ((r1.x < r2.x)
 				|| ((r1.x == r2.x) && (r1.y < r2.y))
@@ -1818,17 +1818,17 @@ namespace std
 		}
 	};
 
-	template<> struct less<TBASIS_EX::TVector2>
+	template<> struct less<T::TVector2>
 	{
-		bool operator()(const TBASIS_EX::TVector2& V1, const TBASIS_EX::TVector2& V2) const
+		bool operator()(const T::TVector2& V1, const T::TVector2& V2) const
 		{
 			return ((V1.x < V2.x) || ((V1.x == V2.x) && (V1.y < V2.y)));
 		}
 	};
 
-	template<> struct less<TBASIS_EX::TVector3>
+	template<> struct less<T::TVector3>
 	{
-		bool operator()(const TBASIS_EX::TVector3& V1, const TBASIS_EX::TVector3& V2) const
+		bool operator()(const T::TVector3& V1, const T::TVector3& V2) const
 		{
 			return ((V1.x < V2.x)
 				|| ((V1.x == V2.x) && (V1.y < V2.y))
@@ -1836,9 +1836,9 @@ namespace std
 		}
 	};
 
-	template<> struct less<TBASIS_EX::TVector4>
+	template<> struct less<T::TVector4>
 	{
-		bool operator()(const TBASIS_EX::TVector4& V1, const TBASIS_EX::TVector4& V2) const
+		bool operator()(const T::TVector4& V1, const T::TVector4& V2) const
 		{
 			return ((V1.x < V2.x)
 				|| ((V1.x == V2.x) && (V1.y < V2.y))
@@ -1847,9 +1847,9 @@ namespace std
 		}
 	};
 
-	template<> struct less<TBASIS_EX::TMatrix>
+	template<> struct less<T::TMatrix>
 	{
-		bool operator()(const TBASIS_EX::TMatrix& M1, const TBASIS_EX::TMatrix& M2) const
+		bool operator()(const T::TMatrix& M1, const T::TMatrix& M2) const
 		{
 			if (M1._11 != M2._11) return M1._11 < M2._11;
 			if (M1._12 != M2._12) return M1._12 < M2._12;
@@ -1872,9 +1872,9 @@ namespace std
 		}
 	};
 
-	template<> struct less<TBASIS_EX::TPlane>
+	template<> struct less<T::TPlane>
 	{
-		bool operator()(const TBASIS_EX::TPlane& P1, const TBASIS_EX::TPlane& P2) const
+		bool operator()(const T::TPlane& P1, const T::TPlane& P2) const
 		{
 			return ((P1.x < P2.x)
 				|| ((P1.x == P2.x) && (P1.y < P2.y))
@@ -1883,9 +1883,9 @@ namespace std
 		}
 	};
 
-	template<> struct less<TBASIS_EX::TQuaternion>
+	template<> struct less<T::TQuaternion>
 	{
-		bool operator()(const TBASIS_EX::TQuaternion& Q1, const TBASIS_EX::TQuaternion& Q2) const
+		bool operator()(const T::TQuaternion& Q1, const T::TQuaternion& Q2) const
 		{
 			return ((Q1.x < Q2.x)
 				|| ((Q1.x == Q2.x) && (Q1.y < Q2.y))
@@ -1894,9 +1894,9 @@ namespace std
 		}
 	};
 
-	template<> struct less<TBASIS_EX::TColor>
+	template<> struct less<T::TColor>
 	{
-		bool operator()(const TBASIS_EX::TColor& C1, const TBASIS_EX::TColor& C2) const
+		bool operator()(const T::TColor& C1, const T::TColor& C2) const
 		{
 			return ((C1.x < C2.x)
 				|| ((C1.x == C2.x) && (C1.y < C2.y))
@@ -1905,9 +1905,9 @@ namespace std
 		}
 	};
 
-	template<> struct less<TBASIS_EX::TRay>
+	template<> struct less<T::TRay>
 	{
-		bool operator()(const TBASIS_EX::TRay& R1, const TBASIS_EX::TRay& R2) const
+		bool operator()(const T::TRay& R1, const T::TRay& R2) const
 		{
 			if (R1.position.x != R2.position.x) return R1.position.x < R2.position.x;
 			if (R1.position.y != R2.position.y) return R1.position.y < R2.position.y;
@@ -1921,9 +1921,9 @@ namespace std
 		}
 	};
 
-	template<> struct less<TBASIS_EX::TViewport>
+	template<> struct less<T::TViewport>
 	{
-		bool operator()(const TBASIS_EX::TViewport& vp1, const TBASIS_EX::TViewport& vp2) const
+		bool operator()(const T::TViewport& vp1, const T::TViewport& vp2) const
 		{
 			if (vp1.x != vp2.x) return (vp1.x < vp2.x);
 			if (vp1.y != vp2.y) return (vp1.y < vp2.y);
@@ -1940,4 +1940,4 @@ namespace std
 
 
 };
-//using namespace TBASIS_EX;
+//using namespace T;

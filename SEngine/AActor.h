@@ -9,10 +9,17 @@ struct cbData
 	TMatrix  matWorld;
 	TMatrix  matView;
 	TMatrix  matProj;
+	TVector4 vData;
 };
+struct cbAnimData
+{
+	TMatrix matBone[250];
+};
+
 class AActor : public UObject
 {
 public:
+	std::vector<TMatrix>	m_CurrentAnimMatrix;
 	USceneComponent* RootComponent;
 	//UInputComponent* InputComponent;
 	//std::list<UActorComponent*> m_pReplicatedComponents;
@@ -27,10 +34,12 @@ public:
 	TMatrix m_matTrans;
 	TMatrix m_matWorld;
 	cbData  m_cbData;
+	cbAnimData m_cbAnimData;
 	float   m_fFrame = 0.0f;				// 시간계산을 해주기 위해서 실수값으로 초기화 
 	bool    m_bInc = true;
 	shared_ptr<UStaticMeshComponent> Mesh;
 	ComPtr<ID3D11Buffer>  m_pConstantBuffer = nullptr;
+	ComPtr<ID3D11Buffer>  m_pCurrentAnimationCB = nullptr;
 public:
 	TVector3 m_vScale;
 	TVector3 m_vRotation;// pitch, yaw, roll
