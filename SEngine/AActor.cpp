@@ -54,7 +54,7 @@ void AActor::Tick()
 	{
 		/*m_fFrame += g_fSPF * 30 * 1.0f;
 		if (m_fFrame >= 50) m_fFrame = 0;*/
-		if (m_bInc)
+		/*if (m_bInc)
 		{
 			m_fFrame += g_fSPF * 30 * 1.0f;
 		}
@@ -70,6 +70,25 @@ void AActor::Tick()
 		else if (m_fFrame <= 0)
 		{
 			m_bInc = true;
+		}*/
+		float fSpeed = g_fSPF * 30.0f;
+		if (m_bInc)
+		{
+			m_fFrame += fSpeed;
+			if (m_fFrame >= 50.0f)
+			{
+				m_fFrame = 50.0f;
+				m_bInc = false;
+			}
+		}
+		else
+		{
+			m_fFrame -= fSpeed;
+			if (m_fFrame <= 0.0f)
+			{
+				m_fFrame = 0.0f;
+				m_bInc = true;
+			}
 		}
 		for (int iChild = 0; iChild < Mesh->m_Childs.size(); iChild++)
 		{

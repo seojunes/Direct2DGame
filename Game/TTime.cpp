@@ -13,7 +13,13 @@ void    TTime::Frame()
 	m_EndClock = system_clock::now();
     duration<float> sec = m_EndClock - m_StartClock;
     //microseconds sec = duration_cast<microseconds>(durationClock);
-    g_fSPF = m_fSecondPerFrame = sec.count();
+    //g_fSPF = m_fSecondPerFrame = sec.count();
+    float fSPF = sec.count();
+    if (fSPF > 0.05f || fSPF < 0.0f)
+    {
+        fSPF = 0.016f; // 60fps 고정 대체
+    }
+    g_fSPF = m_fSecondPerFrame = fSPF;
     g_fGT  = m_fGameTimer += m_fSecondPerFrame;
     m_fTmpTimer += m_fSecondPerFrame;    
     if (m_fTmpTimer > 1.0)
