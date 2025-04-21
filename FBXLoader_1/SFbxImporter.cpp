@@ -28,8 +28,18 @@ bool    SFbxImporter::ParseMeshSkinning(FbxMesh* fbxmesh, UPrimitiveComponent* a
 				iWeightIndex = iter->second;
 			}
 
-			// 본 오브젝트의 좌표계 변환 행렬.
-			
+			/// 본 오브젝트의 좌표계 변환 행렬
+			FbxAMatrix matXBindPosLink;
+			FbxAMatrix matReferenceGlobalInitPosition;
+			pCluster->GetTransformLinkMatrix(matXBindPosLink);
+			pCluster->GetTransformMatrix(matReferenceGlobalInitPosition);
+			FbxAMatrix matWorldBindPose = matReferenceGlobalInitPosition.Inverse() * matXBindPosLink;
+			FbxAMatrix matBindPose = matWorldBindPose.Inverse(); // 본의 로컬 좌표계로 변환
+			TMatrix mat = DxConvertMatrix(ConvertAMatrix(matBindPose));
+			actor->m_matBindPose.emplace_back(mat);
+			actor->m_matID.emplace_back(iWeightIndex);
+			actor->m_szNames.emplace_back(to_mw(pLinkNode->GetName()));
+
 
 			int iClusterSize = pCluster->GetControlPointIndicesCount();
 			int* pFbxNodeIndex = pCluster->GetControlPointIndices();
@@ -77,6 +87,11 @@ TMatrix     SFbxImporter::ConvertAMatrix(FbxAMatrix& m)
 	return mat;
 }
 
+void SFbxImporter::Reset()
+{
+	Destroy();
+}
+
 // FBX파일을 로드하고, 씬 그래프와 메시, 애니메이션 등을 처리해서 
 // AActor 객체에 설정해주는 전체 파이프라인의 핵심
 // 전체 역할 요약 : FBX Manager 생성 -> 파일 Import -> 씬 전처리 -> 메시/애니메이션 파싱 -> AActor에 세팅
@@ -121,6 +136,8 @@ bool  SFbxImporter::Load(std::string loadfile, AActor* actor)
 	actor->SetMesh(mesh);*/
 	//메시 및 애니메이션 파싱
 	auto mesh = std::make_shared<UStaticMeshComponent>();
+	// 케릭터 당 m_matBindPose 행렬리스트
+	mesh->m_matBindPose.resize(m_FbxNodes.size());
 	for (int iNode = 0; iNode < m_FbxNodes.size(); iNode++)
 	{
 		auto node = m_FbxNodes[iNode];
@@ -131,11 +148,16 @@ bool  SFbxImporter::Load(std::string loadfile, AActor* actor)
 		{
 			child->m_bRenderMesh = true;
 			auto mesh = node->m_pFbxNode->GetMesh();
+			//메쉬 당 m_matBindPose 행렬리스트.
 			ParseMesh(mesh, child.get());
 		}
+		child->m_szName = node->m_szName;
+
 		GetNodeAnimation(node->m_pFbxNode, child.get());
 		mesh->m_Childs.emplace_back(child);
 	}
+	mesh->m_FbxNodeNames = m_FbxNodeNames;
+	mesh->m_FbxNameNodes = m_FbxNameNodes;
 	actor->SetMesh(mesh);
 
 	Destroy();
@@ -201,7 +223,6 @@ void SFbxImporter::ParseMesh(FbxMesh* fbxmesh, UPrimitiveComponent* actor)
 
 	/// texture filename 추출 + 서브 메시 구조 준비.
 	int iNumMtl = pNode->GetMaterialCount();
-	//  Material이 여러개면 서브 메시 생성.
 	if (iNumMtl > 1)
 	{
 		actor->m_SubChilds.resize(iNumMtl);
@@ -313,16 +334,23 @@ void SFbxImporter::ParseMesh(FbxMesh* fbxmesh, UPrimitiveComponent* actor)
 					iSubMateriaIndex = GetSubMaterialIndex(iPoly, MaterialSet[0]);
 				}
 				IW_VERTEX iw;
-				iw.i[0] = actor->m_iIndex;
-				iw.w[0] = 1.0f;
+				iw.i1[0] = actor->m_iIndex;
+				iw.w1[0] = 1.0f;
 				if (bSkinned)
 				{
 					TVertexWeight& weight = m_VertexWeights[CornerIndex[index]];
-					for (int i = 0; i < weight.m_iIndex.size(); i++)
+					for (int i = 0; i < weight.m_iCounter; i++)
 					{
-						if (i >= 4) break;
-						iw.i[i] = weight.m_iIndex[i];
-						iw.w[i] = weight.m_fWeight[i];
+						if (i >= 4)
+						{
+							iw.i2[i - 4] = weight.m_iIndex[i];
+							iw.w2[i - 4] = weight.m_fWeight[i];
+						}
+						else
+						{
+							iw.i1[i] = weight.m_iIndex[i];
+							iw.w1[i] = weight.m_fWeight[i];
+						}
 					}
 				}
 				if (actor->m_SubChilds.size() <= 0)
@@ -340,7 +368,7 @@ void SFbxImporter::ParseMesh(FbxMesh* fbxmesh, UPrimitiveComponent* actor)
 
 
 		iBasePolyIndex += iPolySize;
-	}	
+	}
 }
 // 재귀함수로 모든 MESH를 찾아서 FbxMeshs에 저장함.
 void  SFbxImporter::PreProcess(sFbxTree& pParentNode)
@@ -357,12 +385,38 @@ void  SFbxImporter::PreProcess(sFbxTree& pParentNode)
 	}
 	m_FbxNodes.emplace_back(pParentNode);
 	m_FbxNodeNames.insert(std::make_pair(to_mw(node->GetName()),
-						  m_FbxNodeNames.size()));
+		m_FbxNodeNames.size()));
+	m_FbxNameNodes.insert(std::make_pair(m_FbxNodeNames.size() - 1,
+		to_mw(node->GetName())));
 
 	int iNumChild = node->GetChildCount();
 	for (int iNode = 0; iNode < iNumChild; iNode++)
 	{
 		FbxNode* pChild = node->GetChild(iNode);
+		// 헬퍼오브젝트 + 지오메트리 오브젝트
+	//if (pChild->GetNodeAttribute() != nullptr)
+	//{
+	//	FbxNodeAttribute::EType type = pChild->GetNodeAttribute()->GetAttributeType();
+	//	if (/*type == FbxNodeAttribute::eMesh ||*/
+	//		type == FbxNodeAttribute::eSkeleton 
+	//		/*type == FbxNodeAttribute::eNull*/)
+	//	{
+	//		auto tFbxChildTree = std::make_shared<TFbxNodeTree>(pChild);
+	//		tFbxChildTree->m_szName = to_mw(pChild->GetName());
+	//		tFbxChildTree->m_pFbxParentNode = node;
+	//		pParentNode->m_Childs.emplace_back(tFbxChildTree);
+	//		tFbxChildTree->m_szParentName = pParentNode->m_szName;
+	//		PreProcess(tFbxChildTree);
+	//	}
+	//}else
+	//{
+	//	auto tFbxChildTree = std::make_shared<TFbxNodeTree>(pChild);
+	//	tFbxChildTree->m_szName = to_mw(pChild->GetName());
+	//	tFbxChildTree->m_pFbxParentNode = node;
+	//	pParentNode->m_Childs.emplace_back(tFbxChildTree);
+	//	tFbxChildTree->m_szParentName = pParentNode->m_szName;
+	//	PreProcess(tFbxChildTree);			
+	//}
 		auto sFbxChildTree = std::make_shared<SFbxNodeTree>(pChild);
 		sFbxChildTree->m_szName = to_mw(pChild->GetName());
 		sFbxChildTree->m_pFbxParentNode = node;
@@ -384,6 +438,8 @@ void SFbxImporter::Destroy()
 
 	m_FbxMeshs.clear();
 	m_FbxNodes.clear();
+	m_matBindPose.clear();
+	m_FbxNodeNames.clear();
 }
 // FBX Mesh 객체에서 텍스처좌표 (UV정보)를 추출하는 함수
 void SFbxImporter::ReadTextureCoord(FbxMesh* pFbxMesh, FbxLayerElementUV* pUVSet,
@@ -391,7 +447,7 @@ void SFbxImporter::ReadTextureCoord(FbxMesh* pFbxMesh, FbxLayerElementUV* pUVSet
 {
 	//UV set 유효성 검사.
 	FbxLayerElementUV* pFbxLayerElementUV = pUVSet;
-	if (pFbxLayerElementUV == nullptr) 
+	if (pFbxLayerElementUV == nullptr)
 	{
 		return;
 	}

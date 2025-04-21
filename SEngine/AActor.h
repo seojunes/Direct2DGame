@@ -40,6 +40,10 @@ public:
 	float   m_fFrame = 0.0f;				// 시간계산을 해주기 위해서 실수값으로 초기화 
 	bool    m_bInc = true;
 	shared_ptr<UStaticMeshComponent> Mesh;
+	AActor* m_pCurrentAnimation = nullptr;
+	std::shared_ptr<AActor>				  Idle;
+	std::shared_ptr<AActor>				  run;
+	std::shared_ptr<AActor>				  walk;
 	ComPtr<ID3D11Buffer>  m_pConstantBuffer = nullptr;
 	ComPtr<ID3D11Buffer>  m_pCurrentAnimationCB = nullptr;
 public:

@@ -14,13 +14,10 @@ void Sample::Init()
 	std::vector<std::string> list =
 	{
 		{"../../data/fbx/SKM_Manny.fbx"},
-		//{"../../data/fbx/MultiCamera/MultiCameras.fbx"},
-		{"../../data/fbx/Turret_Deploy1.fbx"},
-		/*{"../../data/fbx/box.fbx"},
-		{"../../data/fbx/SM_Barrel.fbx"},
-		{"../../data/fbx/sphereBox.fbx"},
-		{"../../data/fbx/MultiCamera/MultiCameras.fbx"},
-		{"../../data/fbx/ship/ship.fbx"},*/
+		{"../../data/fbx/MM_Idle.fbx"},
+		/*{"../../data/fbx/MM_run.fbx"},
+		{"../../data/fbx/MM_walk.fbx"},
+		{"../../data/fbx/Man.fbx"},	*/
 	};
 
 	D3D11_INPUT_ELEMENT_DESC layoutiw[] =
@@ -31,8 +28,10 @@ void Sample::Init()
 		{ "COLOR",0, DXGI_FORMAT_R32G32B32A32_FLOAT,	0, 24,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "TEX",  0, DXGI_FORMAT_R32G32_FLOAT,			0, 40,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
 
-		{ "INDEX", 0, DXGI_FORMAT_R32G32B32A32_FLOAT,	1, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "WEIGHT",0, DXGI_FORMAT_R32G32B32A32_FLOAT,	1, 16,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD",0, DXGI_FORMAT_R32G32B32A32_FLOAT,	1, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD",1, DXGI_FORMAT_R32G32B32A32_FLOAT,	1, 16,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD",2, DXGI_FORMAT_R32G32B32A32_FLOAT,	1, 32,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD",3, DXGI_FORMAT_R32G32B32A32_FLOAT,	1, 48,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	UINT iNumCnt = sizeof(layoutiw) / sizeof(layoutiw[0]);
 
@@ -45,6 +44,7 @@ void Sample::Init()
 
 		//m_FbxImporter.Load 여기를 통해서 FBX파일을 읽고 파싱하여 AActor객체에 넣어준다.
 		auto fbxobj = m_FbxObjs[iObj].get();
+		m_FbxImporter.Reset();
 		if (m_FbxImporter.Load(list[iObj], fbxobj))
 		{
 			// 몇개의 오브젝트가 있느냐? 하나의 FBX파일에 여러개의 MESH가 있을수 있으므로 설정.
@@ -91,11 +91,13 @@ void Sample::Init()
 								continue;
 							}
 
+							
+							/* 디버그 중복 삭제
 							sub->m_vIWList.resize(sub->m_vVertexList.size());
-						    /*for (int i = 0; i < sub->m_vVertexList.size(); i++)
+						    for (int i = 0; i < sub->m_vVertexList.size(); i++)
 							{
-								sub->m_vIWList[i].i[0] = iMesh;
-								sub->m_vIWList[i].w[0] = 1.0f;
+								sub->m_vIWList[i].i1[0] = iMesh;
+								sub->m_vIWList[i].w1[0] = 1.0f;
 							}*/
 							sub->CreateVertexBuffer();
 							sub->CreateIndexBuffer();
@@ -120,6 +122,7 @@ void Sample::Init()
 			}
 		}
 	}
+	m_FbxObjs[0]->m_pCurrentAnimation = m_FbxObjs[1].get();;
 	//g_pCamera->m_fPitch = T_Pi * 0.25f;
 	g_pCamera->CreateViewMatrix(
 		{ 0, 0, -100.0f },
@@ -131,20 +134,22 @@ void Sample::Init()
 void Sample::Tick()
 {
 	int index = 0;
-	for (auto obj : m_FbxObjs)
-	{
-		//obj->m_vPosition = { -200.0f + 100.0f * index++,0,0 };
-		obj->m_vPosition = { 10 , 10 , 10 };
-		//obj->m_vRotation.y = g_fGT;
-		obj->Tick();
-	}
+	m_FbxObjs[0]->Tick();
+	//for (auto obj : m_FbxObjs)
+	//{
+	//	//obj->m_vPosition = { -200.0f + 100.0f * index++,0,0 };
+	//	obj->m_vPosition = { 10 , 10 , 10 };
+	//	//obj->m_vRotation.y = g_fGT;
+	//	obj->Tick();
+	//}
 }
-void Sample::Render() {
-
-	for (auto obj : m_FbxObjs)
+void Sample::Render() 
+{
+	m_FbxObjs[0]->Render();
+	/*for (auto obj : m_FbxObjs)
 	{
 		obj->Render();
-	}
+	}*/
 
 }
 void Sample::Destroy()

@@ -49,7 +49,7 @@ void AActor::Init()
 void AActor::Tick()
 {
 	if (Mesh != nullptr) Mesh->Tick();
-	if (Mesh != nullptr)
+	/*if (Mesh != nullptr)
 	{
 		{
 			m_fFrame += (m_bInc ? 1.0f : -1.0f) * g_fSPF * 30.0f;
@@ -65,7 +65,7 @@ void AActor::Tick()
 		}
 		TDevice::m_pd3dContext->UpdateSubresource(
 			m_pCurrentAnimationCB.Get(), 0, NULL, &m_cbAnimData, 0, 0);
-	}
+	}*/
 }
 void AActor::PreRender()
 {
@@ -82,11 +82,20 @@ void AActor::Render()
 }
 void AActor::PostRender()
 {
-	// 0번 레지스터에 셰이더상수 m_pConstantBuffer를 연결
-	TDevice::m_pd3dContext->VSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
-	TDevice::m_pd3dContext->VSSetConstantBuffers(2, 1, m_pCurrentAnimationCB.GetAddressOf());
+	
 	if (Mesh != nullptr)
 	{
+		m_fFrame += g_fSPF * 30 * 1.0f;
+		//if (m_fFrame >= m_iEndFrame) m_fFrame = m_iStartFrame;
+		if (m_pCurrentAnimation != nullptr)
+		{
+			if (m_fFrame >= m_pCurrentAnimation->m_iEndFrame) m_fFrame = m_iStartFrame;
+		}
+		else
+		{
+			if (m_fFrame >= m_iEndFrame) m_fFrame = m_iStartFrame;
+		}
+
 		//for (auto child : Mesh->m_Childs)
 		for (int iChild = 0; iChild < Mesh->m_Childs.size(); iChild++)
 		{
@@ -96,10 +105,42 @@ void AActor::PostRender()
 			auto mesh = Mesh->m_Childs[iChild];
 			if (mesh->m_bRenderMesh)
 			{
-				//TMatrix world = m_CurrentAnimMatrix[iChild] * m_matWorld;
+				for (int iBone = 0; iBone < Mesh->m_Childs[iChild]->m_matID.size(); iBone++)
+				{
+					UINT iGIndex = Mesh->m_Childs[iChild]->m_matID[iBone];
+					TMatrix matBone = Mesh->m_Childs[iChild]->m_matBindPose[iBone];
+					auto nameiter = Mesh->m_Childs[iChild]->m_szNames[iBone];
+					TMatrix matAnim = Mesh->m_Childs[iGIndex]->m_AnimList[0];
+
+					if (m_pCurrentAnimation != nullptr)
+					{
+						auto iter = m_pCurrentAnimation->Mesh->m_FbxNodeNames.find(nameiter);//90
+						if (iter != m_pCurrentAnimation->Mesh->m_FbxNodeNames.end())
+						{
+							auto animIndex = iter->second;
+							auto name1 = m_pCurrentAnimation->Mesh->m_Childs[animIndex]->m_szName;
+							auto name2 = Mesh->m_Childs[iGIndex]->m_szName;
+							auto name3 = nameiter;
+							matAnim = m_pCurrentAnimation->Mesh->m_Childs[animIndex]->m_AnimList[(int)m_fFrame];
+
+						}
+					}
+					m_CurrentAnimMatrix[iGIndex] =
+						matBone *   /// 본 로칼 좌표계로 변환
+						matAnim;// 에니메이션
+					m_cbAnimData.matBone[iGIndex] = TMatrix::Transpose(m_CurrentAnimMatrix[iGIndex]);
+				}
+
+				TDevice::m_pd3dContext->UpdateSubresource(m_pCurrentAnimationCB.Get(), 0, NULL, &m_cbAnimData, 0, 0);
 				m_cbData.matWorld = TMatrix::Transpose(m_matWorld);
-				TDevice::m_pd3dContext->UpdateSubresource(m_pConstantBuffer.Get(), 0, NULL, &m_cbData, 0, 0);
+				TDevice::m_pd3dContext->UpdateSubresource(m_pConstantBuffer.Get(), 0,
+				
+					NULL, &m_cbData, 0, 0);
+				// 0번 레지스터에 셰이더상수 m_pConstantBuffer를 연결
+				TDevice::m_pd3dContext->VSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
+				TDevice::m_pd3dContext->VSSetConstantBuffers(2, 1, m_pCurrentAnimationCB.GetAddressOf());
 				mesh->Render();
+				break;
 			}
 		}
 		//Mesh->Render();

@@ -104,10 +104,10 @@ void TCamera::Tick()
 	//if (g_GameKey.dw5key == KEY_HOLD)      BackUp();
 	if (g_nMouseWheelDelta != 0)
 	{
-		wchar_t szBuffer[128];
+		/*wchar_t szBuffer[128];
 		swprintf_s(szBuffer, L"[WheelDelta] %d\n", g_nMouseWheelDelta);
 		OutputDebugString(szBuffer);
-		//fDistance = ((g_nMouseWheelDelta) > 0) ? (1.0f) : (-1.0f);
+		*///fDistance = ((g_nMouseWheelDelta) > 0) ? (1.0f) : (-1.0f);
 		fDistance = static_cast<float>(g_nMouseWheelDelta)/120;
 		fDistance = fDistance * g_fSPF * 300.0f;
 	}

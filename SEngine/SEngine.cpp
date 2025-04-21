@@ -183,7 +183,7 @@ bool SEngine::GameRun()
         {
             CoreFrame();
             CoreRender();       
-            //g_nMouseWheelDelta = 0;
+            g_nMouseWheelDelta = 0;
         }  
     }	
     CoreRelease();
