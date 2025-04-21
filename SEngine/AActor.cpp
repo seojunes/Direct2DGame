@@ -48,48 +48,16 @@ void AActor::Init()
 }
 void AActor::Tick()
 {
-	//UpdateVector();
 	if (Mesh != nullptr) Mesh->Tick();
 	if (Mesh != nullptr)
 	{
-		/*m_fFrame += g_fSPF * 30 * 1.0f;
-		if (m_fFrame >= 50) m_fFrame = 0;*/
-		if (m_bInc)
 		{
-			m_fFrame += g_fSPF * 30 * 1.0f;
-		}
-		else
-		{
-			m_fFrame -= g_fSPF * 30 * 1.0f;
-		}
+			m_fFrame += (m_bInc ? 1.0f : -1.0f) * g_fSPF * 30.0f;
 
-		if (m_fFrame >= m_iEndFrame)
-		{
-			m_bInc = false;
+			if (m_fFrame >= m_iEndFrame)   m_bInc = false;
+			else if (m_fFrame <= m_iStartFrame) m_bInc = true;
 		}
-		else if (m_fFrame <= m_iStartFrame)
-		{
-			m_bInc = true;
-		}
-		/*float fSpeed = g_fSPF * 30.0f;
-		if (m_bInc)
-		{
-			m_fFrame += fSpeed;
-			if (m_fFrame >= 50.0f)
-			{
-				m_fFrame = 50.0f;
-				m_bInc = false;
-			}
-		}
-		else
-		{
-			m_fFrame -= fSpeed;
-			if (m_fFrame <= 0.0f)
-			{
-				m_fFrame = 0.0f;
-				m_bInc = true;
-			}
-		}*/
+		
 		for (int iChild = 0; iChild < Mesh->m_Childs.size(); iChild++)
 		{
 			m_CurrentAnimMatrix[iChild] = Mesh->m_Childs[iChild]->m_AnimList[(int)m_fFrame];
@@ -97,7 +65,6 @@ void AActor::Tick()
 		}
 		TDevice::m_pd3dContext->UpdateSubresource(
 			m_pCurrentAnimationCB.Get(), 0, NULL, &m_cbAnimData, 0, 0);
-
 	}
 }
 void AActor::PreRender()

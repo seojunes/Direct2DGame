@@ -3,6 +3,7 @@
 bool    SFbxImporter::ParseMeshSkinning(FbxMesh* fbxmesh, UPrimitiveComponent* actor)
 {
 	m_VertexWeights.clear();
+	//스키닝인지 아닌지 체크.
 	int iDeformerCount = fbxmesh->GetDeformerCount(FbxDeformer::eSkin);
 	if (iDeformerCount <= 0) return false;
 	// 중요 : 메쉬에 정점 개수와 iVretexCount는 같다.
@@ -26,6 +27,10 @@ bool    SFbxImporter::ParseMeshSkinning(FbxMesh* fbxmesh, UPrimitiveComponent* a
 			{
 				iWeightIndex = iter->second;
 			}
+
+			// 본 오브젝트의 좌표계 변환 행렬.
+			
+
 			int iClusterSize = pCluster->GetControlPointIndicesCount();
 			int* pFbxNodeIndex = pCluster->GetControlPointIndices();
 			double* pFbxNodeWegiht = pCluster->GetControlPointWeights();
@@ -352,7 +357,7 @@ void  SFbxImporter::PreProcess(sFbxTree& pParentNode)
 	}
 	m_FbxNodes.emplace_back(pParentNode);
 	m_FbxNodeNames.insert(std::make_pair(to_mw(node->GetName()),
-		m_FbxNodeNames.size()));
+						  m_FbxNodeNames.size()));
 
 	int iNumChild = node->GetChildCount();
 	for (int iNode = 0; iNode < iNumChild; iNode++)

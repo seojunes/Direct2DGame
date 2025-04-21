@@ -1,6 +1,5 @@
 #include "UMaterial.h"
-void UMaterial::Load(std::wstring shaderfilename,
-	std::wstring texturefilename)
+void UMaterial::Load(std::wstring shaderfilename, std::wstring texturefilename)
 {
 	m_pShader = I_Shader.Load(shaderfilename);
 	m_pTexture = I_Tex.Load(texturefilename);

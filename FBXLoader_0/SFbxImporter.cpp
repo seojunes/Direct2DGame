@@ -56,7 +56,10 @@ bool  SFbxImporter::Load(std::string loadfile, AActor* actor)
 
 	// vb, ib, texture, animation
 	m_pRootNode = m_pScene->GetRootNode();			// 이 단계에서 모델을 가져옴
-	PreProcess(m_pRootNode);						// 
+	PreProcess(m_pRootNode);		
+	//
+	actor->m_iStartFrame = m_iStartFrame;
+	actor->m_iEndFrame = m_iEndFrame;
 
 	auto mesh = std::make_shared<UStaticMeshComponent>();
 	for (int iMesh = 0; iMesh < m_FbxMeshs.size(); iMesh++)

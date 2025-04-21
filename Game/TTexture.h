@@ -11,18 +11,13 @@ public:
 	ID3D11ShaderResourceView* m_pTexSRV = nullptr;
 	virtual  bool  Load(std::wstring filename);
 	virtual  void  Release();
-	TTexture(std::wstring key) : m_csName(key)
-	{
-
-	}
+	TTexture(std::wstring key) : m_csName(key) {}
 	TTexture() = default;
 };
 
 class TTextureManager
 {
 public:
-
-	// ΩÃ±€≈Ê ∆–≈œ
 	static TTextureManager& GetInstance()
 	{
 		static TTextureManager mgr;

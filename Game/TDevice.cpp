@@ -7,6 +7,7 @@ ComPtr<IDXGISwapChain>          TDevice::m_pSwapChain = nullptr;
 ComPtr<ID3D11RenderTargetView>  TDevice::m_pRTV = nullptr;
 D3D11_VIEWPORT			TDevice::m_MainVP;
 bool        TDevice::m_bWireFrame = false;
+
 bool   TDevice::CreateDevice()
 {
     D3D_FEATURE_LEVEL pFeatureLevel;

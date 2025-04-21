@@ -34,6 +34,8 @@ public:
 	std::vector<FbxNode*>  m_FbxNodes;
 	TMatrix     DxConvertMatrix(TMatrix m);
 	TMatrix     ConvertAMatrix(FbxAMatrix& m);
+	FbxLongLong m_iStartFrame = 0;
+	FbxLongLong m_iEndFrame = 0;
 public:
 	bool  Load(std::string loadfile, AActor* actor);
 	void  PreProcess(FbxNode* pNode);

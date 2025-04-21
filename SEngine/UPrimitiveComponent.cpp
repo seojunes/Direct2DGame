@@ -26,8 +26,7 @@ bool	UPrimitiveComponent::CreateVertexBuffer()
 	}
 	bd.ByteWidth = sizeof(IW_VERTEX) * m_vVertexList.size();
 	sd.pSysMem = &m_vIWList.at(0);
-	hr = TDevice::m_pd3dDevice->CreateBuffer(
-		&bd, &sd, m_pVertexIWBuffer.GetAddressOf());
+	hr = TDevice::m_pd3dDevice->CreateBuffer(&bd, &sd, m_pVertexIWBuffer.GetAddressOf());
 	if (FAILED(hr))
 	{
 		return false;

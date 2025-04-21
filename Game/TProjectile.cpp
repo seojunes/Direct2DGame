@@ -198,8 +198,6 @@ void   TProjectile::Init()
 }
 void   TProjectile::Frame(TVector2 vObjPos)
 {
-
-	
 	for (auto iter = std::begin(m_datalist); iter != m_datalist.end();)
 	{
 		TProjectileEffect* pObj = (TProjectileEffect*)iter->get();

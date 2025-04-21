@@ -39,7 +39,7 @@ void Sample::Init()
 	m_FbxObjs.resize(list.size());
 	for (int iObj = 0; iObj < list.size(); iObj++)
 	{
-		//AActor는 FX 오브젝트 하나를 표현하는 클래스(게임오브젝트 같은 역할)
+		//AActor는 FX 오브젝트 하나를 표현하는 클래스(게임오브젝트 같은 역할) 초기화 작업.
 		m_FbxObjs[iObj] = std::make_shared<AActor>();
 		m_FbxObjs[iObj]->Init();
 
@@ -92,11 +92,11 @@ void Sample::Init()
 							}
 
 							sub->m_vIWList.resize(sub->m_vVertexList.size());
-							for (int i = 0; i < sub->m_vVertexList.size(); i++)
+						    /*for (int i = 0; i < sub->m_vVertexList.size(); i++)
 							{
 								sub->m_vIWList[i].i[0] = iMesh;
 								sub->m_vIWList[i].w[0] = 1.0f;
-							}
+							}*/
 							sub->CreateVertexBuffer();
 							sub->CreateIndexBuffer();
 
@@ -110,8 +110,7 @@ void Sample::Init()
 							}
 							if (pMaterial->m_pShader)
 							{
-								pMaterial->SetInputLayout(I_InputLayout.Load(
-									pMaterial->m_pShader->m_pCode.Get(), layoutiw, iNumCnt, L"PNCT_IW"));
+								pMaterial->SetInputLayout(I_InputLayout.Load(pMaterial->m_pShader->m_pCode.Get(), layoutiw, iNumCnt, L"PNCT_IW"));
 							}
 							sub->SetMaterial(pMaterial);
 						}
