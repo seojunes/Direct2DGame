@@ -74,6 +74,7 @@ public:
 	std::vector<TMatrix>   m_matBindPose;
 	std::map<std::wstring, UINT>  m_FbxNodeNames;
 	std::map<UINT, std::wstring>  m_FbxNameNodes;
+	std::map<std::wstring, std::wstring>  m_FbxParentNameNodes;
 	//std::map<FbxNode*, UINT>  m_FbxNodes;
 
 	TMatrix     DxConvertMatrix(TMatrix m);

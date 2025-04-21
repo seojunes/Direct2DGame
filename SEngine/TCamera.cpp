@@ -84,8 +84,8 @@ void TCamera::Tick()
 {
 	float fYaw = 0;
 	float fPitch = 0;
-	fYaw = g_ptDeltaMouse.x * g_fSPF * 10.0f;
-	fPitch = g_ptDeltaMouse.y * g_fSPF * 10.0f;
+	fYaw = g_ptDeltaMouse.x * g_fSPF;
+	fPitch = g_ptDeltaMouse.y * g_fSPF;
 
 	float fDistance = 0.0f;
 	if (g_GameKey.dwWkey == KEY_HOLD)

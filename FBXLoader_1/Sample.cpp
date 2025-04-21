@@ -13,8 +13,10 @@ void Sample::Init()
 {
 	std::vector<std::string> list =
 	{
-		{"../../data/fbx/SKM_Manny.fbx"},
-		{"../../data/fbx/MM_Idle.fbx"},
+		
+		{"../../data/fbx/crow_final.fbx"},
+		//{"../../data/fbx/SKM_Manny.fbx"},
+		//{"../../data/fbx/MM_Idle.fbx"},
 		/*{"../../data/fbx/MM_run.fbx"},
 		{"../../data/fbx/MM_walk.fbx"},
 		{"../../data/fbx/Man.fbx"},	*/
@@ -62,12 +64,14 @@ void Sample::Init()
 							std::wstring texPath = L"../../data/fbx/";
 							if (child->m_csTextures.size() == 0)
 							{
-								texPath += L"kgca08.bmp";
+								texPath += L"Crow_DIFF.png";
 							}
 							else
 							{
 								texPath += child->m_csTextures[0]; // FBX에 정의된 텍스쳐.
 							}
+
+
 
 							pMaterial->Load(L"../../data/shader/Character.txt", texPath);
 							child->SetMaterial(pMaterial);
@@ -104,12 +108,16 @@ void Sample::Init()
 
 							auto pMaterial = std::make_shared<UMaterial>();
 							std::wstring texPath = L"../../data/fbx/";
-							//if (child->m_csTextures[iSubMaterial].empty() == false)
+							if (child->m_csTextures[iSubMaterial].empty() == false)
 							{
 								texPath += child->m_csTextures[iSubMaterial];
-								pMaterial->Load(L"../../data/shader/Character.txt", texPath);
-
 							}
+							else
+							{
+								if (iSubMaterial == 0) texPath += L"T_Manny_02_D.PNG";
+								else texPath += L"T_Manny_01_D.PNG";
+							}
+							pMaterial->Load(L"../../data/shader/Character.txt", texPath);
 							if (pMaterial->m_pShader)
 							{
 								pMaterial->SetInputLayout(I_InputLayout.Load(pMaterial->m_pShader->m_pCode.Get(), layoutiw, iNumCnt, L"PNCT_IW"));
@@ -122,7 +130,22 @@ void Sample::Init()
 			}
 		}
 	}
-	m_FbxObjs[0]->m_pCurrentAnimation = m_FbxObjs[1].get();;
+
+	// 애니메이션 제어.
+	
+	/*if (g_GameKey.dwLeftClick == KEY_HOLD)
+	{
+		m_FbxObjs[0]->m_pCurrentAnimation = m_FbxObjs[1].get();;
+	}
+	else if (g_GameKey.dwRightClick == KEY_HOLD)
+	{
+		m_FbxObjs[0]->m_pCurrentAnimation = m_FbxObjs[2].get();;
+	}
+	else
+	{
+		m_FbxObjs[0]->m_pCurrentAnimation = m_FbxObjs[3].get();;
+	}*/
+	
 	//g_pCamera->m_fPitch = T_Pi * 0.25f;
 	g_pCamera->CreateViewMatrix(
 		{ 0, 0, -100.0f },
