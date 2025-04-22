@@ -18,6 +18,17 @@ LRESULT TWindow::MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+    case WM_ACTIVATEAPP:
+    {
+        if (wParam == TRUE)
+        {
+            m_bActive = true;
+        }
+        else
+        {
+            m_bActive = false;
+        }
+    }
     case WM_MOUSEWHEEL:
     {
         // +120, -120 단위 노치

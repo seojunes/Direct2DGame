@@ -18,6 +18,7 @@ public:
 	DWORD    KeyCheck(DWORD dwKey);
 public:
 	virtual void    Init();		// 초기화 작업
+	virtual void	Reset();
 	virtual void    Frame();	// 계산 작업
 	virtual void    Render();	// 화며에 드로우 작업
 	virtual void    Release();	// 소멸,삭제 작업

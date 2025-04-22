@@ -146,6 +146,7 @@ void Sample::Init()
 		m_FbxObjs[0]->m_pCurrentAnimation = m_FbxObjs[3].get();;
 	}*/
 	
+	m_FbxObjs[0]->m_pCurrentAnimation = m_FbxObjs[0].get();
 	//g_pCamera->m_fPitch = T_Pi * 0.25f;
 	g_pCamera->CreateViewMatrix(
 		{ 0, 0, -100.0f },
@@ -194,4 +195,3 @@ int WINAPI wWinMain(
 	sample.SetWindow(L"test", 800, 600);
 	sample.GameRun();
 }
-

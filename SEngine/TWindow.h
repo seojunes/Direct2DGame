@@ -6,6 +6,7 @@ public:
 	HINSTANCE   m_hInstance;
 	HWND		m_hWnd;
 	bool		m_bRun = true;
+	bool		m_bActive = true;
 	POINT		m_ptClientSize;
 	RECT		m_rtWindow;
 	RECT		m_rtClient;

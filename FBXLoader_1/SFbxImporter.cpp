@@ -188,6 +188,46 @@ bool  SFbxImporter::Load(std::string loadfile, AActor* actor)
 	return true;
 }
 
+// FBX에서 노드의 애니메이션 트랜스폼 행렬을 추출해서 UPrimitiveComponent에 저장해주는 함수.
+// 노드의 각 프레임별 트랜스폼 행렬을 계싼해서 actor->m_AnimList에 프레임별 행렬을 순서대로 저장
+void        SFbxImporter::GetAnimation()
+{
+	FbxTime::SetGlobalTimeMode(FbxTime::eFrames30);
+	FbxAnimStack* stack = m_pScene->GetSrcObject<FbxAnimStack>(0);
+	if (stack == nullptr) return;
+
+	FbxString TakeName = stack->GetName();
+	FbxTakeInfo* TakeInfo = m_pScene->GetTakeInfo(TakeName);
+	FbxTimeSpan LocalTimeSpan = TakeInfo->mLocalTimeSpan;
+	FbxTime start = LocalTimeSpan.GetStart();
+	FbxTime end = LocalTimeSpan.GetStop();
+	FbxTime Duration = LocalTimeSpan.GetDuration();
+
+	FbxTime::EMode TimeMode = FbxTime::GetGlobalTimeMode();
+	m_iStartFrame = start.GetFrameCount(TimeMode);
+	m_iEndFrame = end.GetFrameCount(TimeMode);
+}
+
+void        SFbxImporter::GetNodeAnimation(FbxNode* node, UPrimitiveComponent* actor)
+{
+	FbxTime::EMode TimeMode = FbxTime::GetGlobalTimeMode();
+	FbxTime time;
+	for (FbxLongLong t = m_iStartFrame; t <= m_iEndFrame; t++)
+	{
+		time.SetFrame(t, TimeMode);
+		FbxAMatrix matGlobal = node->EvaluateGlobalTransform(time);
+		FbxNode* pParent = node->GetParent();
+		FbxAMatrix matParent;
+		if (pParent)
+		{
+			matParent = pParent->EvaluateGlobalTransform(time);
+		}
+		FbxAMatrix matLocal = matParent.Inverse() * matGlobal;
+		FbxAMatrix matWorld = matParent * matLocal;
+		TMatrix mat = DxConvertMatrix(ConvertAMatrix(matLocal));;
+		actor->m_AnimList.push_back(mat);
+	}
+}
 
 /// <summary>
 /*[1] 기하학적 변환 행렬 구함
@@ -408,10 +448,8 @@ void  SFbxImporter::PreProcess(sFbxTree& pParentNode)
 		pParentNode->m_bMesh = true;
 	}
 	m_FbxNodes.emplace_back(pParentNode);
-	m_FbxNodeNames.insert(std::make_pair(to_mw(node->GetName()),
-		m_FbxNodeNames.size()));
-	m_FbxNameNodes.insert(std::make_pair(m_FbxNodeNames.size() - 1,
-		to_mw(node->GetName())));
+	m_FbxNodeNames.insert(std::make_pair(to_mw(node->GetName()), m_FbxNodeNames.size()));
+	m_FbxNameNodes.insert(std::make_pair(m_FbxNodeNames.size() - 1,	to_mw(node->GetName())));
 	m_FbxParentNameNodes.insert(std::make_pair(to_mw(node->GetName()), pParentNode->m_szParentName));
 	int iNumChild = node->GetChildCount();
 	for (int iNode = 0; iNode < iNumChild; iNode++)
@@ -467,8 +505,7 @@ void SFbxImporter::Destroy()
 	m_FbxNameNodes.clear();
 }
 // FBX Mesh 객체에서 텍스처좌표 (UV정보)를 추출하는 함수
-void SFbxImporter::ReadTextureCoord(FbxMesh* pFbxMesh, FbxLayerElementUV* pUVSet,
-	int vertexIndex, int uvIndex, FbxVector2& uv)
+void SFbxImporter::ReadTextureCoord(FbxMesh* pFbxMesh, FbxLayerElementUV* pUVSet, int vertexIndex, int uvIndex, FbxVector2& uv)
 {
 	//UV set 유효성 검사.
 	FbxLayerElementUV* pFbxLayerElementUV = pUVSet;
@@ -520,10 +557,7 @@ void SFbxImporter::ReadTextureCoord(FbxMesh* pFbxMesh, FbxLayerElementUV* pUVSet
 }
 
 //FBX 메시에서 정점하나의 컬러(RGBA)를 정확하게 읽어오는 함수.
-FbxColor SFbxImporter::ReadColor(FbxMesh* mesh,
-	DWORD dwVertexColorCount,
-	FbxLayerElementVertexColor* pVertexColorSet,
-	DWORD dwDCCIndex, DWORD dwVertexIndex)
+FbxColor SFbxImporter::ReadColor(FbxMesh* mesh,	DWORD dwVertexColorCount, FbxLayerElementVertexColor* pVertexColorSet, DWORD dwDCCIndex, DWORD dwVertexIndex)
 {
 	FbxColor Value(1, 1, 1, 1);
 	if (dwVertexColorCount > 0 && pVertexColorSet != NULL)
@@ -564,9 +598,7 @@ FbxColor SFbxImporter::ReadColor(FbxMesh* mesh,
 }
 
 //FBX메시에서 하나의 정점 노멀(FbxVector4 타입)을 정확하게 추출하는 함수.
-FbxVector4 SFbxImporter::ReadNormal(const FbxMesh* mesh,
-	DWORD dwVertexNormalCount, FbxLayerElementNormal* VertexNormalSets,
-	int controlPointIndex, int iVertexIndex)
+FbxVector4 SFbxImporter::ReadNormal(const FbxMesh* mesh, DWORD dwVertexNormalCount, FbxLayerElementNormal* VertexNormalSets,	int controlPointIndex, int iVertexIndex)
 {
 	FbxVector4 result(0, 0, 0);
 	if (dwVertexNormalCount < 1)
@@ -752,44 +784,4 @@ int SFbxImporter::GetSubMaterialIndex(int iPoly, FbxLayerElementMaterial* pMater
 	return iSubMtrl;
 }
 
-// FBX에서 노드의 애니메이션 트랜스폼 행렬을 추출해서 UPrimitiveComponent에 저장해주는 함수.
-// 노드의 각 프레임별 트랜스폼 행렬을 계싼해서 actor->m_AnimList에 프레임별 행렬을 순서대로 저장
-void        SFbxImporter::GetAnimation()
-{
-	FbxTime::SetGlobalTimeMode(FbxTime::eFrames30);
-	FbxAnimStack* stack = m_pScene->GetSrcObject<FbxAnimStack>(0);
-	if (stack == nullptr) return;
 
-	FbxString TakeName = stack->GetName();
-	FbxTakeInfo* TakeInfo = m_pScene->GetTakeInfo(TakeName);
-	FbxTimeSpan LocalTimeSpan = TakeInfo->mLocalTimeSpan;
-	FbxTime start = LocalTimeSpan.GetStart();
-	FbxTime end = LocalTimeSpan.GetStop();
-	FbxTime Duration = LocalTimeSpan.GetDuration();
-
-	FbxTime::EMode TimeMode = FbxTime::GetGlobalTimeMode();
-	m_iStartFrame = start.GetFrameCount(TimeMode);
-	m_iEndFrame = end.GetFrameCount(TimeMode);
-}
-void        SFbxImporter::GetNodeAnimation(
-	FbxNode* node,
-	UPrimitiveComponent* actor)
-{
-	FbxTime::EMode TimeMode = FbxTime::GetGlobalTimeMode();
-	FbxTime time;
-	for (FbxLongLong t = m_iStartFrame; t <= m_iEndFrame; t++)
-	{
-		time.SetFrame(t, TimeMode);
-		FbxAMatrix matGlobal = node->EvaluateGlobalTransform(time);
-		FbxNode* pParent = node->GetParent();
-		FbxAMatrix matParent;
-		if (pParent)
-		{
-			matParent = pParent->EvaluateGlobalTransform(time);
-		}
-		FbxAMatrix matLocal = matParent.Inverse() * matGlobal;
-		FbxAMatrix matWorld = matParent * matLocal;
-		TMatrix mat = DxConvertMatrix(ConvertAMatrix(matLocal));;
-		actor->m_AnimList.push_back(mat);
-	}
-}

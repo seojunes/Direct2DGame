@@ -174,20 +174,34 @@ void   SEngine::CoreRelease()
 
     Destroy();
 }
+
+void SEngine::CoreReset()
+{
+    g_ptDeltaMouse.x = 0;
+    g_ptDeltaMouse.y = 0;
+    m_GameTimer.Reset();
+    m_Input.Reset();
+}
+
 bool SEngine::GameRun()
 {
     CoreInit();
+
     while (m_bRun)
-    {        
-        if(!MessageProcess())
+    {
+        if (!MessageProcess() && m_bActive)
         {
             CoreFrame();
-            CoreRender();       
-            g_nMouseWheelDelta = 0;
-        }  
-    }	
+            CoreRender();
+            g_nMouseWheelDelta = m_nMouseWheelDelta = 0;
+        }
+        if (m_bActive == false)
+        {
+            CoreReset();
+        }
+    }
     CoreRelease();
-	return true;
+    return true;
 }
 
 std::shared_ptr<UStaticMeshComponent> SEngine::GetShape(std::wstring name)

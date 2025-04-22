@@ -7,6 +7,11 @@ void    TTime::Init()
     m_StartClock = system_clock::now();
     m_fTmpTimer = 0.0f;
 }
+void    TTime::Reset()
+{
+    m_StartClock = m_EndClock = system_clock::now();
+    m_fTmpTimer = 0.0f;
+}
 void    TTime::Frame()
 {
     m_iTmpGameFrame++;

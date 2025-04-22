@@ -35,6 +35,15 @@ void    TInput::Init()
 	ScreenToClient(g_hWnd, &m_ptMouse); // 클라이언트좌표
 	g_ptMouse = m_ptMouse;
 }
+void	TInput::Reset()
+{
+	ZeroMemory(m_dwKeyState, sizeof(DWORD) * 256);
+	ZeroMemory(&g_GameKey, sizeof(TGameKey));
+	GetCursorPos(&m_ptMouse);			// 화면좌표
+	ScreenToClient(g_hWnd, &m_ptMouse); // 클라이언트좌표
+	m_ptDragStart = g_ptMouse = m_ptMouse;
+	m_bDrag = false;
+}
 void    TInput::Frame()
 {
 	GetCursorPos(&m_ptMouse);			// 화면좌표
@@ -75,8 +84,8 @@ void    TInput::Frame()
 	}
 	if (m_bDrag)
 	{
-		g_ptDeltaMouse.x = m_ptMouse.x - g_ptMouse.x;
-		g_ptDeltaMouse.y = m_ptMouse.y - g_ptMouse.y;
+		g_ptDeltaMouse.x = (m_ptMouse.x - g_ptMouse.x);
+		g_ptDeltaMouse.y = (m_ptMouse.y - g_ptMouse.y);
 	}
 	g_ptMouse = m_ptMouse;
 
