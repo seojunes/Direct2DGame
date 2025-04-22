@@ -1,7 +1,7 @@
 #pragma once
 #include "TMatrix.h"
-class TObject;
-enum TCollisionType
+class Object;
+enum CollisionType
 {
 	T_Block = 0,
 	T_Overlap, // °ãÄ§
@@ -18,7 +18,7 @@ enum TCollisionType
 //};
 struct THitResult
 {
-	TObject* pObject;
+	Object* pObject;
 	TVector2 vPos;
 	TVector2 vDir;
 	UINT     iState;

@@ -1,17 +1,17 @@
 #pragma once
-#include "TObject2D.h"
+#include "Object2D.h"
 struct TCell
 {
 	TRect  rt;
 	UINT   iTexID;
 };
-class TMapMeshRender : public TMeshRender
+class TMapMeshRender : public MeshRender
 {
 
 };
-class TMapObj : public TObject2D
+class TMapObj : public Object2D
 {
-	TTexture* m_pTexs[4];
+	Texture* m_pTexs[4];
 	UINT  m_iNumRow = 2;
 	UINT  m_iNumCol = 2;
 	UINT  m_iNumCellRow;
@@ -22,7 +22,7 @@ class TMapObj : public TObject2D
 public:
 	ComPtr<ID3D11Buffer> m_pVertexBuffer = nullptr;
 	ComPtr<ID3D11Buffer> m_pIndexBuffer = nullptr;
-	TInputLayout* m_pInputLayout = nullptr;
+	InputLayout* m_pInputLayout = nullptr;
 	std::vector<DWORD>	m_vIndexList;
 	std::vector<TCell>  m_Cells;
 	void	SetCellCounter(UINT iRow = 10, UINT iCol = 10);
@@ -34,9 +34,9 @@ public:
 	virtual bool	CreateIndexBuffer();
 	virtual bool	CreateInputLayout();
 	virtual void UpdateVertexData();
-	virtual TObject& SetShader(TShader* pShader = nullptr);
-	virtual TObject& SetTexture(TTexture*);
-	virtual TObject& SetLayout(TInputLayout* pInputLayout = nullptr);
+	virtual Object& SetShader(Shader* pShader = nullptr);
+	virtual Object& SetTexture(Texture*);
+	virtual Object& SetLayout(InputLayout* pInputLayout = nullptr);
 	virtual void	Transform(TVector2 vCamera);
 	virtual void Frame() override;
 	virtual void	PreRender()override;

@@ -32,7 +32,7 @@ enum HeroView
 
 
 
-class THeroObj : public TObject2D
+class THeroObj : public Object2D
 {	
 	TMapObj* m_pMap = nullptr;
 	TRadderObj* m_pRadder = nullptr;
@@ -110,16 +110,16 @@ public:
 	virtual void Render()override;
 	virtual void Release()override;
 	virtual void SetVertexData()override;
-	void HitOverlap(TObject* pObj, THitResult hRes) override;
+	void HitOverlap(Object* pObj, THitResult hRes) override;
 	
 public:
 	void GetGroundH(float height);
 	
 	
 public:
-	TObjectType GetType() const override 
+	ObjectType GetType() const override 
 	{
-		return TObjectType::Hero;
+		return ObjectType::Hero;
 	}
 public:
 	THeroObj()

@@ -1,10 +1,10 @@
 #include "TBossObj.h"
-void TBossObj::HitOverlap(TObject* pObj, THitResult hRes)  //충돌했을떄 실행되는 콜백함수
+void TBossObj::HitOverlap(Object* pObj, THitResult hRes)  //충돌했을떄 실행되는 콜백함수
 {
-	TObject::HitOverlap(pObj, hRes);
-	const TObjectType OtherType = pObj == nullptr ? TObjectType::None : pObj->GetType();
+	Object::HitOverlap(pObj, hRes);
+	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();
 
-	if (OtherType == TObjectType::Projectile)
+	if (OtherType == ObjectType::Projectile)
 	{
 		auto pMissile = dynamic_cast<TProjectileEffect*>(pObj);
 		if (pMissile && pMissile->m_pOwnerType == Shooter::OWNER_HERO && m_state != BossState::STATE_Create && m_state != BossState::STATE_PHASE2Create
@@ -17,7 +17,7 @@ void TBossObj::HitOverlap(TObject* pObj, THitResult hRes)  //충돌했을떄 실행되는
 			//m_eAttacked = ATTACKSTATE::STATE_OK;
 		}
 	}
-	if (OtherType == TObjectType::Wall)
+	if (OtherType == ObjectType::Wall)
 	{
 		auto pWall = dynamic_cast<TCollisionManager*>(pObj);
 		if (pWall)
@@ -568,12 +568,12 @@ void TBossObj::Frame()
 
 void TBossObj::Render()
 {
-	TObject2D::Render();
+	Object2D::Render();
 	m_pProjectile->Render(m_vCamera);
 }
 void TBossObj::Release()
 {
-	TObject2D::Release();
+	Object2D::Release();
 	m_pProjectile->Release();
 }
 

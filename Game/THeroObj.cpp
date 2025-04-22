@@ -1,13 +1,13 @@
 #include "THeroObj.h"
-#include "TDevice.h"
+#include "Device.h"
 #include "TWorld.h"
 
-void    THeroObj::HitOverlap(TObject* pObj, THitResult hRes)
+void    THeroObj::HitOverlap(Object* pObj, THitResult hRes)
 {
-	TObject::HitOverlap(pObj, hRes);
-	const TObjectType OtherType = pObj == nullptr ? TObjectType::None : pObj->GetType();
+	Object::HitOverlap(pObj, hRes);
+	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();
 	//Hero가 쏜 미사일이 아닌 미사일에 닿으면 미사일데미지만큼 피 깍임
-	if (OtherType == TObjectType::Projectile)
+	if (OtherType == ObjectType::Projectile)
 	{
 		auto pMissile = dynamic_cast<TProjectileEffect*>(pObj);
 		if (pMissile && pMissile->m_pOwnerType != Shooter::OWNER_HERO && !m_bInvincible && pMissile->m_Data.m_pOwner->m_bDead ==false)
@@ -17,7 +17,7 @@ void    THeroObj::HitOverlap(TObject* pObj, THitResult hRes)
 		}
 	}
 	//포탈에 닿으면 보스방으로 이동가능
-	if (OtherType == TObjectType::Portal)
+	if (OtherType == ObjectType::Portal)
 	{
 		m_BossMoving = BossRoomMovingState::STATE_ABLE;
 	}
@@ -27,12 +27,12 @@ void    THeroObj::HitOverlap(TObject* pObj, THitResult hRes)
 	}
 
 	// 몬스터와 부딪쳤을때, 데미지
-	if (OtherType == TObjectType::Npc)
+	if (OtherType == ObjectType::Npc)
 	{
 		auto pNpc = dynamic_cast<TNpcObj*>(pObj);
 		if(pNpc->m_bAbleAttack)		TakeDamage(10);
 	}
-	else if (OtherType == TObjectType::Boss)
+	else if (OtherType == ObjectType::Boss)
 	{
 		TakeDamage(20);
 	}
@@ -40,7 +40,7 @@ void    THeroObj::HitOverlap(TObject* pObj, THitResult hRes)
 
 void THeroObj::Init()
 {
-	TObject2D::Init();
+	Object2D::Init();
 	m_pProjectile = std::make_shared<TProjectile>(m_pWorld);
 }
 
@@ -384,7 +384,7 @@ void THeroObj::Frame()
 void THeroObj::SetVertexData()
 {
 	if (m_pTexture == nullptr) return;
-	TObject2D::SetVertexData();
+	Object2D::SetVertexData();
 
 	TRect rt;
 
@@ -501,14 +501,14 @@ void THeroObj::SetVertexData()
 
 void THeroObj::Render()
 {
-	TObject2D::Render();
+	Object2D::Render();
 	Fade();
 	m_pProjectile->Render(m_vCamera);
 }
 
 void THeroObj::Release()
 {
-	TObject2D::Release();
+	Object2D::Release();
 	m_pProjectile->Release();
 }
 

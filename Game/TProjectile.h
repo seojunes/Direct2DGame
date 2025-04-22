@@ -1,5 +1,5 @@
 #pragma once
-#include "TEffectObj.h"
+#include "EffectObj.h"
 
 enum Shooter
 {
@@ -11,7 +11,7 @@ enum Shooter
 	OWNER_BOSS3,
 };
 
-class TProjectileEffect : public TEffectObj
+class TProjectileEffect : public EffectObj
 {
 public:
 	TVector2 m_vObjPos;
@@ -23,14 +23,14 @@ public:
 
 	void Frame();
 	void Render();
-	void    HitOverlap(TObject* pObj, THitResult hRet) override;
-	TObjectType GetType() const override
+	void    HitOverlap(Object* pObj, THitResult hRet) override;
+	ObjectType GetType() const override
 	{
-		return TObjectType::Projectile;
+		return ObjectType::Projectile;
 	}
 };
 
-class TProjectile : public TObject2D
+class TProjectile : public Object2D
 {
 	TWorld* m_pWorld = nullptr;
 
@@ -39,9 +39,9 @@ public:
 public:
 	using tObject = std::shared_ptr<TProjectileEffect>;
 	std::list< tObject>   m_datalist;
-	void   AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction, Shooter owner, TObject* m_pOwner, bool m_bOncharging = false);
+	void   AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction, Shooter owner, Object* m_pOwner, bool m_bOncharging = false);
 	
-	//void   ApplyOwnerType(const TObjectType& InObjectType);
+	//void   ApplyOwnerType(const ObjectType& InObjectType);
 	void   Init();
 	void   Frame(TVector2 vPos);
 	//void   Frame() override;
@@ -54,12 +54,12 @@ public:
 	//TProjectile();
 	TProjectile(TWorld* pWorld);
 
-	TObjectType GetType() const override
+	ObjectType GetType() const override
 	{
-		return TObjectType::Projectile;
+		return ObjectType::Projectile;
 	}
-	/*TObjectType GetOwnerType() const { return OwnerType; }
+	/*ObjectType GetOwnerType() const { return OwnerType; }
 protected:
-	TObjectType OwnerType = TObjectType::None;*/
+	ObjectType OwnerType = ObjectType::None;*/
 };
 

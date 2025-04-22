@@ -119,67 +119,67 @@
       <FileName>TShader.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TShaderManager" Collapsed="true">
+  <Class Name="ShaderManager" Collapsed="true">
     <Position X="60.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CAAAgAAAAAAAAAAAAAAAAAAEBAoAAAAAAJACAACAAAE=</HashCode>
       <FileName>TShader.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TSound" Collapsed="true">
+  <Class Name="Sound" Collapsed="true">
     <Position X="62.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAgggAAAAAAgAAgAAAAAAAAAABQAGCAAoBQCIBAAAAE=</HashCode>
-      <FileName>TSound.h</FileName>
+      <FileName>Sound.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TSoundManager" Collapsed="true">
+  <Class Name="SoundManager" Collapsed="true">
     <Position X="64.25" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CAAAgAAAAAAAAAgAAAAAAAAEBAIAAAAAABABAACAAAE=</HashCode>
-      <FileName>TSound.h</FileName>
+      <FileName>Sound.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TTexture" Collapsed="true">
+  <Class Name="Texture" Collapsed="true">
     <Position X="57.25" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgCAAAKAAAAAAAAAAAAAAAAAACAEAAAAAABAAAAA=</HashCode>
-      <FileName>TTexture.h</FileName>
+      <FileName>Texture.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TTextureManager" Collapsed="true">
+  <Class Name="TextureManager" Collapsed="true">
     <Position X="59" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAhAAAAAAAAAAAABAAAAAEBAIAAAAAABAAAACAAAE=</HashCode>
-      <FileName>TTexture.h</FileName>
+      <FileName>Texture.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TBaseClass" Collapsed="true">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACABAAAAE=</HashCode>
-      <FileName>TTime.h</FileName>
+      <FileName>Time.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TTime" Collapsed="true">
+  <Class Name="Time" Collapsed="true">
     <Position X="0.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAIAAAAABAAAAAAAAAAAAEQAABYCCBAAAQE=</HashCode>
-      <FileName>TTime.h</FileName>
+      <FileName>Time.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TEventTime" Collapsed="true">
     <Position X="0.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TTime.h</FileName>
+      <FileName>Time.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TWindow" Collapsed="true">
+  <Class Name="Window" Collapsed="true">
     <Position X="13.5" Y="12.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AEAAAAAAACgAAAwAgAAAAAAAAAAAAAAAAAAAAAggAAQ=</HashCode>
-      <FileName>TWindow.h</FileName>
+      <FileName>Window.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TCollision" Collapsed="true">
@@ -210,67 +210,67 @@
       <FileName>TVector.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TGUIFSM" Collapsed="true">
+  <Class Name="GUIFSM" Collapsed="true">
     <Position X="3" Y="13.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TControlGUI.h</FileName>
+      <FileName>ControlGUI.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TControlGUI" Collapsed="true">
+  <Class Name="ControlGUI" Collapsed="true">
     <Position X="35.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CAAGQAAgAAAAAAABAAAACAQgBAAgAEBBAABAAgAAAAE=</HashCode>
-      <FileName>TControlGUI.h</FileName>
+      <FileName>ControlGUI.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TButtonGUI" Collapsed="true">
+  <Class Name="ButtonGUI" Collapsed="true">
     <Position X="35.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAGAAAAAAAAAAAAAAAAAAAAAAACAABAAAgAAAACAAE=</HashCode>
-      <FileName>TControlGUI.h</FileName>
+      <FileName>ControlGUI.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TImageGUI" Collapsed="true">
+  <Class Name="ImageGUI" Collapsed="true">
     <Position X="33.25" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
-      <FileName>TControlGUI.h</FileName>
+      <FileName>ControlGUI.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TGuiState" Collapsed="true">
+  <Class Name="GuiState" Collapsed="true">
     <Position X="14" Y="9.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAIAAAAAAAAAABAAIAAAAAQQAAAAAAAAAA=</HashCode>
-      <FileName>TGuiFSM.h</FileName>
+      <FileName>GuiFSM.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TDefaultActionGui" Collapsed="true">
+  <Class Name="DefaultActionGui" Collapsed="true">
     <Position X="15.25" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIgAAAAAAAAAAAAABAA=</HashCode>
-      <FileName>TGuiFSM.h</FileName>
+      <FileName>GuiFSM.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="THoverActionGui" Collapsed="true">
+  <Class Name="HoverActionGui" Collapsed="true">
     <Position X="17.5" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAIAIAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TGuiFSM.h</FileName>
+      <FileName>GuiFSM.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TActiveActionGui" Collapsed="true">
+  <Class Name="ActiveActionGui" Collapsed="true">
     <Position X="10.75" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAIAAAEAAAAAAAAAAAAA=</HashCode>
-      <FileName>TGuiFSM.h</FileName>
+      <FileName>GuiFSM.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TSelectedActionGui" Collapsed="true">
+  <Class Name="SelectedActionGui" Collapsed="true">
     <Position X="13" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAIAAAAAAAAA=</HashCode>
-      <FileName>TGuiFSM.h</FileName>
+      <FileName>GuiFSM.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TSceneFSM" Collapsed="true">
@@ -343,18 +343,18 @@
       <FileName>TSceneResult.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TFiniteState" Collapsed="true">
+  <Class Name="FiniteState" Collapsed="true">
     <Position X="64.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAABAAAAIAAAAAAAAAAIAAAQgEAQCAAA=</HashCode>
-      <FileName>TFiniteState.h</FileName>
+      <FileName>FiniteState.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TFiniteStateMachine" Collapsed="true">
+  <Class Name="FiniteStateMachine" Collapsed="true">
     <Position X="3" Y="12.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAYAAAAAAAAAAAAQEAAAAACAAAIAAAAAAAAAAAA=</HashCode>
-      <FileName>TFiniteState.h</FileName>
+      <FileName>FiniteState.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TBossObj" Collapsed="true">
@@ -434,25 +434,25 @@
       <FileName>TNpcObj.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="THpBar" Collapsed="true">
+  <Class Name="HpBar" Collapsed="true">
     <Position X="18.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAABACAAAAAEAQAQAJlAEAEAAAAAQAAAABAAAIAAQAE=</HashCode>
-      <FileName>THpBar.h</FileName>
+      <FileName>HpBar.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TUiHpBar" Collapsed="true">
+  <Class Name="UiHpBar" Collapsed="true">
     <Position X="32.25" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAEAAAAAAAEAAAQAEBAEBAAQAAAQEBACAAAAAAkBAE=</HashCode>
-      <FileName>TUiHpBar.h</FileName>
+      <FileName>UiHpBar.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TUIHpTile" Collapsed="true">
+  <Class Name="UIHpTile" Collapsed="true">
     <Position X="34.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TUiHpBar.h</FileName>
+      <FileName>UiHpBar.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TBossCreate" Collapsed="true">
@@ -571,7 +571,7 @@
     <Position X="64.25" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAIAAEACAAAAAAAAAAAAAgAAIkAAAAABAgAIAAAAAA=</HashCode>
-      <FileName>TStd.h</FileName>
+      <FileName>Std.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="VS_In" Collapsed="true">
@@ -658,11 +658,11 @@
       <FileName>TVertex.h</FileName>
     </TypeIdentifier>
   </Struct>
-  <Struct Name="TStateDataUI" Collapsed="true">
+  <Struct Name="StateDataUI" Collapsed="true">
     <Position X="57.25" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>IEAAAAAAAAAAAAAABAAAAAAAAAAgAAAAAAAAAQAAAAI=</HashCode>
-      <FileName>TControlGUI.h</FileName>
+      <FileName>ControlGUI.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="TCollisionInfo" Collapsed="true">
@@ -690,98 +690,98 @@
     <Position X="57.25" Y="14.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TStd.h</FileName>
+      <FileName>Std.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="W_STR" Collapsed="true">
     <Position X="62.5" Y="14.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TStd.h</FileName>
+      <FileName>Std.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="C_STR" Collapsed="true">
     <Position X="59" Y="13" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TStd.h</FileName>
+      <FileName>Std.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="T_STR_VECTOR" Collapsed="true">
     <Position X="59" Y="14.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TStd.h</FileName>
+      <FileName>Std.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="T_ITOR" Collapsed="true">
     <Position X="64.25" Y="13.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TStd.h</FileName>
+      <FileName>Std.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="W_ITOR" Collapsed="true">
     <Position X="60.75" Y="14.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TStd.h</FileName>
+      <FileName>Std.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="C_ITOR" Collapsed="true">
     <Position X="57.25" Y="13" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TStd.h</FileName>
+      <FileName>Std.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="T_ARRAY_ITOR" Collapsed="true">
     <Position X="62.5" Y="13.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TStd.h</FileName>
+      <FileName>Std.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="DWORD_VECTOR" Collapsed="true">
     <Position X="64.25" Y="13" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TStd.h</FileName>
+      <FileName>Std.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="DWORD_VECTOR_ITOR" Collapsed="true">
     <Position X="57.25" Y="13.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TStd.h</FileName>
+      <FileName>Std.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="DWORD_LIST" Collapsed="true">
     <Position X="60.75" Y="13" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TStd.h</FileName>
+      <FileName>Std.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="DWORD_LIST_ITOR" Collapsed="true">
     <Position X="62.5" Y="13" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TStd.h</FileName>
+      <FileName>Std.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="HANDLE_LIST" Collapsed="true">
     <Position X="59" Y="13.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TStd.h</FileName>
+      <FileName>Std.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="HANDLE_LIST_ITOR" Collapsed="true">
     <Position X="60.75" Y="13.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TStd.h</FileName>
+      <FileName>Std.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Enum Name="TObjectType" Collapsed="true">
@@ -795,28 +795,28 @@
     <Position X="57.25" Y="9" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAABAgAAAAAAAAAAAAAAgAAAABAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TStd.h</FileName>
+      <FileName>Std.h</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="TCollisionType" Collapsed="true">
+  <Enum Name="CollisionType" Collapsed="true">
     <Position X="60.75" Y="11.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
       <FileName>TCollision.h</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="TSelectState" Collapsed="true">
+  <Enum Name="SelectState" Collapsed="true">
     <Position X="60.75" Y="12" Width="1.5" />
     <TypeIdentifier>
       <HashCode>IAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAIAABAgA=</HashCode>
-      <FileName>TGuiFSM.h</FileName>
+      <FileName>GuiFSM.h</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="TSelectEvent" Collapsed="true">
+  <Enum Name="SelectEvent" Collapsed="true">
     <Position X="59" Y="12" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAIABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
-      <FileName>TGuiFSM.h</FileName>
+      <FileName>GuiFSM.h</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="TSceneState" Collapsed="true">
@@ -893,14 +893,14 @@
     <Position X="62.5" Y="9.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
-      <FileName>THpBar.h</FileName>
+      <FileName>HpBar.h</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="HPBAR_OWNER" Collapsed="true">
     <Position X="60.75" Y="9.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
-      <FileName>TUiHpBar.h</FileName>
+      <FileName>UiHpBar.h</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="DropState" Collapsed="true">

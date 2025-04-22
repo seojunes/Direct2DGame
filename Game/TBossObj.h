@@ -20,7 +20,7 @@ enum class BossState
 class TBossObj : public TNpcObj
 {
 public:
-	void    HitOverlap(TObject* pObj, THitResult hRet) override;
+	void    HitOverlap(Object* pObj, THitResult hRet) override;
 	TMapObj* m_pMap = nullptr;
 	void SetVertexData() override;
 	virtual void Init() override;
@@ -68,9 +68,9 @@ public:
 		m_vPos = initialPos;       // 현재 위치도 초기 위치로 설정
 	}
 public:
-	TObjectType GetType() const override
+	ObjectType GetType() const override
 	{
-		return TObjectType::Boss;
+		return ObjectType::Boss;
 	}
 public:
 	HeroView BossView = HeroView::LeftView;

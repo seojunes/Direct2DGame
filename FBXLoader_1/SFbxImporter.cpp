@@ -137,17 +137,7 @@ bool  SFbxImporter::Load(std::string loadfile, AActor* actor)
 	GetAnimation();
 	actor->m_iStartFrame = m_iStartFrame;
 	actor->m_iEndFrame = m_iEndFrame;
-	//UStaticMeshComponent : fbxfile
-	//nodes[10] UPrimitiveComponent
 
-	/*auto mesh = std::make_shared<UStaticMeshComponent>();
-	for (int iMesh = 0; iMesh < m_FbxMeshs.size(); iMesh++)
-	{
-		auto child = std::make_shared<UPrimitiveComponent>();
-		ParseMesh(m_FbxMeshs[iMesh], child.get());
-		mesh->m_Childs.emplace_back(child);
-	}
-	actor->SetMesh(mesh);*/
 	//메시 및 애니메이션 파싱
 	auto mesh = std::make_shared<UStaticMeshComponent>();
 	// 케릭터 당 m_matBindPose 행렬리스트

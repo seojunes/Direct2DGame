@@ -13,7 +13,7 @@ TScene::~TScene()
 
 bool TScene::CreateSound()
 {
-	TSoundManager& mgr = TSoundManager::GetInstance();
+	SoundManager& mgr = SoundManager::GetInstance();
 	m_pIntro = mgr.Load(L"../../data/sound/game over jingle.ogg");
 	m_BGMList.emplace_back(m_pIntro);
 	m_pRobby = mgr.Load(L"../../data/sound/Robby.mp3");

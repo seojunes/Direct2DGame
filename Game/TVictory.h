@@ -1,6 +1,6 @@
 #pragma once
 #include "TMapObj.h"
-class TVictory :public TObject2D
+class TVictory :public Object2D
 {
 	TMapObj* m_pMap = nullptr;
 	

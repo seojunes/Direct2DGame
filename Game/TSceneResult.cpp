@@ -1,12 +1,12 @@
 #include "TSceneResult.h"
-#include "TGameCore.h"
+#include "GameCore.h"
 #include "TGame.h"
 TSceneResult::TSceneResult(TGame* p)
 {
     m_pOwner = p;
 }
 TSceneResult::~TSceneResult() {}
-void TSceneResult::ProcessAction(TObject* pObj)
+void TSceneResult::ProcessAction(Object* pObj)
 {
     if (m_bNextScene == true)
     {
@@ -29,16 +29,16 @@ void   TSceneResult::Init()
 {
 
     //auto ui3 = std::make_shared<TNextBtn>();
-    //ui3->m_pMeshRender = &TGameCore::m_MeshRender;
+    //ui3->m_pMeshRender = &GameCore::m_MeshRender;
     //ui3->SetFSM(&m_GuiFSM);
     //if (ui3->Create(m_pWorld.get(), resData, { 700.0f, 0.0f }, { 800.0f, 100.0f }))
     //{
-    //    ui3->m_iCollisionType = TCollisionType::T_Overlap;
+    //    ui3->m_iCollisionType = CollisionType::T_Overlap;
     //    //ui2->SetScale(50.0f, 100.0f);
     //    //ui2->SetRotation(T_Pi * -0.25f);
     //    m_UiList.emplace_back(ui3);
     //}
-    TButtonGUI::CreateActionFSM();
+    ButtonGUI::CreateActionFSM();
     m_pWorld = std::make_shared<TWorld>(this);
     m_GuiFSM.AddStateTransition(T_DEFAULT, EVENT_SELECT, T_HOVER);
     m_GuiFSM.AddStateTransition(T_HOVER, EVENT_DEFAULT, T_DEFAULT);
@@ -48,14 +48,14 @@ void   TSceneResult::Init()
     resData.texPathName = L"../../data/Texture/restart.png";
     resData.texShaderName = L"../../data/shader/Default.txt";
 
-    auto ui1 = std::make_shared<TImageGUI>();
-    ui1->m_pMeshRender = &TGameCore::m_MeshRender;
+    auto ui1 = std::make_shared<ImageGUI>();
+    ui1->m_pMeshRender = &GameCore::m_MeshRender;
     ui1->SetFSM(&m_GuiFSM);
     TVector2 vStart1 = { 0.0f, 0.0f };
     TVector2 vEnd1 = { 1280.0f, 800.0f };
     if (ui1->Create(m_pWorld.get(), resData, vStart1, vEnd1))
     {
-        ui1->m_iCollisionType = TCollisionType::T_Overlap;
+        ui1->m_iCollisionType = CollisionType::T_Overlap;
         //ui1->SetScale(100.0f, 50.0f);
         //ui1->SetRotation(T_Pi * 0.25f);
         m_UiList.emplace_back(ui1);
@@ -63,16 +63,16 @@ void   TSceneResult::Init()
 
     resData.texPathName = L"../../data/ui/pressrestart.png";
 
-    auto ui = std::make_shared<TButtonGUI>();
-    ui->m_pMeshRender = &TGameCore::m_MeshRender;
+    auto ui = std::make_shared<ButtonGUI>();
+    ui->m_pMeshRender = &GameCore::m_MeshRender;
     ui->SetFSM(&m_GuiFSM);
     TVector2 vStart = { 491.25f, 603.125f };
     TVector2 vEnd = { 822.5f,  658.594f};
 
-    ui->m_pMeshRender = &TGameCore::m_MeshRender;
+    ui->m_pMeshRender = &GameCore::m_MeshRender;
     if (ui->Create(m_pWorld.get(), resData, vStart, vEnd))
     {
-        ui->m_iCollisionType = TCollisionType::T_Overlap;
+        ui->m_iCollisionType = CollisionType::T_Overlap;
         //ui->SetScale(300.0f, 300.0f );
         //ui->SetRotation(T_Pi*0.25f);
         m_UiList.emplace_back(ui);

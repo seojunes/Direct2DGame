@@ -1,11 +1,11 @@
 #include "TItem.h"
 #include "THeroObj.h"
 
-void TItem::HitOverlap(TObject* pObj, THitResult hRes)
+void TItem::HitOverlap(Object* pObj, THitResult hRes)
 {
-	TObject::HitOverlap(pObj, hRes);
-	const TObjectType OtherType = pObj == nullptr ? TObjectType::None : pObj->GetType();
-	if (OtherType == TObjectType::Hero)
+	Object::HitOverlap(pObj, hRes);
+	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();
+	if (OtherType == ObjectType::Hero)
 	{
 		auto pHero = dynamic_cast<THeroObj*>(pObj);
 		pHero->m_HeroHP += 10;

@@ -1,16 +1,16 @@
 #pragma once
 #include "TMapObj.h"
 #include "THeroObj.h"
-#include "TEffectObj.h"
+#include "EffectObj.h"
 #include "TNpcObj.h"
-#include "TControlGUI.h"
+#include "ControlGUI.h"
 #include "TProjectile.h"
 #include "TCollisionManager.h"
 #include "TMonster.h"
 #include "TPortal.h"
 #include "TBossObj.h"
-#include "THpBar.h"
-#include "TUiHpBar.h"
+#include "HpBar.h"
+#include "UiHpBar.h"
 #include "TVictory.h"
 #include "TRadderObj.h"
 #include "TBossCreate.h"
@@ -19,28 +19,28 @@
 
 
 class TScene;
-using CollisionFunction = std::function<void(TObject*, THitResult)>;
+using CollisionFunction = std::function<void(Object*, THitResult)>;
 class TWorld
 {
 public:
 	UINT   m_iExecuteCollisionID = 0;
-	std::map<int, TObject*>  m_CollisionList;
+	std::map<int, Object*>  m_CollisionList;
 	UINT   m_iExecuteSelectID = 0;
-	std::map<int, TObject*>  m_SelectList;
+	std::map<int, Object*>  m_SelectList;
 	TScene* m_pScene = nullptr;
 
 
 
-	std::map<int, TObjectType> m_ObjectCollect;
+	std::map<int, ObjectType> m_ObjectCollect;
 
 public:
 	std::map<int, CollisionFunction>  m_fnCollisionExecute;
-	void AddCollisionExecute(TObject* pOwnder, CollisionFunction fun);
-	void DeleteCollisionExecute(TObject* pOwner);
+	void AddCollisionExecute(Object* pOwnder, CollisionFunction fun);
+	void DeleteCollisionExecute(Object* pOwner);
 
 	std::map<int, CollisionFunction>  m_fnSelectExecute;
-	void AddSelectExecute(TObject* pOwnder, CollisionFunction fun);
-	void DeleteSelectExecute(TObject* pOwner);
+	void AddSelectExecute(Object* pOwnder, CollisionFunction fun);
+	void DeleteSelectExecute(Object* pOwner);
 public:
 	void   Frame();
 	void   Release();

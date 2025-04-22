@@ -1,6 +1,6 @@
 #pragma once
 #include "TMapObj.h"
-#include "TFiniteState.h"
+#include "FiniteState.h"
 // STATE_STAND -> EVENT_PATROL (시간경과)    -> STATE_MOVE
 // STATE_STAND -> EVENT_FINDTARGET(검색범위) -> STATE_ATTACK
 // STATE_MOVE  -> EVENT_STOP		->STATE_STAND
@@ -37,14 +37,14 @@ public:
 	TEnemyState() {};
 	virtual ~TEnemyState();
 public:
-	virtual void ProcessAction(TObject* pObj) = 0;
+	virtual void ProcessAction(Object* pObj) = 0;
 public:
 	TNpcObj* m_pOwner;
 };
 class TStandAction : public TEnemyState
 {
 public:
-	virtual void ProcessAction(TObject* pObj);
+	virtual void ProcessAction(Object* pObj);
 public:
 	TStandAction(TNpcObj* p);
 	TStandAction() { m_iState = STATE_STAND; };
@@ -53,7 +53,7 @@ public:
 class TMoveAction : public TEnemyState
 {
 public:
-	virtual void ProcessAction(TObject* pObj);
+	virtual void ProcessAction(Object* pObj);
 	TMoveAction(TNpcObj* p);
 	TMoveAction() { m_iState = STATE_MOVE; };
 	virtual ~TMoveAction();
@@ -61,7 +61,7 @@ public:
 class TAttackAction : public TEnemyState
 {
 public:
-	virtual void ProcessAction(TObject* pObj);
+	virtual void ProcessAction(Object* pObj);
 	TAttackAction(TNpcObj* p);
 	TAttackAction() { m_iState = STATE_ATTACK; };
 	virtual ~TAttackAction();
@@ -69,7 +69,7 @@ public:
 class TDeadAction : public TEnemyState
 {
 public:
-	virtual void ProcessAction(TObject* pObj);
+	virtual void ProcessAction(Object* pObj);
 	TDeadAction(TNpcObj* p);
 	TDeadAction() { m_iState = STATE_ATTACK; };
 	virtual ~TDeadAction();

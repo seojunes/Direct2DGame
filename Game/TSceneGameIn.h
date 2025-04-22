@@ -13,10 +13,10 @@ enum class MapAction
 	STATE_CREATEBOSS,
 	STATE_BOSS,
 };
-class TNextBtn : public TButtonGUI
+class TNextBtn : public ButtonGUI
 {
 public:
-	void    HitSelect(TObject* pObj, THitResult hRet)
+	void    HitSelect(Object* pObj, THitResult hRet)
 	{
 		m_iSelectState = hRet.iState;
 		if (m_iSelectState == T_SELECTED)
@@ -25,10 +25,10 @@ public:
 		}
 	};
 };
-class TPrevBtn : public TButtonGUI
+class TPrevBtn : public ButtonGUI
 {
 public:
-	void    HitSelect(TObject* pObj, THitResult hRet)
+	void    HitSelect(Object* pObj, THitResult hRet)
 	{
 		m_iSelectState = hRet.iState;
 		if (m_iSelectState == T_SELECTED)
@@ -42,16 +42,16 @@ using RECT_ARRAY = std::vector<RECT>;
 
 class TSceneGameIn : public TScene
 {
-	TFiniteStateMachine      m_fsm;
-	TGUIFSM					 m_GuiFSM;
+	FiniteStateMachine      m_fsm;
+	GUIFSM					 m_GuiFSM;
 	std::shared_ptr<TWorld>  m_pWorld;
 	TVector2        m_vCamera = { 640.0f, 400.0f };
-	TTexture* m_pBitmap1Mask = nullptr;
-	using tObject = std::shared_ptr<TObject>;
+	Texture* m_pBitmap1Mask = nullptr;
+	using tObject = std::shared_ptr<Object>;
 	using tNpc = std::shared_ptr<TNpcObj>;
-	using tUI = std::shared_ptr<TControlGUI>;
+	using tUI = std::shared_ptr<ControlGUI>;
 	using tCol = std::shared_ptr<TCollisionManager>;
-	using tHP = std::shared_ptr<THpBar>;
+	using tHP = std::shared_ptr<HpBar>;
 	using tDrop = std::shared_ptr<TDropObj>;
 
 	std::shared_ptr<TMapObj>	m_pMap = nullptr;
@@ -96,7 +96,7 @@ public:
 	virtual void   Render() override;
 	virtual void   Release() override;
 public:
-	virtual void ProcessAction(TObject* pObj);
+	virtual void ProcessAction(Object* pObj);
 public:
 	TSceneGameIn(TGame* p);
 	TSceneGameIn() { m_iState = TSceneState::SCENE_INGAME; };

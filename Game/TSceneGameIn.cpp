@@ -1,5 +1,5 @@
 	#include "TSceneGameIn.h"
-#include "TGameCore.h"
+#include "GameCore.h"
 #include "TGame.h"
 
 TSceneGameIn::TSceneGameIn(TGame* p)
@@ -9,7 +9,7 @@ TSceneGameIn::TSceneGameIn(TGame* p)
 TSceneGameIn::~TSceneGameIn() {}
 
 // 게임 씬 변환부분.
-void TSceneGameIn::ProcessAction(TObject* pObj)
+void TSceneGameIn::ProcessAction(Object* pObj)
 {
 	if (m_bNextScene == true)
 	{
@@ -100,7 +100,7 @@ bool TSceneGameIn::CreateMap()
 	m_pMap = std::make_shared<TMapObj>(rt, 1, 1);
 	if (m_pMap->Create(m_pWorld.get()))
 	{
-		TTexture* pTex = I_Tex.Load(L"../../data/texture/Map7.png");
+		Texture* pTex = I_Tex.Load(L"../../data/texture/Map7.png");
 		m_pMap->SetTexture(pTex).SetShader().SetLayout();
 	}
 	return true;
@@ -114,7 +114,7 @@ bool TSceneGameIn::CreateBossMap()
 	m_pBossMap = std::make_shared<TMapObj>(rt, 1, 1);
 	if (m_pBossMap->Create(m_pWorld.get()))
 	{
-		TTexture* pTex = I_Tex.Load(L"../../data/texture/bossMap.png");
+		Texture* pTex = I_Tex.Load(L"../../data/texture/bossMap.png");
 		m_pBossMap->SetTexture(pTex).SetShader().SetLayout();
 	}
 	return true;
@@ -131,10 +131,10 @@ bool TSceneGameIn::CreateObject()
 	tEnd = { 13830.0f , 280.0f };
 	resData.texPathName = L"../../data/texture/Boss2.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
-	m_pBossCreate->m_pMeshRender = &TGameCore::m_MeshRender;
+	m_pBossCreate->m_pMeshRender = &GameCore::m_MeshRender;
 	if (m_pBossCreate->Create(m_pWorld.get(), resData, tStart, tEnd))
 	{
-		m_pBossCreate->m_iCollisionType = TCollisionType::T_Overlap;
+		m_pBossCreate->m_iCollisionType = CollisionType::T_Overlap;
 	}
 
 	// 보스룸으로 이동하는 portal
@@ -145,10 +145,10 @@ bool TSceneGameIn::CreateObject()
 	//m_pPortal->m_pWorld = m_pWorld.get();
 	resData.texPathName = L"../../data/texture/portal.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
-	m_pPortal->m_pMeshRender = &TGameCore::m_MeshRender;
+	m_pPortal->m_pMeshRender = &GameCore::m_MeshRender;
 	if (m_pPortal->Create(m_pWorld.get(), resData, tStart, tEnd))
 	{
-		m_pPortal->m_iCollisionType = TCollisionType::T_Overlap;
+		m_pPortal->m_iCollisionType = CollisionType::T_Overlap;
 	}
 
 	// 엔딩 이미지
@@ -158,10 +158,10 @@ bool TSceneGameIn::CreateObject()
 	//m_pPortal->m_pWorld = m_pWorld.get();
 	resData.texPathName = L"../../data/texture/victory.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
-	m_pVictory->m_pMeshRender = &TGameCore::m_MeshRender;
+	m_pVictory->m_pMeshRender = &GameCore::m_MeshRender;
 	if (m_pVictory->Create(m_pWorld.get(), resData, tStart, tEnd))
 	{
-		m_pVictory->m_iCollisionType = TCollisionType::T_Overlap;
+		m_pVictory->m_iCollisionType = CollisionType::T_Overlap;
 	}
 
 	// 사다리 생성 생성시 Alpha값 0으로 투명
@@ -172,10 +172,10 @@ bool TSceneGameIn::CreateObject()
 	//m_pPortal->m_pWorld = m_pWorld.get();
 	resData.texPathName = L"../../data/texture/Radder.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
-	m_pRadder->m_pMeshRender = &TGameCore::m_MeshRender;
+	m_pRadder->m_pMeshRender = &GameCore::m_MeshRender;
 	if (m_pRadder->Create(m_pWorld.get(), resData, tStart, tEnd))
 	{
-		m_pRadder->m_iCollisionType = TCollisionType::T_Overlap;
+		m_pRadder->m_iCollisionType = CollisionType::T_Overlap;
 	}
 	return true;
 }
@@ -191,11 +191,11 @@ bool TSceneGameIn::CreateHero()
 	TLoadResData resData;
 	resData.texPathName = L"../../data/texture/character.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
-	m_pHero->m_pMeshRender = &TGameCore::m_MeshRender;
+	m_pHero->m_pMeshRender = &GameCore::m_MeshRender;
 	m_pHero->m_pWorld = m_pWorld.get();
 	if (m_pHero->Create(m_pWorld.get(), resData, tStart, tEnd))
 	{
-		m_pHero->m_iCollisionType = TCollisionType::T_Overlap;
+		m_pHero->m_iCollisionType = CollisionType::T_Overlap;
 	}
 	return true;
 }
@@ -246,7 +246,7 @@ bool TSceneGameIn::CreateRect()
 		resData.texPathName = L"../../data/texture/collision.png";
 		resData.texShaderName = L"../../data/shader/Default.txt";
 
-		m_pRect->m_pMeshRender = &TGameCore::m_MeshRender;
+		m_pRect->m_pMeshRender = &GameCore::m_MeshRender;
 
 		//if (m_pWorld)
 		//{ // TWorld 포인터가 유효한지 확인
@@ -254,7 +254,7 @@ bool TSceneGameIn::CreateRect()
 		//}
 		if (m_pRect->Create(m_pWorld.get(), resData, tStart, tEnd))
 		{
-			m_pRect->m_iCollisionType = TCollisionType::T_Overlap;
+			m_pRect->m_iCollisionType = CollisionType::T_Overlap;
 			m_ColList.emplace_back(m_pRect);
 		}
 
@@ -295,7 +295,7 @@ bool TSceneGameIn::CreateNPC()
 		TVector2 tStart = area.first;
 		TVector2 tEnd = area.second;
 		auto npcobj1 = std::make_shared<TMonster1>((tStart + tEnd) / 2.0f);
-		npcobj1->m_pMeshRender = &TGameCore::m_MeshRender;
+		npcobj1->m_pMeshRender = &GameCore::m_MeshRender;
 		npcobj1->SetMap(m_pMap.get());
 		npcobj1->SetData(m_rtSpriteList);
 		npcobj1->SetFSM(&m_fsm);
@@ -307,10 +307,10 @@ bool TSceneGameIn::CreateNPC()
 		if (npcobj1->Create(m_pWorld.get(), resData, tStart, tEnd))
 		{
 			//npcobj1->m_fSpeed = 50.0f + (rand() % 200);
-			npcobj1->m_iCollisionType = TCollisionType::T_Overlap;
+			npcobj1->m_iCollisionType = CollisionType::T_Overlap;
 			m_NpcList.emplace_back(npcobj1);
 		}
-		auto m_pHP = std::make_shared<THpBar>(npcobj1->m_HP);
+		auto m_pHP = std::make_shared<HpBar>(npcobj1->m_HP);
 		m_pHP->m_pWorld = m_pWorld.get();
 		m_pHP->SetMap(m_pMap.get());
 		m_pHP->SetNpc(npcobj1.get());
@@ -321,10 +321,10 @@ bool TSceneGameIn::CreateNPC()
 		tStart.x += 25.0f;
 		tEnd.y -= 110.0f;
 		tEnd.x -= 25.0f;
-		m_pHP->m_pMeshRender = &TGameCore::m_MeshRender;
+		m_pHP->m_pMeshRender = &GameCore::m_MeshRender;
 		if (m_pHP->Create(m_pWorld.get(), resData, tStart, tEnd))
 		{
-			m_pHP->m_iCollisionType = TCollisionType::T_Overlap;
+			m_pHP->m_iCollisionType = CollisionType::T_Overlap;
 			m_pHP->m_vInitialScale = m_pHP->m_rtScreen.vh;
 			m_HPList.emplace_back(m_pHP);
 		}
@@ -334,7 +334,7 @@ bool TSceneGameIn::CreateNPC()
 		TVector2 tStart = area.first;
 		TVector2 tEnd = area.second;
 		auto npcobj2 = std::make_shared<TMonster2>();
-		npcobj2->m_pMeshRender = &TGameCore::m_MeshRender;
+		npcobj2->m_pMeshRender = &GameCore::m_MeshRender;
 		npcobj2->SetMap(m_pMap.get());
 		npcobj2->SetData(m_rtSpriteList);
 		npcobj2->SetFSM(&m_fsm);
@@ -346,10 +346,10 @@ bool TSceneGameIn::CreateNPC()
 		if (npcobj2->Create(m_pWorld.get(), resData, tStart, tEnd))
 		{
 			//npcobj1->m_fSpeed = 50.0f + (rand() % 200);
-			npcobj2->m_iCollisionType = TCollisionType::T_Overlap;
+			npcobj2->m_iCollisionType = CollisionType::T_Overlap;
 			m_NpcList.emplace_back(npcobj2);
 		}
-		auto m_pHP = std::make_shared<THpBar>(npcobj2->m_HP);
+		auto m_pHP = std::make_shared<HpBar>(npcobj2->m_HP);
 		m_pHP->m_pWorld = m_pWorld.get();
 		m_pHP->SetMap(m_pMap.get());
 		m_pHP->SetNpc(npcobj2.get());
@@ -360,10 +360,10 @@ bool TSceneGameIn::CreateNPC()
 		tStart.x += 40.0f;
 		tEnd.y -= 110.0f;
 		tEnd.x -= 40.0f;
-		m_pHP->m_pMeshRender = &TGameCore::m_MeshRender;
+		m_pHP->m_pMeshRender = &GameCore::m_MeshRender;
 		if (m_pHP->Create(m_pWorld.get(), resData, tStart, tEnd))
 		{
-			m_pHP->m_iCollisionType = TCollisionType::T_Overlap;
+			m_pHP->m_iCollisionType = CollisionType::T_Overlap;
 			m_pHP->m_vInitialScale = m_pHP->m_rtScreen.vh;
 			m_HPList.emplace_back(m_pHP);
 		}
@@ -373,7 +373,7 @@ bool TSceneGameIn::CreateNPC()
 		TVector2 tStart = area.first;
 		TVector2 tEnd = area.second;
 		auto npcobj3 = std::make_shared<TMonster3>();
-		npcobj3->m_pMeshRender = &TGameCore::m_MeshRender;
+		npcobj3->m_pMeshRender = &GameCore::m_MeshRender;
 		npcobj3->SetMap(m_pMap.get());
 		npcobj3->SetData(m_rtSpriteList);
 		npcobj3->SetFSM(&m_fsm);
@@ -385,10 +385,10 @@ bool TSceneGameIn::CreateNPC()
 		if (npcobj3->Create(m_pWorld.get(), resData, tStart, tEnd))
 		{
 			//npcobj1->m_fSpeed = 50.0f + (rand() % 200);
-			npcobj3->m_iCollisionType = TCollisionType::T_Overlap;
+			npcobj3->m_iCollisionType = CollisionType::T_Overlap;
 			m_NpcList.emplace_back(npcobj3);
 		}
-		auto m_pHP = std::make_shared<THpBar>(npcobj3->m_HP);
+		auto m_pHP = std::make_shared<HpBar>(npcobj3->m_HP);
 		m_pHP->m_pWorld = m_pWorld.get();
 		m_pHP->SetMap(m_pMap.get());
 		m_pHP->SetNpc(npcobj3.get());
@@ -398,10 +398,10 @@ bool TSceneGameIn::CreateNPC()
 		tStart.x += 20.0f;
 		tEnd.y -= 110.0f;
 		tEnd.x -= 20.0f;
-		m_pHP->m_pMeshRender = &TGameCore::m_MeshRender;
+		m_pHP->m_pMeshRender = &GameCore::m_MeshRender;
 		if (m_pHP->Create(m_pWorld.get(), resData, tStart, tEnd))
 		{
-			m_pHP->m_iCollisionType = TCollisionType::T_Overlap;
+			m_pHP->m_iCollisionType = CollisionType::T_Overlap;
 			m_pHP->m_vInitialScale = m_pHP->m_rtScreen.vh;
 			m_HPList.emplace_back(m_pHP);
 		}
@@ -414,7 +414,7 @@ bool TSceneGameIn::CreateBoss()
 	TVector2 tStart = { 13700.0f, 743.0f };
 	TVector2 tEnd = { 13900.0f, 843.0f };
 	m_pBoss = std::make_shared<TBossObj>((tStart + tEnd) / 2.0f);
-	m_pBoss->m_pMeshRender = &TGameCore::m_MeshRender;
+	m_pBoss->m_pMeshRender = &GameCore::m_MeshRender;
 	m_pBoss->SetMap(m_pMap.get());
 	m_pBoss->SetFSM(&m_fsm);
 	m_pBoss->SetData(m_rtSpriteList);
@@ -423,11 +423,11 @@ bool TSceneGameIn::CreateBoss()
 	TLoadResData resData;
 	resData.texPathName = L"../../data/texture/Boss2.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
-	m_pBoss->m_pMeshRender = &TGameCore::m_MeshRender;
+	m_pBoss->m_pMeshRender = &GameCore::m_MeshRender;
 	m_pBoss->m_pWorld = m_pWorld.get();
 	if (m_pBoss->Create(m_pWorld.get(), resData, tStart, tEnd))
 	{
-		m_pBoss->m_iCollisionType = TCollisionType::T_Overlap;
+		m_pBoss->m_iCollisionType = CollisionType::T_Overlap;
 		//m_NpcList.emplace_back(m_pBoss);
 	}
 	return true;
@@ -435,20 +435,20 @@ bool TSceneGameIn::CreateBoss()
 
 bool TSceneGameIn::CreateUI()
 {
-	TButtonGUI::CreateActionFSM();
+	ButtonGUI::CreateActionFSM();
 
 	TLoadResData resData;
 	/*resData.texPathName = L"../../data/ui/Character.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
 
-	auto hero_tile1 = std::make_shared<TUIHpTile>();
-	hero_tile1->m_pMeshRender = &TGameCore::m_MeshRender;
+	auto hero_tile1 = std::make_shared<UIHpTile>();
+	hero_tile1->m_pMeshRender = &GameCore::m_MeshRender;
 	hero_tile1->SetFSM(&m_GuiFSM);
 	TVector2 vStart1 = { 0.0f, 720.0f };
 	TVector2 vEnd1 = { 50.0f, 770.0f };
 	if (hero_tile1->Create(m_pWorld.get(), resData, vStart1, vEnd1))
 	{
-		hero_tile1->m_iCollisionType = TCollisionType::T_Overlap;
+		hero_tile1->m_iCollisionType = CollisionType::T_Overlap;
 		m_UiList.emplace_back(hero_tile1);
 	}*/
 
@@ -456,30 +456,30 @@ bool TSceneGameIn::CreateUI()
 	resData.texPathName = L"../../data/ui/HeroEnergytile.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
 
-	auto hero_tile2 = std::make_shared<TUIHpTile>();
-	hero_tile2->m_pMeshRender = &TGameCore::m_MeshRender;
+	auto hero_tile2 = std::make_shared<UIHpTile>();
+	hero_tile2->m_pMeshRender = &GameCore::m_MeshRender;
 	hero_tile2->SetFSM(&m_GuiFSM);
 	TVector2 vStart1 = { 50.0f, 20.0f };
 	TVector2 vEnd1 = { 550.0f, 70.0f };
 	if (hero_tile2->Create(m_pWorld.get(), resData, vStart1, vEnd1))
 	{
-		hero_tile2->m_iCollisionType = TCollisionType::T_Overlap;
+		hero_tile2->m_iCollisionType = CollisionType::T_Overlap;
 		m_UiList.emplace_back(hero_tile2);
 	}
 
 	resData.texPathName = L"../../data/ui/HpBar.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
 
-	auto hero_hp = std::make_shared<TUiHpBar>(HPBAR_OWNER::BAROWNER_HERO);
+	auto hero_hp = std::make_shared<UiHpBar>(HPBAR_OWNER::BAROWNER_HERO);
 	hero_hp->SetHero(m_pHero.get());
 	hero_hp->SetHeroHp(m_pHero->m_HeroHP);
-	hero_hp->m_pMeshRender = &TGameCore::m_MeshRender;
+	hero_hp->m_pMeshRender = &GameCore::m_MeshRender;
 	hero_hp->SetFSM(&m_GuiFSM);
 	vStart1 = { 118.37f, 31.0f };
 	vEnd1 = { 545.0f, 64.0f };
 	if (hero_hp->Create(m_pWorld.get(), resData, vStart1, vEnd1))
 	{
-		hero_hp->m_iCollisionType = TCollisionType::T_Overlap;
+		hero_hp->m_iCollisionType = CollisionType::T_Overlap;
 		hero_hp->m_vInitialScale = hero_hp->m_rtScreen.vh;
 		m_UiList.emplace_back(hero_hp);
 	}
@@ -487,44 +487,44 @@ bool TSceneGameIn::CreateUI()
 	/*resData.texPathName = L"../../data/ui/boss.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
 
-	auto boss_tile1 = std::make_shared<TUIHpTile>();
-	boss_tile1->m_pMeshRender = &TGameCore::m_MeshRender;
+	auto boss_tile1 = std::make_shared<UIHpTile>();
+	boss_tile1->m_pMeshRender = &GameCore::m_MeshRender;
 	boss_tile1->SetFSM(&m_GuiFSM);
 	vStart1 = { 40.0f, 150.0f };
 	vEnd1 = { 115.0f, 225.0f };
 	if (boss_tile1->Create(m_pWorld.get(), resData, vStart1, vEnd1))
 	{
-		boss_tile1->m_iCollisionType = TCollisionType::T_Overlap;
+		boss_tile1->m_iCollisionType = CollisionType::T_Overlap;
 		m_UiList.emplace_back(boss_tile1);
 	}*/
 
 	resData.texPathName = L"../../data/ui/BossEnergytile.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
 
-	auto boss_tile2 = std::make_shared<TUIHpTile>();
-	boss_tile2->m_pMeshRender = &TGameCore::m_MeshRender;
+	auto boss_tile2 = std::make_shared<UIHpTile>();
+	boss_tile2->m_pMeshRender = &GameCore::m_MeshRender;
 	boss_tile2->SetFSM(&m_GuiFSM);
 	vStart1 = { 115.0f, 150.0f };
 	vEnd1 = { 1115.0f, 225.0f };
 	if (boss_tile2->Create(m_pWorld.get(), resData, vStart1, vEnd1))
 	{
-		boss_tile2->m_iCollisionType = TCollisionType::T_Overlap;
+		boss_tile2->m_iCollisionType = CollisionType::T_Overlap;
 		m_UiList.emplace_back(boss_tile2);
 	}
 
 	resData.texPathName = L"../../data/ui/BossHpBar.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
 
-	auto boss_hp = std::make_shared<TUiHpBar>(HPBAR_OWNER::BAROWNER_BOSS);
+	auto boss_hp = std::make_shared<UiHpBar>(HPBAR_OWNER::BAROWNER_BOSS);
 	boss_hp->SetBoss(m_pBoss.get());
 	boss_hp->SetBossHp(m_pBoss->m_HP);
-	boss_hp->m_pMeshRender = &TGameCore::m_MeshRender;
+	boss_hp->m_pMeshRender = &GameCore::m_MeshRender;
 	boss_hp->SetFSM(&m_GuiFSM);
 	vStart1 = { 251.75f, 166.5f };
 	vEnd1 = { 1106.5f, 214.0f };
 	if (boss_hp->Create(m_pWorld.get(), resData, vStart1, vEnd1))
 	{
-		boss_hp->m_iCollisionType = TCollisionType::T_Overlap;
+		boss_hp->m_iCollisionType = CollisionType::T_Overlap;
 		boss_hp->m_vBInitialScale = boss_hp->m_rtScreen.vh;
 		m_UiList.emplace_back(boss_hp);
 	}
@@ -532,7 +532,7 @@ bool TSceneGameIn::CreateUI()
 }
 //bool TSceneGameIn::CreateEffect()
 //{
-//	auto pObject3 = std::make_shared<TEffectObj>();
+//	auto pObject3 = std::make_shared<EffectObj>();
 //	TVector2 tStart = { 640.0f,0.0f };
 //	TVector2 tEnd2 = { tStart.x + 100.0f, tStart.y + 100.0f };
 //	AddEffect(tStart, tEnd2);
@@ -541,13 +541,13 @@ bool TSceneGameIn::CreateUI()
 //
 void   TSceneGameIn::AddEffect(TVector2 tStart, TVector2 tEnd)
 {
-	auto pObject3 = std::make_shared<TEffectObj>();
-	pObject3->m_pMeshRender = &TGameCore::m_MeshRender;
+	auto pObject3 = std::make_shared<EffectObj>();
+	pObject3->m_pMeshRender = &GameCore::m_MeshRender;
 	pObject3->m_vVertexList = pObject3->m_pMeshRender->m_vVertexList;
 	TLoadResData resData;
 	resData.texPathName = L"../../data/effect/attacked.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
-	TEffectData data;
+	EffectData data;
 	data.m_bLoop = true;
 	data.m_fLifeTime = 0.3f;
 	UINT iSprite = 0;
@@ -574,12 +574,12 @@ void   TSceneGameIn::AddEffect(TVector2 tStart, TVector2 tEnd)
 void   TSceneGameIn::AddItem(TVector2 tStart, TVector2 tEnd)
 {
 	auto pObject3 = std::make_shared<TItem>();
-	pObject3->m_pMeshRender = &TGameCore::m_MeshRender;
+	pObject3->m_pMeshRender = &GameCore::m_MeshRender;
 	pObject3->m_vVertexList = pObject3->m_pMeshRender->m_vVertexList;
 	TLoadResData resData;
 	resData.texPathName = L"../../data/Texture/item_H.png";
 	resData.texShaderName = L"../../data/shader/Default.txt";
-	TEffectData data;
+	EffectData data;
 	data.m_bLoop = true;
 	data.m_fLifeTime = 0.5f;
 	UINT iSprite = 0;
@@ -596,7 +596,7 @@ void   TSceneGameIn::AddItem(TVector2 tStart, TVector2 tEnd)
 	}
 	if (pObject3->Create(m_pWorld.get(), resData, tStart, tEnd))
 	{
-		pObject3->m_iCollisionType = TCollisionType::T_Overlap;
+		pObject3->m_iCollisionType = CollisionType::T_Overlap;
 	}
 }
 
@@ -629,7 +629,7 @@ void TSceneGameIn::AddDrop()
 		resData.texPathName = L"../../data/texture/Boss2.png";
 		resData.texShaderName = L"../../data/shader/Default.txt";
 
-		m_pRect->m_pMeshRender = &TGameCore::m_MeshRender;
+		m_pRect->m_pMeshRender = &GameCore::m_MeshRender;
 
 		//if (m_pWorld)
 		//{ // TWorld 포인터가 유효한지 확인
@@ -637,7 +637,7 @@ void TSceneGameIn::AddDrop()
 		//}
 		if (m_pRect->Create(m_pWorld.get(), resData, tStart, tEnd))
 		{
-			m_pRect->m_iCollisionType = TCollisionType::T_Overlap;
+			m_pRect->m_iCollisionType = CollisionType::T_Overlap;
 			m_DropList.emplace_back(m_pRect);
 		}
 	}
@@ -704,7 +704,7 @@ void   TSceneGameIn::Frame()
 	}
 
 	// 점프 사운드, 슈팅 사운드
-	TSoundManager::GetInstance().Frame();
+	SoundManager::GetInstance().Frame();
 	if (m_pHero->m_iJumpingCount < 3 /*&& m_pHero->m_iJumpingCount >= 0*/ && g_GameKey.dwWkey == KEY_PUSH && m_pHero->m_CurrentState != HeroState::Radder)
 	{
 		m_pJumpSound->PlayEffect();
@@ -885,7 +885,7 @@ void   TSceneGameIn::Frame()
 	for (auto iter = std::begin(m_EffectList);
 		iter != m_EffectList.end();)
 	{
-		TEffectObj* pObj = (TEffectObj*)iter->get();
+		EffectObj* pObj = (EffectObj*)iter->get();
 		if (pObj->m_bDead == false)
 		{
 			pObj->Frame();
@@ -1045,7 +1045,7 @@ void   TSceneGameIn::Frame()
 }
 void   TSceneGameIn::Render()
 {
-	TSoundManager::GetInstance().Render();
+	SoundManager::GetInstance().Render();
 	m_pMap->Transform(m_vCamera);
 	m_pMap->Render();
 	m_pBossMap->Transform(m_vCamera);
@@ -1056,8 +1056,8 @@ void   TSceneGameIn::Render()
 		m_pBossCreate->Render();
 	}
 
-	TDevice::m_pd3dContext->PSSetSamplers(0, 1, TDxState::m_pPointSS.GetAddressOf());
-	TDevice::m_pd3dContext->PSSetShaderResources(1, 1, &m_pBitmap1Mask->m_pTexSRV);
+	Device::m_pd3dContext->PSSetSamplers(0, 1, DxState::m_pPointSS.GetAddressOf());
+	Device::m_pd3dContext->PSSetShaderResources(1, 1, &m_pBitmap1Mask->m_pTexSRV);
 
 	for (auto data : m_NpcList)
 	{

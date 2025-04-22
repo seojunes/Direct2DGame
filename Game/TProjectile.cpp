@@ -1,16 +1,16 @@
 #include "TProjectile.h"
-#include "TGameCore.h"
+#include "GameCore.h"
 #include "TWorld.h"
 
 
-void TProjectileEffect::HitOverlap(TObject* pObj, THitResult hRes)
+void TProjectileEffect::HitOverlap(Object* pObj, THitResult hRes)
 {
-	TObject::HitOverlap(pObj, hRes);
-	if (pObj->GetType() == TObjectType::Npc)
+	Object::HitOverlap(pObj, hRes);
+	if (pObj->GetType() == ObjectType::Npc)
 	{
 		//m_bDead = true; // 충돌 시 미사일 소멸
 	}
-	if (pObj->GetType() == TObjectType::Wall)
+	if (pObj->GetType() == ObjectType::Wall)
 	{
 		m_bDead = true;
 	}
@@ -94,11 +94,11 @@ void TProjectileEffect::Render()
 	//if (m_Data.m_iType == 1)
 	//{
 	PreRender();
-	TDevice::m_pd3dContext->PSSetShaderResources(0, 1, &m_pCurrentTexture->m_pTexSRV);
+	Device::m_pd3dContext->PSSetShaderResources(0, 1, &m_pCurrentTexture->m_pTexSRV);
 	if (m_pShader)
 	{
-		TDevice::m_pd3dContext->VSSetShader(m_pShader->m_pVertexShader.Get(), nullptr, 0);
-		TDevice::m_pd3dContext->PSSetShader(m_pShader->m_pPixelShader.Get(), nullptr, 0);
+		Device::m_pd3dContext->VSSetShader(m_pShader->m_pVertexShader.Get(), nullptr, 0);
+		Device::m_pd3dContext->PSSetShader(m_pShader->m_pPixelShader.Get(), nullptr, 0);
 	}
 	PostRender();
 }
@@ -108,15 +108,15 @@ TProjectile::TProjectile(TWorld* pWorld) : m_pWorld(pWorld)
 
 }
 
-void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction, Shooter ownertype,TObject* owner, bool  m_bOncharging)
+void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction, Shooter ownertype,Object* owner, bool  m_bOncharging)
 {
 	auto obj = std::make_shared<TProjectileEffect>();
-	obj->m_pMeshRender = &TGameCore::m_MeshRender;
+	obj->m_pMeshRender = &GameCore::m_MeshRender;
 	obj->m_vVertexList = obj->m_pMeshRender->m_vVertexList;
 	obj->m_pOwnerType = ownertype;
 	TLoadResData resData;
 	resData.texShaderName = L"../../data/shader/Default.txt";
-	TEffectData data;
+	EffectData data;
 	data.m_bLoop = true;
 	data.m_fLifeTime = 1.0f;
 	data.m_fOffsetTime = 0.01f;
@@ -181,13 +181,13 @@ void   TProjectile::AddEffect(TVector2 vStart, TVector2 tEnd, TVector2 direction
 	if (obj->Create(m_pWorld, resData, vStart, tEnd))
 	{
 		obj->m_pCurrentTexture = obj->m_pTexture;
-		obj->m_iCollisionType = TCollisionType::T_Overlap;
+		obj->m_iCollisionType = CollisionType::T_Overlap;
 		m_datalist.emplace_back(obj);
 	}
 
 }
 
-//void TProjectile::ApplyOwnerType(const TObjectType& InObjectType)
+//void TProjectile::ApplyOwnerType(const ObjectType& InObjectType)
 //{
 //	OwnerType = InObjectType;
 //}

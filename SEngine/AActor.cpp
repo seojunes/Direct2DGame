@@ -82,7 +82,7 @@ void AActor::Render()
 }
 void AActor::PostRender()
 {
-	// 0번 레지스터에 셰이더상수 m_pConstantBuffer를 연결
+	// 0번 레지스터에 셰이더상수 m_pConstantBuffer를 2번 레지스터에 m_pCurrentAnimationCB 를 저장.
 	TDevice::m_pd3dContext->VSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
 	TDevice::m_pd3dContext->VSSetConstantBuffers(2, 1, m_pCurrentAnimationCB.GetAddressOf());
 
@@ -91,21 +91,20 @@ void AActor::PostRender()
 		m_fFrame += g_fSPF * 30 * 1.0f;
 		if (m_pCurrentAnimation != nullptr)
 		{
-			// root motion
+			// root motion 고정 처리.
 			auto iter = m_pCurrentAnimation->Mesh->m_FbxNodeNames.find(L"root");//90
 			if (iter != m_pCurrentAnimation->Mesh->m_FbxNodeNames.end())
 			{
 				auto mat = m_pCurrentAnimation->Mesh->m_Childs[iter->second]->m_AnimList[0];
 
-				for (int iFrame = m_pCurrentAnimation->m_iStartFrame;
-					iFrame < m_pCurrentAnimation->m_iEndFrame; iFrame++)
+				for (int iFrame = m_pCurrentAnimation->m_iStartFrame; iFrame < m_pCurrentAnimation->m_iEndFrame; iFrame++)
 				{
 					m_pCurrentAnimation->Mesh->m_Childs[iter->second]->m_AnimList[iFrame]._41 = mat._41;
 					m_pCurrentAnimation->Mesh->m_Childs[iter->second]->m_AnimList[iFrame]._42 = mat._42;
 					m_pCurrentAnimation->Mesh->m_Childs[iter->second]->m_AnimList[iFrame]._43 = mat._43;
 				}
 			}
-			if (m_fFrame >= m_pCurrentAnimation->m_iEndFrame) m_fFrame = m_iStartFrame;
+			if (m_fFrame >= m_pCurrentAnimation->m_iEndFrame)     m_fFrame = m_iStartFrame;
 			for (auto child : m_pCurrentAnimation->Mesh->m_Childs)
 			{
 				TMatrix matParent;

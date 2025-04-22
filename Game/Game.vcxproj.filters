@@ -4,40 +4,37 @@
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="THeroObj.cpp" />
     <ClCompile Include="TWorld.cpp" />
-    <ClCompile Include="TInput.cpp">
+    <ClCompile Include="Input.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="TInputLayout.cpp">
+    <ClCompile Include="InputLayout.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="TGameCore.cpp">
+    <ClCompile Include="GameCore.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="TDevice.cpp">
+    <ClCompile Include="DxState.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="TDxState.cpp">
+    <ClCompile Include="DxWrite.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="TDxWrite.cpp">
+    <ClCompile Include="Object.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="TObject.cpp">
+    <ClCompile Include="Object2D.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="TObject2D.cpp">
+    <ClCompile Include="Sound.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="TSound.cpp">
+    <ClCompile Include="Texture.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="TTexture.cpp">
+    <ClCompile Include="Time.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="TTime.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="TWindow.cpp">
+    <ClCompile Include="Window.cpp">
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="TVector.cpp">
@@ -49,10 +46,10 @@
     <ClCompile Include="TMatrix.cpp">
       <Filter>math</Filter>
     </ClCompile>
-    <ClCompile Include="TMeshRender.cpp">
+    <ClCompile Include="MeshRender.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="TShader.cpp">
+    <ClCompile Include="Shader.cpp">
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="TCollision.cpp">
@@ -76,13 +73,13 @@
     <ClCompile Include="TSceneResult.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="TFiniteState.cpp">
+    <ClCompile Include="FiniteState.cpp">
       <Filter>FSM</Filter>
     </ClCompile>
-    <ClCompile Include="TControlGUI.cpp">
+    <ClCompile Include="ControlGUI.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="TGuiFSM.cpp">
+    <ClCompile Include="GuiFSM.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="TProjectile.cpp" />
@@ -101,10 +98,10 @@
     <ClCompile Include="TBossObj.cpp">
       <Filter>Monster</Filter>
     </ClCompile>
-    <ClCompile Include="THpBar.cpp">
+    <ClCompile Include="HpBar.cpp">
       <Filter>HPbar</Filter>
     </ClCompile>
-    <ClCompile Include="TUiHpBar.cpp">
+    <ClCompile Include="UiHpBar.cpp">
       <Filter>HPbar</Filter>
     </ClCompile>
     <ClCompile Include="TMapObj.cpp">
@@ -122,7 +119,7 @@
     <ClCompile Include="TPortal.cpp">
       <Filter>object</Filter>
     </ClCompile>
-    <ClCompile Include="TEffectObj.cpp">
+    <ClCompile Include="EffectObj.cpp">
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="TBossCreate.cpp">
@@ -134,6 +131,7 @@
     <ClCompile Include="TItem.cpp">
       <Filter>object</Filter>
     </ClCompile>
+    <ClCompile Include="Device.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -142,43 +140,40 @@
     <ClInclude Include="..\..\data\shader\stdShader.h">
       <Filter>shader</Filter>
     </ClInclude>
-    <ClInclude Include="TInput.h">
+    <ClInclude Include="Input.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="TInputLayout.h">
+    <ClInclude Include="InputLayout.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="TGameCore.h">
+    <ClInclude Include="GameCore.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="TDevice.h">
+    <ClInclude Include="DxState.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="TDxState.h">
+    <ClInclude Include="DxWrite.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="TDxWrite.h">
+    <ClInclude Include="Object.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="TObject.h">
+    <ClInclude Include="Object2D.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="TObject2D.h">
+    <ClInclude Include="Sound.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="TSound.h">
+    <ClInclude Include="Std.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="TStd.h">
+    <ClInclude Include="Texture.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="TTexture.h">
+    <ClInclude Include="Time.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="TTime.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="TWindow.h">
+    <ClInclude Include="Window.h">
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="TVertex.h">
@@ -190,10 +185,10 @@
     <ClInclude Include="TMatrix.h">
       <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="TMeshRender.h">
+    <ClInclude Include="MeshRender.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="TShader.h">
+    <ClInclude Include="Shader.h">
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="TCollision.h">
@@ -217,13 +212,13 @@
     <ClInclude Include="TSceneResult.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="TFiniteState.h">
+    <ClInclude Include="FiniteState.h">
       <Filter>FSM</Filter>
     </ClInclude>
-    <ClInclude Include="TControlGUI.h">
+    <ClInclude Include="ControlGUI.h">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="TGuiFSM.h">
+    <ClInclude Include="GuiFSM.h">
       <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="TProjectile.h" />
@@ -242,10 +237,10 @@
     <ClInclude Include="TBossObj.h">
       <Filter>Monster</Filter>
     </ClInclude>
-    <ClInclude Include="THpBar.h">
+    <ClInclude Include="HpBar.h">
       <Filter>HPbar</Filter>
     </ClInclude>
-    <ClInclude Include="TUiHpBar.h">
+    <ClInclude Include="UiHpBar.h">
       <Filter>HPbar</Filter>
     </ClInclude>
     <ClInclude Include="TMapObj.h">
@@ -263,7 +258,7 @@
     <ClInclude Include="TPortal.h">
       <Filter>object</Filter>
     </ClInclude>
-    <ClInclude Include="TEffectObj.h">
+    <ClInclude Include="EffectObj.h">
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="TBossCreate.h">
@@ -275,6 +270,7 @@
     <ClInclude Include="TItem.h">
       <Filter>object</Filter>
     </ClInclude>
+    <ClInclude Include="Device.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\data\shader\BlendMask.txt">

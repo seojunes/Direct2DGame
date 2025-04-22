@@ -13,13 +13,13 @@ struct TStateData
 //	STATE_NONE = 0,
 //	STATE_OK,
 //};
-class TEnemyFSM : public TFiniteStateMachine
+class TEnemyFSM : public FiniteStateMachine
 {
 
 };
 
 
-class TNpcObj : public TObject2D
+class TNpcObj : public Object2D
 {
 public:
 	THeroObj* m_pHero = nullptr;
@@ -30,15 +30,15 @@ public:
 	TEnemyState* m_pAction = nullptr;
 	std::vector<TStateData>   m_StateData;
 	static std::vector<std::shared_ptr<TEnemyState>>  m_pActionList;
-	TFiniteStateMachine* m_pFsm = nullptr;
+	FiniteStateMachine* m_pFsm = nullptr;
 public:
 	std::shared_ptr<TProjectile>		m_pProjectile;
 	//ATTACKSTATE m_eAttacked = ATTACKSTATE::STATE_NONE;
 public:
-	void SetFSM(TFiniteStateMachine* pFsm);
+	void SetFSM(FiniteStateMachine* pFsm);
 	void SetTransition(UINT iEvent);
 	static void CreateActionFSM();
-	void FrameState(TObject* pHero);
+	void FrameState(Object* pHero);
 	void SetMap(TMapObj* pMap) { m_pMap = pMap; }
 public: 
 	std::vector<RECT> m_rtBossCreateFrames;
@@ -94,7 +94,7 @@ public:
 	HeroView m_eCurrentView = HeroView::LeftView;
 public:
 	virtual void SetVertexData();
-	void    HitOverlap(TObject* pObj, THitResult hRet) override;
+	void    HitOverlap(Object* pObj, THitResult hRet) override;
 	TNpcObj()
 	{
 		m_fSpeed = 150.0f;
@@ -102,9 +102,9 @@ public:
 		m_vDir.y = 0.0f;
 	}
 public:
-	TObjectType GetType() const override
+	ObjectType GetType() const override
 	{
-		return TObjectType::Npc;
+		return ObjectType::Npc;
 	}
 public:
 	TVector2 Attacked(TVector2 pos);

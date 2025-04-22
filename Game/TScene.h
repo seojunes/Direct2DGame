@@ -1,8 +1,8 @@
 #pragma once
-#include "TStd.h"
+#include "Std.h"
 #include "TWorld.h"
-#include "TSound.h"
-#include "TFiniteState.h"
+#include "Sound.h"
+#include "FiniteState.h"
 enum TSceneState
 {
 	SCENE_INTRO = 0,
@@ -42,25 +42,25 @@ public:
 	virtual ~TScene();
 	
 public:
-	TSound* m_pIntro = nullptr;
-	TSound* m_pRobby = nullptr;
-	TSound* m_pInGame = nullptr;
-	TSound* m_pTeleport = nullptr;
-	TSound* m_pJumpSound = nullptr;
-	TSound* m_pShotSound = nullptr;
-	TSound* m_pCrashSound = nullptr;
-	TSound* m_pBossSound = nullptr;
-	TSound* m_pClearSound = nullptr;
-	TSound* m_pHurt = nullptr;
-	TSound* m_pMon2M = nullptr;
-	TSound* m_pMon3M = nullptr;
-	TSound* m_pBossA2 = nullptr;
-	TSound* m_pBossDrop = nullptr;
+	Sound* m_pIntro = nullptr;
+	Sound* m_pRobby = nullptr;
+	Sound* m_pInGame = nullptr;
+	Sound* m_pTeleport = nullptr;
+	Sound* m_pJumpSound = nullptr;
+	Sound* m_pShotSound = nullptr;
+	Sound* m_pCrashSound = nullptr;
+	Sound* m_pBossSound = nullptr;
+	Sound* m_pClearSound = nullptr;
+	Sound* m_pHurt = nullptr;
+	Sound* m_pMon2M = nullptr;
+	Sound* m_pMon3M = nullptr;
+	Sound* m_pBossA2 = nullptr;
+	Sound* m_pBossDrop = nullptr;
 
-	vector<TSound*> m_BGMList;
-	vector<TSound*> m_EffectList;
+	vector<Sound*> m_BGMList;
+	vector<Sound*> m_EffectList;
 public:
-	virtual void ProcessAction(TObject* pObj) = 0;
+	virtual void ProcessAction(Object* pObj) = 0;
 public:
 	TGame* m_pOwner = nullptr;
 public:

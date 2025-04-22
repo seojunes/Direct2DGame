@@ -1,5 +1,5 @@
 #include "TMapObj.h"
-#include "TDevice.h"
+#include "Device.h"
 #include <time.h>
 TMapObj::TMapObj()
 {
@@ -68,7 +68,7 @@ void TMapObj::Frame()
 	m_vVertexList[1].t = { tEnd / xSize, 0.0f };
 	m_vVertexList[2].t = { vPos / xSize, 1.0f };
 	m_vVertexList[3].t = { tEnd / xSize, 1.0f }; */
-	TDevice::m_pd3dContext->UpdateSubresource(
+	Device::m_pd3dContext->UpdateSubresource(
 		m_pVertexBuffer.Get(), 0, nullptr,
 		&m_vVertexList.at(0), 0, 0);
 }
@@ -92,7 +92,7 @@ void TMapObj::SetVertexData()
 	m_iNumCellCol = m_iNumCol - 1;*/
 	m_iNumVertex = m_iNumRow * m_iNumCol;
 	m_iNumIndex = m_iNumCellRow * m_iNumCellCol * 2 * 3;
-	//TObject::SetVertexData();	
+	//Object::SetVertexData();	
 	m_vVertexList.resize(m_iNumRow * m_iNumCol);
 	m_vScreenList.resize(m_iNumRow * m_iNumCol);
 	m_Cells.resize(m_iNumCellRow * m_iNumCellCol);
@@ -169,7 +169,7 @@ bool	TMapObj::CreateVertexBuffer()
 	D3D11_SUBRESOURCE_DATA sd;
 	ZeroMemory(&sd, sizeof(sd));
 	sd.pSysMem = &m_vVertexList.at(0);
-	HRESULT hr = TDevice::m_pd3dDevice->CreateBuffer(
+	HRESULT hr = Device::m_pd3dDevice->CreateBuffer(
 		&bd, &sd, m_pVertexBuffer.GetAddressOf());
 	if (FAILED(hr))
 	{
@@ -189,7 +189,7 @@ bool	TMapObj::CreateIndexBuffer()
 	D3D11_SUBRESOURCE_DATA sd;
 	ZeroMemory(&sd, sizeof(sd));
 	sd.pSysMem = &m_vIndexList.at(0);
-	HRESULT hr = TDevice::m_pd3dDevice->CreateBuffer(
+	HRESULT hr = Device::m_pd3dDevice->CreateBuffer(
 		&bd, &sd, m_pIndexBuffer.GetAddressOf());
 	if (FAILED(hr))
 	{
@@ -215,16 +215,16 @@ void	TMapObj::Transform(TVector2 vCamera)
 {
 	TransformCamera(vCamera);
 	TransformNDC();
-	TDevice::m_pd3dContext->UpdateSubresource(
+	Device::m_pd3dContext->UpdateSubresource(
 		m_pVertexBuffer.Get(), 0, nullptr,
 		&m_vVertexList.at(0), 0, 0);
 }
-TObject& TMapObj::SetTexture(TTexture* pData)
+Object& TMapObj::SetTexture(Texture* pData)
 {
 	m_pTexture = pData;
 	return *this;
 }
-TObject& TMapObj::SetLayout(TInputLayout* pData)
+Object& TMapObj::SetLayout(InputLayout* pData)
 {
 	if (pData == nullptr)
 	{
@@ -236,7 +236,7 @@ TObject& TMapObj::SetLayout(TInputLayout* pData)
 	}
 	return *this;
 }
-TObject& TMapObj::SetShader(TShader* pData)
+Object& TMapObj::SetShader(Shader* pData)
 {
 	if (pData == nullptr)
 	{
@@ -250,49 +250,49 @@ TObject& TMapObj::SetShader(TShader* pData)
 }\
 void	TMapObj::PreRender()
 {
-	TDevice::m_pd3dContext->PSSetShaderResources(
+	Device::m_pd3dContext->PSSetShaderResources(
 		0, 1, &m_pTexture->m_pTexSRV);
-	TDevice::m_pd3dContext->VSSetShader(
+	Device::m_pd3dContext->VSSetShader(
 		m_pShader->m_pVertexShader.Get(), nullptr, 0);
-	TDevice::m_pd3dContext->PSSetShader(
+	Device::m_pd3dContext->PSSetShader(
 		m_pShader->m_pPixelShader.Get(), nullptr, 0);
-	TDevice::m_pd3dContext->IASetInputLayout(
+	Device::m_pd3dContext->IASetInputLayout(
 		m_pInputLayout->Get());
 
 	// 정점버퍼에서 Offsets에서 시작하여
 	// Strides크기로 정점을 정점쉐이더로 전달해라.
 	UINT Strides = sizeof(PCT_VERTEX);
 	UINT Offsets = 0;
-	TDevice::m_pd3dContext->IASetVertexBuffers(
+	Device::m_pd3dContext->IASetVertexBuffers(
 		0,
 		1,
 		m_pVertexBuffer.GetAddressOf(),
 		&Strides,
 		&Offsets);
-	TDevice::m_pd3dContext->IASetIndexBuffer(
+	Device::m_pd3dContext->IASetIndexBuffer(
 		m_pIndexBuffer.Get(),
 		DXGI_FORMAT_R32_UINT, 0);
-	TDevice::m_pd3dContext->IASetPrimitiveTopology(
+	Device::m_pd3dContext->IASetPrimitiveTopology(
 		D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 void	TMapObj::Render()
 {
 	PreRender();
-	TDevice::m_pd3dContext->PSSetSamplers(0, 1, TDxState::m_pPointSS.GetAddressOf());
+	Device::m_pd3dContext->PSSetSamplers(0, 1, DxState::m_pPointSS.GetAddressOf());
 	PostRender();
 }
 void	TMapObj::PostRender()
 {
 	if (m_pIndexBuffer == nullptr)
-		TDevice::m_pd3dContext->Draw(m_vVertexList.size(), 0);
+		Device::m_pd3dContext->Draw(m_vVertexList.size(), 0);
 	else
 	{
 		srand(time(NULL));
 		for (int iCell = 0; iCell < m_iNumCellRow * m_iNumCellCol; iCell++)
 		{
 			UINT iTex = m_Cells[iCell].iTexID;// rand() % 4;
-			TDevice::m_pd3dContext->PSSetShaderResources(0, 1, &m_pTexture->m_pTexSRV);
-			TDevice::m_pd3dContext->DrawIndexed(6, 6 * iCell, 0);
+			Device::m_pd3dContext->PSSetShaderResources(0, 1, &m_pTexture->m_pTexSRV);
+			Device::m_pd3dContext->DrawIndexed(6, 6 * iCell, 0);
 		}
 	}
 }

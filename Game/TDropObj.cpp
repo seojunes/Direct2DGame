@@ -1,18 +1,18 @@
 #include "TDropObj.h"
 #include "THeroObj.h"
 
-void    TDropObj::HitOverlap(TObject* pObj, THitResult hRes)
+void    TDropObj::HitOverlap(Object* pObj, THitResult hRes)
 {
-	TObject::HitOverlap(pObj, hRes);
-	const TObjectType OtherType = pObj == nullptr ? TObjectType::None : pObj->GetType();
+	Object::HitOverlap(pObj, hRes);
+	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();
 
-	if (OtherType == TObjectType::Wall)
+	if (OtherType == ObjectType::Wall)
 	{
 		m_bExplosion = true;
 		//m_state = DropState::STATE_EXPLOSION;
 		//m_bDead = true;
 	}
-	else if (OtherType == TObjectType::Hero)
+	else if (OtherType == ObjectType::Hero)
 	{
 		auto pHero = dynamic_cast<THeroObj*>(pObj);
 		pHero->TakeDamage(30);

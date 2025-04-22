@@ -307,12 +307,12 @@ void TMonster2::Frame()
 }
 void TMonster2::Render()
 {
-	TObject2D::Render();
+	Object2D::Render();
 	m_pProjectile->Render(m_vCamera);
 }
 void TMonster2::Release()
 {
-	TObject2D::Release();
+	Object2D::Release();
 	m_pProjectile->Release();
 }
 
@@ -467,11 +467,11 @@ void TMonster3::Frame()
 }
 void TMonster3::Render()
 {
-	TObject2D::Render();
+	Object2D::Render();
 	m_pProjectile->Render(m_vCamera);
 }
 void TMonster3::Release()
 {
-	TObject2D::Release();
+	Object2D::Release();
 	m_pProjectile->Release();
 }

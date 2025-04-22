@@ -1,11 +1,11 @@
 #include "TRadderObj.h"
 #include "TWorld.h"
-void    TRadderObj::HitOverlap(TObject* pObj, THitResult hRes)
+void    TRadderObj::HitOverlap(Object* pObj, THitResult hRes)
 {
-	TObject::HitOverlap(pObj, hRes);
-	const TObjectType OtherType = pObj == nullptr ? TObjectType::None : pObj->GetType();
+	Object::HitOverlap(pObj, hRes);
+	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();
 
-	if (OtherType == TObjectType::Hero)
+	if (OtherType == ObjectType::Hero)
 	{
 		auto pHero = dynamic_cast<THeroObj*>(pObj);
 		//pHero->m_fGravity = 0;

@@ -3,11 +3,11 @@
 class TSceneIntro : public TScene
 {
 public:
-	TGUIFSM					 m_GuiFSM;
-	using tUI = std::shared_ptr<TControlGUI>;
+	GUIFSM					 m_GuiFSM;
+	using tUI = std::shared_ptr<ControlGUI>;
 	std::vector<tUI>		m_UiList;
 public:
-	virtual void ProcessAction(TObject* pObj);
+	virtual void ProcessAction(Object* pObj);
 public:
 	float m_fEscapeTime = 3.0f;
 public:

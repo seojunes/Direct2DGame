@@ -1,8 +1,8 @@
 #pragma once
-#include "TGameCore.h"
+#include "GameCore.h"
 #include "TGame.h"
 
-class Sample : public TGameCore
+class Sample : public GameCore
 {
 	TGame			m_Game;
 	TSceneFSM	    m_SceneFSM;

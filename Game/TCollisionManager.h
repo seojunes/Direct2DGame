@@ -1,7 +1,7 @@
 #pragma once
 #include "TMapObj.h"
 
-class  TCollisionManager : public TObject2D
+class  TCollisionManager : public Object2D
 {
 	TMapObj* m_pMap = nullptr;
 public:
@@ -12,12 +12,12 @@ public:
 public:
 	void SetMap(TMapObj* pMap) { m_pMap = pMap; }
 	//virtual void SetVertexData();
-	void HitOverlap(TObject* pObj, THitResult hRes) override;
+	void HitOverlap(Object* pObj, THitResult hRes) override;
 	//vector<TVector2> MakeSBox();
 	//vector<TVector2> MakeEBox();
-	TObjectType GetType() const override
+	ObjectType GetType() const override
 	{
-		return TObjectType::Wall;
+		return ObjectType::Wall;
 	}
 };
 

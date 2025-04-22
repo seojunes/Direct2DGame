@@ -1,11 +1,11 @@
 #include "TCollisionManager.h"
 #include "TWorld.h"
-void    TCollisionManager::HitOverlap(TObject* pObj, THitResult hRes)
+void    TCollisionManager::HitOverlap(Object* pObj, THitResult hRes)
 {
-	TObject::HitOverlap(pObj, hRes);
- 	const TObjectType OtherType = pObj == nullptr ? TObjectType::None : pObj->GetType();
+	Object::HitOverlap(pObj, hRes);
+ 	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();
 	
-	if (OtherType == TObjectType::Projectile)
+	if (OtherType == ObjectType::Projectile)
 	{
 		auto pMissile = dynamic_cast<TProjectileEffect*>(pObj);
 		if (pMissile)

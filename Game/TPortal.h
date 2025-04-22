@@ -8,7 +8,7 @@ enum class PortalActiveState
 };
 
 
-class TPortal : public TObject2D
+class TPortal : public Object2D
 {
 	TMapObj* m_pMap = nullptr;
 public:
@@ -16,10 +16,10 @@ public:
 	float m_fCurrentTime = 0.0f;
 public:
 	void SetMap(TMapObj* pMap) { m_pMap = pMap; }
-	void HitOverlap(TObject* pObj, THitResult hRes) override;
-	TObjectType GetType() const override
+	void HitOverlap(Object* pObj, THitResult hRes) override;
+	ObjectType GetType() const override
 	{
-		return TObjectType::Portal;
+		return ObjectType::Portal;
 	}
 	void Frame() override;
 public:

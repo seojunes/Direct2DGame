@@ -1,5 +1,5 @@
 #include "TNpcObj.h"
-#include "TDevice.h"
+#include "Device.h"
 #include "THeroObj.h"
 struct TCollisionInfo
 {
@@ -7,11 +7,11 @@ struct TCollisionInfo
 };
 std::vector<std::shared_ptr<TEnemyState>> TNpcObj::m_pActionList;
 
-void TNpcObj::HitOverlap(TObject* pObj, THitResult hRes)  //충돌했을떄 실행되는 콜백함수
+void TNpcObj::HitOverlap(Object* pObj, THitResult hRes)  //충돌했을떄 실행되는 콜백함수
 {
-	TObject::HitOverlap(pObj, hRes);
-	const TObjectType OtherType = pObj == nullptr ? TObjectType::None : pObj->GetType();
-	//if (OtherType == TObjectType::Hero)			 //충돌체가 Hero일때, 
+	Object::HitOverlap(pObj, hRes);
+	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();
+	//if (OtherType == ObjectType::Hero)			 //충돌체가 Hero일때, 
 	//{
 	//	// Hero와 충돌 시 Hero의 체력을 감소
 	//	auto pHero = dynamic_cast<THeroObj*>(pObj);
@@ -20,7 +20,7 @@ void TNpcObj::HitOverlap(TObject* pObj, THitResult hRes)  //충돌했을떄 실행되는 
 	//		pHero->TakeDamage(5);
 	//	}
 	//}
-	if (OtherType == TObjectType::Projectile)
+	if (OtherType == ObjectType::Projectile)
 	{
 		auto pMissile = dynamic_cast<TProjectileEffect*>(pObj);
 		if (pMissile && pMissile->m_pOwnerType == Shooter::OWNER_HERO)
@@ -33,7 +33,7 @@ void TNpcObj::HitOverlap(TObject* pObj, THitResult hRes)  //충돌했을떄 실행되는 
 			//m_eAttacked = ATTACKSTATE::STATE_OK;
 		}
 	}
-	if (OtherType == TObjectType::Wall)
+	if (OtherType == ObjectType::Wall)
 	{
 		auto pWall = dynamic_cast<TCollisionManager*>(pObj);
 		if (pWall)
@@ -106,7 +106,7 @@ void TNpcObj::SetVertexData()
 	m_vVertexList[2].t = { rt.v1.x / xSize,rt.v2.y / ySize };
 	m_vVertexList[3].t = { rt.v2.x / xSize,rt.v2.y / ySize };
 }
-void TNpcObj::SetFSM(TFiniteStateMachine* pFsm)
+void TNpcObj::SetFSM(FiniteStateMachine* pFsm)
 {
 	m_pFsm = pFsm;
 	m_StateData.resize(TActionState::STATE_COUNT);
@@ -139,7 +139,7 @@ void TNpcObj::SetTransition(UINT iEvent)
 	UINT iOutput = m_pFsm->GetOutputState(m_pAction->m_iState, iEvent);
 	m_pAction = m_pActionList[iOutput].get();
 }
-void TNpcObj::FrameState(TObject* pHero)
+void TNpcObj::FrameState(Object* pHero)
 {
 	m_pAction->m_pOwner = this;
 	m_pAction->ProcessAction(pHero);

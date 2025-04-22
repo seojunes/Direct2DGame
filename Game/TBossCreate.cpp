@@ -1,10 +1,10 @@
 #include "TBossCreate.h"
-void    TBossCreate::HitOverlap(TObject* pObj, THitResult hRes)
+void    TBossCreate::HitOverlap(Object* pObj, THitResult hRes)
 {
-	TObject::HitOverlap(pObj, hRes);
-	const TObjectType OtherType = pObj == nullptr ? TObjectType::None : pObj->GetType();
+	Object::HitOverlap(pObj, hRes);
+	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();
 
-	if (OtherType == TObjectType::Wall)
+	if (OtherType == ObjectType::Wall)
 	{
 		m_bCreate = true;
 	}

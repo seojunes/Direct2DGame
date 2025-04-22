@@ -23,7 +23,7 @@ TDeadAction::TDeadAction(TNpcObj* p) : TEnemyState(p) {
 }
 TDeadAction::~TDeadAction() {}
 
-void TStandAction::ProcessAction(TObject* pObj)
+void TStandAction::ProcessAction(Object* pObj)
 {
 	/*m_pOwner->m_StateData[m_iState].m_fTimer -= g_fSPF;
 	float fDistance = (pObj->m_vPos - m_pOwner->m_vPos).Length();
@@ -43,7 +43,7 @@ void TStandAction::ProcessAction(TObject* pObj)
 	}*/
 	//m_pOwner->SetRotation(0);
 }
-void TMoveAction::ProcessAction(TObject* pObj)
+void TMoveAction::ProcessAction(Object* pObj)
 {
 	/*float fDistance = (pObj->m_vPos - m_pOwner->m_vPos).Length();
 	if (fDistance < m_pOwner->m_StateData[m_iState].m_fDistance)
@@ -64,7 +64,7 @@ void TMoveAction::ProcessAction(TObject* pObj)
 	m_pOwner->SetPosition(vMove);
 	m_pOwner->SetRotation(T_Pi);
 }
-void TAttackAction::ProcessAction(TObject* pObj)
+void TAttackAction::ProcessAction(Object* pObj)
 {
 	// 공격범위 판단 -> 상태전이
 	// 고격범위 탈출 -> 상태전이
@@ -97,7 +97,7 @@ void TAttackAction::ProcessAction(TObject* pObj)
 	m_pOwner->SetRotation(g_fGT);
 }
 
-void TDeadAction::ProcessAction(TObject* pObj)
+void TDeadAction::ProcessAction(Object* pObj)
 {
 	//m_pOwner->m_bDead = true;
 }

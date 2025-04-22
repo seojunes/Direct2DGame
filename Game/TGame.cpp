@@ -1,6 +1,6 @@
 #include "TGame.h"
 std::vector<std::shared_ptr<TScene>>  TGame::m_pActionList;
-void TGame::SetFSM(TFiniteStateMachine* pFsm)
+void TGame::SetFSM(FiniteStateMachine* pFsm)
 {
 	m_pFsm = pFsm;
 	m_pAction = m_pActionList[SCENE_INTRO].get();
@@ -47,7 +47,7 @@ void TGame::SetTransition(UINT iEvent)
 	// 새로운 씬으로 전환
 	m_pAction = NewScene;
 }
-void TGame::FrameState(TObject* pGame)
+void TGame::FrameState(Object* pGame)
 {
 	m_pAction->m_pOwner = this;
 	m_pAction->ProcessAction(pGame);

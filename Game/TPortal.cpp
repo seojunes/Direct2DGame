@@ -1,10 +1,10 @@
 #include "TPortal.h"
 #include "TWorld.h"
-void    TPortal::HitOverlap(TObject* pObj, THitResult hRes)
+void    TPortal::HitOverlap(Object* pObj, THitResult hRes)
 {
-	TObject::HitOverlap(pObj, hRes);
-	const TObjectType OtherType = pObj == nullptr ? TObjectType::None : pObj->GetType();
-	if (OtherType == TObjectType::Hero)
+	Object::HitOverlap(pObj, hRes);
+	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();
+	if (OtherType == ObjectType::Hero)
 	{
 		m_eActive = PortalActiveState::STATE_ACTIVE;
 		m_bAble = true;
@@ -48,7 +48,7 @@ void TPortal::SetVertexData()
 
 void TPortal::Frame()
 {
-	TObject2D::Frame();
+	Object2D::Frame();
 	SetVertexData();
 	m_fCurrentTime += g_fSPF; // 시간 업데이트
 	/*switch (m_eActive)

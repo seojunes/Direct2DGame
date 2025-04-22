@@ -3,14 +3,14 @@
 class TSceneLobby : public TScene
 {
 public:
-	TGUIFSM					 m_GuiFSM;
-	using tUI = std::shared_ptr<TControlGUI>;
+	GUIFSM					 m_GuiFSM;
+	using tUI = std::shared_ptr<ControlGUI>;
 	std::vector<tUI>		m_UiList;
 public:
 	TSceneLobby(TGame* p);
 	TSceneLobby() { m_iState = TSceneState::SCENE_LOBBY; };
 	virtual ~TSceneLobby();
-	void ProcessAction(TObject* pObj);
+	void ProcessAction(Object* pObj);
 public:
 	virtual void   Init() override;
 	virtual void   Frame() override;
