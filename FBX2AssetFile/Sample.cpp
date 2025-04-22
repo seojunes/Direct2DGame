@@ -202,7 +202,7 @@ void Sample::Render() {
 		obj->Render();
 	}*/
 }
-void Sample::Release()
+void Sample::Destroy()
 {
 	for (auto obj : m_FbxObjs)
 	{

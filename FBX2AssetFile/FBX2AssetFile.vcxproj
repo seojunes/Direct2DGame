@@ -112,12 +112,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../TEngine/inc;../../DxTk/Inc;../../Fmod/Inc;../../fbx/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../SEngine/inc;../../DxTk/Inc;../../Fmod/Inc;../../fbx/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../TEngine/lib;../../DxTk/lib;../../Fmod/lib;../../fbx/lib/x64/debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../SEngine/lib;../../DxTk/lib;../../Fmod/lib;../../fbx/lib/x64/debug</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -150,16 +150,16 @@
     <ClCompile Include="TFbxImporter.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TEngine\TEngine.vcxproj">
-      <Project>{6b6ff8fd-c27b-4ea2-b6cc-cfd9684e218c}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="..\..\data\shader\object.txt" />
     <Text Include="..\..\data\shader\pnct.txt">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </Text>
     <Text Include="..\..\data\shader\sky.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SEngine\SEngine.vcxproj">
+      <Project>{b3900050-8cd0-4899-8ab2-92549639fbd0}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
