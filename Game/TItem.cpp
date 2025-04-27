@@ -1,7 +1,7 @@
 #include "TItem.h"
 #include "THeroObj.h"
 
-void TItem::HitOverlap(Object* pObj, THitResult hRes)
+void TItem::HitOverlap(Object* pObj, HitResult hRes)
 {
 	Object::HitOverlap(pObj, hRes);
 	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();
@@ -40,7 +40,7 @@ void TItem::SetVertexData()
 	if (m_pTexture == nullptr) return;
 	float xSize = m_pTexture->m_TexDesc.Width;
 	float ySize = m_pTexture->m_TexDesc.Height;
-	TRect rt;
+	Rect rt;
 	rt.SetS(m_rtItemFrames[m_iItemFrame].left,
 		m_rtItemFrames[m_iItemFrame].top,
 		m_rtItemFrames[m_iItemFrame].right,

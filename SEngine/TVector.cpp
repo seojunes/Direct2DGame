@@ -1,6 +1,6 @@
 #include "TVector.h"
-#include "TMatrix.h"
-TVector2 TVector2::operator * (const TMatrix3& m)
+#include "Matrix.h"
+TVector2 TVector2::operator * (const Matrix3& m)
 {
 	TVector2 ret = *this;
 	ret.x = x * m._11 + y * m._21 + 1.0f * m._31;
@@ -96,7 +96,7 @@ TVector2::TVector2(float x, float y)
 /// </summary>
 /// <param name="m"></param>
 /// <returns></returns>
-TVector3 TVector3::operator * (const TMatrix& m)
+TVector3 TVector3::operator * (const Matrix& m)
 {
 	TVector3 ret = *this;
 	ret.x = x * m._11 + y * m._21 + z * m._31 + 1.0f * m._41;

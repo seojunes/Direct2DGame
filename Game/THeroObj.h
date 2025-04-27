@@ -5,7 +5,7 @@
 #include "TRadderObj.h"
 
 //#include ""
-//#include "TCollision.h"
+//#include "Collision.h"
 
 enum class HeroState     // 그냥 enum을 사용할시에는 전역으로 사용되어서 충돌 가능성이 있다. 그래서 enum class사용해주는것이 안정적이다.
 {
@@ -110,7 +110,7 @@ public:
 	virtual void Render()override;
 	virtual void Release()override;
 	virtual void SetVertexData()override;
-	void HitOverlap(Object* pObj, THitResult hRes) override;
+	void HitOverlap(Object* pObj, HitResult hRes) override;
 	
 public:
 	void GetGroundH(float height);

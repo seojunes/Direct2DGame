@@ -11,7 +11,7 @@ struct float3x3
 		float m[3][3];
 	};
 };
-class TMatrix3 : public float3x3
+class Matrix3 : public float3x3
 {
 public:
 	void SetIdentity(); // 단위행렬
@@ -20,11 +20,11 @@ public:
 	void Rotate(float fRadian);
 	void Trans(float x, float y);
 	void Trans(TVector2 s);
-	TMatrix3 Transpose();// 전치행렬
+	Matrix3 Transpose();// 전치행렬
 public:
-	TMatrix3 operator *(const TMatrix3& m);
+	Matrix3 operator *(const Matrix3& m);
 public:
-	TMatrix3();
-	TMatrix3(TVector2 row1, TVector2 row2, TVector2 row3);
+	Matrix3();
+	Matrix3(TVector2 row1, TVector2 row2, TVector2 row3);
 };
 

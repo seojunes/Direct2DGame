@@ -3,7 +3,7 @@
 class TItem :public Object2D
 {
 public:
-	void HitOverlap(Object* pObj, THitResult hRes) override;
+	void HitOverlap(Object* pObj, HitResult hRes) override;
 	void Frame() override;
 	void SetData(vector<vector<RECT>> SpriteList);
 	virtual void SetVertexData() override;

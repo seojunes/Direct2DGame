@@ -1,12 +1,12 @@
 #pragma once
-#include "TMatrix.h"
+#include "Matrix.h"
 #include "TInput.h"
 
 class TCamera
 {
 public:
-	TMatrix		 m_matView;
-	TMatrix		 m_matProj;
+	Matrix		 m_matView;
+	Matrix		 m_matProj;
 
 	TVector3	 m_vPosition;
 	TVector3	 m_vTarget;
@@ -25,8 +25,8 @@ public:
 	float    m_fRoll = 0.0f;
 public:
 	virtual void Tick();
-	virtual TMatrix Update(TVector4 vDirValue);
-	TMatrix UpdateVector();
+	virtual Matrix Update(TVector4 vDirValue);
+	Matrix UpdateVector();
 	void CreateViewMatrix(
 		TVector3 vCameraPos,    // 카메라 위치
 		TVector3 vCameraTarget, // 카메라가 바라보는 위치
@@ -51,5 +51,5 @@ class SBackViewCamera : public TCamera
 {
 public:
 	void Tick();
-	TMatrix Update(TVector4 vDirValue) { return TMatrix::Identity(); }
+	Matrix Update(TVector4 vDirValue) { return Matrix::Identity(); }
 };

@@ -7,7 +7,7 @@ struct TCollisionInfo
 };
 std::vector<std::shared_ptr<TEnemyState>> TNpcObj::m_pActionList;
 
-void TNpcObj::HitOverlap(Object* pObj, THitResult hRes)  //충돌했을떄 실행되는 콜백함수
+void TNpcObj::HitOverlap(Object* pObj, HitResult hRes)  //충돌했을떄 실행되는 콜백함수
 {
 	Object::HitOverlap(pObj, hRes);
 	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();
@@ -99,7 +99,7 @@ void TNpcObj::SetVertexData()
 	if (m_pTexture == nullptr) return;
 	float xSize = m_pTexture->m_TexDesc.Width;
 	float ySize = m_pTexture->m_TexDesc.Height;
-	TRect rt;
+	Rect rt;
 	rt.SetP(46.0f, 62.0f, 114.0f, 142.0f);
 	m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
 	m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };

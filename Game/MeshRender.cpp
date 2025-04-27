@@ -55,6 +55,24 @@ void	MeshRender::PreRender()
 	Device::m_pd3dContext->IASetInputLayout(
 		m_pInputLayout->Get());
 
+	struct CBScroll
+	{
+		float g_fTime;
+		float g_fScrollSpeed;
+		float padding[2]; // 정렬용
+	};
+
+	CBScroll scroll;
+	scroll.g_fTime = g_fGT;              // 누적 시간 (초)
+	scroll.g_fScrollSpeed = 0.1f;        // 바람 속도
+	Device::m_pd3dContext->UpdateSubresource(
+		DxState::m_pCBScroll.Get(), 0, nullptr, &scroll, 0, 0);
+
+	Device::m_pd3dContext->PSSetConstantBuffers(
+		3, 1, DxState::m_pCBScroll.GetAddressOf()); // b3 슬롯에 설정
+
+
+
 	// 정점버퍼에서 Offsets에서 시작하여
 	// Strides크기로 정점을 정점쉐이더로 전달해라.
 	UINT Strides = sizeof(PCT_VERTEX);

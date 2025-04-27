@@ -1,8 +1,8 @@
 #include "SFbxImporter.h"
 
-TMatrix     SFbxImporter::DxConvertMatrix(TMatrix m)
+Matrix     SFbxImporter::DxConvertMatrix(Matrix m)
 {
-	TMatrix mat;
+	Matrix mat;
 	mat._11 = m._11; mat._12 = m._13; mat._13 = m._12;
 	mat._21 = m._31; mat._22 = m._33; mat._23 = m._32;
 	mat._31 = m._21; mat._32 = m._23; mat._33 = m._22;
@@ -11,9 +11,9 @@ TMatrix     SFbxImporter::DxConvertMatrix(TMatrix m)
 	mat._44 = 1.0f;
 	return mat;
 }
-TMatrix     SFbxImporter::ConvertAMatrix(FbxAMatrix& m)
+Matrix     SFbxImporter::ConvertAMatrix(FbxAMatrix& m)
 {
-	TMatrix mat;
+	Matrix mat;
 	float* pMatArray = reinterpret_cast<float*>(&mat);
 	double* pSrcArray = reinterpret_cast<double*>(&m);
 	for (int i = 0; i < 16; i++)
@@ -103,7 +103,7 @@ void SFbxImporter::ParseMesh(FbxMesh* fbxmesh, UPrimitiveComponent* actor)
 	{
 		time.SetFrame(t, TimeMode);
 		FbxAMatrix matGlobal = pNode->EvaluateGlobalTransform(time);
-		TMatrix mat = DxConvertMatrix(ConvertAMatrix(matGlobal));;
+		Matrix mat = DxConvertMatrix(ConvertAMatrix(matGlobal));;
 		actor->m_AnimList.push_back(mat);
 	}
 	/*FbxLongLong t = 0;

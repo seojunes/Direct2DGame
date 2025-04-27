@@ -33,7 +33,7 @@
     <ClCompile Include="TInput.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="TMatrix.cpp">
+    <ClCompile Include="Matrix.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="TSound.cpp">
@@ -128,7 +128,7 @@
     <ClInclude Include="TInput.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TMatrix.h">
+    <ClInclude Include="Matrix.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="TSound.h">

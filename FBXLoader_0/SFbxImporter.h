@@ -32,8 +32,8 @@ public:
 	FbxNode* m_pRootNode;
 	std::vector<FbxMesh*>  m_FbxMeshs;
 	std::vector<FbxNode*>  m_FbxNodes;
-	TMatrix     DxConvertMatrix(TMatrix m);
-	TMatrix     ConvertAMatrix(FbxAMatrix& m);
+	Matrix     DxConvertMatrix(Matrix m);
+	Matrix     ConvertAMatrix(FbxAMatrix& m);
 	FbxLongLong m_iStartFrame = 0;
 	FbxLongLong m_iEndFrame = 0;
 public:

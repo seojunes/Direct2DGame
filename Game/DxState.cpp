@@ -5,6 +5,7 @@ ComPtr<ID3D11SamplerState> DxState::m_pPointSS = nullptr;
 ComPtr<ID3D11BlendState> DxState::m_pAlphaBlend = nullptr;
 ComPtr<ID3D11RasterizerState> DxState::m_pRSSolid = nullptr;
 ComPtr<ID3D11RasterizerState> DxState::m_pRSWireFrame = nullptr;
+ComPtr<ID3D11Buffer> DxState::m_pCBScroll = nullptr;
 
 void  DxState::Create()
 {
@@ -66,6 +67,19 @@ void  DxState::Create()
 	{
 
 	}
+	
+	D3D11_BUFFER_DESC scrollDesc = {};
+	scrollDesc.ByteWidth = sizeof(float) * 4; // float2 + padding
+	scrollDesc.Usage = D3D11_USAGE_DEFAULT;
+	scrollDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	scrollDesc.CPUAccessFlags = 0;
+
+	hr = Device::m_pd3dDevice->CreateBuffer(&scrollDesc, nullptr, DxState::m_pCBScroll.GetAddressOf());
+	if (FAILED(hr))
+	{
+		// 실패 처리 (로깅 등)
+	}
+
 
 	// 레스터라이즈 상태
 	D3D11_RASTERIZER_DESC rsDesc;

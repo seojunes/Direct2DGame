@@ -141,13 +141,13 @@ void Sample::Tick()
 }
 void Sample::Render() {
 
-	m_SMPlane->m_matOffset = TMatrix::Identity();
+	m_SMPlane->m_matOffset = Matrix::Identity();
 	m_SMPlane->m_vScale = { 100,100,100 };
 	m_SMPlane->m_vRotation = { T_Pi * 0.5f, 0, 0.0f };
 	m_SMPlane->m_vPosition = { 0,0.0f,0 };
 
 	m_SMPlane->m_matScale.Scale(m_SMPlane->m_vScale);
-	TMatrix matX, matY, matZ;
+	Matrix matX, matY, matZ;
 	matX.RotateX(m_SMPlane->m_vRotation.x);
 	matY.RotateY(m_SMPlane->m_vRotation.y);
 	matZ.RotateZ(m_SMPlane->m_vRotation.z);
@@ -162,7 +162,7 @@ void Sample::Render() {
 		m_SMPlane->m_matParent;
 	m_SMPlane->Render();
 
-	m_SMHero->m_matOffset = TMatrix::Identity();
+	m_SMHero->m_matOffset = Matrix::Identity();
 	m_SMHero->Render();
 
 

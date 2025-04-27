@@ -182,18 +182,18 @@
       <FileName>Window.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TCollision" Collapsed="true">
+  <Class Name="Collision" Collapsed="true">
     <Position X="57.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAEAABAAABAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TCollision.h</FileName>
+      <FileName>Collision.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TMatrix3" Collapsed="true">
+  <Class Name="Matrix3" Collapsed="true">
     <Position X="11.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAABgAAAAAAAAAAIAAAAAUAAAAAAAAAAgAAgAAAA=</HashCode>
-      <FileName>TMatrix.h</FileName>
+      <FileName>Matrix.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TVector2" Collapsed="true">
@@ -595,46 +595,46 @@
       <FileName>D:\KGCA\data\shader\stdShader.h</FileName>
     </TypeIdentifier>
   </Struct>
-  <Struct Name="THitResult" Collapsed="true">
+  <Struct Name="HitResult" Collapsed="true">
     <Position X="57.25" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAAACAAQ=</HashCode>
-      <FileName>TCollision.h</FileName>
+      <FileName>Collision.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="SRect" Collapsed="true">
     <Position X="57.25" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAhgAAAAAAA=</HashCode>
-      <FileName>TCollision.h</FileName>
+      <FileName>Collision.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="PRect" Collapsed="true">
     <Position X="62.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAwAAAACAAQAgAAAAAAA=</HashCode>
-      <FileName>TCollision.h</FileName>
+      <FileName>Collision.h</FileName>
     </TypeIdentifier>
   </Struct>
-  <Struct Name="TRect" Collapsed="true">
+  <Struct Name="Rect" Collapsed="true">
     <Position X="60.75" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AMAAAAAAAIAAgAAMAAAAAAAAAAQAABCAAgYAAAAAAAA=</HashCode>
-      <FileName>TCollision.h</FileName>
+      <FileName>Collision.h</FileName>
     </TypeIdentifier>
   </Struct>
-  <Struct Name="TSphere" Collapsed="true">
+  <Struct Name="Sphere" Collapsed="true">
     <Position X="62.5" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAAEAAAAAAAAAAAAA=</HashCode>
-      <FileName>TCollision.h</FileName>
+      <FileName>Collision.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="float3x3" Collapsed="true">
     <Position X="11.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TMatrix.h</FileName>
+      <FileName>Matrix.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="P_VERTEX" Collapsed="true">
@@ -802,7 +802,7 @@
     <Position X="60.75" Y="11.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
-      <FileName>TCollision.h</FileName>
+      <FileName>Collision.h</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="SelectState" Collapsed="true">

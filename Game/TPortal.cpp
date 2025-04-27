@@ -1,6 +1,6 @@
 #include "TPortal.h"
 #include "TWorld.h"
-void    TPortal::HitOverlap(Object* pObj, THitResult hRes)
+void    TPortal::HitOverlap(Object* pObj, HitResult hRes)
 {
 	Object::HitOverlap(pObj, hRes);
 	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();
@@ -22,7 +22,7 @@ void TPortal::SetVertexData()
 	if (m_pTexture == nullptr) return;
 	float xSize = m_pTexture->m_TexDesc.Width;
 	float ySize = m_pTexture->m_TexDesc.Height;
-	TRect rt;
+	Rect rt;
 	switch (m_eActive)
 	{
 	case PortalActiveState::STATE_ACTIVE:

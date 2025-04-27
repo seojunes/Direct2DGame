@@ -94,7 +94,7 @@ public:
 	HeroView m_eCurrentView = HeroView::LeftView;
 public:
 	virtual void SetVertexData();
-	void    HitOverlap(Object* pObj, THitResult hRet) override;
+	void    HitOverlap(Object* pObj, HitResult hRet) override;
 	TNpcObj()
 	{
 		m_fSpeed = 150.0f;

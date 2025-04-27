@@ -95,7 +95,7 @@ bool TSceneGameIn::GameDataLoad(W_STR filename)
 // 맵생성 부분.
 bool TSceneGameIn::CreateMap()
 {
-	TRect rt;
+	Rect rt;
 	rt.SetP(0.0f, 0.0f, 1280.0f * 9.0f, 900 * 2.0f);
 	m_pMap = std::make_shared<TMapObj>(rt, 1, 1);
 	if (m_pMap->Create(m_pWorld.get()))
@@ -109,7 +109,7 @@ bool TSceneGameIn::CreateMap()
 // 보스맵 생성 부분
 bool TSceneGameIn::CreateBossMap()
 {
-	TRect rt;
+	Rect rt;
 	rt.SetS(12800.0f, 0.0f, 1280.0f, 900.0f);
 	m_pBossMap = std::make_shared<TMapObj>(rt, 1, 1);
 	if (m_pBossMap->Create(m_pWorld.get()))
@@ -287,7 +287,7 @@ bool TSceneGameIn::CreateNPC()
 	};
 	TNpcObj::CreateActionFSM();
 	// npc
-	//TRect rtWorldMap = m_pMap->m_rtScreen;
+	//Rect rtWorldMap = m_pMap->m_rtScreen;
 
 
 	for (auto area : Mon1Area)
@@ -869,7 +869,7 @@ void   TSceneGameIn::Frame()
 		m_pHero->m_bAttacked = false;
 	}
 
-	TSphere s;
+	Sphere s;
 	s.vCenter = vMouse;
 	s.fRadius = 100.0f;
 
@@ -970,9 +970,9 @@ void   TSceneGameIn::Frame()
 
 	for (auto rectlist : m_ColList)
 	{
-		TRect Herorect = m_pHero->m_rtScreen;
-		TRect Colrect = rectlist->m_rtScreen;
-		if (TCollision::CheckRectToRect(Colrect, Herorect))
+		Rect Herorect = m_pHero->m_rtScreen;
+		Rect Colrect = rectlist->m_rtScreen;
+		if (Collision::CheckRectToRect(Colrect, Herorect))
 		{
 			if (Herorect.vc.x < Colrect.vc.x)																		// 왼쪽에서 올라올때
 			{

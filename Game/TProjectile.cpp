@@ -3,7 +3,7 @@
 #include "TWorld.h"
 
 
-void TProjectileEffect::HitOverlap(Object* pObj, THitResult hRes)
+void TProjectileEffect::HitOverlap(Object* pObj, HitResult hRes)
 {
 	Object::HitOverlap(pObj, hRes);
 	if (pObj->GetType() == ObjectType::Npc)
@@ -67,7 +67,7 @@ void TProjectileEffect::Frame()
 
 	/*if (m_Data.m_iType == 0)
 	{
-		TRect rt;
+		Rect rt;
 		rt.SetS(m_rtList[m_iAnimFrame].left,
 			m_rtList[m_iAnimFrame].top,
 			m_rtList[m_iAnimFrame].right,

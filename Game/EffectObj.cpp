@@ -60,7 +60,7 @@ void EffectObj::Frame()
 	}
 	if (m_Data.m_iType == 0)
 	{
-		TRect rt;
+		Rect rt;
 		rt.SetS(m_rtList[m_iAnimFrame].left,
 			m_rtList[m_iAnimFrame].top,
 			m_rtList[m_iAnimFrame].right,
@@ -111,7 +111,7 @@ void EffectObj::SetVertexData()
 	{
 		float xSize = m_pTexture->m_TexDesc.Width;
 		float ySize = m_pTexture->m_TexDesc.Height;
-		TRect rt;
+		Rect rt;
 		rt.SetS(m_rtList[0].left,
 			m_rtList[0].top,
 			m_rtList[0].right,

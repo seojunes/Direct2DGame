@@ -70,15 +70,15 @@ public:
 	FbxNode* m_pRootNode;
 	std::vector<FbxMesh*>  m_FbxMeshs;
 	std::vector<tFbxTree>  m_FbxNodes;
-	std::vector<TMatrix>   m_matBindPose;
+	std::vector<Matrix>   m_matBindPose;
 	std::map<std::wstring, UINT>  m_FbxNodeNames;
 	std::map<UINT, std::wstring>  m_FbxNameNodes;
 	std::map<std::wstring, std::wstring>  m_FbxParentNameNodes;
 	//std::map<FbxNode*, UINT>  m_FbxNodes;
 public:
 	
-	TMatrix     DxConvertMatrix(TMatrix m);
-	TMatrix     ConvertAMatrix(FbxAMatrix& m);
+	Matrix     DxConvertMatrix(Matrix m);
+	Matrix     ConvertAMatrix(FbxAMatrix& m);
 public:
 	void  reset();
 	bool  Load(std::string loadfile, AAsset* actor);

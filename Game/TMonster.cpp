@@ -5,7 +5,7 @@ void TMonster1::SetVertexData()
 	if (m_pTexture == nullptr) return;
 	float xSize = m_pTexture->m_TexDesc.Width;
 	float ySize = m_pTexture->m_TexDesc.Height;
-	TRect rt;
+	Rect rt;
 	rt.SetP(8.0f, 0.0f, 36.0f, 26.0f);
 	switch (m_state)
 	{
@@ -154,7 +154,7 @@ void TMonster2::SetVertexData()
 	if (m_pTexture == nullptr) return;
 	float xSize = m_pTexture->m_TexDesc.Width;
 	float ySize = m_pTexture->m_TexDesc.Height;
-	TRect rt;
+	Rect rt;
 	switch (m_state)
 	{
 	case Monster2State::STATE_Idle:
@@ -322,7 +322,7 @@ void TMonster3::SetVertexData()
 	if (m_pTexture == nullptr) return;
 	float xSize = m_pTexture->m_TexDesc.Width;
 	float ySize = m_pTexture->m_TexDesc.Height;
-	TRect rt;
+	Rect rt;
 	switch (m_state)
 	{
 	case Monster3State::STATE_Idle:

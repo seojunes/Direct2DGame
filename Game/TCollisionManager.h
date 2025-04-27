@@ -12,7 +12,7 @@ public:
 public:
 	void SetMap(TMapObj* pMap) { m_pMap = pMap; }
 	//virtual void SetVertexData();
-	void HitOverlap(Object* pObj, THitResult hRes) override;
+	void HitOverlap(Object* pObj, HitResult hRes) override;
 	//vector<TVector2> MakeSBox();
 	//vector<TVector2> MakeEBox();
 	ObjectType GetType() const override

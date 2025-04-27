@@ -2,7 +2,7 @@
 #include "Object2D.h"
 struct TCell
 {
-	TRect  rt;
+	Rect  rt;
 	UINT   iTexID;
 };
 class TMapMeshRender : public MeshRender
@@ -45,7 +45,7 @@ public:
 
 public:
 	TMapObj(UINT iCellX, UINT iCellY);
-	TMapObj(TRect rt, UINT iCellX, UINT iCellY);
+	TMapObj(Rect rt, UINT iCellX, UINT iCellY);
 	TMapObj();
 };
 

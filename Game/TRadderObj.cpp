@@ -1,6 +1,6 @@
 #include "TRadderObj.h"
 #include "TWorld.h"
-void    TRadderObj::HitOverlap(Object* pObj, THitResult hRes)
+void    TRadderObj::HitOverlap(Object* pObj, HitResult hRes)
 {
 	Object::HitOverlap(pObj, hRes);
 	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();

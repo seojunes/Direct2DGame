@@ -16,7 +16,7 @@ enum class MapAction
 class TNextBtn : public ButtonGUI
 {
 public:
-	void    HitSelect(Object* pObj, THitResult hRet)
+	void    HitSelect(Object* pObj, HitResult hRet)
 	{
 		m_iSelectState = hRet.iState;
 		if (m_iSelectState == T_SELECTED)
@@ -28,7 +28,7 @@ public:
 class TPrevBtn : public ButtonGUI
 {
 public:
-	void    HitSelect(Object* pObj, THitResult hRet)
+	void    HitSelect(Object* pObj, HitResult hRet)
 	{
 		m_iSelectState = hRet.iState;
 		if (m_iSelectState == T_SELECTED)

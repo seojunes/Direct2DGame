@@ -11,7 +11,7 @@ TMapObj::TMapObj(UINT iCellX, UINT iCellY)
 	m_vCellDistance.x = (float)g_ptClientSize.x / (float)m_iNumCellCol;
 	m_vCellDistance.y = (float)g_ptClientSize.y / (float)m_iNumCellRow;
 }
-TMapObj::TMapObj(TRect rt, UINT iCellX, UINT iCellY)
+TMapObj::TMapObj(Rect rt, UINT iCellX, UINT iCellY)
 {
 	m_rtScreen = rt;
 	m_vCellDistance.x = (rt.v2.x - rt.v1.x) / iCellX;

@@ -29,7 +29,7 @@ namespace T
 	struct TVector2;
 	struct TVector3;
 	struct TVector4;
-	struct TMatrix;
+	struct Matrix;
 	struct TQuaternion;
 	struct TPlane;
 
@@ -180,16 +180,16 @@ namespace T
 		static void Transform(const TVector2& v, const TQuaternion& quat, TVector2& result);
 		static TVector2 Transform(const TVector2& v, const TQuaternion& quat);
 
-		static void Transform(const TVector2& v, const TMatrix& m, TVector2& result);
-		static TVector2 Transform(const TVector2& v, const TMatrix& m);
-		static void Transform(_In_reads_(count) const TVector2* varray, size_t count, const TMatrix& m, _Out_writes_(count) TVector2* resultArray);
+		static void Transform(const TVector2& v, const Matrix& m, TVector2& result);
+		static TVector2 Transform(const TVector2& v, const Matrix& m);
+		static void Transform(_In_reads_(count) const TVector2* varray, size_t count, const Matrix& m, _Out_writes_(count) TVector2* resultArray);
 
-		static void Transform(const TVector2& v, const TMatrix& m, TVector4& result);
-		static void Transform(_In_reads_(count) const TVector2* varray, size_t count, const TMatrix& m, _Out_writes_(count) TVector4* resultArray);
+		static void Transform(const TVector2& v, const Matrix& m, TVector4& result);
+		static void Transform(_In_reads_(count) const TVector2* varray, size_t count, const Matrix& m, _Out_writes_(count) TVector4* resultArray);
 
-		static void TransformNormal(const TVector2& v, const TMatrix& m, TVector2& result);
-		static TVector2 TransformNormal(const TVector2& v, const TMatrix& m);
-		static void TransformNormal(_In_reads_(count) const TVector2* varray, size_t count, const TMatrix& m, _Out_writes_(count) TVector2* resultArray);
+		static void TransformNormal(const TVector2& v, const Matrix& m, TVector2& result);
+		static TVector2 TransformNormal(const TVector2& v, const Matrix& m);
+		static void TransformNormal(_In_reads_(count) const TVector2* varray, size_t count, const Matrix& m, _Out_writes_(count) TVector2* resultArray);
 
 		// Constants
 		static const TVector2 Zero;
@@ -300,16 +300,16 @@ namespace T
 		static void Transform(const TVector3& v, const TQuaternion& quat, TVector3& result);
 		static TVector3 Transform(const TVector3& v, const TQuaternion& quat);
 
-		static void Transform(const TVector3& v, const TMatrix& m, TVector3& result);
-		static TVector3 Transform(const TVector3& v, const TMatrix& m);
-		static void Transform(_In_reads_(count) const TVector3* varray, size_t count, const TMatrix& m, _Out_writes_(count) TVector3* resultArray);
+		static void Transform(const TVector3& v, const Matrix& m, TVector3& result);
+		static TVector3 Transform(const TVector3& v, const Matrix& m);
+		static void Transform(_In_reads_(count) const TVector3* varray, size_t count, const Matrix& m, _Out_writes_(count) TVector3* resultArray);
 
-		static void Transform(const TVector3& v, const TMatrix& m, TVector4& result);
-		static void Transform(_In_reads_(count) const TVector3* varray, size_t count, const TMatrix& m, _Out_writes_(count) TVector4* resultArray);
+		static void Transform(const TVector3& v, const Matrix& m, TVector4& result);
+		static void Transform(_In_reads_(count) const TVector3* varray, size_t count, const Matrix& m, _Out_writes_(count) TVector4* resultArray);
 
-		static void TransformNormal(const TVector3& v, const TMatrix& m, TVector3& result);
-		static TVector3 TransformNormal(const TVector3& v, const TMatrix& m);
-		static void TransformNormal(_In_reads_(count) const TVector3* varray, size_t count, const TMatrix& m, _Out_writes_(count) TVector3* resultArray);
+		static void TransformNormal(const TVector3& v, const Matrix& m, TVector3& result);
+		static TVector3 TransformNormal(const TVector3& v, const Matrix& m);
+		static void TransformNormal(_In_reads_(count) const TVector3* varray, size_t count, const Matrix& m, _Out_writes_(count) TVector3* resultArray);
 
 		// Constants
 		static const TVector3 Zero;
@@ -425,9 +425,9 @@ namespace T
 		static void Transform(const TVector4& v, const TQuaternion& quat, TVector4& result);
 		static TVector4 Transform(const TVector4& v, const TQuaternion& quat);
 
-		static void Transform(const TVector4& v, const TMatrix& m, TVector4& result);
-		static TVector4 Transform(const TVector4& v, const TMatrix& m);
-		static void Transform(_In_reads_(count) const TVector4* varray, size_t count, const TMatrix& m, _Out_writes_(count) TVector4* resultArray);
+		static void Transform(const TVector4& v, const Matrix& m, TVector4& result);
+		static TVector4 Transform(const TVector4& v, const Matrix& m);
+		static void Transform(_In_reads_(count) const TVector4* varray, size_t count, const Matrix& m, _Out_writes_(count) TVector4* resultArray);
 
 		// Constants
 		static const TVector4 Zero;
@@ -447,15 +447,15 @@ namespace T
 	TVector4 operator* (float S, const TVector4& V);
 
 	//------------------------------------------------------------------------------
-	// 4x4 TMatrix (assumes right-handed cooordinates)
-	struct TMatrix : public XMFLOAT4X4
+	// 4x4 Matrix (assumes right-handed cooordinates)
+	struct Matrix : public XMFLOAT4X4
 	{
-		TMatrix() noexcept
+		Matrix() noexcept
 			: XMFLOAT4X4(1.f, 0, 0, 0,
 				0, 1.f, 0, 0,
 				0, 0, 1.f, 0,
 				0, 0, 0, 1.f) {}
-		XM_CONSTEXPR TMatrix(float m00, float m01, float m02, float m03,
+		XM_CONSTEXPR Matrix(float m00, float m01, float m02, float m03,
 			float m10, float m11, float m12, float m13,
 			float m20, float m21, float m22, float m23,
 			float m30, float m31, float m32, float m33)
@@ -463,50 +463,50 @@ namespace T
 				m10, m11, m12, m13,
 				m20, m21, m22, m23,
 				m30, m31, m32, m33) {}
-		explicit TMatrix(const TVector3& r0, const TVector3& r1, const TVector3& r2)
+		explicit Matrix(const TVector3& r0, const TVector3& r1, const TVector3& r2)
 			: XMFLOAT4X4(r0.x, r0.y, r0.z, 0,
 				r1.x, r1.y, r1.z, 0,
 				r2.x, r2.y, r2.z, 0,
 				0, 0, 0, 1.f) {}
-		explicit TMatrix(const TVector4& r0, const TVector4& r1, const TVector4& r2, const TVector4& r3)
+		explicit Matrix(const TVector4& r0, const TVector4& r1, const TVector4& r2, const TVector4& r3)
 			: XMFLOAT4X4(r0.x, r0.y, r0.z, r0.w,
 				r1.x, r1.y, r1.z, r1.w,
 				r2.x, r2.y, r2.z, r2.w,
 				r3.x, r3.y, r3.z, r3.w) {}
-		TMatrix(const XMFLOAT4X4& M) { memcpy_s(this, sizeof(float) * 16, &M, sizeof(XMFLOAT4X4)); }
-		TMatrix(const XMFLOAT3X3& M);
-		TMatrix(const XMFLOAT4X3& M);
+		Matrix(const XMFLOAT4X4& M) { memcpy_s(this, sizeof(float) * 16, &M, sizeof(XMFLOAT4X4)); }
+		Matrix(const XMFLOAT3X3& M);
+		Matrix(const XMFLOAT4X3& M);
 
-		explicit TMatrix(_In_reads_(16) const float *pArray) : XMFLOAT4X4(pArray) {}
-		TMatrix(CXMMATRIX M) { XMStoreFloat4x4(this, M); }
+		explicit Matrix(_In_reads_(16) const float *pArray) : XMFLOAT4X4(pArray) {}
+		Matrix(CXMMATRIX M) { XMStoreFloat4x4(this, M); }
 
-		TMatrix(const TMatrix&) = default;
-		TMatrix& operator=(const TMatrix&) = default;
+		Matrix(const Matrix&) = default;
+		Matrix& operator=(const Matrix&) = default;
 
-		TMatrix(TMatrix&&) = default;
-		TMatrix& operator=(TMatrix&&) = default;
+		Matrix(Matrix&&) = default;
+		Matrix& operator=(Matrix&&) = default;
 
 		operator XMFLOAT4X4() const { return *this; }
 
 		// Comparison operators
-		bool operator == (const TMatrix& M) const;
-		bool operator != (const TMatrix& M) const;
+		bool operator == (const Matrix& M) const;
+		bool operator != (const Matrix& M) const;
 
 		// Assignment operators
-		TMatrix& operator= (const XMFLOAT3X3& M);
-		TMatrix& operator= (const XMFLOAT4X3& M);
-		TMatrix& operator+= (const TMatrix& M);
-		TMatrix& operator-= (const TMatrix& M);
-		TMatrix& operator*= (const TMatrix& M);
-		TMatrix& operator*= (float S);
-		TMatrix& operator/= (float S);
+		Matrix& operator= (const XMFLOAT3X3& M);
+		Matrix& operator= (const XMFLOAT4X3& M);
+		Matrix& operator+= (const Matrix& M);
+		Matrix& operator-= (const Matrix& M);
+		Matrix& operator*= (const Matrix& M);
+		Matrix& operator*= (float S);
+		Matrix& operator/= (float S);
 
-		TMatrix& operator/= (const TMatrix& M);
+		Matrix& operator/= (const Matrix& M);
 		// Element-wise divide
 
 		// Unary operators
-		TMatrix operator+ () const { return *this; }
-		TMatrix operator- () const;
+		Matrix operator+ () const { return *this; }
+		Matrix operator- () const;
 
 		// Properties
 		TVector3 Up() const { return TVector3(_21, _22, _23); }
@@ -530,72 +530,72 @@ namespace T
 		TVector3 Translation() const { return TVector3(_41, _42, _43); }
 		void Translation(const TVector3& v) { _41 = v.x; _42 = v.y; _43 = v.z; }
 
-		// TMatrix operations
+		// Matrix operations
 		bool Decompose(TVector3& scale, TQuaternion& rotation, TVector3& translation);
 
-		TMatrix Transpose() const;
-		void Transpose(TMatrix& result) const;
+		Matrix Transpose() const;
+		void Transpose(Matrix& result) const;
 
-		TMatrix Invert() const;
-		void Invert(TMatrix& result) const;
+		Matrix Invert() const;
+		void Invert(Matrix& result) const;
 
 		float Determinant() const;
 
 		// Static functions
-		static TMatrix CreateBillboard(const TVector3& object, const TVector3& cameraPosition, const TVector3& cameraUp, _In_opt_ const TVector3* cameraForward = nullptr);
+		static Matrix CreateBillboard(const TVector3& object, const TVector3& cameraPosition, const TVector3& cameraUp, _In_opt_ const TVector3* cameraForward = nullptr);
 
-		static TMatrix CreateConstrainedBillboard(const TVector3& object, const TVector3& cameraPosition, const TVector3& rotateAxis,
+		static Matrix CreateConstrainedBillboard(const TVector3& object, const TVector3& cameraPosition, const TVector3& rotateAxis,
 			_In_opt_ const TVector3* cameraForward = nullptr, _In_opt_ const TVector3* objectForward = nullptr);
 
-		static TMatrix CreateTranslation(const TVector3& position);
-		static TMatrix CreateTranslation(float x, float y, float z);
+		static Matrix CreateTranslation(const TVector3& position);
+		static Matrix CreateTranslation(float x, float y, float z);
 
-		static TMatrix CreateScale(const TVector3& scales);
-		static TMatrix CreateScale(float xs, float ys, float zs);
-		static TMatrix CreateScale(float scale);
+		static Matrix CreateScale(const TVector3& scales);
+		static Matrix CreateScale(float xs, float ys, float zs);
+		static Matrix CreateScale(float scale);
 
-		static TMatrix CreateRotationX(float radians);
-		static TMatrix CreateRotationY(float radians);
-		static TMatrix CreateRotationZ(float radians);
+		static Matrix CreateRotationX(float radians);
+		static Matrix CreateRotationY(float radians);
+		static Matrix CreateRotationZ(float radians);
 
-		static TMatrix CreateFromAxisAngle(const TVector3& axis, float angle);
+		static Matrix CreateFromAxisAngle(const TVector3& axis, float angle);
 
-		static TMatrix CreatePerspectiveFieldOfView(float fov, float aspectRatio, float nearPlane, float farPlane);
-		static TMatrix CreatePerspective(float width, float height, float nearPlane, float farPlane);
-		static TMatrix CreatePerspectiveOffCenter(float left, float right, float bottom, float top, float nearPlane, float farPlane);
-		static TMatrix CreateOrthographic(float width, float height, float zNearPlane, float zFarPlane);
-		static TMatrix CreateOrthographicOffCenter(float left, float right, float bottom, float top, float zNearPlane, float zFarPlane);
+		static Matrix CreatePerspectiveFieldOfView(float fov, float aspectRatio, float nearPlane, float farPlane);
+		static Matrix CreatePerspective(float width, float height, float nearPlane, float farPlane);
+		static Matrix CreatePerspectiveOffCenter(float left, float right, float bottom, float top, float nearPlane, float farPlane);
+		static Matrix CreateOrthographic(float width, float height, float zNearPlane, float zFarPlane);
+		static Matrix CreateOrthographicOffCenter(float left, float right, float bottom, float top, float zNearPlane, float zFarPlane);
 
-		static TMatrix CreateLookAt(const TVector3& position, const TVector3& target, const TVector3& up);
-		static TMatrix CreateWorld(const TVector3& position, const TVector3& forward, const TVector3& up);
+		static Matrix CreateLookAt(const TVector3& position, const TVector3& target, const TVector3& up);
+		static Matrix CreateWorld(const TVector3& position, const TVector3& forward, const TVector3& up);
 
-		static TMatrix CreateFromQuaternion(const TQuaternion& quat);
+		static Matrix CreateFromQuaternion(const TQuaternion& quat);
 
-		static TMatrix CreateFromYawPitchRoll(float yaw, float pitch, float roll);
+		static Matrix CreateFromYawPitchRoll(float yaw, float pitch, float roll);
 
-		static TMatrix CreateShadow(const TVector3& lightDir, const TPlane& plane);
+		static Matrix CreateShadow(const TVector3& lightDir, const TPlane& plane);
 
-		static TMatrix CreateReflection(const TPlane& plane);
+		static Matrix CreateReflection(const TPlane& plane);
 
-		static void Lerp(const TMatrix& M1, const TMatrix& M2, float t, TMatrix& result);
-		static TMatrix Lerp(const TMatrix& M1, const TMatrix& M2, float t);
+		static void Lerp(const Matrix& M1, const Matrix& M2, float t, Matrix& result);
+		static Matrix Lerp(const Matrix& M1, const Matrix& M2, float t);
 
-		static void Transform(const TMatrix& M, const TQuaternion& rotation, TMatrix& result);
-		static TMatrix Transform(const TMatrix& M, const TQuaternion& rotation);
+		static void Transform(const Matrix& M, const TQuaternion& rotation, Matrix& result);
+		static Matrix Transform(const Matrix& M, const TQuaternion& rotation);
 
 		// Constants
-		static const TMatrix Identity;
+		static const Matrix Identity;
 	};
 
 	// Binary operators
-	TMatrix operator+ (const TMatrix& M1, const TMatrix& M2);
-	TMatrix operator- (const TMatrix& M1, const TMatrix& M2);
-	TMatrix operator* (const TMatrix& M1, const TMatrix& M2);
-	TMatrix operator* (const TMatrix& M, float S);
-	TMatrix operator/ (const TMatrix& M, float S);
-	TMatrix operator/ (const TMatrix& M1, const TMatrix& M2);
+	Matrix operator+ (const Matrix& M1, const Matrix& M2);
+	Matrix operator- (const Matrix& M1, const Matrix& M2);
+	Matrix operator* (const Matrix& M1, const Matrix& M2);
+	Matrix operator* (const Matrix& M, float S);
+	Matrix operator/ (const Matrix& M, float S);
+	Matrix operator/ (const Matrix& M1, const Matrix& M2);
 	// Element-wise divide
-	TMatrix operator* (float S, const TMatrix& M);
+	Matrix operator* (float S, const Matrix& M);
 
 
 	//-----------------------------------------------------------------------------
@@ -644,8 +644,8 @@ namespace T
 		float DotNormal(const TVector3& normal) const;
 
 		// Static functions
-		static void Transform(const TPlane& plane, const TMatrix& M, TPlane& result);
-		static TPlane Transform(const TPlane& plane, const TMatrix& M);
+		static void Transform(const TPlane& plane, const Matrix& M, TPlane& result);
+		static TPlane Transform(const TPlane& plane, const Matrix& M);
 
 		static void Transform(const TPlane& plane, const TQuaternion& rotation, TPlane& result);
 		static TPlane Transform(const TPlane& plane, const TQuaternion& rotation);
@@ -709,7 +709,7 @@ namespace T
 		// Static functions
 		static TQuaternion CreateFromAxisAngle(const TVector3& axis, float angle);
 		static TQuaternion CreateFromYawPitchRoll(float yaw, float pitch, float roll);
-		static TQuaternion CreateFromRotationMatrix(const TMatrix& M);
+		static TQuaternion CreateFromRotationMatrix(const Matrix& M);
 
 		static void Lerp(const TQuaternion& q1, const TQuaternion& q2, float t, TQuaternion& result);
 		static TQuaternion Lerp(const TQuaternion& q1, const TQuaternion& q2, float t);
@@ -920,11 +920,11 @@ namespace T
 		// TViewport operations
 		float AspectRatio() const;
 
-		TVector3 Project(const TVector3& p, const TMatrix& proj, const TMatrix& view, const TMatrix& world) const;
-		void Project(const TVector3& p, const TMatrix& proj, const TMatrix& view, const TMatrix& world, TVector3& result) const;
+		TVector3 Project(const TVector3& p, const Matrix& proj, const Matrix& view, const Matrix& world) const;
+		void Project(const TVector3& p, const Matrix& proj, const Matrix& view, const Matrix& world, TVector3& result) const;
 
-		TVector3 Unproject(const TVector3& p, const TMatrix& proj, const TMatrix& view, const TMatrix& world) const;
-		void Unproject(const TVector3& p, const TMatrix& proj, const TMatrix& view, const TMatrix& world, TVector3& result) const;
+		TVector3 Unproject(const TVector3& p, const Matrix& proj, const Matrix& view, const Matrix& world) const;
+		void Unproject(const TVector3& p, const Matrix& proj, const Matrix& view, const Matrix& world, TVector3& result) const;
 
 		// Static methods
 		static RECT __cdecl ComputeDisplayArea(DXGI_SCALING scaling, UINT backBufferWidth, UINT backBufferHeight, int outputWidth, int outputHeight);
@@ -1021,37 +1021,37 @@ namespace T
 	}
 
 	// Transform (x, y, 0, 1) by matrix.
-	static TVector4* D3DXVec2Transform(TVector4 *pOut, CONST TVector2 *pV, CONST TMatrix *pM)
+	static TVector4* D3DXVec2Transform(TVector4 *pOut, CONST TVector2 *pV, CONST Matrix *pM)
 	{
 		return pOut;
 	}
 
 	// Transform (x, y, 0, 1) by matrix, project result back into w=1.
-	static TVector2* D3DXVec2TransformCoord(TVector2 *pOut, CONST TVector2 *pV, CONST TMatrix *pM)
+	static TVector2* D3DXVec2TransformCoord(TVector2 *pOut, CONST TVector2 *pV, CONST Matrix *pM)
 	{
 		return pOut;
 	}
 
 	// Transform (x, y, 0, 0) by matrix.
-	static TVector2* D3DXVec2TransformNormal(TVector2 *pOut, CONST TVector2 *pV, CONST TMatrix *pM)
+	static TVector2* D3DXVec2TransformNormal(TVector2 *pOut, CONST TVector2 *pV, CONST Matrix *pM)
 	{
 		return pOut;
 	}
 
 	// Transform Array (x, y, 0, 1) by matrix.
-	static TVector4* D3DXVec2TransformArray(TVector4 *pOut, UINT OutStride, CONST TVector2 *pV, UINT VStride, CONST TMatrix *pM, UINT n)
+	static TVector4* D3DXVec2TransformArray(TVector4 *pOut, UINT OutStride, CONST TVector2 *pV, UINT VStride, CONST Matrix *pM, UINT n)
 	{
 		return pOut;
 	}
 
 	// Transform Array (x, y, 0, 1) by matrix, project result back into w=1.
-	static TVector2* D3DXVec2TransformCoordArray(TVector2 *pOut, UINT OutStride, CONST TVector2 *pV, UINT VStride, CONST TMatrix *pM, UINT n)
+	static TVector2* D3DXVec2TransformCoordArray(TVector2 *pOut, UINT OutStride, CONST TVector2 *pV, UINT VStride, CONST Matrix *pM, UINT n)
 	{
 		return pOut;
 	}
 
 	// Transform Array (x, y, 0, 0) by matrix.
-	static TVector2* D3DXVec2TransformNormalArray(TVector2 *pOut, UINT OutStride, CONST TVector2 *pV, UINT VStride, CONST TMatrix *pM, UINT n)
+	static TVector2* D3DXVec2TransformNormalArray(TVector2 *pOut, UINT OutStride, CONST TVector2 *pV, UINT VStride, CONST Matrix *pM, UINT n)
 	{
 		return pOut;
 	}
@@ -1073,7 +1073,7 @@ namespace T
 		pV->Normalize(*pOut);
 		return pOut;
 	}
-	static TVector3* D3DXVec3TransformCoord(TVector3 *pOut, CONST TVector3 *pV, CONST TMatrix *pM)
+	static TVector3* D3DXVec3TransformCoord(TVector3 *pOut, CONST TVector3 *pV, CONST Matrix *pM)
 	{
 		*pOut = TVector3::Transform(*pV, *pM);
 		return pOut;
@@ -1158,7 +1158,7 @@ namespace T
 	}
 
 	// Transform (x, y, z, 1) by matrix.
-	static TVector4* D3DXVec3Transform(TVector4 *pOut, CONST TVector3 *pV, CONST TMatrix *pM)
+	static TVector4* D3DXVec3Transform(TVector4 *pOut, CONST TVector3 *pV, CONST Matrix *pM)
 	{
 		return pOut;
 	}
@@ -1166,7 +1166,7 @@ namespace T
 	// Transform (x, y, z, 0) by matrix.  If you transforming a normal by a 
 	// non-affine matrix, the matrix you pass to this function should be the 
 	// transpose of the inverse of the matrix you would use to transform a coord.
-	static TVector3* D3DXVec3TransformNormal(TVector3 *pOut, CONST TVector3 *pV, CONST TMatrix *pM)
+	static TVector3* D3DXVec3TransformNormal(TVector3 *pOut, CONST TVector3 *pV, CONST Matrix *pM)
 	{
 		*pOut = TVector3::TransformNormal(*pV, *pM);
 		return pOut;
@@ -1174,13 +1174,13 @@ namespace T
 
 
 	// Transform Array (x, y, z, 1) by matrix. 
-	static TVector4* D3DXVec3TransformArray(TVector4 *pOut, UINT OutStride, CONST TVector3 *pV, UINT VStride, CONST TMatrix *pM, UINT n)
+	static TVector4* D3DXVec3TransformArray(TVector4 *pOut, UINT OutStride, CONST TVector3 *pV, UINT VStride, CONST Matrix *pM, UINT n)
 	{
 		return pOut;
 	}
 
 	// Transform Array (x, y, z, 1) by matrix, project result back into w=1.
-	static TVector3* D3DXVec3TransformCoordArray(TVector3 *pOut, UINT OutStride, CONST TVector3 *pV, UINT VStride, CONST TMatrix *pM, UINT n)
+	static TVector3* D3DXVec3TransformCoordArray(TVector3 *pOut, UINT OutStride, CONST TVector3 *pV, UINT VStride, CONST Matrix *pM, UINT n)
 	{
 		return pOut;
 	}
@@ -1188,14 +1188,14 @@ namespace T
 	// Transform (x, y, z, 0) by matrix.  If you transforming a normal by a 
 	// non-affine matrix, the matrix you pass to this function should be the 
 	// transpose of the inverse of the matrix you would use to transform a coord.
-	static TVector3* D3DXVec3TransformNormalArray(TVector3 *pOut, UINT OutStride, CONST TVector3 *pV, UINT VStride, CONST TMatrix *pM, UINT n)
+	static TVector3* D3DXVec3TransformNormalArray(TVector3 *pOut, UINT OutStride, CONST TVector3 *pV, UINT VStride, CONST Matrix *pM, UINT n)
 	{
 		return pOut;
 	}
 
 	// Project vector from object space into screen space
 	static TVector3* D3DXVec3Project(TVector3 *pOut, CONST TVector3 *pV, CONST D3D10_VIEWPORT *pViewport,
-		CONST TMatrix *pProjection, CONST TMatrix *pView, CONST TMatrix *pWorld)
+		CONST Matrix *pProjection, CONST Matrix *pView, CONST Matrix *pWorld)
 	{
 		//*pOut = TViewport::Project();
 		return pOut;
@@ -1203,7 +1203,7 @@ namespace T
 
 	// Project vector from screen space into object space
 	static TVector3* D3DXVec3Unproject(TVector3 *pOut, CONST TVector3 *pV, CONST D3D10_VIEWPORT *pViewport,
-		CONST TMatrix *pProjection, CONST TMatrix *pView, CONST TMatrix *pWorld)
+		CONST Matrix *pProjection, CONST Matrix *pView, CONST Matrix *pWorld)
 	{
 		//*pOut = TViewport::Unproject();
 		return pOut;
@@ -1211,14 +1211,14 @@ namespace T
 
 	// Project vector Array from object space into screen space
 	static TVector3* D3DXVec3ProjectArray(TVector3 *pOut, UINT OutStride, CONST TVector3 *pV, UINT VStride, CONST D3D10_VIEWPORT *pViewport,
-		CONST TMatrix *pProjection, CONST TMatrix *pView, CONST TMatrix *pWorld, UINT n)
+		CONST Matrix *pProjection, CONST Matrix *pView, CONST Matrix *pWorld, UINT n)
 	{
 		return pOut;
 	}
 
 	// Project vector Array from screen space into object space
 	static TVector3* D3DXVec3UnprojectArray(TVector3 *pOut, UINT OutStride, CONST TVector3 *pV, UINT VStride, CONST D3D10_VIEWPORT *pViewport,
-		CONST TMatrix *pProjection, CONST TMatrix *pView, CONST TMatrix *pWorld, UINT n)
+		CONST Matrix *pProjection, CONST Matrix *pView, CONST Matrix *pWorld, UINT n)
 	{
 		return pOut;
 	}
@@ -1309,40 +1309,40 @@ namespace T
 	}
 
 	// Transform vector by matrix.
-	static TVector4* D3DXVec4Transform(TVector4 *pOut, CONST TVector4 *pV, CONST TMatrix *pM)
+	static TVector4* D3DXVec4Transform(TVector4 *pOut, CONST TVector4 *pV, CONST Matrix *pM)
 	{
 		return pOut;
 	}
 
 	// Transform vector array by matrix.
-	static TVector4* D3DXVec4TransformArray(TVector4 *pOut, UINT OutStride, CONST TVector4 *pV, UINT VStride, CONST TMatrix *pM, UINT n)
+	static TVector4* D3DXVec4TransformArray(TVector4 *pOut, UINT OutStride, CONST TVector4 *pV, UINT VStride, CONST Matrix *pM, UINT n)
 	{
 		return pOut;
 	}
 
 
-	static TMatrix* D3DXMatrixIdentity(TMatrix *pOut)
+	static Matrix* D3DXMatrixIdentity(Matrix *pOut)
 	{
 		XMStoreFloat4x4(pOut, XMMatrixIdentity());
 		return pOut;
 	}
-	static TMatrix* D3DXMatrixRotationQuaternion(TMatrix *pOut, CONST TQuaternion *pQ)
+	static Matrix* D3DXMatrixRotationQuaternion(Matrix *pOut, CONST TQuaternion *pQ)
 	{
-		*pOut = TMatrix::CreateFromQuaternion(*pQ);
+		*pOut = Matrix::CreateFromQuaternion(*pQ);
 		return pOut;
 	}
-	static TQuaternion* D3DXQuaternionRotationMatrix(TQuaternion *pOut, CONST TMatrix *pM)
+	static TQuaternion* D3DXQuaternionRotationMatrix(TQuaternion *pOut, CONST Matrix *pM)
 	{
 		*pOut = TQuaternion::CreateFromRotationMatrix(*pM);
 		return pOut;
 	}
 
-	static float D3DXMatrixDeterminant(CONST TMatrix *pM) {
+	static float D3DXMatrixDeterminant(CONST Matrix *pM) {
 		return pM->Determinant();
 	}
 
 	static HRESULT D3DXMatrixDecompose(TVector3 *pOutScale, TQuaternion *pOutRotation,
-		TVector3 *pOutTranslation, TMatrix *pM)
+		TVector3 *pOutTranslation, Matrix *pM)
 	{
 		if (pM->Decompose(*pOutScale, *pOutRotation, *pOutTranslation) == false)
 		{
@@ -1351,7 +1351,7 @@ namespace T
 		return S_OK;
 	}
 
-	static TMatrix* D3DXMatrixTranspose(TMatrix *pOut, CONST TMatrix *pM) {
+	static Matrix* D3DXMatrixTranspose(Matrix *pOut, CONST Matrix *pM) {
 
 		*pOut = pM->Transpose();
 		return pOut;
@@ -1359,13 +1359,13 @@ namespace T
 
 	// Matrix multiplication.  The result represents the transformation M2
 	// followed by the transformation M1.  (Out = M1 * M2)
-	static TMatrix*  D3DXMatrixMultiply(TMatrix *pOut, CONST TMatrix *pM1, CONST TMatrix *pM2) {
+	static Matrix*  D3DXMatrixMultiply(Matrix *pOut, CONST Matrix *pM1, CONST Matrix *pM2) {
 		*pOut = (*pM1) * (*pM2);
 		return pOut;
 	}
 
 	// Matrix multiplication, followed by a transpose. (Out = T(M1 * M2))
-	static TMatrix*  D3DXMatrixMultiplyTranspose(TMatrix *pOut, CONST TMatrix *pM1, CONST TMatrix *pM2) {
+	static Matrix*  D3DXMatrixMultiplyTranspose(Matrix *pOut, CONST Matrix *pM1, CONST Matrix *pM2) {
 
 		*pOut = (*pM1) * (*pM2);
 		pOut->Transpose();
@@ -1375,7 +1375,7 @@ namespace T
 	// Calculate inverse of matrix.  Inversion my fail, in which case NULL will
 	// be returned.  The determinant of pM is also returned it pfDeterminant
 	// is non-NULL.
-	static TMatrix*  D3DXMatrixInverse(TMatrix *pOut, float *pDeterminant, CONST TMatrix *pM) {
+	static Matrix*  D3DXMatrixInverse(Matrix *pOut, float *pDeterminant, CONST Matrix *pM) {
 		pM->Invert(*pOut);
 		if (pDeterminant != nullptr)
 		{
@@ -1385,51 +1385,51 @@ namespace T
 	}
 
 	// Build a matrix which scales by (sx, sy, sz)
-	static TMatrix*  D3DXMatrixScaling(TMatrix *pOut, float sx, float sy, float sz) {
-		*pOut = TMatrix::CreateScale(sx, sy, sz);
+	static Matrix*  D3DXMatrixScaling(Matrix *pOut, float sx, float sy, float sz) {
+		*pOut = Matrix::CreateScale(sx, sy, sz);
 		return pOut;
 	}
 
 	// Build a matrix which translates by (x, y, z)
-	static TMatrix*  D3DXMatrixTranslation(TMatrix *pOut, float x, float y, float z) {
-		*pOut = TMatrix::CreateTranslation(x, y, z);
+	static Matrix*  D3DXMatrixTranslation(Matrix *pOut, float x, float y, float z) {
+		*pOut = Matrix::CreateTranslation(x, y, z);
 		return pOut;
 	}
 
 	// Build a matrix which rotates around the X axis
-	static TMatrix*  D3DXMatrixRotationX(TMatrix *pOut, float Angle) {
-		*pOut = TMatrix::CreateRotationX(Angle);
+	static Matrix*  D3DXMatrixRotationX(Matrix *pOut, float Angle) {
+		*pOut = Matrix::CreateRotationX(Angle);
 		return pOut;
 	}
 
 	// Build a matrix which rotates around the Y axis
-	static TMatrix*  D3DXMatrixRotationY(TMatrix *pOut, float Angle) {
-		*pOut = TMatrix::CreateRotationY(Angle);
+	static Matrix*  D3DXMatrixRotationY(Matrix *pOut, float Angle) {
+		*pOut = Matrix::CreateRotationY(Angle);
 		return pOut;
 	}
 
 	// Build a matrix which rotates around the Z axis
-	static TMatrix*  D3DXMatrixRotationZ(TMatrix *pOut, float Angle) {
-		*pOut = TMatrix::CreateRotationZ(Angle);
+	static Matrix*  D3DXMatrixRotationZ(Matrix *pOut, float Angle) {
+		*pOut = Matrix::CreateRotationZ(Angle);
 		return pOut;
 	}
 
 	// Build a matrix which rotates around an arbitrary axis
-	static TMatrix*  D3DXMatrixRotationAxis(TMatrix *pOut, CONST TVector3 *pV, float Angle) {
-		*pOut = TMatrix::CreateFromAxisAngle(*pV, Angle);
+	static Matrix*  D3DXMatrixRotationAxis(Matrix *pOut, CONST TVector3 *pV, float Angle) {
+		*pOut = Matrix::CreateFromAxisAngle(*pV, Angle);
 		return pOut;
 	}
 
 	// Yaw around the Y axis, a pitch around the X axis,
 	// and a roll around the Z axis.
-	static TMatrix*  D3DXMatrixRotationYawPitchRoll(TMatrix *pOut, float Yaw, float Pitch, float Roll) {
-		*pOut = TMatrix::CreateFromYawPitchRoll(Yaw, Pitch, Roll);
+	static Matrix*  D3DXMatrixRotationYawPitchRoll(Matrix *pOut, float Yaw, float Pitch, float Roll) {
+		*pOut = Matrix::CreateFromYawPitchRoll(Yaw, Pitch, Roll);
 		return pOut;
 	}
 
 	// Build transformation matrix.  NULL arguments are treated as identity.
 	// Mout = Msc-1 * Msr-1 * Ms * Msr * Msc * Mrc-1 * Mr * Mrc * Mt
-	static TMatrix*  D3DXMatrixTransformation(TMatrix *pOut, CONST TVector3 *pScalingCenter,
+	static Matrix*  D3DXMatrixTransformation(Matrix *pOut, CONST TVector3 *pScalingCenter,
 		CONST TQuaternion *pScalingRotation, CONST TVector3 *pScaling,
 		CONST TVector3 *pRotationCenter, CONST TQuaternion *pRotation,
 		CONST TVector3 *pTranslation)
@@ -1439,7 +1439,7 @@ namespace T
 
 	// Build 2D transformation matrix in XY plane.  NULL arguments are treated as identity.
 	// Mout = Msc-1 * Msr-1 * Ms * Msr * Msc * Mrc-1 * Mr * Mrc * Mt
-	static TMatrix*  D3DXMatrixTransformation2D(TMatrix *pOut, CONST TVector2* pScalingCenter,
+	static Matrix*  D3DXMatrixTransformation2D(Matrix *pOut, CONST TVector2* pScalingCenter,
 		float ScalingRotation, CONST TVector2* pScaling,
 		CONST TVector2* pRotationCenter, float Rotation,
 		CONST TVector2* pTranslation) {
@@ -1448,7 +1448,7 @@ namespace T
 
 	// Build affine transformation matrix.  NULL arguments are treated as identity.
 	// Mout = Ms * Mrc-1 * Mr * Mrc * Mt
-	static TMatrix*  D3DXMatrixAffineTransformation(TMatrix *pOut, float Scaling, CONST TVector3 *pRotationCenter,
+	static Matrix*  D3DXMatrixAffineTransformation(Matrix *pOut, float Scaling, CONST TVector3 *pRotationCenter,
 		CONST TQuaternion *pRotation, CONST TVector3 *pTranslation) 
 	{
 		XMVECTOR S = XMVectorReplicate(Scaling);//XMVECTOR zero = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
@@ -1465,35 +1465,35 @@ namespace T
 
 	// Build 2D affine transformation matrix in XY plane.  NULL arguments are treated as identity.
 	// Mout = Ms * Mrc-1 * Mr * Mrc * Mt
-	static TMatrix*  D3DXMatrixAffineTransformation2D(TMatrix *pOut, float Scaling, CONST TVector2* pRotationCenter,
+	static Matrix*  D3DXMatrixAffineTransformation2D(Matrix *pOut, float Scaling, CONST TVector2* pRotationCenter,
 		float Rotation, CONST TVector2* pTranslation) {
 		return pOut;
 	}
 
 	// Build a lookat matrix. (right-handed)
-	static TMatrix*  D3DXMatrixLookAtRH(TMatrix *pOut, CONST TVector3 *pEye, CONST TVector3 *pAt, CONST TVector3 *pUp) {
+	static Matrix*  D3DXMatrixLookAtRH(Matrix *pOut, CONST TVector3 *pEye, CONST TVector3 *pAt, CONST TVector3 *pUp) {
 		return pOut;
 	}
 
 	// Build a lookat matrix. (left-handed)
-	static TMatrix*  D3DXMatrixLookAtLH(TMatrix *pOut, CONST TVector3 *pEye, CONST TVector3 *pAt, CONST TVector3 *pUp) {
-		*pOut = TMatrix::CreateLookAt(*pEye, *pAt, *pUp);
+	static Matrix*  D3DXMatrixLookAtLH(Matrix *pOut, CONST TVector3 *pEye, CONST TVector3 *pAt, CONST TVector3 *pUp) {
+		*pOut = Matrix::CreateLookAt(*pEye, *pAt, *pUp);
 		return pOut;
 	}
 
 	// Build a perspective projection matrix. (right-handed)
-	static TMatrix*  D3DXMatrixPerspectiveRH(TMatrix *pOut, float w, float h, float zn, float zf) {
+	static Matrix*  D3DXMatrixPerspectiveRH(Matrix *pOut, float w, float h, float zn, float zf) {
 		return pOut;
 	}
 
 	// Build a perspective projection matrix. (left-handed)
-	static TMatrix*  D3DXMatrixPerspectiveLH(TMatrix *pOut, float w, float h, float zn, float zf) {
-		*pOut = TMatrix::CreatePerspective(w, h, zn, zf);
+	static Matrix*  D3DXMatrixPerspectiveLH(Matrix *pOut, float w, float h, float zn, float zf) {
+		*pOut = Matrix::CreatePerspective(w, h, zn, zf);
 		return pOut;
 	}
 
 	// Build a perspective projection matrix. (right-handed)
-	static TMatrix*  D3DXMatrixPerspectiveFovRH(TMatrix *pOut, float fovy, float Aspect, float zn, float zf) 
+	static Matrix*  D3DXMatrixPerspectiveFovRH(Matrix *pOut, float fovy, float Aspect, float zn, float zf) 
 	{
 		using namespace DirectX;		
 		XMStoreFloat4x4(pOut, XMMatrixPerspectiveFovRH(fovy, Aspect, zn, zf));
@@ -1501,58 +1501,58 @@ namespace T
 	}
 
 	// Build a perspective projection matrix. (left-handed)
-	static TMatrix*  D3DXMatrixPerspectiveFovLH(TMatrix *pOut, float fovy, float Aspect, float zn, float zf) 
+	static Matrix*  D3DXMatrixPerspectiveFovLH(Matrix *pOut, float fovy, float Aspect, float zn, float zf) 
 	{
 		using namespace DirectX;
-		*pOut = TMatrix::CreatePerspectiveFieldOfView(fovy, Aspect, zn, zf);
+		*pOut = Matrix::CreatePerspectiveFieldOfView(fovy, Aspect, zn, zf);
 		return pOut;
 	}
 
 	// Build a perspective projection matrix. (right-handed)
-	static TMatrix*  D3DXMatrixPerspectiveOffCenterRH(TMatrix *pOut, float l, float r, float b, float t, float zn, float zf) {		
+	static Matrix*  D3DXMatrixPerspectiveOffCenterRH(Matrix *pOut, float l, float r, float b, float t, float zn, float zf) {		
 		return pOut;
 	}
 
 	// Build a perspective projection matrix. (left-handed)
-	static TMatrix*  D3DXMatrixPerspectiveOffCenterLH(TMatrix *pOut, float l, float r, float b, float t, float zn, float zf) {
-		*pOut = TMatrix::CreatePerspectiveOffCenter(l, r, b, t, zn, zf);
+	static Matrix*  D3DXMatrixPerspectiveOffCenterLH(Matrix *pOut, float l, float r, float b, float t, float zn, float zf) {
+		*pOut = Matrix::CreatePerspectiveOffCenter(l, r, b, t, zn, zf);
 		return pOut;
 	}
 
 	// Build an ortho projection matrix. (right-handed)
-	static TMatrix*  D3DXMatrixOrthoRH(TMatrix *pOut, float w, float h, float zn, float zf) {
+	static Matrix*  D3DXMatrixOrthoRH(Matrix *pOut, float w, float h, float zn, float zf) {
 		return pOut;
 	}
 
 	// Build an ortho projection matrix. (left-handed)
-	static TMatrix*  D3DXMatrixOrthoLH(TMatrix *pOut, float w, float h, float zn, float zf) {
-		*pOut = TMatrix::CreateOrthographic(w, h, zn, zf);
+	static Matrix*  D3DXMatrixOrthoLH(Matrix *pOut, float w, float h, float zn, float zf) {
+		*pOut = Matrix::CreateOrthographic(w, h, zn, zf);
 		return pOut;
 	}
 
 	// Build an ortho projection matrix. (right-handed)
-	static TMatrix*  D3DXMatrixOrthoOffCenterRH(TMatrix *pOut, float l, float r, float b, float t, float zn, float zf) {
+	static Matrix*  D3DXMatrixOrthoOffCenterRH(Matrix *pOut, float l, float r, float b, float t, float zn, float zf) {
 		return pOut;
 	}
 
 	// Build an ortho projection matrix. (left-handed)
-	static TMatrix*  D3DXMatrixOrthoOffCenterLH(TMatrix *pOut, float l, float r, float b, float t, float zn, float zf) {
-		*pOut = TMatrix::CreateOrthographicOffCenter(l, r, b, t, zn, zf);
+	static Matrix*  D3DXMatrixOrthoOffCenterLH(Matrix *pOut, float l, float r, float b, float t, float zn, float zf) {
+		*pOut = Matrix::CreateOrthographicOffCenter(l, r, b, t, zn, zf);
 		return pOut;
 	}
 
 	// Build a matrix which flattens geometry into a plane, as if casting
 	// a shadow from a light.
-	static TMatrix*  D3DXMatrixShadow(TMatrix *pOut, CONST TVector4 *pLight, CONST TPlane *pPlane) 
+	static Matrix*  D3DXMatrixShadow(Matrix *pOut, CONST TVector4 *pLight, CONST TPlane *pPlane) 
 	{
 		CONST TVector3 pLightLight = TVector3(pLight->x, pLight->y, pLight->z);
-		*pOut = TMatrix::CreateShadow(pLightLight, *pPlane);
+		*pOut = Matrix::CreateShadow(pLightLight, *pPlane);
 		return pOut;
 	}
 
 	// Build a matrix which reflects the coordinate system about a plane
-	static TMatrix*  D3DXMatrixReflect(TMatrix *pOut, CONST TPlane *pPlane) {
-		*pOut = TMatrix::CreateReflection(*pPlane);
+	static Matrix*  D3DXMatrixReflect(Matrix *pOut, CONST TPlane *pPlane) {
+		*pOut = Matrix::CreateReflection(*pPlane);
 		return pOut;
 	}
 
@@ -1733,12 +1733,12 @@ namespace T
 
 	// Transform a plane by a matrix.  The vector (a,b,c) must be normal.
 	// M should be the inverse transpose of the transformation desired.
-	static TPlane* D3DXPlaneTransform(TPlane *pOut, CONST TPlane *pP, CONST TMatrix *pM) {
+	static TPlane* D3DXPlaneTransform(TPlane *pOut, CONST TPlane *pP, CONST Matrix *pM) {
 		return pOut;
 	};
 	// Transform an array of planes by a matrix.  The vectors (a,b,c) must be normal.
 // M should be the inverse transpose of the transformation desired.
-	static TPlane* D3DXPlaneTransformArray(TPlane *pOut, UINT OutStride, CONST TPlane *pP, UINT PStride, CONST TMatrix *pM, UINT n) {
+	static TPlane* D3DXPlaneTransformArray(TPlane *pOut, UINT OutStride, CONST TPlane *pP, UINT PStride, CONST Matrix *pM, UINT n) {
 		return pOut;
 	};
 
@@ -1847,9 +1847,9 @@ namespace std
 		}
 	};
 
-	template<> struct less<T::TMatrix>
+	template<> struct less<T::Matrix>
 	{
-		bool operator()(const T::TMatrix& M1, const T::TMatrix& M2) const
+		bool operator()(const T::Matrix& M1, const T::Matrix& M2) const
 		{
 			if (M1._11 != M2._11) return M1._11 < M2._11;
 			if (M1._12 != M2._12) return M1._12 < M2._12;

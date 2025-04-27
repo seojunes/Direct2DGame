@@ -43,7 +43,7 @@
     <ClCompile Include="TVertex.cpp">
       <Filter>math</Filter>
     </ClCompile>
-    <ClCompile Include="TMatrix.cpp">
+    <ClCompile Include="Matrix.cpp">
       <Filter>math</Filter>
     </ClCompile>
     <ClCompile Include="MeshRender.cpp">
@@ -51,9 +51,6 @@
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="TCollision.cpp">
-      <Filter>math</Filter>
     </ClCompile>
     <ClCompile Include="TScene.cpp">
       <Filter>Scene</Filter>
@@ -132,6 +129,7 @@
       <Filter>object</Filter>
     </ClCompile>
     <ClCompile Include="Device.cpp" />
+    <ClCompile Include="Collision.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
@@ -182,7 +180,7 @@
     <ClInclude Include="TVector.h">
       <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="TMatrix.h">
+    <ClInclude Include="Matrix.h">
       <Filter>math</Filter>
     </ClInclude>
     <ClInclude Include="MeshRender.h">
@@ -190,9 +188,6 @@
     </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="TCollision.h">
-      <Filter>math</Filter>
     </ClInclude>
     <ClInclude Include="TScene.h">
       <Filter>Scene</Filter>
@@ -271,6 +266,7 @@
       <Filter>object</Filter>
     </ClInclude>
     <ClInclude Include="Device.h" />
+    <ClInclude Include="Collision.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\data\shader\BlendMask.txt">

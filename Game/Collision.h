@@ -1,5 +1,5 @@
 #pragma once
-#include "TMatrix.h"
+#include "Matrix.h"
 class Object;
 enum CollisionType
 {
@@ -16,7 +16,7 @@ enum CollisionType
 //	Left,
 //	Right,
 //};
-struct THitResult
+struct HitResult
 {
 	Object* pObject;
 	TVector2 vPos;
@@ -26,7 +26,7 @@ struct THitResult
 struct PRect;
 
 struct SRect
-{
+{ 
 	float   x, y;
 	float   w, h;
 	void operator = (PRect& pt);
@@ -37,7 +37,7 @@ struct PRect
 	float   x2, y2;
 	void operator = (SRect& pt);
 };
-struct TRect
+struct Rect
 {
 	TVector2 v1;// ÁÂ»ó±Í
 	TVector2 v2;// ¿ìÇÏ±Í
@@ -101,29 +101,29 @@ struct TRect
 		fR = (v2 - v1).Length() * 0.5f;
 		Move((v2 + v1) / 2.0f);
 	}
-	TRect()
+	Rect()
 	{
 		fR = 0.0f;
 	}
 };
 
-struct TSphere
+struct Sphere
 {
 	TVector2 vCenter;
 	float    fRadius;
 };
 
-class TCollision
+class Collision
 {
 public:
-	static bool CheckRectToPoint(TRect& rt, POINT pt);
+	static bool CheckRectToPoint(Rect& rt, POINT pt);
 	static bool CheckRectToPoint(PRect& rt, POINT pt);
 	static bool CheckRectToPoint(SRect& rt, POINT pt);
-	static bool CheckRectToRect(TRect& rt1, TRect rt2);
-	static bool CheckSphereToPoint(TSphere& s, float x, float y);
-	static bool CheckSphereToPoint(TSphere& s, TVector2 p);
-	static bool CheckSphereToSphere(TSphere& rt1, TSphere rt2);
-	static bool CheckRectToPoint(TRect& rt, TVector2 pt);
-	/*static CollisionDirection DetectCollisionDirection(const TRect& heroRect, const TRect& rectBox);*/
+	static bool CheckRectToRect(Rect& rt1, Rect rt2);
+	static bool CheckSphereToPoint(Sphere& s, float x, float y);
+	static bool CheckSphereToPoint(Sphere& s, TVector2 p);
+	static bool CheckSphereToSphere(Sphere& rt1, Sphere rt2);
+	static bool CheckRectToPoint(Rect& rt, TVector2 pt);
+	/*static CollisionDirection DetectCollisionDirection(const Rect& heroRect, const Rect& rectBox);*/
 };
 

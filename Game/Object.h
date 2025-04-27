@@ -1,5 +1,5 @@
 #pragma once
-#include "TCollision.h"
+#include "Collision.h"
 #include "MeshRender.h"
 class TWorld;
 
@@ -25,10 +25,10 @@ public:
 	TWorld* m_pWorld = nullptr;
 	CollisionType	m_iCollisionType = CollisionType::T_Ignore;
 public:
-	TMatrix3   m_matScale;
-	TMatrix3   m_matRotate;
-	TMatrix3   m_matTrans;
-	TMatrix3   m_matWorld; // s * r * t
+	Matrix3   m_matScale;
+	Matrix3   m_matRotate;
+	Matrix3   m_matTrans;
+	Matrix3   m_matWorld; // s * r * t
 	TVector2   m_vScale = { 1.0f, 1.0f };
 	float      m_fAngleRadian = 0.0f;
 	TVector2   m_vCamera;
@@ -37,8 +37,8 @@ public:
 	float			m_fSpeed;
 	float			m_fAlpha = 0.0f;
 	bool			m_bDead = false;
-	TRect			m_rtScreen;
-	TSphere			m_Sphere;
+	Rect			m_rtScreen;
+	Sphere			m_Sphere;
 	TLoadResData	m_LoadResData;
 	Shader* m_pShader = nullptr;
 	Texture* m_pTexture = nullptr;
@@ -83,8 +83,8 @@ public:
 	virtual void	PostRender();
 	virtual void	Release();
 public:
-	virtual void    HitOverlap(Object* pObj, THitResult hRet);
-	virtual void    HitSelect(Object* pObj, THitResult hRet);
+	virtual void    HitOverlap(Object* pObj, HitResult hRet);
+	virtual void    HitSelect(Object* pObj, HitResult hRet);
 public:
 	virtual ObjectType GetType() const 
 	{

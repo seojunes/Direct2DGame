@@ -20,7 +20,7 @@ struct TTrack
 	float fTime;
 	T::TVector3 v, s;
 	T::TQuaternion q;
-	T::TMatrix matScale, matTrans, matRotate;
+	T::Matrix matScale, matTrans, matRotate;
 	TTrack() = default;
 	TTrack(int f, T::TVector3& s,
 		T::TQuaternion& r,
@@ -33,9 +33,9 @@ struct TTrack
 		v = t;
 		q = r;
 	}
-	TTrack(int f, T::TMatrix& s,
-		T::TMatrix& r,
-		T::TMatrix& t)
+	TTrack(int f, T::Matrix& s,
+		T::Matrix& r,
+		T::Matrix& t)
 	{
 		iFrame = f;
 		iTick = f * 160;
@@ -115,11 +115,11 @@ struct TAssetFileHeader
 	int				iSubIndexBufferCounter = 0;
 	int				iSubIWVertexBufferCounter = 0;
 	WCHAR			szName[32] = { 0, };
-	T::TMatrix		matWorld;
+	T::Matrix		matWorld;
 };
 struct TKgcFileTrack
 {
-	std::vector<T::TMatrix> pAnimationMatrix;
+	std::vector<T::Matrix> pAnimationMatrix;
 };
 struct TTexFileHeader
 {
@@ -128,7 +128,7 @@ struct TTexFileHeader
 };
 struct  TBoneMatrix
 {
-	T::TMatrix  matBone[MAX_BONE_MATRICES];
+	T::Matrix  matBone[MAX_BONE_MATRICES];
 };
 // fbx -> load -> render
 // fbx -> load -> asset -> import -> render
@@ -137,7 +137,7 @@ class AAsset : public AActor
 public:
 	TAssetFileHeader		m_Header;
 	std::wstring			m_szFileName;
-	T::TMatrix				m_matWorld;
+	T::Matrix				m_matWorld;
 	std::vector<std::wstring> m_szTexFileList;
 	using vList = std::vector<PNCT_VERTEX>;
 	using iList = std::vector<DWORD>;
@@ -148,14 +148,14 @@ public:
 	std::vector<TFbxNode>   m_expFbxNodes;
 	std::vector<vList>		m_vSubMeshVertexList;
 	std::vector<iList>		m_vSubMeshIndexList;
-	std::vector<TMatrix> m_pAnimationMatrix;
+	std::vector<Matrix> m_pAnimationMatrix;
 	std::vector<std::shared_ptr<AAsset>> m_ChildList;
 	// 모든 행렬에 대한 에니메이션 프레임 저장
-	using boneFrameMatrix = std::vector<TMatrix>;
+	using boneFrameMatrix = std::vector<Matrix>;
 		boneFrameMatrix m_pAnimationMatrixList;// 정적에니메이션	
 	std::vector<boneFrameMatrix> m_pBoneAnimMatrix;
 	// Skinning : 전체 트리 노드가 본 좌표계로 변환되는 행렬
-	std::vector<TMatrix>		m_matBindPose;
+	std::vector<Matrix>		m_matBindPose;
 	std::vector<int>			m_pUsedBoneIndexList;
 	std::vector<TFbxNode>		m_ptNodeList;
 	std::vector<TWeight>        m_WeightList;

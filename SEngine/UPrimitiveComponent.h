@@ -7,7 +7,7 @@ public:
 	bool 		m_bRenderMesh = true;
 	//m_SubChilds == 0 -> submaterial ºñ»ç¿ë
 	std::vector<std::shared_ptr<UPrimitiveComponent>>    m_SubChilds;
-	TMatrix		m_matBoneAnim;
+	Matrix		m_matBoneAnim;
 	std::vector<std::wstring>		m_csTextures;
 	std::shared_ptr<UMaterial>		m_pMaterial;
 	UPrimitiveComponent* m_pParent = nullptr;
@@ -27,8 +27,8 @@ public:
 	std::map<UINT, std::wstring>  m_FbxNameNodes;
 	std::vector<std::wstring>		m_szNames;
 	std::map<std::wstring, std::wstring>  m_FbxParentNameNodes;
-	std::vector<TMatrix>		m_AnimList;
-	std::vector<TMatrix>	    m_matBindPose;
+	std::vector<Matrix>		m_AnimList;
+	std::vector<Matrix>	    m_matBindPose;
 	std::vector<UINT>			m_matID;
 	//ComPtr<ID3D11Buffer>        m_pConstantBuffer = nullptr;
 public:

@@ -40,7 +40,7 @@ void	SSkyObject::PostRender()
 	matView._41 = 0.0f;
 	matView._42 = 0.0f;
 	matView._43 = 0.0f;
-	m_cbData.matView = TMatrix::Transpose(matView);
+	m_cbData.matView = Matrix::Transpose(matView);
 
 	TDevice::m_pd3dContext->UpdateSubresource(m_pConstantBuffer.Get(), 0, NULL, &m_cbData, 0, 0);
 	// 0번 레지스터에 셰이더상수 m_pConstantBuffer를 연결

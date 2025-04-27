@@ -113,18 +113,18 @@ void Sample::Tick()
 }
 void Sample::Render() {
 
-	m_SMPlane->m_matOffset = TMatrix::Identity();
+	m_SMPlane->m_matOffset = Matrix::Identity();
 	m_SMPlane->m_vScale = { 100,100,100 };
 	m_SMPlane->m_vRotation = { T_Pi * 0.5f, 0, 0.0f };
 	m_SMPlane->m_vPosition = { 0,-5.0f,0 };
 	m_SMPlane->Render();
 
-	m_SMHero->m_matOffset = TMatrix::Identity();
+	m_SMHero->m_matOffset = Matrix::Identity();
 	m_SMHero->m_vScale = { 1,3,1 };
 	m_SMHero->m_vRotation = { 0.0f, 0, 0.0f };
 	m_SMHero->Render();
 
-	m_SMBox->m_matOffset = TMatrix::Identity();
+	m_SMBox->m_matOffset = Matrix::Identity();
 	m_SMBox->m_vScale = { 1,1,1 };
 	m_SMBox->m_vRotation = { 0.0f, 0, 0.0f };
 	m_SMBox->m_vPosition = { 0,0,0 };
@@ -139,7 +139,7 @@ void Sample::Render() {
 	m_SMBox->Render();
 
 	// direction line
-	m_SMBox->m_matOffset = TMatrix::Identity();
+	m_SMBox->m_matOffset = Matrix::Identity();
 	m_SMBox->m_vScale = { 1000,0.05f,0.05f };
 	m_SMBox->m_vRotation = { 0, 0, 0.0f };
 	m_SMBox->m_vPosition = { 0,0,0 };

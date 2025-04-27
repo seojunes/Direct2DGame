@@ -26,7 +26,7 @@ namespace T
 		const TVector4 TVector4::UnitZ = { 0.f, 0.f, 1.f, 0.f };
 		const TVector4 TVector4::UnitW = { 0.f, 0.f, 0.f, 1.f };
 
-		const TMatrix TMatrix::Identity = { 1.f, 0.f, 0.f, 0.f,
+		const Matrix Matrix::Identity = { 1.f, 0.f, 0.f, 0.f,
 										  0.f, 1.f, 0.f, 0.f,
 										  0.f, 0.f, 1.f, 0.f,
 										  0.f, 0.f, 0.f, 1.f };
@@ -645,7 +645,7 @@ namespace T
 		return result;
 	}
 
-	void TVector2::Transform(const TVector2& v, const TMatrix& m, TVector2& result)
+	void TVector2::Transform(const TVector2& v, const Matrix& m, TVector2& result)
 	{
 		using namespace DirectX;
 		XMVECTOR v1 = XMLoadFloat2(&v);
@@ -654,7 +654,7 @@ namespace T
 		XMStoreFloat2(&result, X);
 	}
 
-	TVector2 TVector2::Transform(const TVector2& v, const TMatrix& m)
+	TVector2 TVector2::Transform(const TVector2& v, const Matrix& m)
 	{
 		using namespace DirectX;
 		XMVECTOR v1 = XMLoadFloat2(&v);
@@ -667,14 +667,14 @@ namespace T
 	}
 
 	_Use_decl_annotations_
-		void TVector2::Transform(const TVector2* varray, size_t count, const TMatrix& m, TVector2* resultArray)
+		void TVector2::Transform(const TVector2* varray, size_t count, const Matrix& m, TVector2* resultArray)
 	{
 		using namespace DirectX;
 		XMMATRIX M = XMLoadFloat4x4((DirectX::XMFLOAT4X4 *)&m);
 		XMVector2TransformCoordStream(resultArray, sizeof(XMFLOAT2), varray, sizeof(XMFLOAT2), count, M);
 	}
 
-	void TVector2::Transform(const TVector2& v, const TMatrix& m, TVector4& result)
+	void TVector2::Transform(const TVector2& v, const Matrix& m, TVector4& result)
 	{
 		using namespace DirectX;
 		XMVECTOR v1 = XMLoadFloat2(&v);
@@ -684,14 +684,14 @@ namespace T
 	}
 
 	_Use_decl_annotations_
-		void TVector2::Transform(const TVector2* varray, size_t count, const TMatrix& m, TVector4* resultArray)
+		void TVector2::Transform(const TVector2* varray, size_t count, const Matrix& m, TVector4* resultArray)
 	{
 		using namespace DirectX;
 		XMMATRIX M = XMLoadFloat4x4((DirectX::XMFLOAT4X4  *)&m);
 		XMVector2TransformStream((DirectX::XMFLOAT4*)resultArray, sizeof(XMFLOAT4), varray, sizeof(XMFLOAT2), count, M);
 	}
 
-	void TVector2::TransformNormal(const TVector2& v, const TMatrix& m, TVector2& result)
+	void TVector2::TransformNormal(const TVector2& v, const Matrix& m, TVector2& result)
 	{
 		using namespace DirectX;
 		XMVECTOR v1 = XMLoadFloat2(&v);
@@ -700,7 +700,7 @@ namespace T
 		XMStoreFloat2(&result, X);
 	}
 
-	TVector2 TVector2::TransformNormal(const TVector2& v, const TMatrix& m)
+	TVector2 TVector2::TransformNormal(const TVector2& v, const Matrix& m)
 	{
 		using namespace DirectX;
 		XMVECTOR v1 = XMLoadFloat2(&v);
@@ -713,7 +713,7 @@ namespace T
 	}
 
 	_Use_decl_annotations_
-		void TVector2::TransformNormal(const TVector2* varray, size_t count, const TMatrix& m, TVector2* resultArray)
+		void TVector2::TransformNormal(const TVector2* varray, size_t count, const Matrix& m, TVector2* resultArray)
 	{
 		using namespace DirectX;
 		XMMATRIX M = XMLoadFloat4x4((DirectX::XMFLOAT4X4*)&m);
@@ -1220,7 +1220,7 @@ namespace T
 		return result;
 	}
 
-	void TVector3::Transform(const TVector3& v, const TMatrix& m, TVector3& result)
+	void TVector3::Transform(const TVector3& v, const Matrix& m, TVector3& result)
 	{
 		using namespace DirectX;
 		XMVECTOR v1 = XMLoadFloat3(&v);
@@ -1229,7 +1229,7 @@ namespace T
 		XMStoreFloat3(&result, X);
 	}
 
-	TVector3 TVector3::Transform(const TVector3& v, const TMatrix& m)
+	TVector3 TVector3::Transform(const TVector3& v, const Matrix& m)
 	{
 		using namespace DirectX;
 		XMVECTOR v1 = XMLoadFloat3(&v);
@@ -1242,14 +1242,14 @@ namespace T
 	}
 
 	_Use_decl_annotations_
-		void TVector3::Transform(const TVector3* varray, size_t count, const TMatrix& m, TVector3* resultArray)
+		void TVector3::Transform(const TVector3* varray, size_t count, const Matrix& m, TVector3* resultArray)
 	{
 		using namespace DirectX;
 		XMMATRIX M = XMLoadFloat4x4((XMFLOAT4X4*)&m);
 		XMVector3TransformCoordStream(resultArray, sizeof(XMFLOAT3), varray, sizeof(XMFLOAT3), count, M);
 	}
 
-	void TVector3::Transform(const TVector3& v, const TMatrix& m, TVector4& result)
+	void TVector3::Transform(const TVector3& v, const Matrix& m, TVector4& result)
 	{
 		using namespace DirectX;
 		XMVECTOR v1 = XMLoadFloat3(&v);
@@ -1259,14 +1259,14 @@ namespace T
 	}
 
 	_Use_decl_annotations_
-		void TVector3::Transform(const TVector3* varray, size_t count, const TMatrix& m, TVector4* resultArray)
+		void TVector3::Transform(const TVector3* varray, size_t count, const Matrix& m, TVector4* resultArray)
 	{
 		using namespace DirectX;
 		XMMATRIX M = XMLoadFloat4x4((XMFLOAT4X4*)&m);
 		XMVector3TransformStream((XMFLOAT4*)resultArray, sizeof(XMFLOAT4), varray, sizeof(XMFLOAT3), count, M);
 	}
 
-	void TVector3::TransformNormal(const TVector3& v, const TMatrix& m, TVector3& result)
+	void TVector3::TransformNormal(const TVector3& v, const Matrix& m, TVector3& result)
 	{
 		using namespace DirectX;
 		XMVECTOR v1 = XMLoadFloat3(&v);
@@ -1275,7 +1275,7 @@ namespace T
 		XMStoreFloat3(&result, X);
 	}
 
-	TVector3 TVector3::TransformNormal(const TVector3& v, const TMatrix& m)
+	TVector3 TVector3::TransformNormal(const TVector3& v, const Matrix& m)
 	{
 		using namespace DirectX;
 		XMVECTOR v1 = XMLoadFloat3(&v);
@@ -1288,7 +1288,7 @@ namespace T
 	}
 
 	_Use_decl_annotations_
-		void TVector3::TransformNormal(const TVector3* varray, size_t count, const TMatrix& m, TVector3* resultArray)
+		void TVector3::TransformNormal(const TVector3* varray, size_t count, const Matrix& m, TVector3* resultArray)
 	{
 		using namespace DirectX;
 		XMMATRIX M = XMLoadFloat4x4((XMFLOAT4X4*)&m);
@@ -1849,7 +1849,7 @@ namespace T
 		return result;
 	}
 
-	void TVector4::Transform(const TVector4& v, const TMatrix& m, TVector4& result)
+	void TVector4::Transform(const TVector4& v, const Matrix& m, TVector4& result)
 	{
 		using namespace DirectX;
 		XMVECTOR v1 = XMLoadFloat4(&v);
@@ -1858,7 +1858,7 @@ namespace T
 		XMStoreFloat4(&result, X);
 	}
 
-	TVector4 TVector4::Transform(const TVector4& v, const TMatrix& m)
+	TVector4 TVector4::Transform(const TVector4& v, const Matrix& m)
 	{
 		using namespace DirectX;
 		XMVECTOR v1 = XMLoadFloat4(&v);
@@ -1871,7 +1871,7 @@ namespace T
 	}
 
 	_Use_decl_annotations_
-		void TVector4::Transform(const TVector4* varray, size_t count, const TMatrix& m, TVector4* resultArray)
+		void TVector4::Transform(const TVector4* varray, size_t count, const Matrix& m, TVector4* resultArray)
 	{
 		using namespace DirectX;
 		XMMATRIX M = XMLoadFloat4x4((XMFLOAT4X4*)&m);
@@ -1881,7 +1881,7 @@ namespace T
 
 	/****************************************************************************
 	*
-	* TMatrix
+	* Matrix
 	*
 	****************************************************************************/
 
@@ -1889,7 +1889,7 @@ namespace T
 	// Comparision operators
 	//------------------------------------------------------------------------------
 
-	bool TMatrix::operator == (const TMatrix& M) const
+	bool Matrix::operator == (const Matrix& M) const
 	{
 		using namespace DirectX;
 		XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
@@ -1908,7 +1908,7 @@ namespace T
 			&& XMVector4Equal(x4, y4)) != 0;
 	}
 
-	bool TMatrix::operator != (const TMatrix& M) const
+	bool Matrix::operator != (const Matrix& M) const
 	{
 		using namespace DirectX;
 		XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
@@ -1931,7 +1931,7 @@ namespace T
 	// Assignment operators
 	//------------------------------------------------------------------------------
 
-	TMatrix::TMatrix(const XMFLOAT3X3& M)
+	Matrix::Matrix(const XMFLOAT3X3& M)
 	{
 		_11 = M._11; _12 = M._12; _13 = M._13; _14 = 0.f;
 		_21 = M._21; _22 = M._22; _23 = M._23; _24 = 0.f;
@@ -1939,7 +1939,7 @@ namespace T
 		_41 = 0.f;   _42 = 0.f;   _43 = 0.f;   _44 = 1.f;
 	}
 
-	TMatrix::TMatrix(const XMFLOAT4X3& M)
+	Matrix::Matrix(const XMFLOAT4X3& M)
 	{
 		_11 = M._11; _12 = M._12; _13 = M._13; _14 = 0.f;
 		_21 = M._21; _22 = M._22; _23 = M._23; _24 = 0.f;
@@ -1947,7 +1947,7 @@ namespace T
 		_41 = M._41; _42 = M._42; _43 = M._43; _44 = 1.f;
 	}
 
-	TMatrix& TMatrix::operator= (const XMFLOAT3X3& M)
+	Matrix& Matrix::operator= (const XMFLOAT3X3& M)
 	{
 		_11 = M._11; _12 = M._12; _13 = M._13; _14 = 0.f;
 		_21 = M._21; _22 = M._22; _23 = M._23; _24 = 0.f;
@@ -1956,7 +1956,7 @@ namespace T
 		return *this;
 	}
 
-	TMatrix& TMatrix::operator= (const XMFLOAT4X3& M)
+	Matrix& Matrix::operator= (const XMFLOAT4X3& M)
 	{
 		_11 = M._11; _12 = M._12; _13 = M._13; _14 = 0.f;
 		_21 = M._21; _22 = M._22; _23 = M._23; _24 = 0.f;
@@ -1965,7 +1965,7 @@ namespace T
 		return *this;
 	}
 
-	TMatrix& TMatrix::operator+= (const TMatrix& M)
+	Matrix& Matrix::operator+= (const Matrix& M)
 	{
 		using namespace DirectX;
 		XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
@@ -1990,7 +1990,7 @@ namespace T
 		return *this;
 	}
 
-	TMatrix& TMatrix::operator-= (const TMatrix& M)
+	Matrix& Matrix::operator-= (const Matrix& M)
 	{
 		using namespace DirectX;
 		XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
@@ -2015,7 +2015,7 @@ namespace T
 		return *this;
 	}
 
-	TMatrix& TMatrix::operator*= (const TMatrix& M)
+	Matrix& Matrix::operator*= (const Matrix& M)
 	{
 		using namespace DirectX;
 		XMMATRIX M1 = XMLoadFloat4x4(this);
@@ -2025,7 +2025,7 @@ namespace T
 		return *this;
 	}
 
-	TMatrix& TMatrix::operator*= (float S)
+	Matrix& Matrix::operator*= (float S)
 	{
 		using namespace DirectX;
 		XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
@@ -2045,7 +2045,7 @@ namespace T
 		return *this;
 	}
 
-	TMatrix& TMatrix::operator/= (float S)
+	Matrix& Matrix::operator/= (float S)
 	{
 		using namespace DirectX;
 		assert(S != 0.f);
@@ -2068,7 +2068,7 @@ namespace T
 		return *this;
 	}
 
-	TMatrix& TMatrix::operator/= (const TMatrix& M)
+	Matrix& Matrix::operator/= (const Matrix& M)
 	{
 		using namespace DirectX;
 		XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
@@ -2097,7 +2097,7 @@ namespace T
 	// Urnary operators
 	//------------------------------------------------------------------------------
 
-	TMatrix TMatrix::operator- () const
+	Matrix Matrix::operator- () const
 	{
 		using namespace DirectX;
 		XMVECTOR v1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
@@ -2110,7 +2110,7 @@ namespace T
 		v3 = XMVectorNegate(v3);
 		v4 = XMVectorNegate(v4);
 
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._11), v1);
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._21), v2);
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._31), v3);
@@ -2122,7 +2122,7 @@ namespace T
 	// Binary operators
 	//------------------------------------------------------------------------------
 
-	TMatrix operator+ (const TMatrix& M1, const TMatrix& M2)
+	Matrix operator+ (const Matrix& M1, const Matrix& M2)
 	{
 		using namespace DirectX;
 		XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&M1._11));
@@ -2140,7 +2140,7 @@ namespace T
 		x3 = XMVectorAdd(x3, y3);
 		x4 = XMVectorAdd(x4, y4);
 
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._11), x1);
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._21), x2);
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._31), x3);
@@ -2148,7 +2148,7 @@ namespace T
 		return R;
 	}
 
-	TMatrix operator- (const TMatrix& M1, const TMatrix& M2)
+	Matrix operator- (const Matrix& M1, const Matrix& M2)
 	{
 		using namespace DirectX;
 		XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&M1._11));
@@ -2166,7 +2166,7 @@ namespace T
 		x3 = XMVectorSubtract(x3, y3);
 		x4 = XMVectorSubtract(x4, y4);
 
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._11), x1);
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._21), x2);
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._31), x3);
@@ -2174,19 +2174,19 @@ namespace T
 		return R;
 	}
 
-	TMatrix operator* (const TMatrix& M1, const TMatrix& M2)
+	Matrix operator* (const Matrix& M1, const Matrix& M2)
 	{
 		using namespace DirectX;
 		XMMATRIX m1 = XMLoadFloat4x4(&M1);
 		XMMATRIX m2 = XMLoadFloat4x4((XMFLOAT4X4*)&M2);
 		XMMATRIX X = XMMatrixMultiply(m1, m2);
 
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, X);
 		return R;
 	}
 
-	TMatrix operator* (const TMatrix& M, float S)
+	Matrix operator* (const Matrix& M, float S)
 	{
 		using namespace DirectX;
 		XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&M._11));
@@ -2199,7 +2199,7 @@ namespace T
 		x3 = XMVectorScale(x3, S);
 		x4 = XMVectorScale(x4, S);
 
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._11), x1);
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._21), x2);
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._31), x3);
@@ -2207,7 +2207,7 @@ namespace T
 		return R;
 	}
 
-	TMatrix operator/ (const TMatrix& M, float S)
+	Matrix operator/ (const Matrix& M, float S)
 	{
 		using namespace DirectX;
 		assert(S != 0.f);
@@ -2224,7 +2224,7 @@ namespace T
 		x3 = XMVectorScale(x3, rs);
 		x4 = XMVectorScale(x4, rs);
 
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._11), x1);
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._21), x2);
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._31), x3);
@@ -2232,7 +2232,7 @@ namespace T
 		return R;
 	}
 
-	TMatrix operator/ (const TMatrix& M1, const TMatrix& M2)
+	Matrix operator/ (const Matrix& M1, const Matrix& M2)
 	{
 		using namespace DirectX;
 		XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&M1._11));
@@ -2250,7 +2250,7 @@ namespace T
 		x3 = XMVectorDivide(x3, y3);
 		x4 = XMVectorDivide(x4, y4);
 
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._11), x1);
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._21), x2);
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._31), x3);
@@ -2258,7 +2258,7 @@ namespace T
 		return R;
 	}
 
-	TMatrix operator* (float S, const TMatrix& M)
+	Matrix operator* (float S, const Matrix& M)
 	{
 		using namespace DirectX;
 
@@ -2272,7 +2272,7 @@ namespace T
 		x3 = XMVectorScale(x3, S);
 		x4 = XMVectorScale(x4, S);
 
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._11), x1);
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._21), x2);
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&R._31), x3);
@@ -2281,10 +2281,10 @@ namespace T
 	}
 
 	//------------------------------------------------------------------------------
-	// TMatrix operations
+	// Matrix operations
 	//------------------------------------------------------------------------------
 
-	bool TMatrix::Decompose(TVector3& scale, TQuaternion& rotation, TVector3& translation)
+	bool Matrix::Decompose(TVector3& scale, TQuaternion& rotation, TVector3& translation)
 	{
 		using namespace DirectX;
 
@@ -2300,33 +2300,33 @@ namespace T
 		return true;
 	}
 
-	TMatrix TMatrix::Transpose() const
+	Matrix Matrix::Transpose() const
 	{
 		using namespace DirectX;
 		FXMMATRIX M = XMLoadFloat4x4(this);
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, XMMatrixTranspose(M));
 		return R;
 	}
 
-	void TMatrix::Transpose(TMatrix& result) const
+	void Matrix::Transpose(Matrix& result) const
 	{
 		using namespace DirectX;
 		FXMMATRIX M = XMLoadFloat4x4(this);
 		XMStoreFloat4x4(&result, XMMatrixTranspose(M));
 	}
 
-	TMatrix TMatrix::Invert() const
+	Matrix Matrix::Invert() const
 	{
 		using namespace DirectX;
 		FXMMATRIX M = XMLoadFloat4x4(this);
-		TMatrix R;
+		Matrix R;
 		XMVECTOR det;
 		XMStoreFloat4x4(&R, XMMatrixInverse(&det, M));
 		return R;
 	}
 
-	void TMatrix::Invert(TMatrix& result) const
+	void Matrix::Invert(Matrix& result) const
 	{
 		using namespace DirectX;
 		FXMMATRIX M = XMLoadFloat4x4(this);
@@ -2334,7 +2334,7 @@ namespace T
 		XMStoreFloat4x4(&result, XMMatrixInverse(&det, M));
 	}
 
-	float TMatrix::Determinant() const
+	float Matrix::Determinant() const
 	{
 		using namespace DirectX;
 		FXMMATRIX M = XMLoadFloat4x4(this);
@@ -2346,7 +2346,7 @@ namespace T
 	//------------------------------------------------------------------------------
 
 	_Use_decl_annotations_
-		TMatrix TMatrix::CreateBillboard(const TVector3& object, const TVector3& cameraPosition, const TVector3& cameraUp, const TVector3* cameraForward)
+		Matrix Matrix::CreateBillboard(const TVector3& object, const TVector3& cameraPosition, const TVector3& cameraUp, const TVector3* cameraForward)
 	{
 		using namespace DirectX;
 		XMVECTOR O = XMLoadFloat3(&object);
@@ -2381,13 +2381,13 @@ namespace T
 		M.r[2] = Z;
 		M.r[3] = XMVectorSetW(O, 1.f);
 
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, M);
 		return R;
 	}
 
 	_Use_decl_annotations_
-		TMatrix TMatrix::CreateConstrainedBillboard(const TVector3& object, const TVector3& cameraPosition, const TVector3& rotateAxis,
+		Matrix Matrix::CreateConstrainedBillboard(const TVector3& object, const TVector3& cameraPosition, const TVector3& rotateAxis,
 			const TVector3* cameraForward, const TVector3* objectForward)
 	{
 		using namespace DirectX;
@@ -2457,128 +2457,128 @@ namespace T
 		M.r[2] = Z;
 		M.r[3] = XMVectorSetW(O, 1.f);
 
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, M);
 		return R;
 	}
 
-	TMatrix TMatrix::CreateTranslation(const TVector3& position)
+	Matrix Matrix::CreateTranslation(const TVector3& position)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, XMMatrixTranslation(position.x, position.y, position.z));
 		return R;
 	}
 
-	TMatrix TMatrix::CreateTranslation(float x, float y, float z)
+	Matrix Matrix::CreateTranslation(float x, float y, float z)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, XMMatrixTranslation(x, y, z));
 		return R;
 	}
 
-	TMatrix TMatrix::CreateScale(const TVector3& scales)
+	Matrix Matrix::CreateScale(const TVector3& scales)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, XMMatrixScaling(scales.x, scales.y, scales.z));
 		return R;
 	}
 
-	TMatrix TMatrix::CreateScale(float xs, float ys, float zs)
+	Matrix Matrix::CreateScale(float xs, float ys, float zs)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, XMMatrixScaling(xs, ys, zs));
 		return R;
 	}
 
-	TMatrix TMatrix::CreateScale(float scale)
+	Matrix Matrix::CreateScale(float scale)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, XMMatrixScaling(scale, scale, scale));
 		return R;
 	}
 
-	TMatrix TMatrix::CreateRotationX(float radians)
+	Matrix Matrix::CreateRotationX(float radians)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, XMMatrixRotationX(radians));
 		return R;
 	}
 
-	TMatrix TMatrix::CreateRotationY(float radians)
+	Matrix Matrix::CreateRotationY(float radians)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, XMMatrixRotationY(radians));
 		return R;
 	}
 
-	TMatrix TMatrix::CreateRotationZ(float radians)
+	Matrix Matrix::CreateRotationZ(float radians)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, XMMatrixRotationZ(radians));
 		return R;
 	}
 
-	TMatrix TMatrix::CreateFromAxisAngle(const TVector3& axis, float angle)
+	Matrix Matrix::CreateFromAxisAngle(const TVector3& axis, float angle)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMVECTOR a = XMLoadFloat3(&axis);
 		XMStoreFloat4x4(&R, XMMatrixRotationAxis(a, angle));
 		return R;
 	}
 
-	TMatrix TMatrix::CreatePerspectiveFieldOfView(float fov, float aspectRatio, float nearPlane, float farPlane)
+	Matrix Matrix::CreatePerspectiveFieldOfView(float fov, float aspectRatio, float nearPlane, float farPlane)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, XMMatrixPerspectiveFovLH(fov, aspectRatio, nearPlane, farPlane));
 		return R;
 	}
 
-	TMatrix TMatrix::CreatePerspective(float width, float height, float nearPlane, float farPlane)
+	Matrix Matrix::CreatePerspective(float width, float height, float nearPlane, float farPlane)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, XMMatrixPerspectiveLH(width, height, nearPlane, farPlane));
 		return R;
 	}
 
-	TMatrix TMatrix::CreatePerspectiveOffCenter(float left, float right, float bottom, float top, float nearPlane, float farPlane)
+	Matrix Matrix::CreatePerspectiveOffCenter(float left, float right, float bottom, float top, float nearPlane, float farPlane)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, XMMatrixPerspectiveOffCenterLH(left, right, bottom, top, nearPlane, farPlane));
 		return R;
 	}
 
-	TMatrix TMatrix::CreateOrthographic(float width, float height, float zNearPlane, float zFarPlane)
+	Matrix Matrix::CreateOrthographic(float width, float height, float zNearPlane, float zFarPlane)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, XMMatrixOrthographicLH(width, height, zNearPlane, zFarPlane));
 		return R;
 	}
 
-	TMatrix TMatrix::CreateOrthographicOffCenter(float left, float right, float bottom, float top, float zNearPlane, float zFarPlane)
+	Matrix Matrix::CreateOrthographicOffCenter(float left, float right, float bottom, float top, float zNearPlane, float zFarPlane)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, XMMatrixOrthographicOffCenterLH(left, right, bottom, top, zNearPlane, zFarPlane));
 		return R;
 	}
 
-	TMatrix TMatrix::CreateLookAt(const TVector3& eye, const TVector3& target, const TVector3& up)
+	Matrix Matrix::CreateLookAt(const TVector3& eye, const TVector3& target, const TVector3& up)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMVECTOR eyev = XMLoadFloat3(&eye);
 		XMVECTOR targetv = XMLoadFloat3(&target);
 		XMVECTOR upv = XMLoadFloat3(&up);
@@ -2586,7 +2586,7 @@ namespace T
 		return R;
 	}
 
-	TMatrix TMatrix::CreateWorld(const TVector3& position, const TVector3& forward, const TVector3& up)
+	Matrix Matrix::CreateWorld(const TVector3& position, const TVector3& forward, const TVector3& up)
 	{
 		using namespace DirectX;
 		XMVECTOR zaxis = XMVector3Normalize(XMVectorNegate(XMLoadFloat3(&forward)));
@@ -2594,7 +2594,7 @@ namespace T
 		XMVECTOR xaxis = XMVector3Normalize(XMVector3Cross(yaxis, zaxis));
 		yaxis = XMVector3Cross(zaxis, xaxis);
 
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&R._11), xaxis);
 		XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&R._21), yaxis);
 		XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&R._31), zaxis);
@@ -2604,43 +2604,43 @@ namespace T
 		return R;
 	}
 
-	TMatrix TMatrix::CreateFromQuaternion(const TQuaternion& rotation)
+	Matrix Matrix::CreateFromQuaternion(const TQuaternion& rotation)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMVECTOR quatv = XMLoadFloat4(&rotation);
 		XMStoreFloat4x4(&R, XMMatrixRotationQuaternion(quatv));
 		return R;
 	}
 
-	TMatrix TMatrix::CreateFromYawPitchRoll(float yaw, float pitch, float roll)
+	Matrix Matrix::CreateFromYawPitchRoll(float yaw, float pitch, float roll)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMStoreFloat4x4(&R, XMMatrixRotationRollPitchYaw(pitch, yaw, roll));
 		return R;
 	}
 
-	TMatrix TMatrix::CreateShadow(const TVector3& lightDir, const TPlane& plane)
+	Matrix Matrix::CreateShadow(const TVector3& lightDir, const TPlane& plane)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMVECTOR light = XMLoadFloat3(&lightDir);
 		XMVECTOR planev = XMLoadFloat4(&plane);
 		XMStoreFloat4x4(&R, XMMatrixShadow(planev, light));
 		return R;
 	}
 
-	TMatrix TMatrix::CreateReflection(const TPlane& plane)
+	Matrix Matrix::CreateReflection(const TPlane& plane)
 	{
 		using namespace DirectX;
-		TMatrix R;
+		Matrix R;
 		XMVECTOR planev = XMLoadFloat4(&plane);
 		XMStoreFloat4x4(&R, XMMatrixReflect(planev));
 		return R;
 	}
 
-	void TMatrix::Lerp(const TMatrix& M1, const TMatrix& M2, float t, TMatrix& result)
+	void Matrix::Lerp(const Matrix& M1, const Matrix& M2, float t, Matrix& result)
 	{
 		using namespace DirectX;
 		XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&M1._11));
@@ -2664,7 +2664,7 @@ namespace T
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&result._41), x4);
 	}
 
-	TMatrix TMatrix::Lerp(const TMatrix& M1, const TMatrix& M2, float t)
+	Matrix Matrix::Lerp(const Matrix& M1, const Matrix& M2, float t)
 	{
 		using namespace DirectX;
 		XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&M1._11));
@@ -2682,7 +2682,7 @@ namespace T
 		x3 = XMVectorLerp(x3, y3, t);
 		x4 = XMVectorLerp(x4, y4, t);
 
-		TMatrix result;
+		Matrix result;
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&result._11), x1);
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&result._21), x2);
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&result._31), x3);
@@ -2690,7 +2690,7 @@ namespace T
 		return result;
 	}
 
-	void TMatrix::Transform(const TMatrix& M, const TQuaternion& rotation, TMatrix& result)
+	void Matrix::Transform(const Matrix& M, const TQuaternion& rotation, Matrix& result)
 	{
 		using namespace DirectX;
 		XMVECTOR quatv = XMLoadFloat4(&rotation);
@@ -2701,7 +2701,7 @@ namespace T
 		XMStoreFloat4x4(&result, XMMatrixMultiply(M0, M1));
 	}
 
-	TMatrix TMatrix::Transform(const TMatrix& M, const TQuaternion& rotation)
+	Matrix Matrix::Transform(const Matrix& M, const TQuaternion& rotation)
 	{
 		using namespace DirectX;
 		XMVECTOR quatv = XMLoadFloat4(&rotation);
@@ -2709,7 +2709,7 @@ namespace T
 		XMMATRIX M0 = XMLoadFloat4x4(&M);
 		XMMATRIX M1 = XMMatrixRotationQuaternion(quatv);
 
-		TMatrix result;
+		Matrix result;
 		XMStoreFloat4x4(&result, XMMatrixMultiply(M0, M1));
 		return result;
 	}
@@ -2804,7 +2804,7 @@ namespace T
 	// Static functions
 	//------------------------------------------------------------------------------
 
-	void TPlane::Transform(const TPlane& plane, const TMatrix& M, TPlane& result)
+	void TPlane::Transform(const TPlane& plane, const Matrix& M, TPlane& result)
 	{
 		using namespace DirectX;
 		XMVECTOR p = XMLoadFloat4(&plane);
@@ -2812,7 +2812,7 @@ namespace T
 		XMStoreFloat4(&result, XMPlaneTransform(p, m0));
 	}
 
-	TPlane TPlane::Transform(const TPlane& plane, const TMatrix& M)
+	TPlane TPlane::Transform(const TPlane& plane, const Matrix& M)
 	{
 		using namespace DirectX;
 		XMVECTOR p = XMLoadFloat4(&plane);
@@ -3088,7 +3088,7 @@ namespace T
 		return R;
 	}
 
-	TQuaternion TQuaternion::CreateFromRotationMatrix(const TMatrix& M)
+	TQuaternion TQuaternion::CreateFromRotationMatrix(const Matrix& M)
 	{
 		using namespace DirectX;
 		XMMATRIX M0 = XMLoadFloat4x4(&M);
@@ -3665,7 +3665,7 @@ namespace T
 		return (width / height);
 	}
 
-	TVector3 TViewport::Project(const TVector3& p, const TMatrix& proj, const TMatrix& view, const TMatrix& world) const
+	TVector3 TViewport::Project(const TVector3& p, const Matrix& proj, const Matrix& view, const Matrix& world) const
 	{
 		using namespace DirectX;
 		XMVECTOR v = XMLoadFloat3(&p);
@@ -3677,7 +3677,7 @@ namespace T
 		return result;
 	}
 
-	void TViewport::Project(const TVector3& p, const TMatrix& proj, const TMatrix& view, const TMatrix& world, TVector3& result) const
+	void TViewport::Project(const TVector3& p, const Matrix& proj, const Matrix& view, const Matrix& world, TVector3& result) const
 	{
 		using namespace DirectX;
 		XMVECTOR v = XMLoadFloat3(&p);
@@ -3686,7 +3686,7 @@ namespace T
 		XMStoreFloat3(&result, v);
 	}
 
-	TVector3 TViewport::Unproject(const TVector3& p, const TMatrix& proj, const TMatrix& view, const TMatrix& world) const
+	TVector3 TViewport::Unproject(const TVector3& p, const Matrix& proj, const Matrix& view, const Matrix& world) const
 	{
 		using namespace DirectX;
 		XMVECTOR v = XMLoadFloat3(&p);
@@ -3697,7 +3697,7 @@ namespace T
 		return result;
 	}
 
-	void TViewport::Unproject(const TVector3& p, const TMatrix& proj, const TMatrix& view, const TMatrix& world, TVector3& result) const
+	void TViewport::Unproject(const TVector3& p, const Matrix& proj, const Matrix& view, const Matrix& world, TVector3& result) const
 	{
 		using namespace DirectX;
 		XMVECTOR v = XMLoadFloat3(&p);

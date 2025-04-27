@@ -1,7 +1,7 @@
 #include "TDropObj.h"
 #include "THeroObj.h"
 
-void    TDropObj::HitOverlap(Object* pObj, THitResult hRes)
+void    TDropObj::HitOverlap(Object* pObj, HitResult hRes)
 {
 	Object::HitOverlap(pObj, hRes);
 	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();
@@ -25,7 +25,7 @@ void    TDropObj::HitOverlap(Object* pObj, THitResult hRes)
 
 void TDropObj::SetVertexData()
 {
-	TRect rt;
+	Rect rt;
 	switch (m_state)
 	{
 	case DropState::STATE_DROP:

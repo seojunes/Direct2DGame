@@ -73,7 +73,7 @@ void   TWorld::Frame()
 				continue;
 			}
 
-			if (TCollision::CheckRectToRect(pSrcObj->m_rtScreen, pDestObj->m_rtScreen))
+			if (Collision::CheckRectToRect(pSrcObj->m_rtScreen, pDestObj->m_rtScreen))
 			{
 				if (pSrcObj->GetType() == pDestObj->GetType()) continue;
 				if (pDestObj->GetType() == ObjectType::Projectile)
@@ -82,7 +82,7 @@ void   TWorld::Frame()
 				auto iter = m_fnCollisionExecute.find(pSrcObj->m_iCollisionID);
 				if (iter != m_fnCollisionExecute.end())
 				{
-					THitResult ret;
+					HitResult ret;
 					CollisionFunction call = iter->second;
 					call(pDestObj, ret);
  				}
@@ -100,12 +100,12 @@ void   TWorld::Frame()
 			continue;
 		}
 
-		if (TCollision::CheckRectToPoint(pSrcObj->m_rtScreen, g_ptMouse))
+		if (Collision::CheckRectToPoint(pSrcObj->m_rtScreen, g_ptMouse))
 		{
 			auto iter = m_fnSelectExecute.find(pSrcObj->m_iSelectID);
 			if (iter != m_fnSelectExecute.end())
 			{
-				THitResult ret;
+				HitResult ret;
 				//ret.iState = SelectState::T_DEFAULT;
 				ret.iState = SelectState::T_HOVER;
 				if (g_GameKey.dwLeftClick == KEY_PUSH || g_GameKey.dwLeftClick == KEY_HOLD)
@@ -127,7 +127,7 @@ void   TWorld::Frame()
 				auto iter = m_fnSelectExecute.find(pSrcObj->m_iSelectID);
 				if (iter != m_fnSelectExecute.end())
 				{
-					THitResult ret;
+					HitResult ret;
 					ret.iState = SelectState::T_DEFAULT;
 					CollisionFunction call = iter->second;
 					call(nullptr, ret);

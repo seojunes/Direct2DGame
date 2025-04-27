@@ -3,7 +3,7 @@
 #include <math.h>
 #define T_Epsilon ((float)0.0001f)
 #define T_Pi ((float)3.141592f)
-class TMatrix3;
+class Matrix3;
 class TVector2
 {
 public:
@@ -18,7 +18,7 @@ public:
 	TVector2 operator *(const float s);
 	bool operator ==(const TVector2& v);
 	bool operator !=(const TVector2& v);
-	TVector2 operator * (const TMatrix3& m);
+	TVector2 operator * (const Matrix3& m);
 public:
 	float  Length();
 	void   Normalize();

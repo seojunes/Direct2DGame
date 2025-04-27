@@ -1,10 +1,10 @@
 #pragma once
 #include "UActorComponent.h"
-#include "TMatrix.h"
+#include "Matrix.h"
 class USceneComponent : public UActorComponent
 {
 public:
-	TMatrix		m_matWorld;
+	Matrix		m_matWorld;
 public:
 	virtual void   Init() {};
 	virtual void   Tick() {};

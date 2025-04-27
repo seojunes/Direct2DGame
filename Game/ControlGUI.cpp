@@ -4,7 +4,7 @@
 
 std::vector<std::shared_ptr<GuiState>> ControlGUI::m_pActionList;
 
-void    ControlGUI::HitSelect(Object* pObj, THitResult hRet)
+void    ControlGUI::HitSelect(Object* pObj, HitResult hRet)
 {
 	m_iSelectState = hRet.iState;
 	if (m_iSelectState == T_SELECTED)

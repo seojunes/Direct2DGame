@@ -36,7 +36,7 @@ public:
 	void	SetVertexData()override;
 	void	SetIndexData()override;
 	bool    LoadTexture(std::wstring texName)override;
-	void    HitSelect(Object* pObj, THitResult hRet) override;
+	void    HitSelect(Object* pObj, HitResult hRet) override;
 	bool	Create(TWorld* pWorld, TLoadResData data, TVector2 s, TVector2 e) override;
 	ControlGUI()
 	{

@@ -1,5 +1,5 @@
 #include "TBossObj.h"
-void TBossObj::HitOverlap(Object* pObj, THitResult hRes)  //충돌했을떄 실행되는 콜백함수
+void TBossObj::HitOverlap(Object* pObj, HitResult hRes)  //충돌했을떄 실행되는 콜백함수
 {
 	Object::HitOverlap(pObj, hRes);
 	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();
@@ -42,7 +42,7 @@ void TBossObj::HitOverlap(Object* pObj, THitResult hRes)  //충돌했을떄 실행되는 
 }
 void TBossObj::SetVertexData()
 {
-	TRect rt;
+	Rect rt;
 	switch (m_state)
 	{
 	case BossState::STATE_Idle:

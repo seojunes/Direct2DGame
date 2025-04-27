@@ -23,7 +23,7 @@ public:
 
 	void Frame();
 	void Render();
-	void    HitOverlap(Object* pObj, THitResult hRet) override;
+	void    HitOverlap(Object* pObj, HitResult hRet) override;
 	ObjectType GetType() const override
 	{
 		return ObjectType::Projectile;

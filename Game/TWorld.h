@@ -19,7 +19,7 @@
 
 
 class TScene;
-using CollisionFunction = std::function<void(Object*, THitResult)>;
+using CollisionFunction = std::function<void(Object*, HitResult)>;
 class TWorld
 {
 public:

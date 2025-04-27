@@ -23,7 +23,7 @@ struct float4x4
 		float m[4][4];
 	};
 };
-class TMatrix3 : public float3x3
+class Matrix3 : public float3x3
 {
 public:
 	void SetIdentity(); // 단위행렬
@@ -32,17 +32,17 @@ public:
 	void Rotate(float fRadian);
 	void Trans(float x, float y);
 	void Trans(TVector2 s);
-	TMatrix3 Transpose();// 전치행렬
+	Matrix3 Transpose();// 전치행렬
 public:
-	TMatrix3 operator *(const TMatrix3& m);
+	Matrix3 operator *(const Matrix3& m);
 public:
-	TMatrix3();
-	TMatrix3(TVector2 row1, TVector2 row2, TVector2 row3);
+	Matrix3();
+	Matrix3(TVector2 row1, TVector2 row2, TVector2 row3);
 };
 
-class TMatrix : public float4x4
+class Matrix : public float4x4
 {
-	static TMatrix m_matIdentity;
+	static Matrix m_matIdentity;
 public:
 	void SetIdentity(); // 단위행렬
 	void Scale(float x, float y, float z);
@@ -54,14 +54,14 @@ public:
 	void Trans(TVector3 s);
 	void Transpose();// 전치행렬
 public:
-	TMatrix operator *(const TMatrix& m);
+	Matrix operator *(const Matrix& m);
 public:
-	static TMatrix Transpose(const TMatrix& m);
-	static TMatrix Identity();
+	static Matrix Transpose(const Matrix& m);
+	static Matrix Identity();
 
 public:
-	TMatrix();
-	TMatrix(TVector3 row1, TVector3 row2, TVector3 row3, TVector3 row4);
+	Matrix();
+	Matrix(TVector3 row1, TVector3 row2, TVector3 row3, TVector3 row4);
 };
 // 쿼터니안
 class TQuaternion

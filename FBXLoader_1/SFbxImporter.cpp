@@ -35,7 +35,7 @@ bool    SFbxImporter::ParseMeshSkinning(FbxMesh* fbxmesh, UPrimitiveComponent* a
 			pCluster->GetTransformMatrix(matReferenceGlobalInitPosition);
 			FbxAMatrix matWorldBindPose = matReferenceGlobalInitPosition.Inverse() * matXBindPosLink;
 			FbxAMatrix matBindPose = matWorldBindPose.Inverse(); // 본의 로컬 좌표계로 변환
-			TMatrix mat = DxConvertMatrix(ConvertAMatrix(matBindPose));
+			Matrix mat = DxConvertMatrix(ConvertAMatrix(matBindPose));
 			actor->m_matBindPose.emplace_back(mat);
 			actor->m_matID.emplace_back(iWeightIndex);
 			actor->m_szNames.emplace_back(to_mw(pLinkNode->GetName()));
@@ -61,9 +61,9 @@ bool    SFbxImporter::ParseMeshSkinning(FbxMesh* fbxmesh, UPrimitiveComponent* a
 
 //FBX는 기본적으로, Y-up, Right-handed 좌표계인데
 //DX는 Y-up , Left-handed좌표계를 이용하므로 좌표계 변환.
-TMatrix     SFbxImporter::DxConvertMatrix(TMatrix m)
+Matrix     SFbxImporter::DxConvertMatrix(Matrix m)
 {
-	TMatrix mat;
+	Matrix mat;
 	mat._11 = m._11; mat._12 = m._13; mat._13 = m._12;
 	mat._21 = m._31; mat._22 = m._33; mat._23 = m._32;
 	mat._31 = m._21; mat._32 = m._23; mat._33 = m._22;
@@ -79,7 +79,7 @@ TMatrix     SFbxImporter::DxConvertMatrix(TMatrix m)
 	v3 = v1 ^ v2;// D3DXVec3Cross(&v3, &v1, &v2);
 	if ((v3 | v0) < 0.0f)
 	{
-		TMatrix matNegative;
+		Matrix matNegative;
 		matNegative.Scale(-1.0f, -1.0f, -1.0f);
 		mat = mat * matNegative;
 	}
@@ -87,11 +87,11 @@ TMatrix     SFbxImporter::DxConvertMatrix(TMatrix m)
 	return mat;
 }
 
-//FbxAMatrix를 TMatrix로 변환 (double -> float)
+//FbxAMatrix를 Matrix로 변환 (double -> float)
 //행렬의 값은 동일하지만, 타입만 변환되고, 좌표계변환은 일어나지 않음.
-TMatrix     SFbxImporter::ConvertAMatrix(FbxAMatrix& m)
+Matrix     SFbxImporter::ConvertAMatrix(FbxAMatrix& m)
 {
-	TMatrix mat;
+	Matrix mat;
 	float* pMatArray = reinterpret_cast<float*>(&mat);
 	double* pSrcArray = reinterpret_cast<double*>(&m);
 	for (int i = 0; i < 16; i++)
@@ -214,7 +214,7 @@ void        SFbxImporter::GetNodeAnimation(FbxNode* node, UPrimitiveComponent* a
 		}
 		FbxAMatrix matLocal = matParent.Inverse() * matGlobal;
 		FbxAMatrix matWorld = matParent * matLocal;
-		TMatrix mat = DxConvertMatrix(ConvertAMatrix(matLocal));;
+		Matrix mat = DxConvertMatrix(ConvertAMatrix(matLocal));;
 		actor->m_AnimList.push_back(mat);
 	}
 }

@@ -118,7 +118,7 @@ void   SEngine::CoreFrame()
 void   SEngine::CoreRender() 
 {
     m_DxDevice.PreRender();  
-    m_SkyObj->m_matOffset = TMatrix::Identity();
+    m_SkyObj->m_matOffset = Matrix::Identity();
     m_SkyObj->m_vScale = { 100,100,100 };
     m_SkyObj->m_vRotation = { 0, 0, 0.0f };
     m_SkyObj->m_vPosition = { 0,0,0 };

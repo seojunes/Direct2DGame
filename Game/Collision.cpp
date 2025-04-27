@@ -1,4 +1,4 @@
-#include "TCollision.h"
+#include "Collision.h"
 void PRect::operator=(SRect& rt)
 {
 	this->x1 = rt.x;
@@ -13,7 +13,7 @@ void SRect::operator=(PRect& rt)
 	this->w = rt.x2 - rt.x1;
 	this->h = rt.y2 - rt.y1;
 }
-bool TCollision::CheckRectToPoint(TRect& rt, TVector2 pt)
+bool Collision::CheckRectToPoint(Rect& rt, TVector2 pt)
 {
 	if (rt.v1.x <= pt.x && pt.x <= rt.v2.x)
 	{
@@ -24,7 +24,7 @@ bool TCollision::CheckRectToPoint(TRect& rt, TVector2 pt)
 	}
 	return false;
 }
-bool TCollision::CheckRectToPoint(TRect& rt, POINT pt)
+bool Collision::CheckRectToPoint(Rect& rt, POINT pt)
 {
 	if (rt.v1.x <= (float)pt.x && (float)pt.x <= rt.v2.x)
 	{
@@ -35,16 +35,16 @@ bool TCollision::CheckRectToPoint(TRect& rt, POINT pt)
 	}
 	return false;
 }
-bool TCollision::CheckRectToPoint(SRect& rt, POINT pt)
+bool Collision::CheckRectToPoint(SRect& rt, POINT pt)
 {
 	return true;
 }
-bool TCollision::CheckRectToPoint(PRect& rt, POINT pt)
+bool Collision::CheckRectToPoint(PRect& rt, POINT pt)
 {
 	return true;
 }
 
-bool TCollision::CheckRectToRect(TRect& rt1, TRect rt2)
+bool Collision::CheckRectToRect(Rect& rt1, Rect rt2)
 {
 	// size
 	TVector2 vMin, vMax;
@@ -64,11 +64,11 @@ bool TCollision::CheckRectToRect(TRect& rt1, TRect rt2)
 	}
 	return false;
 }
-bool TCollision::CheckSphereToPoint(TSphere& s, float x, float y)
+bool Collision::CheckSphereToPoint(Sphere& s, float x, float y)
 {
 	return CheckSphereToPoint(s, { x,y });
 }
-bool TCollision::CheckSphereToPoint(TSphere& s, TVector2 p)
+bool Collision::CheckSphereToPoint(Sphere& s, TVector2 p)
 {
 	float fDistance = (s.vCenter - p).Length();
 	if (s.fRadius >= fDistance)
@@ -77,7 +77,7 @@ bool TCollision::CheckSphereToPoint(TSphere& s, TVector2 p)
 	}
 	return false;
 }
-bool TCollision::CheckSphereToSphere(TSphere& s, TSphere t)
+bool Collision::CheckSphereToSphere(Sphere& s, Sphere t)
 {
 	float fDistance = (s.vCenter - t.vCenter).Length();
 	if ((s.fRadius + t.fRadius) >= fDistance)
@@ -87,7 +87,7 @@ bool TCollision::CheckSphereToSphere(TSphere& s, TSphere t)
 	return false;
 }
 
-//CollisionDirection TCollision::DetectCollisionDirection(const TRect& heroRect, const TRect& rectBox) {
+//CollisionDirection Collision::DetectCollisionDirection(const Rect& heroRect, const Rect& rectBox) {
 //	float overlapLeft = heroRect.v2.x - rectBox.v1.x;  // ¿ÞÂÊ °ãÄ§
 //	float overlapRight = rectBox.v2.x - heroRect.v1.x; // ¿À¸¥ÂÊ °ãÄ§
 //	float overlapTop = heroRect.v2.y - rectBox.v1.y;   // À§ÂÊ °ãÄ§

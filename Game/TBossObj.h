@@ -20,7 +20,7 @@ enum class BossState
 class TBossObj : public TNpcObj
 {
 public:
-	void    HitOverlap(Object* pObj, THitResult hRet) override;
+	void    HitOverlap(Object* pObj, HitResult hRet) override;
 	TMapObj* m_pMap = nullptr;
 	void SetVertexData() override;
 	virtual void Init() override;

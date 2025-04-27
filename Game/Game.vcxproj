@@ -151,7 +151,7 @@
     <ClInclude Include="Sample.h" />
     <ClInclude Include="TBossCreate.h" />
     <ClInclude Include="TBossObj.h" />
-    <ClInclude Include="TCollision.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="TCollisionManager.h" />
     <ClInclude Include="ControlGUI.h" />
     <ClInclude Include="Device.h" />
@@ -170,7 +170,7 @@
     <ClInclude Include="InputLayout.h" />
     <ClInclude Include="TItem.h" />
     <ClInclude Include="TMapObj.h" />
-    <ClInclude Include="TMatrix.h" />
+    <ClInclude Include="Matrix.h" />
     <ClInclude Include="MeshRender.h" />
     <ClInclude Include="TMonster.h" />
     <ClInclude Include="TNpcObj.h" />
@@ -201,7 +201,7 @@
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="TBossCreate.cpp" />
     <ClCompile Include="TBossObj.cpp" />
-    <ClCompile Include="TCollision.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="TCollisionManager.cpp" />
     <ClCompile Include="ControlGUI.cpp" />
     <ClCompile Include="Device.cpp" />
@@ -220,7 +220,7 @@
     <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="TItem.cpp" />
     <ClCompile Include="TMapObj.cpp" />
-    <ClCompile Include="TMatrix.cpp" />
+    <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="MeshRender.cpp" />
     <ClCompile Include="TMonster.cpp" />
     <ClCompile Include="TNpcObj.cpp" />

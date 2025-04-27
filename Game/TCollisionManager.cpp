@@ -1,6 +1,6 @@
 #include "TCollisionManager.h"
 #include "TWorld.h"
-void    TCollisionManager::HitOverlap(Object* pObj, THitResult hRes)
+void    TCollisionManager::HitOverlap(Object* pObj, HitResult hRes)
 {
 	Object::HitOverlap(pObj, hRes);
  	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();

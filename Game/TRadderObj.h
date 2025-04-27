@@ -6,7 +6,7 @@ class TRadderObj : public Object2D
 
 public:
 	void SetMap(TMapObj* pMap) { m_pMap = pMap; }
-	void HitOverlap(Object* pObj, THitResult hRes) override;
+	void HitOverlap(Object* pObj, HitResult hRes) override;
 	ObjectType GetType() const override
 	{
 		return ObjectType::Radder;

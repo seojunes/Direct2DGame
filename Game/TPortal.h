@@ -16,7 +16,7 @@ public:
 	float m_fCurrentTime = 0.0f;
 public:
 	void SetMap(TMapObj* pMap) { m_pMap = pMap; }
-	void HitOverlap(Object* pObj, THitResult hRes) override;
+	void HitOverlap(Object* pObj, HitResult hRes) override;
 	ObjectType GetType() const override
 	{
 		return ObjectType::Portal;

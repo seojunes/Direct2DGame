@@ -42,7 +42,7 @@ bool AAsset::Import(std::wstring szFileName, std::shared_ptr<AAsset>& asset)
 		{
 			child->m_matBindPose.resize(childheader.iBindposeMatrix);
 			fread(&child->m_matBindPose.at(0),
-				sizeof(TMatrix),
+				sizeof(Matrix),
 				childheader.iBindposeMatrix, fp);
 		}
 
@@ -50,7 +50,7 @@ bool AAsset::Import(std::wstring szFileName, std::shared_ptr<AAsset>& asset)
 		{
 			child->m_AnimList.resize(childheader.iNumTrack);
 			fread(&child->m_AnimList.at(0),
-				sizeof(TMatrix), childheader.iNumTrack, fp);
+				sizeof(Matrix), childheader.iNumTrack, fp);
 		}
 		// SubMesh를 가진 복합메시인지 확인
 		if (childheader.isSubMesh > 0)
@@ -171,13 +171,13 @@ bool  AAsset::Export(AAsset* tFile, std::wstring szFileName)
 		if (header.isMesh > 0)
 		{
 			fwrite( &mesh->m_matBindPose.at(0),
-					sizeof(TMatrix),
+					sizeof(Matrix),
 				mesh->m_matBindPose.size(), fp);
 		}
 		// 애니메이션 정보
 		if (header.iNumTrack > 0)
 		{
-			fwrite(&mesh->m_AnimList.at(0), sizeof(TMatrix),
+			fwrite(&mesh->m_AnimList.at(0), sizeof(Matrix),
 				header.iNumTrack, fp);
 		}
 		

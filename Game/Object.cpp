@@ -1,7 +1,7 @@
 #include "Object.h"
 #include "Device.h"
 #include "TWorld.h"
-void    Object::HitOverlap(Object* pObj, THitResult hRet)
+void    Object::HitOverlap(Object* pObj, HitResult hRet)
 {
 	if (pObj == nullptr)
 	{
@@ -30,7 +30,7 @@ void    Object::HitOverlap(Object* pObj, THitResult hRet)
 		break;
 	}
 };
-void    Object::HitSelect(Object* pObj, THitResult hRet)
+void    Object::HitSelect(Object* pObj, HitResult hRet)
 {
 }
 void    Object::FadeIn(float fAlpha)

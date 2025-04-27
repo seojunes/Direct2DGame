@@ -1,25 +1,25 @@
 #pragma once
 #include "UObject.h"
-#include "TMatrix.h"
+#include "Matrix.h"
 #include "UStaticMeshComponent.h"
 // AActor.h 는 화면에 배치 가능한 오브젝트
 
 struct cbData
 {
-	TMatrix  matWorld;
-	TMatrix  matView;
-	TMatrix  matProj;
+	Matrix  matWorld;
+	Matrix  matView;
+	Matrix  matProj;
 	TVector4 vData;
 };
 struct cbAnimData
 {
-	TMatrix matBone[250];
+	Matrix matBone[250];
 };
 
 class AActor : public UObject
 {
 public:
-	std::vector<TMatrix>	m_CurrentAnimMatrix;
+	std::vector<Matrix>	m_CurrentAnimMatrix;
 	USceneComponent* RootComponent;
 	//UInputComponent* InputComponent;
 	//std::list<UActorComponent*> m_pReplicatedComponents;
@@ -27,12 +27,12 @@ public:
 	TVector3 m_vLook = { 0, 0, 1 };
 	TVector3 m_vRight = { 1, 0, 0 };
 	TVector3 m_vUp = { 0, 1, 0 };
-	TMatrix m_matOffset;
-	TMatrix m_matParent;
-	TMatrix m_matScale;
-	TMatrix m_matRotation;
-	TMatrix m_matTrans;
-	TMatrix m_matWorld;
+	Matrix m_matOffset;
+	Matrix m_matParent;
+	Matrix m_matScale;
+	Matrix m_matRotation;
+	Matrix m_matTrans;
+	Matrix m_matWorld;
 	cbData  m_cbData;
 	cbAnimData m_cbAnimData;
 	UINT    m_iStartFrame;

@@ -1,5 +1,5 @@
 #include "TBossCreate.h"
-void    TBossCreate::HitOverlap(Object* pObj, THitResult hRes)
+void    TBossCreate::HitOverlap(Object* pObj, HitResult hRes)
 {
 	Object::HitOverlap(pObj, hRes);
 	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();
@@ -25,7 +25,7 @@ void TBossCreate::SetVertexData()
 	if (m_pTexture == nullptr) return;
 	float xSize = m_pTexture->m_TexDesc.Width;
 	float ySize = m_pTexture->m_TexDesc.Height;
-	TRect rt;
+	Rect rt;
 	rt.SetP(22.0f, 48.0f, 32.0f, 111.0f);
 	m_vVertexList[0].t = { rt.v1.x / xSize,rt.v1.y / ySize };
 	m_vVertexList[1].t = { rt.v2.x / xSize,rt.v1.y / ySize };

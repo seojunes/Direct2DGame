@@ -61,7 +61,7 @@ void AActor::Tick()
 		for (int iChild = 0; iChild < Mesh->m_Childs.size(); iChild++)
 		{
 			m_CurrentAnimMatrix[iChild] = Mesh->m_Childs[iChild]->m_AnimList[(int)m_fFrame];
-			m_cbAnimData.matBone[iChild] = TMatrix::Transpose(m_CurrentAnimMatrix[iChild]);
+			m_cbAnimData.matBone[iChild] = Matrix::Transpose(m_CurrentAnimMatrix[iChild]);
 		}
 		TDevice::m_pd3dContext->UpdateSubresource(
 			m_pCurrentAnimationCB.Get(), 0, NULL, &m_cbAnimData, 0, 0);
@@ -71,9 +71,9 @@ void AActor::PreRender()
 {
 	UpdateVector();
 
-	m_cbData.matView = TMatrix::Transpose(SEngine::g_pCamera->m_matView);
-	m_cbData.matProj = TMatrix::Transpose(SEngine::g_pCamera->m_matProj);
-	m_cbData.matWorld = TMatrix::Transpose(m_matWorld);
+	m_cbData.matView = Matrix::Transpose(SEngine::g_pCamera->m_matView);
+	m_cbData.matProj = Matrix::Transpose(SEngine::g_pCamera->m_matProj);
+	m_cbData.matWorld = Matrix::Transpose(m_matWorld);
 }
 void AActor::Render()
 {
@@ -107,7 +107,7 @@ void AActor::PostRender()
 			if (m_fFrame >= m_pCurrentAnimation->m_iEndFrame)     m_fFrame = m_iStartFrame;
 			for (auto child : m_pCurrentAnimation->Mesh->m_Childs)
 			{
-				TMatrix matParent;
+				Matrix matParent;
 				if (child->m_pParent)
 				{
 					matParent = child->m_pParent->m_matBoneAnim;
@@ -124,7 +124,7 @@ void AActor::PostRender()
 			if (m_fFrame >= m_iEndFrame) m_fFrame = m_iStartFrame;
 			for (auto child : Mesh->m_Childs)
 			{
-				TMatrix matParent;
+				Matrix matParent;
 				if (child->m_pParent)
 				{
 					matParent = child->m_pParent->m_matBoneAnim;
@@ -147,10 +147,10 @@ void AActor::PostRender()
 				for (int iBone = 0; iBone < Mesh->m_Childs[iChild]->m_matID.size(); iBone++)
 				{
 					UINT iGIndex = Mesh->m_Childs[iChild]->m_matID[iBone];
-					TMatrix matBone = Mesh->m_Childs[iChild]->m_matBindPose[iBone];
+					Matrix matBone = Mesh->m_Childs[iChild]->m_matBindPose[iBone];
 					auto nameiter = Mesh->m_Childs[iChild]->m_szNames[iBone];
-					TMatrix matAnim;
-					TMatrix matAnimParent;
+					Matrix matAnim;
+					Matrix matAnimParent;
 
 					if (m_pCurrentAnimation != nullptr)
 					{
@@ -166,7 +166,7 @@ void AActor::PostRender()
 						}
 						else
 						{
-							TMatrix matAnimParent;
+							Matrix matAnimParent;
 							auto szParent = Mesh->m_FbxParentNameNodes.find(nameiter);
 							if (szParent != Mesh->m_FbxParentNameNodes.end())
 							{
@@ -208,11 +208,11 @@ void AActor::PostRender()
 					m_CurrentAnimMatrix[iGIndex] =
 						matBone *   // 본 로칼 좌표계로 변환
 						matAnim;	// 에니메이션
-					m_cbAnimData.matBone[iGIndex] = TMatrix::Transpose(m_CurrentAnimMatrix[iGIndex]);
+					m_cbAnimData.matBone[iGIndex] = Matrix::Transpose(m_CurrentAnimMatrix[iGIndex]);
 				}
 
 				TDevice::m_pd3dContext->UpdateSubresource(m_pCurrentAnimationCB.Get(), 0, NULL, &m_cbAnimData, 0, 0);
-				m_cbData.matWorld = TMatrix::Transpose(m_matWorld);
+				m_cbData.matWorld = Matrix::Transpose(m_matWorld);
 				TDevice::m_pd3dContext->UpdateSubresource(m_pConstantBuffer.Get(), 0, NULL, &m_cbData, 0, 0);
 
 
@@ -228,7 +228,7 @@ void AActor::PostRender()
 void AActor::UpdateVector()
 {
 	m_matScale.Scale(m_vScale);
-	TMatrix matX, matY, matZ;
+	Matrix matX, matY, matZ;
 	matX.RotateX(m_vRotation.x);
 	matY.RotateY(m_vRotation.y);
 	matZ.RotateZ(m_vRotation.z);

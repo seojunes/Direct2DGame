@@ -38,7 +38,7 @@ bool    TFbxImporter::ParseMeshSkinning(FbxMesh* fbxmesh,
 			pCluster->GetTransformMatrix(matReferenceGlobalInitPosition);
 			FbxAMatrix matWorldBindPose = matReferenceGlobalInitPosition.Inverse() * matXBindPosLink;
 			FbxAMatrix matBindPose = matWorldBindPose.Inverse(); // 본의 로컬 좌표계로 변환
-			TMatrix mat = DxConvertMatrix(ConvertAMatrix(matBindPose));
+			Matrix mat = DxConvertMatrix(ConvertAMatrix(matBindPose));
 			actor->m_matBindPose.emplace_back(mat);
 			actor->m_matID.emplace_back(iWeightIndex);
 			actor->m_szNames.emplace_back(to_mw(pLinkNode->GetName()));
@@ -60,9 +60,9 @@ bool    TFbxImporter::ParseMeshSkinning(FbxMesh* fbxmesh,
 	}
 	return true;
 }
-TMatrix     TFbxImporter::DxConvertMatrix(TMatrix m)
+Matrix     TFbxImporter::DxConvertMatrix(Matrix m)
 {
-	TMatrix mat;
+	Matrix mat;
 	mat._11 = m._11; mat._12 = m._13; mat._13 = m._12;
 	mat._21 = m._31; mat._22 = m._33; mat._23 = m._32;
 	mat._31 = m._21; mat._32 = m._23; mat._33 = m._22;
@@ -78,16 +78,16 @@ TMatrix     TFbxImporter::DxConvertMatrix(TMatrix m)
 	v3 = v1 ^ v2;// D3DXVec3Cross(&v3, &v1, &v2);
 	if ((v3 | v0) < 0.0f)
 	{
-		TMatrix matNegative;
+		Matrix matNegative;
 		matNegative.Scale(-1.0f, -1.0f, -1.0f);
 		mat = mat * matNegative;
 	}
 
 	return mat;
 }
-TMatrix     TFbxImporter::ConvertAMatrix(FbxAMatrix& m)
+Matrix     TFbxImporter::ConvertAMatrix(FbxAMatrix& m)
 {
-	TMatrix mat;
+	Matrix mat;
 	float* pMatArray = reinterpret_cast<float*>(&mat);
 	double* pSrcArray = reinterpret_cast<double*>(&m);
 	for (int i = 0; i < 16; i++)
@@ -212,7 +212,7 @@ void        TFbxImporter::GetNodeAnimation(
 		}
 		FbxAMatrix matLocal = matParent.Inverse() * matGlobal;
 		FbxAMatrix matWorld = matParent * matLocal;
-		TMatrix mat = DxConvertMatrix(ConvertAMatrix(matLocal));;
+		Matrix mat = DxConvertMatrix(ConvertAMatrix(matLocal));;
 		actor->m_AnimList.push_back(mat);
 	}
 }

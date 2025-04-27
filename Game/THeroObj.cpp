@@ -2,7 +2,7 @@
 #include "Device.h"
 #include "TWorld.h"
 
-void    THeroObj::HitOverlap(Object* pObj, THitResult hRes)
+void    THeroObj::HitOverlap(Object* pObj, HitResult hRes)
 {
 	Object::HitOverlap(pObj, hRes);
 	const ObjectType OtherType = pObj == nullptr ? ObjectType::None : pObj->GetType();
@@ -386,7 +386,7 @@ void THeroObj::SetVertexData()
 	if (m_pTexture == nullptr) return;
 	Object2D::SetVertexData();
 
-	TRect rt;
+	Rect rt;
 
 
 	float xSize = m_pTexture->m_TexDesc.Width;

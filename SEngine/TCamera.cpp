@@ -8,7 +8,7 @@
 	m_vTarget = vTarget;
 	m_vUp = vUp;
 
-	TMatrix m;
+	Matrix m;
 	TVector3 vDirection = vTarget - vPosition;
 	vDirection = vDirection.Normal();
 	m_vLook = vDirection;
@@ -47,8 +47,8 @@ void TCamera::CreateProjMatrix(
 	w = h / fAspect;
 	Q = fFarPlane / (fFarPlane - fNearPlane);
 
-	TMatrix ret;
-	ZeroMemory(&ret, sizeof(TMatrix));
+	Matrix ret;
+	ZeroMemory(&ret, sizeof(Matrix));
 	ret._11 = w;
 	ret._22 = h;
 	ret._33 = Q;
@@ -138,11 +138,11 @@ void TCamera::Tick()
 
 
 }
-TMatrix TCamera::Update(TVector4 vDirValue)
+Matrix TCamera::Update(TVector4 vDirValue)
 {		
 	T::TQuaternion* pqRotation = (T::TQuaternion*)&m_qRotation;
 	T::TVector3* pPosition = (T::TVector3*)&m_vPosition;
-	T::TMatrix* pMatView = (T::TMatrix*)&m_matView;
+	T::Matrix* pMatView = (T::Matrix*)&m_matView;
 
 	m_fYaw += vDirValue.y;
 	m_fPitch += vDirValue.x;
@@ -164,7 +164,7 @@ TMatrix TCamera::Update(TVector4 vDirValue)
 	m_fRadius += vDirValue.w;
 	
 
-	T::TMatrix matRotation;
+	T::Matrix matRotation;
 	T::D3DXMatrixAffineTransformation(&matRotation, 1.0f, NULL, pqRotation, pPosition);
 	T::D3DXMatrixInverse(pMatView, NULL, &matRotation);
 
@@ -172,7 +172,7 @@ TMatrix TCamera::Update(TVector4 vDirValue)
 }
 
 
-TMatrix TCamera::UpdateVector()
+Matrix TCamera::UpdateVector()
 {
 	m_vLook.x = m_matView._13;
 	m_vLook.y = m_matView._23;
